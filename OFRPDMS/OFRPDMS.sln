@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OFRPDMS", "OFRPDMS\OFRPDMS.csproj", "{E657CE79-846F-406F-9F02-9EF55C7DB803}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OFRPDMS.Tests", "OFRPDMS.Tests\OFRPDMS.Tests.csproj", "{7C4F8412-53C3-4A96-8FA4-62241E372C14}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E657CE79-846F-406F-9F02-9EF55C7DB803}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E657CE79-846F-406F-9F02-9EF55C7DB803}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E657CE79-846F-406F-9F02-9EF55C7DB803}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E657CE79-846F-406F-9F02-9EF55C7DB803}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C4F8412-53C3-4A96-8FA4-62241E372C14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C4F8412-53C3-4A96-8FA4-62241E372C14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C4F8412-53C3-4A96-8FA4-62241E372C14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C4F8412-53C3-4A96-8FA4-62241E372C14}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
