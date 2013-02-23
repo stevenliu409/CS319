@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace OFRPDMS.Areas.Staff.Controllers
+namespace OFRPDMS.Controllers
 {
     public class StaffController : Controller
     {

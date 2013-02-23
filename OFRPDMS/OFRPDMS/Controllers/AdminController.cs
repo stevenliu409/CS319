@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace OFRPDMS.Areas.Admin.Controllers
+namespace OFRPDMS.Controllers
 {
     public class AdminController : Controller
     {

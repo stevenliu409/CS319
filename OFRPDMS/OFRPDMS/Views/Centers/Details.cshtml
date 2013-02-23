@@ -1,0 +1,44 @@
+@model OFRPDMS.Models.Center
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Center</legend>
+
+    <div class="display-label">Name</div>
+    <div class="display-field">@Model.Name</div>
+
+    <div class="display-label">Email</div>
+    <div class="display-field">@Model.Email</div>
+
+    <div class="display-label">Address</div>
+    <div class="display-field">@Model.Address</div>
+
+    <div class="display-label">Phone</div>
+    <div class="display-field">@Model.Phone</div>
+
+    <div class="display-label">BorrowableItems</div>
+    <div class="display-field">@(Model.BorrowableItems == null ? "None" : Model.BorrowableItems.Count.ToString())</div>
+
+    <div class="display-label">Events</div>
+    <div class="display-field">@(Model.Events == null ? "None" : Model.Events.Count.ToString())</div>
+
+    <div class="display-label">CenterReferrals</div>
+    <div class="display-field">@(Model.CenterReferrals == null ? "None" : Model.CenterReferrals.Count.ToString())</div>
+
+    <div class="display-label">CenterAccounts</div>
+    <div class="display-field">@(Model.CenterAccounts == null ? "None" : Model.CenterAccounts.Count.ToString())</div>
+
+    <div class="display-label">CenterFreeResources</div>
+    <div class="display-field">@(Model.CenterFreeResources == null ? "None" : Model.CenterFreeResources.Count.ToString())</div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+
