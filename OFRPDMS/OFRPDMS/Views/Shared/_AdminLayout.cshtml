@@ -14,17 +14,17 @@
             <div id="logindisplay">
                 @Html.Partial("_LogOnPartial")
             </div>
-            <div id="menucontainer">
-                <ul id="menu">
-                    <li>@Html.ActionLink("Centers", "Index", "Centers")</li>
-                    <li>@Html.ActionLink("Statistics", "Index","Statistics")</li>
-                </ul>
-            </div>
+        </div>
+        <div id="menucontainer">
+            <ul id="menu">
+                <li>@Html.ActionLink("Admin", "Index", "Admin")</li>
+                <li>@Html.ActionLink("+ New Staff", "Index", "Staffs")</li>
+                <li>@Html.ActionLink("+ New Centers", "Index", "Centers")</li>
+                <li>@Html.ActionLink("Generate Report", "Index","Report")</li>
+            </ul>
         </div>
         <div id="main">
             @RenderBody()
-        </div>
-            <div id="footer">
         </div>
     </div>
 </body>
