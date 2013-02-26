@@ -4,12 +4,12 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace OFRPDMS.Controllers
+namespace OFRPDMS.Areas.Admin.Controllers
 {
-    public class ReportController : Controller
+    public class AdminController : Controller
     {
         //
-        // GET: /Report/
+        // GET: /Admin/Admin/
 
         public ActionResult Index()
         {

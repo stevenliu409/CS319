@@ -26,10 +26,10 @@ namespace OFRPDMS
                 "{controller}/{action}/{id}", // URL with parameters
                 new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Parameter defaults
             );
-            routes.MapRoute("StaffRoute", " Staff/{controller}/{action}/{id}",
-                 new { id = UrlParameter.Optional });
-            routes.MapRoute("AdminRoute", " Admin/{controller}/{action}/{id}",
-                new { id = UrlParameter.Optional });
+            //routes.MapRoute("StaffRoute", " Staff/{controller}/{action}/{id}",
+            //     new { id = UrlParameter.Optional });
+            //routes.MapRoute("AdminRoute", " Admin/{controller}/{action}/{id}",
+            //    new { id = UrlParameter.Optional });
 
         }
 

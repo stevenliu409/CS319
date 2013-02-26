@@ -4,12 +4,12 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace OFRPDMS.Controllers
+namespace OFRPDMS.Areas.Staff.Controllers
 {
-    public class AdminController : Controller
+    public class SignInController : Controller
     {
         //
-        // GET: /Admin/Admin/
+        // GET: /Staff/SignIn/
 
         public ActionResult Index()
         {

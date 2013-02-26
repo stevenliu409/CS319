@@ -7,7 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using OFRPDMS.Models;
 
-namespace OFRPDMS.Controllers
+namespace OFRPDMS.Areas.Admin.Controllers
 {   
     public class CentersController : Controller
     {
