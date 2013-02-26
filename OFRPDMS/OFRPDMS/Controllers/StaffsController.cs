@@ -6,10 +6,10 @@ using System.Web.Mvc;
 
 namespace OFRPDMS.Controllers
 {
-    public class StaffController : Controller
+    public class StaffsController : Controller
     {
         //
-        // GET: /Staff/Staff/
+        // GET: /Staffs/
 
         public ActionResult Index()
         {

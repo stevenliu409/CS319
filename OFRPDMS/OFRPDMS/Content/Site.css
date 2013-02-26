@@ -99,77 +99,56 @@ header h1, #header h1 {
     font-size: 32px !important;
     text-shadow: 1px 1px 2px #111;
 }
-
-#main {
+#menucontainer 
+{ 
+    float: left; 
+    width: 20%;  
+}
+#main 
+{
+    margin-left: 140px;
     padding: 30px 30px 15px 30px;
     background-color: #fff;
-    border-radius: 4px 0 0 0;
-    -webkit-border-radius: 4px 0 0 0;
-    -moz-border-radius: 4px 0 0 0;
+    width: 80%;
+    min-height: 400px;
 }
 
 footer, 
-#footer {
+#footer 
+{
+    width: auto;
     background-color: #fff;
     color: #999;
-    padding: 10px 0;
+    /*padding: 10px 0;*/
     text-align: center;
     line-height: normal;
-    margin: 0 0 30px 0;
-    font-size: .9em;
-    border-radius: 0 0 4px 4px;
-    -webkit-border-radius: 0 0 4px 4px;
-    -moz-border-radius: 0 0 4px 4px;
+    margin-left: 130px;
+    font-size: .9em;    
 }
 
 /* TAB MENU   
 ----------------------------------------------------------*/
-ul#menu {
-    border-bottom: 1px #5C87B2 solid;
-    padding: 0 0 2px;
-    position: relative;
-    margin: 0;
-    text-align: right;
+ul
+{
+    list-style-type:none;
+    margin:0;
+    padding:0;
 }
-
-ul#menu li {
-    display: inline;
-    list-style: none;
+ul#menu a:link,ul#menu a:visited
+{
+    display:block;
+    font-weight:bold;
+    color:#FFFFFF;
+    background-color: #4C4C4C;
+    width:120px;
+    text-align:center;
+    padding:4px;
+    text-decoration:none;
+    text-transform:uppercase;
 }
-
-ul#menu li#greeting {
-    padding: 10px 20px;
-    font-weight: bold;
-    text-decoration: none;
-    line-height: 2.8em;
-    color: #fff;
-}
-
-ul#menu li a {
-    padding: 10px 20px;
-    font-weight: bold;
-    text-decoration: none;
-    line-height: 2.8em;
-    background-color: #e8eef4;
-    color: #034af3;
-    border-radius: 4px 4px 0 0;
-    -webkit-border-radius: 4px 4px 0 0;
-    -moz-border-radius: 4px 4px 0 0;
-}
-
-ul#menu li a:hover {
-    background-color: #fff;
-    text-decoration: none;
-}
-
-ul#menu li a:active {
-    background-color: #a6e2a6;
-    text-decoration: none;
-}
-
-ul#menu li.selected a {
-    background-color: #fff;
-    color: #000;
+ul#menu a:hover,ul#menu a:active
+{
+    background-color:#1A1A1A;
 }
 
 /* FORM LAYOUT ELEMENTS   
@@ -248,16 +227,18 @@ nav,
 
 div#title {
     display: block;
-    float: left;
     text-align: left;
 }
 
 #logindisplay {
     font-size: 1.1em;
-    display: block;
     text-align: right;
+    display: block;
     margin: 10px;
     color: White;
+    position:absolute;
+    Right:0px;
+    top:0px;
 }
 
 #logindisplay a:link {
