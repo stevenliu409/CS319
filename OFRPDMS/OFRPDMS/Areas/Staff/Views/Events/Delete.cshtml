@@ -1,0 +1,29 @@
+@model OFRPDMS.Models.Event
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>Event</legend>
+
+    <div class="display-label">Date</div>
+    <div class="display-field">@String.Format("{0:g}", Model.Date)</div>
+
+    <div class="display-label">EventParticipants</div>
+    <div class="display-field">@(Model.EventParticipants == null ? "None" : Model.EventParticipants.Count.ToString())</div>
+
+    <div class="display-label">Center</div>
+    <div class="display-field">@(Model.Center == null ? "None" : Model.Center.Name)</div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}
+
+

@@ -1,0 +1,107 @@
+@model IEnumerable<OFRPDMS.Models.PrimaryGuardian>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th></th>
+        <th>
+            FirstName
+        </th>
+        <th>
+            LastName
+        </th>
+        <th>
+            Email
+        </th>
+        <th>
+            Phone
+        </th>
+        <th>
+            PostalCodePrefix
+        </th>
+        <th>
+            DateCreated
+        </th>
+        <th>
+            Language
+        </th>
+        <th>
+            Country
+        </th>
+        <th>
+            RelationshipToChild
+        </th>
+        <th>
+            PrimaryGuardianBorrows
+        </th>
+        <th>
+            SecondaryGuardian
+        </th>
+        <th>
+            EventParticipants
+        </th>
+        <th>
+            Children
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+        <td>
+			@item.FirstName
+        </td>
+        <td>
+			@item.LastName
+        </td>
+        <td>
+			@item.Email
+        </td>
+        <td>
+			@item.Phone
+        </td>
+        <td>
+			@item.PostalCodePrefix
+        </td>
+        <td>
+			@item.DateCreated
+        </td>
+        <td>
+			@item.Language
+        </td>
+        <td>
+			@item.Country
+        </td>
+        <td>
+			@item.RelationshipToChild
+        </td>
+        <td>
+			@(item.PrimaryGuardianBorrows == null ? "None" : item.PrimaryGuardianBorrows.Count.ToString())
+        </td>
+        <td>
+			@(item.SecondaryGuardian == null ? "None" : item.SecondaryGuardian.LastName)
+        </td>
+        <td>
+			@(item.EventParticipants == null ? "None" : item.EventParticipants.Count.ToString())
+        </td>
+        <td>
+			@(item.Children == null ? "None" : item.Children.Count.ToString())
+        </td>
+    </tr>
+}
+
+</table>
+
+
