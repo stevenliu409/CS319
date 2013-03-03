@@ -22,5 +22,7 @@ namespace OFRPDMS.Models
         public DbSet<OFRPDMS.Models.PrimaryGuardian> PrimaryGuardians { get; set; }
 
         public DbSet<OFRPDMS.Models.SecondaryGuardian> SecondaryGuardians { get; set; }
+
+        public DbSet<OFRPDMS.Models.Event> Events { get; set; }
     }
 }
