@@ -6,17 +6,20 @@
 
 <h2>Create</h2>
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm("Create", "Primaryguardians", FormMethod.Post, new {id= "PrimaryGuardians" }))
+{
     @Html.ValidationSummary(true)
     <fieldset>
         <legend>PrimaryGuardian</legend>
 
 		@Html.Partial("_CreateOrEdit", Model)
+        <div id="children_container">
+    
+        </div>
 
-        <p>
-            <input type="submit" value="Create" />
-        </p>
     </fieldset>
+    <p><input type="submit" value="Create" id ="submit_btn" /></p>
+    <p><input type="button" id="btnAdd" value="Add New Child" /></p>
 }
 
 <div>
@@ -24,3 +27,6 @@
 </div>
 
 
+<script src="../../Scripts/Custom/Utility/Datepicker.js" language="javascript" type="text/javascript"></script>
+<script src="../../Scripts/Custom/PrimaryGuardian/AddNewChildEntry.js" language="javascript" type="text/javascript"></script>
+<script src="../../Scripts/Custom/PrimaryGuardian/FrontEndValidation.js" language="javascript" type="text/javascript"></script>
