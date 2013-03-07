@@ -4,7 +4,7 @@ to use a different color start by replacing all instances of
 #5c87b2 with your new color.
 ----------------------------------------------------------*/
 body {
-    background-color: #5c87b2;
+    background-color: #F0F0F0;
     font-size: .85em;
     font-family: "Trebuchet MS", Verdana, Helvetica, Sans-Serif;
     margin: 0;
@@ -104,9 +104,15 @@ header h1, #header h1 {
     float: left; 
     width: 20%;  
 }
+#admin_nav 
+{ 
+    float: right; 
+    margin-right: 40px;  
+}
 #main 
 {
     margin-left: 140px;
+    margin-top: 40px;
     padding: 30px 30px 15px 30px;
     background-color: #fff;
     width: 80%;
@@ -151,7 +157,27 @@ ul#menu a:hover,ul#menu a:active
 {
     background-color:#1A1A1A;
 }
-
+ul#admin_menu a:link,ul#admin_menu a:visited
+{
+    display:inline;
+    font-weight:bold;
+    color:#FFFFFF;
+    background-color: #4C4C4C;
+    width:120px;
+    text-align:center;
+    padding:4px;
+    text-decoration:none;
+    text-transform:uppercase;
+    margin-top: 20px;
+}
+li
+{
+    display:inline;
+}
+ul#admin_menu a:hover,ul#admin_menu a:active
+{
+    background-color:#1A1A1A;
+}
 /* FORM LAYOUT ELEMENTS   
 ----------------------------------------------------------*/
 

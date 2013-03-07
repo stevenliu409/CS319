@@ -265,6 +265,7 @@
     </None>
     <Content Include="Areas\Admin\Views\Staffs\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Report\Index.cshtml" />
+    <Content Include="Views\Shared\_AdminLayoutGlobal.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
