@@ -1,3 +1,4 @@
+
 @model OFRPDMS.Models.PrimaryGuardian
 
 @{
@@ -14,11 +15,12 @@
 
 		@Html.Partial("_CreateOrEdit", Model)
         <div id="children_container">
-    
+        @Html.Partial("_ChildrenOrEdit", Model)
         </div>
 
     </fieldset>
     <p><input type="submit" value="Create" id ="submit_btn" /></p>
+    <p><input type ="button" id = "btnDelete" value = "Delete Child"/></p>
     <p><input type="button" id="btnAdd" value="Add New Child" /></p>
 }
 
