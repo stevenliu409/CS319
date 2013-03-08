@@ -7,6 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.ComponentModel.DataAnnotations;
 namespace OFRPDMS.Models
 {
     using System;
@@ -21,15 +22,25 @@ namespace OFRPDMS.Models
             this.Children = new HashSet<Child>();
         }
     
+        
         public int Id { get; set; }
+        [Required]
         public string FirstName { get; set; }
+        [Required]
         public string LastName { get; set; }
+        [Required]
         public string Email { get; set; }
+        [Required]
         public Nullable<int> Phone { get; set; }
+        [Required]
         public string PostalCodePrefix { get; set; }
+        [Required]
         public string DateCreated { get; set; }
+        [Required]
         public string Language { get; set; }
+        [Required]
         public string Country { get; set; }
+        [Required]
         public string RelationshipToChild { get; set; }
     
         public virtual ICollection<PrimaryGuardianBorrow> PrimaryGuardianBorrows { get; set; }
