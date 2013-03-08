@@ -17,6 +17,7 @@ namespace OFRPDMS.Models
         public Child()
         {
             this.EventParticipants = new HashSet<EventParticipant>();
+            this.Allergies = new HashSet<Allergy>();
         }
     
         public int Id { get; set; }
@@ -27,5 +28,6 @@ namespace OFRPDMS.Models
     
         public virtual PrimaryGuardian PrimaryGuardian { get; set; }
         public virtual ICollection<EventParticipant> EventParticipants { get; set; }
+        public virtual ICollection<Allergy> Allergies { get; set; }
     }
 }

@@ -11,18 +11,15 @@ namespace OFRPDMS.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
     
-    public partial class SecondaryGuardian
+    public partial class Allergy
     {
-        [Key,ForeignKey("PrimaryGuardian")]
         public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string RelationshipToChild { get; set; }
-        public Nullable<int> Phone { get; set; }
+        public int PrimaryGuardianId { get; set; }
+        public int ChildId { get; set; }
+        public string Note { get; set; }
     
         public virtual PrimaryGuardian PrimaryGuardian { get; set; }
+        public virtual Child Child { get; set; }
     }
 }
