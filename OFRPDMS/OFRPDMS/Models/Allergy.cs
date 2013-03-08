@@ -7,32 +7,19 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System.ComponentModel.DataAnnotations;
 namespace OFRPDMS.Models
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Child
+    public partial class Allergy
     {
-        public Child()
-        {
-            this.EventParticipants = new HashSet<EventParticipant>();
-            this.Allergies = new HashSet<Allergy>();
-        }
-    
         public int Id { get; set; }
-
-        [Required]
-        public string FirstName { get; set; }
-        [Required]
-        public string LastName { get; set; }
-        [Required]
-        public System.DateTime Birthdate { get; set; }
         public int PrimaryGuardianId { get; set; }
+        public int ChildId { get; set; }
+        public string Note { get; set; }
     
         public virtual PrimaryGuardian PrimaryGuardian { get; set; }
-        public virtual ICollection<EventParticipant> EventParticipants { get; set; }
-        public virtual ICollection<Allergy> Allergies { get; set; }
+        public virtual Child Child { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace OFRPDMS.Models
 {
@@ -16,7 +17,10 @@ namespace OFRPDMS.Models
         // Note: this will destroy and re-create your database with every model change.
         // 
         // System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseIfModelChanges<OFRPDMS.Models.OFRPDMSContext>());
-
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+        }
         public DbSet<OFRPDMS.Models.Center> Centers { get; set; }
 
         public DbSet<OFRPDMS.Models.PrimaryGuardian> PrimaryGuardians { get; set; }

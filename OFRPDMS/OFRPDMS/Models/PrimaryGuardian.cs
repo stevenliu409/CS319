@@ -20,6 +20,7 @@ namespace OFRPDMS.Models
             this.PrimaryGuardianBorrows = new HashSet<PrimaryGuardianBorrow>();
             this.EventParticipants = new HashSet<EventParticipant>();
             this.Children = new HashSet<Child>();
+            this.Allergies = new HashSet<Allergy>();
         }
     
         
@@ -29,6 +30,7 @@ namespace OFRPDMS.Models
         [Required]
         public string LastName { get; set; }
         [Required]
+        [RegularExpression(@"^[\w-]+(\.[\w-]+)*@([a-z0-9-]+(\.[a-z0-9-]+)*?\.[a-z]{2,6}|(\d{1,3}\.){3}\d{1,3})(:\d{4})?$")] 
         public string Email { get; set; }
         [Required]
         public Nullable<int> Phone { get; set; }
@@ -47,5 +49,6 @@ namespace OFRPDMS.Models
         public virtual SecondaryGuardian SecondaryGuardian { get; set; }
         public virtual ICollection<EventParticipant> EventParticipants { get; set; }
         public virtual ICollection<Child> Children { get; set; }
+        public virtual ICollection<Allergy> Allergies { get; set; }
     }
 }
