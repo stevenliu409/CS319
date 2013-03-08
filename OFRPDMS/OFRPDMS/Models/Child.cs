@@ -7,6 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.ComponentModel.DataAnnotations;
 namespace OFRPDMS.Models
 {
     using System;
@@ -21,8 +22,12 @@ namespace OFRPDMS.Models
         }
     
         public int Id { get; set; }
+
+        [Required]
         public string FirstName { get; set; }
+        [Required]
         public string LastName { get; set; }
+        [Required]
         public System.DateTime Birthdate { get; set; }
         public int PrimaryGuardianId { get; set; }
     
