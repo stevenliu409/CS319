@@ -1,10 +1,8 @@
 ﻿@{
-    Layout = "~/Views/Shared/_AdminLayoutGlobal.cshtml";
+    Layout = "~/Views/Shared/_LayoutGlobal.cshtml";
 }
 <div id="menucontainer">
     <ul id="menu">
-        <li>@Html.ActionLink("Admin", "Index", "Admin")</li>
-        <li>@Html.ActionLink("+ New Staff", "Index", "Staffs")</li>
         <li>@Html.ActionLink("+ New Centers", "Index", "Centers")</li>
         <li>@Html.ActionLink("Generate Report", "Index","Report")</li>
     </ul>
