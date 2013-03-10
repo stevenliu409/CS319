@@ -1,8 +1,8 @@
 ﻿$(function () {
     $(document).ready(function () {
-        $.getScript("../Scripts/Custom/jquery.validate.js", function () {
+        $.getScript("../Scripts/jquery.validate.js", function () {
         });
-        $.getScript("../Scripts/Custom/jquery.validate.min.js", function () {
+        $.getScript("../Scripts/jquery.validate.min.js", function () {
         });
        
     });

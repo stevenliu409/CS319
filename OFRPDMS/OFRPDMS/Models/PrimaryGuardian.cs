@@ -12,19 +12,22 @@ namespace OFRPDMS.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Linq;
     public partial class PrimaryGuardian
     {
+        private OFRPDMSContext context = new OFRPDMSContext();
+
         public PrimaryGuardian()
         {
             this.PrimaryGuardianBorrows = new HashSet<PrimaryGuardianBorrow>();
             this.EventParticipants = new HashSet<EventParticipant>();
             this.Children = new HashSet<Child>();
             this.Allergies = new HashSet<Allergy>();
+
         }
     
+        
         public int Id { get; set; }
-
         [Required]
         public string FirstName { get; set; }
         [Required]
@@ -50,5 +53,16 @@ namespace OFRPDMS.Models
         public virtual ICollection<EventParticipant> EventParticipants { get; set; }
         public virtual ICollection<Child> Children { get; set; }
         public virtual ICollection<Allergy> Allergies { get; set; }
+       
+        public List<String> getFirstName(string query)
+        {
+            List<String> empty = new List<String>();
+            if (query == null)
+                return empty;
+            return (from u in context.PrimaryGuardians
+                    where u.FirstName.StartsWith(query)
+                    orderby u.FirstName ascending
+                    select u.FirstName + " " + u.LastName).Distinct().ToList();
+        }
     }
 }
