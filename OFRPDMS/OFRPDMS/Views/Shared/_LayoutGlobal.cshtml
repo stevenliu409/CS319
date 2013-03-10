@@ -20,8 +20,7 @@
             <div id="admin_nav">
                 <ul id="admin_menu">
                     <li>@Html.ActionLink("Admin", "Index", "Admin", new { area = "Admin" }, null)</li>
-                    <li>@Html.ActionLink("Center1", "Index", "Staff", new { area = "Staff" }, null)</li>
-                    <li>@Html.ActionLink("Center2", "Index", "Staff", new { area = "Staff" }, null)</li>
+                    @Html.Action("Nav", "Home", new { area = ""})
                 </ul>
             </div>
         }
