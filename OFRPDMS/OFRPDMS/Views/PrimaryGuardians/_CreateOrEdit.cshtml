@@ -1,7 +1,6 @@
 @model OFRPDMS.Models.PrimaryGuardian
 
 @* This partial view defines form fields that will appear when creating and editing entities *@
-
 <div class="editor-label">
     @Html.LabelFor(model => model.FirstName)
 </div>
@@ -41,14 +40,6 @@
 <div class="editor-field">
     @Html.EditorFor(model => model.PostalCodePrefix)
     @Html.ValidationMessageFor(model => model.PostalCodePrefix)
-</div>
-
-<div class="editor-label">
-    @Html.LabelFor(model => model.DateCreated)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.DateCreated)
-    @Html.ValidationMessageFor(model => model.DateCreated)
 </div>
 
 <div class="editor-label">
