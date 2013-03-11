@@ -24,6 +24,8 @@ namespace OFRPDMS
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            
+
             routes.MapRoute(
                 "Default", // Route name
                 "{controller}/{action}/{id}", // URL with parameters
@@ -31,8 +33,8 @@ namespace OFRPDMS
             );
             //routes.MapRoute("StaffRoute", " Staff/{controller}/{action}/{id}",
             //     new { id = UrlParameter.Optional });
-            //routes.MapRoute("AdminRoute", " Admin/{controller}/{action}/{id}",
-            //    new { id = UrlParameter.Optional });
+            routes.MapRoute("AdminRoute", "Admin/Staff",
+                new { controller = "Staff", action = "Index", id = UrlParameter.Optional });
 
         }
 

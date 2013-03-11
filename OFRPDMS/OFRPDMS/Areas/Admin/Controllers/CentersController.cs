@@ -12,14 +12,14 @@ namespace OFRPDMS.Areas.Admin.Controllers
 {   
     public class CentersController : Controller
     {
-        private OFRPDMSContext context = new OFRPDMSContext();
+        OFRPDMSContext context = new OFRPDMSContext();
 
         //
         // GET: /Centers/
 
         public ViewResult Index()
         {
-            return View(context.Centers.Include(center => center.BorrowableItems).Include(center => center.Events).Include(center => center.CenterReferrals).Include(center => center.CenterAccounts).Include(center => center.CenterFreeResources).ToList());
+            return View(context.Centers);
         }
 
         //
@@ -27,7 +27,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
 
         public ViewResult Details(int id)
         {
-            Center center = context.Centers.Single(x => x.Id == id);
+            Center center = context.Centers.Find(id);
             return View(center);
         }
 
@@ -60,7 +60,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
  
         public ActionResult Edit(int id)
         {
-            Center center = context.Centers.Single(x => x.Id == id);
+            Center center = context.Centers.Find(id);
             return View(center);
         }
 
@@ -84,7 +84,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
  
         public ActionResult Delete(int id)
         {
-            Center center = context.Centers.Single(x => x.Id == id);
+            Center center = context.Centers.Find(id);
             return View(center);
         }
 
@@ -94,7 +94,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            Center center = context.Centers.Single(x => x.Id == id);
+            Center center = context.Centers.Find(id);
             context.Centers.Remove(center);
             context.SaveChanges();
             return RedirectToAction("Index");

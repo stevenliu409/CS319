@@ -1,0 +1,7 @@
+﻿@model IEnumerable<OFRPDMS.Models.Center>
+
+@foreach (var item in Model)
+{
+    <li>@Html.ActionLink(item.Name, "Index", "Staff",new { area = "Staff" }, null)</li>
+
+}

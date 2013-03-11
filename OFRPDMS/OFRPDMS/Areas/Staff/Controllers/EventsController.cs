@@ -5,6 +5,8 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Profile;
+using System.Web.Security;
 using OFRPDMS.Models;
 
 namespace OFRPDMS.Areas.Staff.Controllers
@@ -18,7 +20,20 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
         public ViewResult Index()
         {
-            return View(context.Events.Include(Event => Event.Center).Include(Event => Event.EventParticipants).ToList());
+            string[] roles = Roles.GetRolesForUser();
+
+            if (roles.Any(item => item == "Administrators"))
+            {
+                //return View(context.Events.Include(Event => Event.Center).Include(Event => Event.EventParticipants).ToList());
+                return View(context.Events);
+            }
+            else
+            {
+                int centerID = AccountProfile.CurrentUser.CenterID;
+
+                return View(context.Events.Where(Event => Event.CenterId == centerID));
+            }
+
         }
 
         //
@@ -26,7 +41,18 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
         public ViewResult Details(int id)
         {
-            Event Event = context.Events.Single(x => x.Id == id);
+            Event Event;
+            string[] roles = Roles.GetRolesForUser();
+            if (roles.Any(item => item == "Administrators"))
+            {
+                Event = context.Events.Single(x => x.Id == id);
+            }
+            else
+            {
+                int centerID = AccountProfile.CurrentUser.CenterID;
+                Event = context.Events.Where(AEvent => AEvent.CenterId == centerID).Single(x => x.Id == id);
+            }
+
             return View(Event);
         }
 
@@ -61,7 +87,18 @@ namespace OFRPDMS.Areas.Staff.Controllers
  
         public ActionResult Edit(int id)
         {
-            Event Event = context.Events.Single(x => x.Id == id);
+            Event Event;
+            string[] roles = Roles.GetRolesForUser();
+            if (roles.Any(item => item == "Administrators"))
+            {
+                Event = context.Events.Single(x => x.Id == id);
+            }
+            else
+            {
+                int centerID = AccountProfile.CurrentUser.CenterID;
+                Event = context.Events.Where(AEvent => AEvent.CenterId == centerID).Single(x => x.Id == id);
+            }
+
             ViewBag.PossibleCenters = context.Centers;
             return View(Event);
         }
@@ -87,7 +124,18 @@ namespace OFRPDMS.Areas.Staff.Controllers
  
         public ActionResult Delete(int id)
         {
-            Event Event = context.Events.Single(x => x.Id == id);
+            Event Event;
+            string[] roles = Roles.GetRolesForUser();
+            if (roles.Any(item => item == "Administrators"))
+            {
+                Event = context.Events.Single(x => x.Id == id);
+            }
+            else
+            {
+                int centerID = AccountProfile.CurrentUser.CenterID;
+                Event = context.Events.Where(AEvent => AEvent.CenterId == centerID).Single(x => x.Id == id);
+            }
+
             return View(Event);
         }
 
@@ -97,7 +145,18 @@ namespace OFRPDMS.Areas.Staff.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            Event Event = context.Events.Single(x => x.Id == id);
+            Event Event;
+            string[] roles = Roles.GetRolesForUser();
+            if (roles.Any(item => item == "Administrators"))
+            {
+                Event = context.Events.Single(x => x.Id == id);
+            }
+            else
+            {
+                int centerID = AccountProfile.CurrentUser.CenterID;
+                Event = context.Events.Where(AEvent => AEvent.CenterId == centerID).Single(x => x.Id == id);
+            }
+
             context.Events.Remove(Event);
             context.SaveChanges();
             return RedirectToAction("Index");
