@@ -8,7 +8,6 @@ using OFRPDMS.Models;
 using System.Data;
 using System.Data.Entity;
 using System.Web.Security;
-using OFRPDMS.Models;
 
 namespace OFRPDMS.Controllers
 {
@@ -53,12 +52,6 @@ namespace OFRPDMS.Controllers
                 return Json(participants, JsonRequestBehavior.AllowGet);
             }
    
-        }
-
-        public ActionResult Nav()
-        {
-
-            return PartialView("_AdminNavPartial", context.Centers);
         }
     }
 }
