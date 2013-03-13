@@ -62,6 +62,7 @@ namespace OFRPDMS.Controllers
  
         public ActionResult Edit(int id)
         {
+            ViewBag.PossibleCenters = context.Centers;
             PrimaryGuardian primaryguardian = context.PrimaryGuardians.Single(x => x.Id == id);
             return View(primaryguardian);
         }
