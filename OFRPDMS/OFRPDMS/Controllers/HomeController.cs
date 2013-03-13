@@ -7,7 +7,7 @@ using OFRPDMS.Models;
 
 using System.Data;
 using System.Data.Entity;
-using OFRPDMS.Models;
+using System.Web.Security;
 
 namespace OFRPDMS.Controllers
 {
@@ -26,6 +26,15 @@ namespace OFRPDMS.Controllers
         {
             ViewBag.Message = "Welcome to ASP.NET MVC!";
 
+            if (!Roles.RoleExists("Administrators"))
+            {
+                Roles.CreateRole("Administrators");
+            }
+            if (!Roles.RoleExists("Staff"))
+            {
+                Roles.CreateRole("Staff");
+            }
+
             return View();
         }
 
@@ -43,12 +52,6 @@ namespace OFRPDMS.Controllers
                 return Json(participants, JsonRequestBehavior.AllowGet);
             }
    
-        }
-
-        public ActionResult Nav()
-        {
-
-            return PartialView("_AdminNavPartial", context.Centers);
         }
     }
 }

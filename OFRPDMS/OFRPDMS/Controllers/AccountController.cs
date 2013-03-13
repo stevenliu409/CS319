@@ -11,6 +11,7 @@ namespace OFRPDMS.Controllers
 {
     public class AccountController : Controller
     {
+        private OFRPDMSContext context = new OFRPDMSContext();
 
         //
         // GET: /Account/LogOn
@@ -66,6 +67,7 @@ namespace OFRPDMS.Controllers
 
         public ActionResult Register()
         {
+            CheckAdminExists();
             return View();
         }
 
@@ -73,10 +75,37 @@ namespace OFRPDMS.Controllers
         // POST: /Account/Register
 
         [HttpPost]
-        public ActionResult Register(RegisterModel model)
+        public ActionResult Register(RegisterModel model, string role)
         {
             if (ModelState.IsValid)
             {
+                try
+                {
+                    if (role == "Administrators")
+                    {
+                        Roles.AddUserToRole(model.UserName, role);
+                    }
+                    else
+                    {
+                        Roles.AddUserToRole(model.UserName, "Staff");
+                        /*
+                        if (!Roles.RoleExists(role))
+                        {
+                            Roles.CreateRole(role);
+                        }
+                        Roles.AddUserToRole(model.UserName, role);
+                         */
+
+                    }
+                }
+                catch
+                {
+
+                    ModelState.AddModelError("", "Failed to add new account " + model.UserName + " to " + role);
+
+                    CheckAdminExists();
+                    return View(model);
+                }
                 // Attempt to register the user
                 MembershipCreateStatus createStatus;
                 Membership.CreateUser(model.UserName, model.Password, model.Email, null, null, true, null, out createStatus);
@@ -84,6 +113,9 @@ namespace OFRPDMS.Controllers
                 if (createStatus == MembershipCreateStatus.Success)
                 {
                     FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
+
+                    AccountProfile.GetUser(model.UserName).CenterID = model.CenterId;
+
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -189,5 +221,16 @@ namespace OFRPDMS.Controllers
             }
         }
         #endregion
+
+        private void CheckAdminExists()
+        {
+            string[] usernames = Roles.GetUsersInRole("Administrators");
+            ViewBag.adminAccountExists = usernames.GetLength(0) > 0;
+            ViewBag.PossibleCenters = context.Centers;
+        }
     }
+
+
+
+
 }

@@ -5,12 +5,13 @@
 }
 
 <h2>Create a New Account</h2>
-<p>
-    Use the form below to create a new account. 
-</p>
-<p>
-    Passwords are required to be a minimum of @Membership.MinRequiredPasswordLength characters in length.
-</p>
+<p>Use the form below to create a new account.</p>
+<p>Passwords are required to be a minimum of @Membership.MinRequiredPasswordLength characters in length.</p>
+
+@if (!ViewBag.adminAccountExists)
+{
+    <h3>Admin account has not been created yet. Use the form below to create one now.</h3>
+}
 
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
@@ -52,7 +53,16 @@
                 @Html.PasswordFor(m => m.ConfirmPassword)
                 @Html.ValidationMessageFor(m => m.ConfirmPassword)
             </div>
-
+            @if (!ViewBag.adminAccountExists)
+            {
+                @Html.Hidden("role", "Administrators");
+            }
+            else
+            {
+                @Html.Hidden("role", "Staff");
+                @Html.Partial("_RegisterCenterStaff", Model)
+               // @Html.Hidden("role", "Staff");
+            }
             <p>
                 <input type="submit" value="Register" />
             </p>

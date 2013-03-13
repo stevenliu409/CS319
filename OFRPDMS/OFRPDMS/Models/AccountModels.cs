@@ -63,5 +63,8 @@ namespace OFRPDMS.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Display(Name = "Center")]
+        public int CenterId { get; set; }
     }
 }

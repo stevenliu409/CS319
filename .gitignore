@@ -31,3 +31,6 @@ packages*/
 OFRPDMS/OFRPDMS.suo
 OFRPDMS/OFRPDMS.Tests/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
 OFRPDMS/OFRPDMS.suo
+*.suo
+*.user
+App_Data
