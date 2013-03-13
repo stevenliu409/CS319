@@ -82,6 +82,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201303130632433_march13.cs" />
+    <Compile Include="Migrations\201303130632433_march13.Designer.cs">
+      <DependentUpon>201303130632433_march13.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -310,6 +314,11 @@
     <Content Include="Views\PrimaryGuardians\_CreateOrEdit.cshtml" />
     <Content Include="Views\PrimaryGuardians\_RegisterCenter.cshtml" />
     <Content Include="Views\Shared\_AdminNavPartial.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201303130632433_march13.resx">
+      <DependentUpon>201303130632433_march13.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
