@@ -8,7 +8,6 @@ using OFRPDMS.Models;
 using System.Data;
 using System.Data.Entity;
 using System.Web.Security;
-using OFRPDMS.Models;
 
 namespace OFRPDMS.Controllers
 {

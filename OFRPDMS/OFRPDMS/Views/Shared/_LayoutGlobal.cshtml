@@ -15,12 +15,12 @@
                 @Html.Partial("_LogOnPartial", new { area = "" }, null)
             </div>
         </div>
-        @if (Request.IsAuthenticated && HttpContext.Current.User.IsInRole("Admin"))
+        @if (Request.IsAuthenticated && HttpContext.Current.User.IsInRole("Administrators"))
         {
             <div id="admin_nav">
                 <ul id="admin_menu">
                     <li>@Html.ActionLink("Admin", "Index", "Admin", new { area = "Admin" }, null)</li>
-                    @Html.Action("Nav", "Home", new { area = ""})
+                    @Html.Action("Nav", "Admin", new { area = "Admin"})
                 </ul>
             </div>
         }
