@@ -1,5 +1,70 @@
-﻿@{
+﻿
+@*
+@model OFRPDMS.Areas.Admin.Models.Report
+@{
     ViewBag.Title = "Index";
 }
 
 <h2>Generate Report</h2>
+
+<form action="demo_form.asp">
+
+  Start day: <input type="date" name="sday">
+
+  End day: <input type="date" name="eday"><br />
+
+<hr>
+
+<p>Please select which centers to generate report.</p>
+
+
+Center1: <input type="checkbox" name="Center1" value="soccer"  />  
+Center2: <input type="checkbox" name="Center2" value="football"  /><br />
+</form>
+
+<hr>
+
+@Html.ActionLink("Generate", "Generate", new {})*@
+
+
+
+
+
+@model OFRPDMS.Areas.Admin.Models.Report
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Report</h2>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Report</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.startDay)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.startDay)
+            @Html.ValidationMessageFor(model => model.startDay)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.endDay)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.endDay)
+            @Html.ValidationMessageFor(model => model.endDay)
+        </div>
+
+        <p>
+            <input type="submit" value="Generate Report" title= "Generate Report" />
+        </p>
+    </fieldset>
+}
+
