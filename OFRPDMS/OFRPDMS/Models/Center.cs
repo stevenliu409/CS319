@@ -21,6 +21,7 @@ namespace OFRPDMS.Models
             this.CenterReferrals = new HashSet<CenterReferral>();
             this.CenterAccounts = new HashSet<CenterAccount>();
             this.CenterFreeResources = new HashSet<CenterFreeResource>();
+            this.PrimaryGuardians = new HashSet<PrimaryGuardian>();
         }
     
         public int Id { get; set; }
@@ -34,5 +35,6 @@ namespace OFRPDMS.Models
         public virtual ICollection<CenterReferral> CenterReferrals { get; set; }
         public virtual ICollection<CenterAccount> CenterAccounts { get; set; }
         public virtual ICollection<CenterFreeResource> CenterFreeResources { get; set; }
+        public virtual ICollection<PrimaryGuardian> PrimaryGuardians { get; set; }
     }
 }

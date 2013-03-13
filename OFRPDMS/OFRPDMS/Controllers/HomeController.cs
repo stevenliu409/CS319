@@ -43,6 +43,7 @@ namespace OFRPDMS.Controllers
         {
             return View();
         }
+        /*
  	public ActionResult GetParticipants(String query)
         {
             if (_primaryguardian == null)
@@ -54,6 +55,7 @@ namespace OFRPDMS.Controllers
             }
    
         }
+         * */
 
         public ActionResult Nav()
         {

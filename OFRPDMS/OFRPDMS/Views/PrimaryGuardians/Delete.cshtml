@@ -41,10 +41,10 @@
     <div class="display-field">@(Model.PrimaryGuardianBorrows == null ? "None" : Model.PrimaryGuardianBorrows.Count.ToString())</div>
 
     <div class="display-label">SecondaryGuardian</div>
-    <div class="display-field">@(Model.SecondaryGuardian == null ? "None" : Model.SecondaryGuardian.LastName)</div>
+    <div class="display-field">@(Model.SecondaryGuardians.Count == 0 ? "None" : Model.SecondaryGuardians.First().LastName)</div>
 
     <div class="display-label">EventParticipants</div>
-    <div class="display-field">@(Model.EventParticipants == null ? "None" : Model.EventParticipants.Count.ToString())</div>
+    <div class="display-field">@(Model.EventParticipants.Count == 0 ? "None" : Model.EventParticipants.Count.ToString())</div>
 
     <div class="display-label">Children</div>
     <div class="display-field">@(Model.Children == null ? "None" : Model.Children.Count.ToString())</div>

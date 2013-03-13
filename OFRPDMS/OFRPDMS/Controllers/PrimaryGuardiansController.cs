@@ -18,7 +18,7 @@ namespace OFRPDMS.Controllers
 
         public ViewResult Index()
         {
-            return View(context.PrimaryGuardians.Include(primaryguardian => primaryguardian.PrimaryGuardianBorrows).Include(primaryguardian => primaryguardian.EventParticipants).Include(primaryguardian => primaryguardian.Children).ToList());
+            return View(context.PrimaryGuardians);
         }
 
         //
@@ -35,6 +35,8 @@ namespace OFRPDMS.Controllers
 
         public ActionResult Create()
         {
+
+            ViewBag.PossibleCenters = context.Centers;
             return View();
         } 
 
@@ -84,7 +86,7 @@ namespace OFRPDMS.Controllers
  
         public ActionResult Delete(int id)
         {
-            PrimaryGuardian primaryguardian = context.PrimaryGuardians.Single(x => x.Id == id);
+            PrimaryGuardian primaryguardian = context.PrimaryGuardians.Find(id);
             return View(primaryguardian);
         }
 
