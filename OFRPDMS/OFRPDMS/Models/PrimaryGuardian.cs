@@ -16,7 +16,6 @@ namespace OFRPDMS.Models
     {
         public PrimaryGuardian()
         {
-            this.PrimaryGuardianBorrows = new HashSet<PrimaryGuardianBorrow>();
             this.EventParticipants = new HashSet<EventParticipant>();
             this.Children = new HashSet<Child>();
             this.Allergies = new HashSet<Allergy>();
@@ -33,14 +32,12 @@ namespace OFRPDMS.Models
         public string Language { get; set; }
         public string Country { get; set; }
         public string RelationshipToChild { get; set; }
+        public int CenterId { get; set; }
     
-        public virtual ICollection<PrimaryGuardianBorrow> PrimaryGuardianBorrows { get; set; }
         public virtual ICollection<EventParticipant> EventParticipants { get; set; }
         public virtual ICollection<Child> Children { get; set; }
         public virtual ICollection<Allergy> Allergies { get; set; }
         public virtual ICollection<SecondaryGuardian> SecondaryGuardians { get; set; }
         public virtual Center Center { get; set; }
-
-        public int CenterId { get; set; }
     }
 }

@@ -12,14 +12,7 @@ namespace OFRPDMS.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class FreeResource
+    public partial class Book : LibraryItem
     {
-        public int Id { get; set; }
-        public string Title { get; set; }
-        public string Marker { get; set; }
-        public string Language { get; set; }
-        public int CenterFreeResourceId { get; set; }
-    
-        public virtual CenterFreeResource CenterFreeResource { get; set; }
     }
 }

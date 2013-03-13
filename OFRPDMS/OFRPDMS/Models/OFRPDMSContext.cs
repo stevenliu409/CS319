@@ -21,12 +21,23 @@ namespace OFRPDMS.Models
         {
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
         }
-        public DbSet<OFRPDMS.Models.Center> Centers { get; set; }
-
-        public DbSet<OFRPDMS.Models.PrimaryGuardian> PrimaryGuardians { get; set; }
-
-        public DbSet<OFRPDMS.Models.SecondaryGuardian> SecondaryGuardians { get; set; }
-
-        public DbSet<OFRPDMS.Models.Event> Events { get; set; }
+        public DbSet<PrimaryGuardianBorrow> PrimaryGuardianBorrows { get; set; }
+        public DbSet<PrimaryGuardian> PrimaryGuardians { get; set; }
+        public DbSet<SecondaryGuardian> SecondaryGuardians { get; set; }
+        public DbSet<EventParticipant> EventParticipants { get; set; }
+        public DbSet<Child> Children { get; set; }
+        public DbSet<Allergy> Allergies { get; set; }
+        public DbSet<Event> Events { get; set; }
+        public DbSet<Center> Centers { get; set; }
+        public DbSet<CenterReferral> CenterReferrals { get; set; }
+        public DbSet<Referral> Referrals { get; set; }
+        public DbSet<CenterAccount> CenterAccounts { get; set; }
+        public DbSet<Account> Accounts { get; set; }
+        public DbSet<CenterFreeResource> CenterFreeResources { get; set; }
+        public DbSet<SpecialEvent> SpecialEvents { get; set; }
+        public DbSet<Toy> Toys { get; set; }
+        public DbSet<Video> Videos { get; set; }
+        public DbSet<Book> Books { get; set; }
+        public DbSet<GivenResource> GivenResources { get; set; }
     }
 }

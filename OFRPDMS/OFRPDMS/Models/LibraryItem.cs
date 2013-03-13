@@ -7,18 +7,27 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.ComponentModel.DataAnnotations;
+
 namespace OFRPDMS.Models
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class CenterFreeResource
+    public abstract partial class LibraryItem
     {
         public int Id { get; set; }
-        public Nullable<int> NumberAvailable { get; set; }
-        public int CenterId { get; set; }
+        public string Broken { get; set; }
+        public string CheckedOut { get; set; }
+        public string Value { get; set; }
+        public string Image { get; set; }
+        public string Note { get; set; }
+        public string LendingPeriod { get; set; }
+        public string Name { get; set; }
     
+        public virtual PrimaryGuardianBorrow PrimaryGuardianBorrow { get; set; }
+
+        [Required]
         public virtual Center Center { get; set; }
-        public virtual GivenResource GivenResource { get; set; }
     }
 }

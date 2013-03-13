@@ -41,6 +41,7 @@ namespace OFRPDMS
         protected void Application_Start()
         {
             System.Data.Entity.Database.SetInitializer(new System.Data.Entity.DropCreateDatabaseIfModelChanges<OFRPDMS.Models.OFRPDMSContext>());
+            Database.SetInitializer<OFRPDMSContext>(null);
             AreaRegistration.RegisterAllAreas();
 
             RegisterGlobalFilters(GlobalFilters.Filters);

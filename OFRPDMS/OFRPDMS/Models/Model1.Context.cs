@@ -25,7 +25,6 @@ namespace OFRPDMS.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public DbSet<BorrowableItem> BorrowableItems { get; set; }
         public DbSet<PrimaryGuardianBorrow> PrimaryGuardianBorrows { get; set; }
         public DbSet<PrimaryGuardian> PrimaryGuardians { get; set; }
         public DbSet<SecondaryGuardian> SecondaryGuardians { get; set; }
@@ -39,6 +38,8 @@ namespace OFRPDMS.Models
         public DbSet<CenterAccount> CenterAccounts { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<CenterFreeResource> CenterFreeResources { get; set; }
-        public DbSet<FreeResource> FreeResources { get; set; }
+        public DbSet<SpecialEvent> SpecialEvents { get; set; }
+        public DbSet<GivenResource> GivenResources { get; set; }
+        public DbSet<LibraryItem> LibraryItems { get; set; }
     }
 }

@@ -1,14 +1,23 @@
+-- don't drop the database unless you need to recreate your database
+-- this sql script will drop all foreign keys and tables it created
+-- and then recreate tables
 
+--ALTER DATABASE [OFRPDMS.Models.OFRPDMSContext]
+--SET SINGLE_USER --or RESTRICTED_USER
+--WITH ROLLBACK IMMEDIATE;
+--GO
+--DROP DATABASE [OFRPDMS.Models.OFRPDMSContext];
+--GO
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 02/22/2013 14:50:36
--- Generated from EDMX file: D:\319code\CS319\OFRPDMS\OFRPDMS\Models\Model1.edmx
+-- Date Created: 03/13/2013 04:53:36
+-- Generated from EDMX file: D:\cs319\CS319\OFRPDMS\OFRPDMS\Models\Model1.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
 GO
-USE [CS319];
+USE [OFRPDMS.Models.OFRPDMSContext];
 GO
 IF SCHEMA_ID(N'dbo') IS NULL EXECUTE(N'CREATE SCHEMA [dbo]');
 GO
@@ -17,36 +26,172 @@ GO
 -- Dropping existing FOREIGN KEY constraints
 -- --------------------------------------------------
 
+IF OBJECT_ID(N'[dbo].[FK_PrimaryGuardianPrimaryGuardianBorrow]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[PrimaryGuardianBorrows] DROP CONSTRAINT [FK_PrimaryGuardianPrimaryGuardianBorrow];
+GO
+IF OBJECT_ID(N'[dbo].[FK_EventParticipantPrimaryGuardian_EventParticipant]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[EventParticipantPrimaryGuardian] DROP CONSTRAINT [FK_EventParticipantPrimaryGuardian_EventParticipant];
+GO
+IF OBJECT_ID(N'[dbo].[FK_EventParticipantPrimaryGuardian_PrimaryGuardian]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[EventParticipantPrimaryGuardian] DROP CONSTRAINT [FK_EventParticipantPrimaryGuardian_PrimaryGuardian];
+GO
+IF OBJECT_ID(N'[dbo].[FK_PrimaryGuardianChild]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Children] DROP CONSTRAINT [FK_PrimaryGuardianChild];
+GO
+IF OBJECT_ID(N'[dbo].[FK_EventParticipantChild_EventParticipant]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[EventParticipantChild] DROP CONSTRAINT [FK_EventParticipantChild_EventParticipant];
+GO
+IF OBJECT_ID(N'[dbo].[FK_EventParticipantChild_Child]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[EventParticipantChild] DROP CONSTRAINT [FK_EventParticipantChild_Child];
+GO
+IF OBJECT_ID(N'[dbo].[FK_PrimaryGuardianAllergy]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Allergies] DROP CONSTRAINT [FK_PrimaryGuardianAllergy];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ChildAllergy]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Allergies] DROP CONSTRAINT [FK_ChildAllergy];
+GO
+IF OBJECT_ID(N'[dbo].[FK_EventEventParticipant]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[EventParticipants] DROP CONSTRAINT [FK_EventEventParticipant];
+GO
+IF OBJECT_ID(N'[dbo].[FK_CenterEvent]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Events] DROP CONSTRAINT [FK_CenterEvent];
+GO
+IF OBJECT_ID(N'[dbo].[FK_CenterReferralReferral]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Referrals] DROP CONSTRAINT [FK_CenterReferralReferral];
+GO
+IF OBJECT_ID(N'[dbo].[FK_CenterCenterReferral]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[CenterReferrals] DROP CONSTRAINT [FK_CenterCenterReferral];
+GO
+IF OBJECT_ID(N'[dbo].[FK_CenterCenterAccount]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[CenterAccounts] DROP CONSTRAINT [FK_CenterCenterAccount];
+GO
+IF OBJECT_ID(N'[dbo].[FK_CenterAccountAccount]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Accounts] DROP CONSTRAINT [FK_CenterAccountAccount];
+GO
+IF OBJECT_ID(N'[dbo].[FK_CenterCenterFreeResource]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[CenterFreeResources] DROP CONSTRAINT [FK_CenterCenterFreeResource];
+GO
+IF OBJECT_ID(N'[dbo].[FK_PrimaryGuardianSecondaryGuardian]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[SecondaryGuardians] DROP CONSTRAINT [FK_PrimaryGuardianSecondaryGuardian];
+GO
+IF OBJECT_ID(N'[dbo].[FK_PrimaryGuardianCenter]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[PrimaryGuardians] DROP CONSTRAINT [FK_PrimaryGuardianCenter];
+GO
+IF OBJECT_ID(N'[dbo].[FK_SpecialEventEventParticipant]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[EventParticipants] DROP CONSTRAINT [FK_SpecialEventEventParticipant];
+GO
+IF OBJECT_ID(N'[dbo].[FK_SpecialEventCenter]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[SpecialEvents] DROP CONSTRAINT [FK_SpecialEventCenter];
+GO
+IF OBJECT_ID(N'[dbo].[FK_GivenResourceCenter]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[GivenResources] DROP CONSTRAINT [FK_GivenResourceCenter];
+GO
+IF OBJECT_ID(N'[dbo].[FK_GivenResourceCenterFreeResource]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[GivenResources] DROP CONSTRAINT [FK_GivenResourceCenterFreeResource];
+GO
+IF OBJECT_ID(N'[dbo].[FK_LibraryItemPrimaryGuardianBorrow]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[LibraryItems] DROP CONSTRAINT [FK_LibraryItemPrimaryGuardianBorrow];
+GO
+IF OBJECT_ID(N'[dbo].[FK_LibraryItemCenter]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[LibraryItems] DROP CONSTRAINT [FK_LibraryItemCenter];
+GO
+IF OBJECT_ID(N'[dbo].[FK_Video_inherits_LibraryItem]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[LibraryItems_Video] DROP CONSTRAINT [FK_Video_inherits_LibraryItem];
+GO
+IF OBJECT_ID(N'[dbo].[FK_Toy_inherits_LibraryItem]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[LibraryItems_Toy] DROP CONSTRAINT [FK_Toy_inherits_LibraryItem];
+GO
+IF OBJECT_ID(N'[dbo].[FK_Book_inherits_LibraryItem]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[LibraryItems_Book] DROP CONSTRAINT [FK_Book_inherits_LibraryItem];
+GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
 -- --------------------------------------------------
 
+IF OBJECT_ID(N'[dbo].[PrimaryGuardianBorrows]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[PrimaryGuardianBorrows];
+GO
+IF OBJECT_ID(N'[dbo].[PrimaryGuardians]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[PrimaryGuardians];
+GO
+IF OBJECT_ID(N'[dbo].[SecondaryGuardians]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[SecondaryGuardians];
+GO
+IF OBJECT_ID(N'[dbo].[EventParticipants]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[EventParticipants];
+GO
+IF OBJECT_ID(N'[dbo].[Children]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Children];
+GO
+IF OBJECT_ID(N'[dbo].[Allergies]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Allergies];
+GO
+IF OBJECT_ID(N'[dbo].[Events]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Events];
+GO
+IF OBJECT_ID(N'[dbo].[Centers]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Centers];
+GO
+IF OBJECT_ID(N'[dbo].[CenterReferrals]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[CenterReferrals];
+GO
+IF OBJECT_ID(N'[dbo].[Referrals]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Referrals];
+GO
+IF OBJECT_ID(N'[dbo].[CenterAccounts]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[CenterAccounts];
+GO
+IF OBJECT_ID(N'[dbo].[Accounts]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Accounts];
+GO
+IF OBJECT_ID(N'[dbo].[CenterFreeResources]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[CenterFreeResources];
+GO
+IF OBJECT_ID(N'[dbo].[SpecialEvents]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[SpecialEvents];
+GO
+IF OBJECT_ID(N'[dbo].[GivenResources]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[GivenResources];
+GO
+IF OBJECT_ID(N'[dbo].[EventParticipantPrimaryGuardian]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[EventParticipantPrimaryGuardian];
+GO
+IF OBJECT_ID(N'[dbo].[EventParticipantChild]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[EventParticipantChild];
+GO
+IF OBJECT_ID(N'[dbo].[GivenResources]', 'U') IS NOT NULL
+    DROP TABLE [dbo].GivenResources;
+GO
+IF OBJECT_ID(N'[dbo].[LibraryItems]', 'U') IS NOT NULL
+    DROP TABLE [dbo].LibraryItems;
+GO
+IF OBJECT_ID(N'[dbo].[LibraryItems_Video]', 'U') IS NOT NULL
+    DROP TABLE [dbo].LibraryItems_Video;
+GO
+IF OBJECT_ID(N'[dbo].[LibraryItems_Toy]', 'U') IS NOT NULL
+    DROP TABLE [dbo].LibraryItems_Toy;
+GO
+IF OBJECT_ID(N'[dbo].[LibraryItems_Book]', 'U') IS NOT NULL
+    DROP TABLE [dbo].LibraryItems_Book;
+GO
+IF OBJECT_ID(N'[dbo].[EventParticipantPrimaryGuardian]', 'U') IS NOT NULL
+    DROP TABLE [dbo].EventParticipantPrimaryGuardian;
+GO
+IF OBJECT_ID(N'[dbo].[EventParticipantChild]', 'U') IS NOT NULL
+    DROP TABLE [dbo].EventParticipantChild;
+GO
 
 -- --------------------------------------------------
 -- Creating all tables
 -- --------------------------------------------------
 
--- Creating table 'BorrowableItems'
-CREATE TABLE [dbo].[BorrowableItems] (
-    [Id] int IDENTITY(1,1) NOT NULL,
-    [IsDefective] bit  NULL,
-    [InInventory] bit  NOT NULL,
-    [Value] decimal(18,0)  NULL,
-    [Image] varbinary(max)  NULL,
-    [Note] nvarchar(max)  NULL,
-    [LendingPeriodDays] int  NULL,
-    [ItemType] nvarchar(max)  NULL,
-    [PrimaryGuardianBorrowId] int  NOT NULL,
-    [CenterId] int  NOT NULL
-);
-GO
-
 -- Creating table 'PrimaryGuardianBorrows'
 CREATE TABLE [dbo].[PrimaryGuardianBorrows] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [BorrowedDate] datetime  NOT NULL,
-    [PrimaryGuardianId] int  NOT NULL
+    [PrimaryGuardianId] int  NOT NULL,
+    [Returned] bit  NOT NULL
 );
 GO
 
@@ -61,7 +206,8 @@ CREATE TABLE [dbo].[PrimaryGuardians] (
     [DateCreated] nvarchar(max)  NOT NULL,
     [Language] nvarchar(max)  NULL,
     [Country] nvarchar(max)  NULL,
-    [RelationshipToChild] nvarchar(max)  NOT NULL
+    [RelationshipToChild] nvarchar(max)  NOT NULL,
+    [CenterId] int  NOT NULL
 );
 GO
 
@@ -72,14 +218,17 @@ CREATE TABLE [dbo].[SecondaryGuardians] (
     [LastName] nvarchar(max)  NULL,
     [RelationshipToChild] nvarchar(max)  NOT NULL,
     [Phone] int  NULL,
-    [PrimaryGuardian_Id] int  NOT NULL
+    [PrimaryGuardianId] int  NOT NULL
 );
 GO
 
 -- Creating table 'EventParticipants'
 CREATE TABLE [dbo].[EventParticipants] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [EventId] int  NOT NULL
+    [EventId] int  NOT NULL,
+    [ParticipantId] smallint  NOT NULL,
+    [ParticipantType] nvarchar(max)  NOT NULL,
+    [SpecialEvent_Id] int  NOT NULL
 );
 GO
 
@@ -157,42 +306,61 @@ GO
 -- Creating table 'CenterFreeResources'
 CREATE TABLE [dbo].[CenterFreeResources] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [Date] datetime  NULL,
-    [Count] int  NULL,
+    [NumberAvailable] int  NULL,
     [CenterId] int  NOT NULL
 );
 GO
 
--- Creating table 'FreeResources'
-CREATE TABLE [dbo].[FreeResources] (
-    [Id] int IDENTITY(1,1) NOT NULL,
-    [Title] nvarchar(max)  NOT NULL,
-    [Marker] nvarchar(max)  NULL,
-    [Language] nvarchar(max)  NULL,
-    [CenterFreeResourceId] int  NOT NULL
-);
-GO
-
--- Creating table 'BorrowableItems_Video'
-CREATE TABLE [dbo].[BorrowableItems_Video] (
-    [VideoMarker] nvarchar(max)  NULL,
-    [Id] int  NOT NULL
-);
-GO
-
--- Creating table 'BorrowableItems_Toy'
-CREATE TABLE [dbo].[BorrowableItems_Toy] (
-    [Sanitized] bit  NULL,
-    [ToyMarker] nvarchar(max)  NULL,
-    [Id] int  NOT NULL
-);
-GO
-
--- Creating table 'Events_SpecialEvent'
-CREATE TABLE [dbo].[Events_SpecialEvent] (
+-- Creating table 'SpecialEvents'
+CREATE TABLE [dbo].[SpecialEvents] (
     [Name] nvarchar(max)  NOT NULL,
     [GuestSpeaker] nvarchar(max)  NULL,
     [GuestSpeakerType] nvarchar(max)  NULL,
+    [CenterId] int  NOT NULL,
+    [Id] int IDENTITY(1,1) NOT NULL
+);
+GO
+
+-- Creating table 'GivenResources'
+CREATE TABLE [dbo].[GivenResources] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [DateGiven] nvarchar(max)  NOT NULL,
+    [Count] nvarchar(max)  NOT NULL,
+    [CenterId] int  NOT NULL,
+    [CenterFreeResource_Id] int  NOT NULL
+);
+GO
+
+-- Creating table 'LibraryItems'
+CREATE TABLE [dbo].[LibraryItems] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Broken] nvarchar(max)  NOT NULL,
+    [CheckedOut] nvarchar(max)  NOT NULL,
+    [Value] nvarchar(max)  NOT NULL,
+    [Image] nvarchar(max)  NOT NULL,
+    [Note] nvarchar(max)  NOT NULL,
+    [LendingPeriod] nvarchar(max)  NOT NULL,
+    [Name] nvarchar(max)  NOT NULL,
+    [PrimaryGuardianBorrow_Id] int  NOT NULL,
+    [Center_Id] int  NOT NULL
+);
+GO
+
+-- Creating table 'LibraryItems_Video'
+CREATE TABLE [dbo].[LibraryItems_Video] (
+    [Id] int  NOT NULL
+);
+GO
+
+-- Creating table 'LibraryItems_Toy'
+CREATE TABLE [dbo].[LibraryItems_Toy] (
+    [Sanitized] nvarchar(max)  NOT NULL,
+    [Id] int  NOT NULL
+);
+GO
+
+-- Creating table 'LibraryItems_Book'
+CREATE TABLE [dbo].[LibraryItems_Book] (
     [Id] int  NOT NULL
 );
 GO
@@ -214,12 +382,6 @@ GO
 -- --------------------------------------------------
 -- Creating all PRIMARY KEY constraints
 -- --------------------------------------------------
-
--- Creating primary key on [Id] in table 'BorrowableItems'
-ALTER TABLE [dbo].[BorrowableItems]
-ADD CONSTRAINT [PK_BorrowableItems]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
 
 -- Creating primary key on [Id] in table 'PrimaryGuardianBorrows'
 ALTER TABLE [dbo].[PrimaryGuardianBorrows]
@@ -299,27 +461,39 @@ ADD CONSTRAINT [PK_CenterFreeResources]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [Id] in table 'FreeResources'
-ALTER TABLE [dbo].[FreeResources]
-ADD CONSTRAINT [PK_FreeResources]
+-- Creating primary key on [Id] in table 'SpecialEvents'
+ALTER TABLE [dbo].[SpecialEvents]
+ADD CONSTRAINT [PK_SpecialEvents]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [Id] in table 'BorrowableItems_Video'
-ALTER TABLE [dbo].[BorrowableItems_Video]
-ADD CONSTRAINT [PK_BorrowableItems_Video]
+-- Creating primary key on [Id] in table 'GivenResources'
+ALTER TABLE [dbo].[GivenResources]
+ADD CONSTRAINT [PK_GivenResources]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [Id] in table 'BorrowableItems_Toy'
-ALTER TABLE [dbo].[BorrowableItems_Toy]
-ADD CONSTRAINT [PK_BorrowableItems_Toy]
+-- Creating primary key on [Id] in table 'LibraryItems'
+ALTER TABLE [dbo].[LibraryItems]
+ADD CONSTRAINT [PK_LibraryItems]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [Id] in table 'Events_SpecialEvent'
-ALTER TABLE [dbo].[Events_SpecialEvent]
-ADD CONSTRAINT [PK_Events_SpecialEvent]
+-- Creating primary key on [Id] in table 'LibraryItems_Video'
+ALTER TABLE [dbo].[LibraryItems_Video]
+ADD CONSTRAINT [PK_LibraryItems_Video]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'LibraryItems_Toy'
+ALTER TABLE [dbo].[LibraryItems_Toy]
+ADD CONSTRAINT [PK_LibraryItems_Toy]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'LibraryItems_Book'
+ALTER TABLE [dbo].[LibraryItems_Book]
+ADD CONSTRAINT [PK_LibraryItems_Book]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -339,20 +513,6 @@ GO
 -- Creating all FOREIGN KEY constraints
 -- --------------------------------------------------
 
--- Creating foreign key on [PrimaryGuardianBorrowId] in table 'BorrowableItems'
-ALTER TABLE [dbo].[BorrowableItems]
-ADD CONSTRAINT [FK_PrimaryGuardianBorrowBorrowableItem]
-    FOREIGN KEY ([PrimaryGuardianBorrowId])
-    REFERENCES [dbo].[PrimaryGuardianBorrows]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_PrimaryGuardianBorrowBorrowableItem'
-CREATE INDEX [IX_FK_PrimaryGuardianBorrowBorrowableItem]
-ON [dbo].[BorrowableItems]
-    ([PrimaryGuardianBorrowId]);
-GO
-
 -- Creating foreign key on [PrimaryGuardianId] in table 'PrimaryGuardianBorrows'
 ALTER TABLE [dbo].[PrimaryGuardianBorrows]
 ADD CONSTRAINT [FK_PrimaryGuardianPrimaryGuardianBorrow]
@@ -365,20 +525,6 @@ ADD CONSTRAINT [FK_PrimaryGuardianPrimaryGuardianBorrow]
 CREATE INDEX [IX_FK_PrimaryGuardianPrimaryGuardianBorrow]
 ON [dbo].[PrimaryGuardianBorrows]
     ([PrimaryGuardianId]);
-GO
-
--- Creating foreign key on [PrimaryGuardian_Id] in table 'SecondaryGuardians'
-ALTER TABLE [dbo].[SecondaryGuardians]
-ADD CONSTRAINT [FK_SecondaryGuardianPrimaryGuardian]
-    FOREIGN KEY ([PrimaryGuardian_Id])
-    REFERENCES [dbo].[PrimaryGuardians]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_SecondaryGuardianPrimaryGuardian'
-CREATE INDEX [IX_FK_SecondaryGuardianPrimaryGuardian]
-ON [dbo].[SecondaryGuardians]
-    ([PrimaryGuardian_Id]);
 GO
 
 -- Creating foreign key on [EventParticipants_Id] in table 'EventParticipantPrimaryGuardian'
@@ -483,20 +629,6 @@ ON [dbo].[EventParticipants]
     ([EventId]);
 GO
 
--- Creating foreign key on [CenterId] in table 'BorrowableItems'
-ALTER TABLE [dbo].[BorrowableItems]
-ADD CONSTRAINT [FK_CenterBorrowableItem]
-    FOREIGN KEY ([CenterId])
-    REFERENCES [dbo].[Centers]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_CenterBorrowableItem'
-CREATE INDEX [IX_FK_CenterBorrowableItem]
-ON [dbo].[BorrowableItems]
-    ([CenterId]);
-GO
-
 -- Creating foreign key on [CenterId] in table 'Events'
 ALTER TABLE [dbo].[Events]
 ADD CONSTRAINT [FK_CenterEvent]
@@ -581,43 +713,141 @@ ON [dbo].[CenterFreeResources]
     ([CenterId]);
 GO
 
--- Creating foreign key on [CenterFreeResourceId] in table 'FreeResources'
-ALTER TABLE [dbo].[FreeResources]
-ADD CONSTRAINT [FK_CenterFreeResourceFreeResource]
-    FOREIGN KEY ([CenterFreeResourceId])
+-- Creating foreign key on [PrimaryGuardianId] in table 'SecondaryGuardians'
+ALTER TABLE [dbo].[SecondaryGuardians]
+ADD CONSTRAINT [FK_PrimaryGuardianSecondaryGuardian]
+    FOREIGN KEY ([PrimaryGuardianId])
+    REFERENCES [dbo].[PrimaryGuardians]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_PrimaryGuardianSecondaryGuardian'
+CREATE INDEX [IX_FK_PrimaryGuardianSecondaryGuardian]
+ON [dbo].[SecondaryGuardians]
+    ([PrimaryGuardianId]);
+GO
+
+-- Creating foreign key on [CenterId] in table 'PrimaryGuardians'
+ALTER TABLE [dbo].[PrimaryGuardians]
+ADD CONSTRAINT [FK_PrimaryGuardianCenter]
+    FOREIGN KEY ([CenterId])
+    REFERENCES [dbo].[Centers]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_PrimaryGuardianCenter'
+CREATE INDEX [IX_FK_PrimaryGuardianCenter]
+ON [dbo].[PrimaryGuardians]
+    ([CenterId]);
+GO
+
+-- Creating foreign key on [SpecialEvent_Id] in table 'EventParticipants'
+ALTER TABLE [dbo].[EventParticipants]
+ADD CONSTRAINT [FK_SpecialEventEventParticipant]
+    FOREIGN KEY ([SpecialEvent_Id])
+    REFERENCES [dbo].[SpecialEvents]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_SpecialEventEventParticipant'
+CREATE INDEX [IX_FK_SpecialEventEventParticipant]
+ON [dbo].[EventParticipants]
+    ([SpecialEvent_Id]);
+GO
+
+-- Creating foreign key on [CenterId] in table 'SpecialEvents'
+ALTER TABLE [dbo].[SpecialEvents]
+ADD CONSTRAINT [FK_SpecialEventCenter]
+    FOREIGN KEY ([CenterId])
+    REFERENCES [dbo].[Centers]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_SpecialEventCenter'
+CREATE INDEX [IX_FK_SpecialEventCenter]
+ON [dbo].[SpecialEvents]
+    ([CenterId]);
+GO
+
+-- Creating foreign key on [CenterId] in table 'GivenResources'
+ALTER TABLE [dbo].[GivenResources]
+ADD CONSTRAINT [FK_GivenResourceCenter]
+    FOREIGN KEY ([CenterId])
+    REFERENCES [dbo].[Centers]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_GivenResourceCenter'
+CREATE INDEX [IX_FK_GivenResourceCenter]
+ON [dbo].[GivenResources]
+    ([CenterId]);
+GO
+
+-- Creating foreign key on [CenterFreeResource_Id] in table 'GivenResources'
+ALTER TABLE [dbo].[GivenResources]
+ADD CONSTRAINT [FK_GivenResourceCenterFreeResource]
+    FOREIGN KEY ([CenterFreeResource_Id])
     REFERENCES [dbo].[CenterFreeResources]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 
--- Creating non-clustered index for FOREIGN KEY 'FK_CenterFreeResourceFreeResource'
-CREATE INDEX [IX_FK_CenterFreeResourceFreeResource]
-ON [dbo].[FreeResources]
-    ([CenterFreeResourceId]);
+-- Creating non-clustered index for FOREIGN KEY 'FK_GivenResourceCenterFreeResource'
+CREATE INDEX [IX_FK_GivenResourceCenterFreeResource]
+ON [dbo].[GivenResources]
+    ([CenterFreeResource_Id]);
 GO
 
--- Creating foreign key on [Id] in table 'BorrowableItems_Video'
-ALTER TABLE [dbo].[BorrowableItems_Video]
-ADD CONSTRAINT [FK_Video_inherits_BorrowableItem]
+-- Creating foreign key on [PrimaryGuardianBorrow_Id] in table 'LibraryItems'
+ALTER TABLE [dbo].[LibraryItems]
+ADD CONSTRAINT [FK_LibraryItemPrimaryGuardianBorrow]
+    FOREIGN KEY ([PrimaryGuardianBorrow_Id])
+    REFERENCES [dbo].[PrimaryGuardianBorrows]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_LibraryItemPrimaryGuardianBorrow'
+CREATE INDEX [IX_FK_LibraryItemPrimaryGuardianBorrow]
+ON [dbo].[LibraryItems]
+    ([PrimaryGuardianBorrow_Id]);
+GO
+
+-- Creating foreign key on [Center_Id] in table 'LibraryItems'
+ALTER TABLE [dbo].[LibraryItems]
+ADD CONSTRAINT [FK_LibraryItemCenter]
+    FOREIGN KEY ([Center_Id])
+    REFERENCES [dbo].[Centers]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_LibraryItemCenter'
+CREATE INDEX [IX_FK_LibraryItemCenter]
+ON [dbo].[LibraryItems]
+    ([Center_Id]);
+GO
+
+-- Creating foreign key on [Id] in table 'LibraryItems_Video'
+ALTER TABLE [dbo].[LibraryItems_Video]
+ADD CONSTRAINT [FK_Video_inherits_LibraryItem]
     FOREIGN KEY ([Id])
-    REFERENCES [dbo].[BorrowableItems]
+    REFERENCES [dbo].[LibraryItems]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
--- Creating foreign key on [Id] in table 'BorrowableItems_Toy'
-ALTER TABLE [dbo].[BorrowableItems_Toy]
-ADD CONSTRAINT [FK_Toy_inherits_BorrowableItem]
+-- Creating foreign key on [Id] in table 'LibraryItems_Toy'
+ALTER TABLE [dbo].[LibraryItems_Toy]
+ADD CONSTRAINT [FK_Toy_inherits_LibraryItem]
     FOREIGN KEY ([Id])
-    REFERENCES [dbo].[BorrowableItems]
+    REFERENCES [dbo].[LibraryItems]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
--- Creating foreign key on [Id] in table 'Events_SpecialEvent'
-ALTER TABLE [dbo].[Events_SpecialEvent]
-ADD CONSTRAINT [FK_SpecialEvent_inherits_Event]
+-- Creating foreign key on [Id] in table 'LibraryItems_Book'
+ALTER TABLE [dbo].[LibraryItems_Book]
+ADD CONSTRAINT [FK_Book_inherits_LibraryItem]
     FOREIGN KEY ([Id])
-    REFERENCES [dbo].[Events]
+    REFERENCES [dbo].[LibraryItems]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO

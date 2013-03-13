@@ -12,8 +12,7 @@ namespace OFRPDMS.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Video : BorrowableItem
+    public partial class Video : LibraryItem
     {
-        public string VideoMarker { get; set; }
     }
 }

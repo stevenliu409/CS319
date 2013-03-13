@@ -19,7 +19,7 @@ namespace OFRPDMS.Controllers
         public HomeController()
         {
       
-            _primaryguardian =context.PrimaryGuardians.FirstOrDefault();
+            _primaryguardian = context.PrimaryGuardians.FirstOrDefault();
         }
 
         public ActionResult Index()

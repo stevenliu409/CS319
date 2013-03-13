@@ -12,9 +12,8 @@ namespace OFRPDMS.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Toy : BorrowableItem
+    public partial class Toy : LibraryItem
     {
-        public Nullable<bool> Sanitized { get; set; }
-        public string ToyMarker { get; set; }
+        public string Sanitized { get; set; }
     }
 }

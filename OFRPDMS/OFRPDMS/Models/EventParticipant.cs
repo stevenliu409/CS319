@@ -28,5 +28,6 @@ namespace OFRPDMS.Models
         public virtual ICollection<PrimaryGuardian> PrimaryGuardians { get; set; }
         public virtual ICollection<Child> Children { get; set; }
         public virtual Event Event { get; set; }
+        public virtual SpecialEvent SpecialEvent { get; set; }
     }
 }
