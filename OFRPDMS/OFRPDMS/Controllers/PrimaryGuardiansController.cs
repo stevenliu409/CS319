@@ -18,7 +18,8 @@ namespace OFRPDMS.Controllers
 
         public ViewResult Index()
         {
-            return View(context.PrimaryGuardians.Include(primaryguardian => primaryguardian.PrimaryGuardianBorrows).Include(primaryguardian => primaryguardian.EventParticipants).Include(primaryguardian => primaryguardian.Children).ToList());
+            var primaryguardians = context.PrimaryGuardians.Include(p => p.Center);
+            return View(primaryguardians.ToList());
         }
 
         //
@@ -26,7 +27,7 @@ namespace OFRPDMS.Controllers
 
         public ViewResult Details(int id)
         {
-            PrimaryGuardian primaryguardian = context.PrimaryGuardians.Single(x => x.Id == id);
+            PrimaryGuardian primaryguardian = context.PrimaryGuardians.Find(id);
             return View(primaryguardian);
         }
 
@@ -35,6 +36,7 @@ namespace OFRPDMS.Controllers
 
         public ActionResult Create()
         {
+            ViewBag.CenterId = new SelectList(context.Centers, "Id", "Name");
             return View();
         } 
 
@@ -44,14 +46,15 @@ namespace OFRPDMS.Controllers
         [HttpPost]
         public ActionResult Create(PrimaryGuardian primaryguardian)
         {
-         
+
             if (ModelState.IsValid)
             {
                 context.PrimaryGuardians.Add(primaryguardian);
                 context.SaveChanges();
-                return RedirectToAction("Index");  
+                return RedirectToAction("Index");
             }
 
+            ViewBag.CenterId = new SelectList(context.Centers, "Id", "Name", primaryguardian.CenterId);
             return View(primaryguardian);
         }
         
@@ -60,7 +63,8 @@ namespace OFRPDMS.Controllers
  
         public ActionResult Edit(int id)
         {
-            PrimaryGuardian primaryguardian = context.PrimaryGuardians.Single(x => x.Id == id);
+            PrimaryGuardian primaryguardian = context.PrimaryGuardians.Find(id);
+            ViewBag.CenterId = new SelectList(context.Centers, "Id", "Name", primaryguardian.CenterId);
             return View(primaryguardian);
         }
 
@@ -76,15 +80,16 @@ namespace OFRPDMS.Controllers
                 context.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.CenterId = new SelectList(context.Centers, "Id", "Name", primaryguardian.CenterId);
             return View(primaryguardian);
         }
 
         //
         // GET: /PrimaryGuardians/Delete/5
- 
+
         public ActionResult Delete(int id)
         {
-            PrimaryGuardian primaryguardian = context.PrimaryGuardians.Single(x => x.Id == id);
+            PrimaryGuardian primaryguardian = context.PrimaryGuardians.Find(id);
             return View(primaryguardian);
         }
 
@@ -94,7 +99,7 @@ namespace OFRPDMS.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            PrimaryGuardian primaryguardian = context.PrimaryGuardians.Single(x => x.Id == id);
+            PrimaryGuardian primaryguardian = context.PrimaryGuardians.Find(id);
             context.PrimaryGuardians.Remove(primaryguardian);
             context.SaveChanges();
             return RedirectToAction("Index");

@@ -7,6 +7,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.ComponentModel.DataAnnotations;
+
 namespace OFRPDMS.Models
 {
     using System;
@@ -14,16 +16,14 @@ namespace OFRPDMS.Models
     
     public partial class PrimaryGuardianBorrow
     {
-        public PrimaryGuardianBorrow()
-        {
-            this.BorrowableItems = new HashSet<BorrowableItem>();
-        }
-    
         public int Id { get; set; }
         public System.DateTime BorrowedDate { get; set; }
         public int PrimaryGuardianId { get; set; }
+        public bool Returned { get; set; }
     
-        public virtual ICollection<BorrowableItem> BorrowableItems { get; set; }
         public virtual PrimaryGuardian PrimaryGuardian { get; set; }
+
+        [Required]
+        public virtual LibraryItem LibraryItem { get; set; }
     }
 }

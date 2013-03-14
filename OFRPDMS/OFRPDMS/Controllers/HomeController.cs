@@ -8,7 +8,6 @@ using OFRPDMS.Models;
 using System.Data;
 using System.Data.Entity;
 using System.Web.Security;
-using OFRPDMS.Models;
 
 namespace OFRPDMS.Controllers
 {
@@ -20,7 +19,7 @@ namespace OFRPDMS.Controllers
         public HomeController()
         {
       
-            _primaryguardian =context.PrimaryGuardians.FirstOrDefault();
+            _primaryguardian = context.PrimaryGuardians.FirstOrDefault();
         }
 
         public ActionResult Index()
@@ -43,6 +42,7 @@ namespace OFRPDMS.Controllers
         {
             return View();
         }
+        /*
  	public ActionResult GetParticipants(String query)
         {
             if (_primaryguardian == null)
@@ -54,6 +54,7 @@ namespace OFRPDMS.Controllers
             }
    
         }
+         * */
 
         public ActionResult Nav()
         {

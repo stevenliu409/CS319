@@ -88,13 +88,13 @@
 			@item.RelationshipToChild
         </td>
         <td>
-			@(item.PrimaryGuardianBorrows == null ? "None" : item.PrimaryGuardianBorrows.Count.ToString())
+			@*@(item.PrimaryGuardianBorrows == null ? "None" : item.PrimaryGuardianBorrows.Count.ToString())*@
         </td>
         <td>
-			@(item.SecondaryGuardian == null ? "None" : item.SecondaryGuardian.LastName)
+			@*@(item.SecondaryGuardians == null ? "None" : item.SecondaryGuardians.First().LastName)*@
         </td>
         <td>
-			@(item.EventParticipants == null ? "None" : item.EventParticipants.Count.ToString())
+			@*@(item.EventParticipants == null ? "None" : item.EventParticipants.Count.ToString())*@
         </td>
         <td>
 			@(item.Children == null ? "None" : item.Children.Count.ToString())

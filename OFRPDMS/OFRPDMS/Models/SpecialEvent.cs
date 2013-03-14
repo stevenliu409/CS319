@@ -12,10 +12,20 @@ namespace OFRPDMS.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class SpecialEvent : Event
+    public partial class SpecialEvent
     {
+        public SpecialEvent()
+        {
+            this.EventParticipants = new HashSet<EventParticipant>();
+        }
+    
         public string Name { get; set; }
         public string GuestSpeaker { get; set; }
         public string GuestSpeakerType { get; set; }
+        public int CenterId { get; set; }
+        public int Id { get; set; }
+    
+        public virtual ICollection<EventParticipant> EventParticipants { get; set; }
+        public virtual Center Center { get; set; }
     }
 }

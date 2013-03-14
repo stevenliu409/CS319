@@ -10,47 +10,56 @@
     <legend>PrimaryGuardian</legend>
 
     <div class="display-label">FirstName</div>
-    <div class="display-field">@Model.FirstName</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FirstName)
+    </div>
 
     <div class="display-label">LastName</div>
-    <div class="display-field">@Model.LastName</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.LastName)
+    </div>
 
     <div class="display-label">Email</div>
-    <div class="display-field">@Model.Email</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Email)
+    </div>
 
     <div class="display-label">Phone</div>
-    <div class="display-field">@Model.Phone</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Phone)
+    </div>
 
     <div class="display-label">PostalCodePrefix</div>
-    <div class="display-field">@Model.PostalCodePrefix</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PostalCodePrefix)
+    </div>
 
     <div class="display-label">DateCreated</div>
-    <div class="display-field">@Model.DateCreated</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DateCreated)
+    </div>
 
     <div class="display-label">Language</div>
-    <div class="display-field">@Model.Language</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Language)
+    </div>
 
     <div class="display-label">Country</div>
-    <div class="display-field">@Model.Country</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Country)
+    </div>
 
     <div class="display-label">RelationshipToChild</div>
-    <div class="display-field">@Model.RelationshipToChild</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.RelationshipToChild)
+    </div>
 
-    <div class="display-label">PrimaryGuardianBorrows</div>
-    <div class="display-field">@(Model.PrimaryGuardianBorrows == null ? "None" : Model.PrimaryGuardianBorrows.Count.ToString())</div>
-
-    <div class="display-label">SecondaryGuardian</div>
-    <div class="display-field">@(Model.SecondaryGuardian == null ? "None" : Model.SecondaryGuardian.LastName)</div>
-
-    <div class="display-label">EventParticipants</div>
-    <div class="display-field">@(Model.EventParticipants == null ? "None" : Model.EventParticipants.Count.ToString())</div>
-
-    <div class="display-label">Children</div>
-    <div class="display-field">@(Model.Children == null ? "None" : Model.Children.Count.ToString())</div>
+    <div class="display-label">Center</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Center.Name)
+    </div>
 </fieldset>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
-
-

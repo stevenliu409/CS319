@@ -11,7 +11,6 @@ namespace OFRPDMS.Areas.Admin.Controllers
     {
 
         private OFRPDMSContext context = new OFRPDMSContext();
-
         //
         // GET: /Admin/Admin/
 

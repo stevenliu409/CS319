@@ -22,9 +22,12 @@ namespace OFRPDMS.Models
     
         public int Id { get; set; }
         public int EventId { get; set; }
+        public short ParticipantId { get; set; }
+        public string ParticipantType { get; set; }
     
         public virtual ICollection<PrimaryGuardian> PrimaryGuardians { get; set; }
         public virtual ICollection<Child> Children { get; set; }
         public virtual Event Event { get; set; }
+        public virtual SpecialEvent SpecialEvent { get; set; }
     }
 }

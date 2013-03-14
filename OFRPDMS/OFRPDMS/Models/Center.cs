@@ -16,11 +16,13 @@ namespace OFRPDMS.Models
     {
         public Center()
         {
-            this.BorrowableItems = new HashSet<BorrowableItem>();
             this.Events = new HashSet<Event>();
             this.CenterReferrals = new HashSet<CenterReferral>();
             this.CenterAccounts = new HashSet<CenterAccount>();
             this.CenterFreeResources = new HashSet<CenterFreeResource>();
+            this.PrimaryGuardians = new HashSet<PrimaryGuardian>();
+            this.SpecialEvents = new HashSet<SpecialEvent>();
+            this.GivenResources = new HashSet<GivenResource>();
         }
     
         public int Id { get; set; }
@@ -29,10 +31,13 @@ namespace OFRPDMS.Models
         public string Address { get; set; }
         public string Phone { get; set; }
     
-        public virtual ICollection<BorrowableItem> BorrowableItems { get; set; }
         public virtual ICollection<Event> Events { get; set; }
         public virtual ICollection<CenterReferral> CenterReferrals { get; set; }
         public virtual ICollection<CenterAccount> CenterAccounts { get; set; }
         public virtual ICollection<CenterFreeResource> CenterFreeResources { get; set; }
+        public virtual ICollection<PrimaryGuardian> PrimaryGuardians { get; set; }
+        public virtual ICollection<SpecialEvent> SpecialEvents { get; set; }
+        public virtual ICollection<GivenResource> GivenResources { get; set; }
+        public virtual LibraryItem LibraryItem { get; set; }
     }
 }

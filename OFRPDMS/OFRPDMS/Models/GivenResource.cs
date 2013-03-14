@@ -7,25 +7,23 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.ComponentModel.DataAnnotations;
+
 namespace OFRPDMS.Models
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class BorrowableItem
+    public partial class GivenResource
     {
         public int Id { get; set; }
-        public Nullable<bool> IsDefective { get; set; }
-        public bool InInventory { get; set; }
-        public Nullable<decimal> Value { get; set; }
-        public byte[] Image { get; set; }
-        public string Note { get; set; }
-        public Nullable<int> LendingPeriodDays { get; set; }
-        public string ItemType { get; set; }
-        public int PrimaryGuardianBorrowId { get; set; }
+        public string DateGiven { get; set; }
+        public string Count { get; set; }
         public int CenterId { get; set; }
     
-        public virtual PrimaryGuardianBorrow PrimaryGuardianBorrow { get; set; }
         public virtual Center Center { get; set; }
+
+        [Required]
+        public virtual CenterFreeResource CenterFreeResource { get; set; }
     }
 }
