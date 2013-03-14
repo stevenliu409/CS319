@@ -27,6 +27,7 @@ namespace OFRPDMS.Models
     
         public virtual PrimaryGuardianBorrow PrimaryGuardianBorrow { get; set; }
 
+        // required because of 1 to 1 relationship with a Center
         [Required]
         public virtual Center Center { get; set; }
     }

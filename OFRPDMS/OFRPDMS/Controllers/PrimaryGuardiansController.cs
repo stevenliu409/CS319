@@ -51,7 +51,7 @@ namespace OFRPDMS.Controllers
 
             if (ModelState.IsValid)
             {
-                primaryguardian.DateCreated = DateTime.Now.ToString();
+                primaryguardian.DateCreated = DateTime.Now;
                 context.PrimaryGuardians.Add(primaryguardian);
                 context.SaveChanges();
                 return RedirectToAction("Index");
