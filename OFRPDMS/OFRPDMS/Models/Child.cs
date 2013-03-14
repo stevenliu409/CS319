@@ -23,7 +23,7 @@ namespace OFRPDMS.Models
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public System.DateTime Birthdate { get; set; }
+        public Nullable<System.DateTime> Birthdate { get; set; }
         public int PrimaryGuardianId { get; set; }
     
         public virtual PrimaryGuardian PrimaryGuardian { get; set; }

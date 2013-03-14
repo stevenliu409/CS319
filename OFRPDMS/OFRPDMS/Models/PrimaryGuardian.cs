@@ -28,7 +28,7 @@ namespace OFRPDMS.Models
         public string Email { get; set; }
         public Nullable<int> Phone { get; set; }
         public string PostalCodePrefix { get; set; }
-        public string DateCreated { get; set; }
+        public System.DateTime DateCreated { get; set; }
         public string Language { get; set; }
         public string Country { get; set; }
         public string RelationshipToChild { get; set; }
