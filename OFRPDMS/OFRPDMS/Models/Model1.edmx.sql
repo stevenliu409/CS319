@@ -12,7 +12,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 03/13/2013 17:41:45
+-- Date Created: 03/13/2013 19:56:05
 -- Generated from EDMX file: D:\cs319\CS319\OFRPDMS\OFRPDMS\Models\Model1.edmx
 -- --------------------------------------------------
 
@@ -198,7 +198,6 @@ CREATE TABLE [dbo].[PrimaryGuardians] (
     [DateCreated] datetime  NOT NULL,
     [Language] nvarchar(max)  NULL,
     [Country] nvarchar(max)  NULL,
-    [RelationshipToChild] nvarchar(max)  NULL,
     [CenterId] int  NOT NULL
 );
 GO
@@ -230,7 +229,8 @@ CREATE TABLE [dbo].[Children] (
     [FirstName] nvarchar(max)  NULL,
     [LastName] nvarchar(max)  NULL,
     [Birthdate] datetime  NULL,
-    [PrimaryGuardianId] int  NOT NULL
+    [PrimaryGuardianId] int  NOT NULL,
+    [GuardianRelationship] nvarchar(max)  NULL
 );
 GO
 

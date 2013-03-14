@@ -25,6 +25,7 @@ namespace OFRPDMS.Models
         public string LastName { get; set; }
         public Nullable<System.DateTime> Birthdate { get; set; }
         public int PrimaryGuardianId { get; set; }
+        public string GuardianRelationship { get; set; }
     
         public virtual PrimaryGuardian PrimaryGuardian { get; set; }
         public virtual ICollection<EventParticipant> EventParticipants { get; set; }
