@@ -37,7 +37,9 @@ namespace OFRPDMS.Controllers
         public ActionResult Create()
         {
             ViewBag.CenterId = new SelectList(context.Centers, "Id", "Name");
-            return View();
+            var model = new PrimaryGuardian();
+            model.BuildChildren(1);
+            return View(model);
         } 
 
         //
@@ -49,6 +51,7 @@ namespace OFRPDMS.Controllers
 
             if (ModelState.IsValid)
             {
+                primaryguardian.DateCreated = DateTime.Now.ToString();
                 context.PrimaryGuardians.Add(primaryguardian);
                 context.SaveChanges();
                 return RedirectToAction("Index");
@@ -76,6 +79,7 @@ namespace OFRPDMS.Controllers
         {
             if (ModelState.IsValid)
             {
+                
                 context.Entry(primaryguardian).State = EntityState.Modified;
                 context.SaveChanges();
                 return RedirectToAction("Index");

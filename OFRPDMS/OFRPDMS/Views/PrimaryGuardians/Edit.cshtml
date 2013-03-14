@@ -1,18 +1,18 @@
 @model OFRPDMS.Models.PrimaryGuardian
-
+<link href="@Url.Content("~/Content/themes/base/jquery.ui.all.css")" rel="stylesheet" type="text/css" />
 @{
     ViewBag.Title = "Edit";
 }
 
 <h2>Edit</h2>
-
-@using (Html.BeginForm()) {
+@using (Html.BeginForm())
+{
     @Html.ValidationSummary(true)
     <fieldset>
         <legend>PrimaryGuardian</legend>
 
         @Html.HiddenFor(model => model.Id)
-		@Html.Partial("_CreateOrEdit", Model)
+		@Html.EditorForModel()
 
         <p>
             <input type="submit" value="Save" />
@@ -23,3 +23,5 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+
+<script src="../../Scripts/PrimaryGuardian/application.js" language="javascript" type="text/javascript"></script>

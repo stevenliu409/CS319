@@ -206,7 +206,6 @@ CREATE TABLE [dbo].[PrimaryGuardians] (
     [DateCreated] nvarchar(max)  NOT NULL,
     [Language] nvarchar(max)  NULL,
     [Country] nvarchar(max)  NULL,
-    [RelationshipToChild] nvarchar(max)  NOT NULL,
     [CenterId] int  NOT NULL
 );
 GO
@@ -216,7 +215,7 @@ CREATE TABLE [dbo].[SecondaryGuardians] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [FirstName] nvarchar(max)  NULL,
     [LastName] nvarchar(max)  NULL,
-    [RelationshipToChild] nvarchar(max)  NOT NULL,
+    [RelationshipToChild] nvarchar(max)  NULL,
     [Phone] int  NULL,
     [PrimaryGuardianId] int  NOT NULL
 );
@@ -237,7 +236,9 @@ CREATE TABLE [dbo].[Children] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [FirstName] nvarchar(max)  NULL,
     [LastName] nvarchar(max)  NULL,
-    [Birthdate] datetime  NOT NULL,
+    [Birthdate] datetime  NULL,
+	[Delete] bit NULL,
+	[RelationshipToGuardian] nvarchar(max) NULL,
     [PrimaryGuardianId] int  NOT NULL
 );
 GO
@@ -556,7 +557,7 @@ ADD CONSTRAINT [FK_PrimaryGuardianChild]
     FOREIGN KEY ([PrimaryGuardianId])
     REFERENCES [dbo].[PrimaryGuardians]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_PrimaryGuardianChild'
 CREATE INDEX [IX_FK_PrimaryGuardianChild]
