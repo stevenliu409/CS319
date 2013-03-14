@@ -151,10 +151,10 @@
     <Property Name="Email" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Phone" Type="int" Nullable="true" />
     <Property Name="PostalCodePrefix" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="DateCreated" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="DateCreated" Type="datetime" Nullable="false" />
     <Property Name="Language" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Country" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="RelationshipToChild" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="RelationshipToChild" Type="nvarchar(max)" Nullable="true" />
     <Property Name="CenterId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="SecondaryGuardians">
@@ -164,7 +164,7 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="FirstName" Type="nvarchar(max)" Nullable="true" />
     <Property Name="LastName" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="RelationshipToChild" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="RelationshipToChild" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Phone" Type="int" Nullable="true" />
     <Property Name="PrimaryGuardianId" Type="int" Nullable="false" />
   </EntityType>
@@ -185,7 +185,7 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="FirstName" Type="nvarchar(max)" Nullable="true" />
     <Property Name="LastName" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="Birthdate" Type="datetime" Nullable="false" />
+    <Property Name="Birthdate" Type="datetime" Nullable="true" />
     <Property Name="PrimaryGuardianId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Allergies">
@@ -272,8 +272,8 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="DateGiven" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Count" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="DateGiven" Type="datetime" Nullable="true" />
+    <Property Name="Count" Type="int" Nullable="false" />
     <Property Name="CenterId" Type="int" Nullable="false" />
     <Property Name="CenterFreeResource_Id" Type="int" Nullable="false" />
   </EntityType>
@@ -766,10 +766,10 @@
           <Property Type="String" Name="Email" Nullable="true" />
           <Property Type="Int32" Name="Phone" Nullable="true" />
           <Property Type="String" Name="PostalCodePrefix" Nullable="true" />
-          <Property Type="String" Name="DateCreated" Nullable="false" />
+          <Property Type="DateTime" Name="DateCreated" Nullable="false" />
           <Property Type="String" Name="Language" Nullable="true" />
           <Property Type="String" Name="Country" Nullable="true" />
-          <Property Type="String" Name="RelationshipToChild" Nullable="false" />
+          <Property Type="String" Name="RelationshipToChild" Nullable="true" />
           <NavigationProperty Name="EventParticipants" Relationship="Model1.EventParticipantPrimaryGuardian" FromRole="PrimaryGuardian" ToRole="EventParticipant" />
           <NavigationProperty Name="Children" Relationship="Model1.PrimaryGuardianChild" FromRole="PrimaryGuardian" ToRole="Child" />
           <NavigationProperty Name="Allergies" Relationship="Model1.PrimaryGuardianAllergy" FromRole="PrimaryGuardian" ToRole="Allergy" />
@@ -796,7 +796,7 @@
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="FirstName" Nullable="true" />
           <Property Type="String" Name="LastName" Nullable="true" />
-          <Property Type="String" Name="RelationshipToChild" Nullable="false" />
+          <Property Type="String" Name="RelationshipToChild" Nullable="true" />
           <Property Type="Int32" Name="Phone" Nullable="true" />
           <NavigationProperty Name="PrimaryGuardian" Relationship="Model1.PrimaryGuardianSecondaryGuardian" FromRole="SecondaryGuardian" ToRole="PrimaryGuardian" />
           <Property Type="Int32" Name="PrimaryGuardianId" Nullable="false" />
@@ -825,7 +825,7 @@
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="FirstName" Nullable="true" />
           <Property Type="String" Name="LastName" Nullable="true" />
-          <Property Type="DateTime" Name="Birthdate" Nullable="false" />
+          <Property Type="DateTime" Name="Birthdate" Nullable="true" />
           <NavigationProperty Name="PrimaryGuardian" Relationship="Model1.PrimaryGuardianChild" FromRole="Child" ToRole="PrimaryGuardian" />
           <Property Type="Int32" Name="PrimaryGuardianId" Nullable="false" />
           <NavigationProperty Name="EventParticipants" Relationship="Model1.EventParticipantChild" FromRole="Child" ToRole="EventParticipant" />
@@ -1101,8 +1101,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
-          <Property Type="String" Name="DateGiven" Nullable="false" />
-          <Property Type="String" Name="Count" Nullable="false" />
+          <Property Type="DateTime" Name="DateGiven" Nullable="true" />
+          <Property Type="Int32" Name="Count" Nullable="false" />
           <NavigationProperty Name="Center" Relationship="Model1.GivenResourceCenter" FromRole="GivenResource" ToRole="Center" />
           <Property Type="Int32" Name="CenterId" Nullable="false" />
           <NavigationProperty Name="CenterFreeResource" Relationship="Model1.GivenResourceCenterFreeResource" FromRole="GivenResource" ToRole="CenterFreeResource" />

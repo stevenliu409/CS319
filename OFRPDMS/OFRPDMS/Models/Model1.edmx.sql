@@ -8,10 +8,11 @@
 --GO
 --DROP DATABASE [OFRPDMS.Models.OFRPDMSContext];
 --GO
+
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 03/13/2013 04:53:36
+-- Date Created: 03/13/2013 17:41:45
 -- Generated from EDMX file: D:\cs319\CS319\OFRPDMS\OFRPDMS\Models\Model1.edmx
 -- --------------------------------------------------
 
@@ -154,32 +155,23 @@ GO
 IF OBJECT_ID(N'[dbo].[GivenResources]', 'U') IS NOT NULL
     DROP TABLE [dbo].[GivenResources];
 GO
+IF OBJECT_ID(N'[dbo].[LibraryItems]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[LibraryItems];
+GO
+IF OBJECT_ID(N'[dbo].[LibraryItems_Video]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[LibraryItems_Video];
+GO
+IF OBJECT_ID(N'[dbo].[LibraryItems_Toy]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[LibraryItems_Toy];
+GO
+IF OBJECT_ID(N'[dbo].[LibraryItems_Book]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[LibraryItems_Book];
+GO
 IF OBJECT_ID(N'[dbo].[EventParticipantPrimaryGuardian]', 'U') IS NOT NULL
     DROP TABLE [dbo].[EventParticipantPrimaryGuardian];
 GO
 IF OBJECT_ID(N'[dbo].[EventParticipantChild]', 'U') IS NOT NULL
     DROP TABLE [dbo].[EventParticipantChild];
-GO
-IF OBJECT_ID(N'[dbo].[GivenResources]', 'U') IS NOT NULL
-    DROP TABLE [dbo].GivenResources;
-GO
-IF OBJECT_ID(N'[dbo].[LibraryItems]', 'U') IS NOT NULL
-    DROP TABLE [dbo].LibraryItems;
-GO
-IF OBJECT_ID(N'[dbo].[LibraryItems_Video]', 'U') IS NOT NULL
-    DROP TABLE [dbo].LibraryItems_Video;
-GO
-IF OBJECT_ID(N'[dbo].[LibraryItems_Toy]', 'U') IS NOT NULL
-    DROP TABLE [dbo].LibraryItems_Toy;
-GO
-IF OBJECT_ID(N'[dbo].[LibraryItems_Book]', 'U') IS NOT NULL
-    DROP TABLE [dbo].LibraryItems_Book;
-GO
-IF OBJECT_ID(N'[dbo].[EventParticipantPrimaryGuardian]', 'U') IS NOT NULL
-    DROP TABLE [dbo].EventParticipantPrimaryGuardian;
-GO
-IF OBJECT_ID(N'[dbo].[EventParticipantChild]', 'U') IS NOT NULL
-    DROP TABLE [dbo].EventParticipantChild;
 GO
 
 -- --------------------------------------------------
@@ -203,10 +195,10 @@ CREATE TABLE [dbo].[PrimaryGuardians] (
     [Email] nvarchar(max)  NULL,
     [Phone] int  NULL,
     [PostalCodePrefix] nvarchar(max)  NULL,
-    [DateCreated] nvarchar(max)  NOT NULL,
+    [DateCreated] datetime  NOT NULL,
     [Language] nvarchar(max)  NULL,
     [Country] nvarchar(max)  NULL,
-    [RelationshipToChild] nvarchar(max)  NOT NULL,
+    [RelationshipToChild] nvarchar(max)  NULL,
     [CenterId] int  NOT NULL
 );
 GO
@@ -216,7 +208,7 @@ CREATE TABLE [dbo].[SecondaryGuardians] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [FirstName] nvarchar(max)  NULL,
     [LastName] nvarchar(max)  NULL,
-    [RelationshipToChild] nvarchar(max)  NOT NULL,
+    [RelationshipToChild] nvarchar(max)  NULL,
     [Phone] int  NULL,
     [PrimaryGuardianId] int  NOT NULL
 );
@@ -237,7 +229,7 @@ CREATE TABLE [dbo].[Children] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [FirstName] nvarchar(max)  NULL,
     [LastName] nvarchar(max)  NULL,
-    [Birthdate] datetime  NOT NULL,
+    [Birthdate] datetime  NULL,
     [PrimaryGuardianId] int  NOT NULL
 );
 GO
@@ -324,8 +316,8 @@ GO
 -- Creating table 'GivenResources'
 CREATE TABLE [dbo].[GivenResources] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [DateGiven] nvarchar(max)  NOT NULL,
-    [Count] nvarchar(max)  NOT NULL,
+    [DateGiven] datetime  NULL,
+    [Count] int  NOT NULL,
     [CenterId] int  NOT NULL,
     [CenterFreeResource_Id] int  NOT NULL
 );
