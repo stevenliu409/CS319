@@ -23,6 +23,7 @@ namespace OFRPDMS.Models
     
         public virtual PrimaryGuardian PrimaryGuardian { get; set; }
 
+        // required because of 1 to 1 relationship with a LibraryItem
         [Required]
         public virtual LibraryItem LibraryItem { get; set; }
     }

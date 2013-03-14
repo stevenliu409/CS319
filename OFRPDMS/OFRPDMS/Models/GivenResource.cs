@@ -23,6 +23,7 @@ namespace OFRPDMS.Models
     
         public virtual Center Center { get; set; }
 
+        // required because of 1 to 1 relationship with CenterFreeResource
         [Required]
         public virtual CenterFreeResource CenterFreeResource { get; set; }
     }
