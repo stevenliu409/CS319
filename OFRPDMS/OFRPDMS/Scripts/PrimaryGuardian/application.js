@@ -2,7 +2,7 @@
 $(document).ready(function () {
 
     $('.pickDate').datepicker({
-        dateFormat: "yy-mm-dd",
+       dateFormat: 'yy-mm-dd',
         showOn: "both",
         buttonText: "Calendar",
         buttonImage: "../../Content/themes/base/images/calendar.png",
@@ -34,7 +34,7 @@ function addNestedForm(container, counter, ticks, content) {
     $(container).append(content);
    
     $('.pickDate').datepicker({
-        dateFormat: "yy-mm-dd",
+        dateFormat: 'yy-mm-dd',
         showOn: "both",
         buttonText: "Calendar",
         buttonImage: "../../Content/themes/base/images/calendar.png",

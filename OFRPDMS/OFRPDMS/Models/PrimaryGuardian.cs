@@ -34,7 +34,9 @@ namespace OFRPDMS.Models
     
         public Nullable<int> Phone { get; set; }
         public string PostalCodePrefix { get; set; }
+
         public System.DateTime DateCreated { get; set; }
+
         [RegularExpression(@"^[a-zA-Z]{1,25}$", ErrorMessage = "Not a valid Language Name")]
         public string Language { get; set; }
         [RegularExpression(@"^[a-zA-Z]{1,25}$", ErrorMessage = "Not a valid Country Name")]
