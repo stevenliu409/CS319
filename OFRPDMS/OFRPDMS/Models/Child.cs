@@ -27,6 +27,7 @@ namespace OFRPDMS.Models
         public string FirstName { get; set; }
         [RegularExpression(@"^[a-zA-Z]{1,25}$", ErrorMessage = "Not a valid last Name")]
         public string LastName { get; set; }
+
         [DataType(DataType.Date)]
         public Nullable<System.DateTime> Birthdate { get; set; }
         [Required]
@@ -35,6 +36,8 @@ namespace OFRPDMS.Models
         [RegularExpression(@"^[a-zA-Z]{1,25}$", ErrorMessage = "Not a valid relationship")]
         public string RelationshipToGuardian { get; set; }
         public bool Delete { get; set; }
+
+   
     
         public virtual PrimaryGuardian PrimaryGuardian { get; set; }
         public virtual ICollection<EventParticipant> EventParticipants { get; set; }

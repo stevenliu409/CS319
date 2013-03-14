@@ -17,8 +17,8 @@ namespace OFRPDMS.Models
     public partial class GivenResource
     {
         public int Id { get; set; }
-        public string DateGiven { get; set; }
-        public string Count { get; set; }
+        public Nullable<System.DateTime> DateGiven { get; set; }
+        public int Count { get; set; }
         public int CenterId { get; set; }
     
         public virtual Center Center { get; set; }
