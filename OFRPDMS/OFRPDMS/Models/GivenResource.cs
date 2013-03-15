@@ -7,8 +7,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System.ComponentModel.DataAnnotations;
-
 namespace OFRPDMS.Models
 {
     using System;
@@ -20,11 +18,8 @@ namespace OFRPDMS.Models
         public Nullable<System.DateTime> DateGiven { get; set; }
         public int Count { get; set; }
         public int CenterId { get; set; }
+        public int CenterFreeResourceId { get; set; }
     
-        public virtual Center Center { get; set; }
-
-        // required because of 1 to 1 relationship with CenterFreeResource
-        [Required]
         public virtual CenterFreeResource CenterFreeResource { get; set; }
     }
 }

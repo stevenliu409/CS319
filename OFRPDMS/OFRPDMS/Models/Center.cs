@@ -22,7 +22,6 @@ namespace OFRPDMS.Models
             this.CenterFreeResources = new HashSet<CenterFreeResource>();
             this.PrimaryGuardians = new HashSet<PrimaryGuardian>();
             this.SpecialEvents = new HashSet<SpecialEvent>();
-            this.GivenResources = new HashSet<GivenResource>();
         }
     
         public int Id { get; set; }
@@ -37,7 +36,6 @@ namespace OFRPDMS.Models
         public virtual ICollection<CenterFreeResource> CenterFreeResources { get; set; }
         public virtual ICollection<PrimaryGuardian> PrimaryGuardians { get; set; }
         public virtual ICollection<SpecialEvent> SpecialEvents { get; set; }
-        public virtual ICollection<GivenResource> GivenResources { get; set; }
         public virtual LibraryItem LibraryItem { get; set; }
     }
 }
