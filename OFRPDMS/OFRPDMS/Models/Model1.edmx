@@ -264,6 +264,7 @@
     <Property Name="GuestSpeakerType" Type="nvarchar(max)" Nullable="true" />
     <Property Name="CenterId" Type="int" Nullable="false" />
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="GivenResources">
     <Key>
@@ -897,6 +898,7 @@
           <NavigationProperty Name="Center" Relationship="Model1.SpecialEventCenter" FromRole="SpecialEvent" ToRole="Center" />
           <Property Type="Int32" Name="CenterId" Nullable="false" />
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="DateTime" Name="Date" Nullable="false" />
         </EntityType>
         <EntityType Name="Center">
           <Key>
@@ -1284,6 +1286,7 @@
           <ScalarProperty Name="GuestSpeaker" ColumnName="GuestSpeaker" />
           <ScalarProperty Name="GuestSpeakerType" ColumnName="GuestSpeakerType" />
           <ScalarProperty Name="CenterId" ColumnName="CenterId" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1427,15 +1430,15 @@
           <ConnectorPoint PointX="7.75" PointY="10.354217331353453" />
           <ConnectorPoint PointX="6.625" PointY="10.354217331353453" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="Model1.SpecialEvent" Width="1.5" PointX="7.75" PointY="12.5" Height="2.3648893229166674" />
+        <EntityTypeShape EntityType="Model1.SpecialEvent" Width="1.5" PointX="7.75" PointY="12.5" Height="2.5571907552083335" />
         <EntityTypeShape EntityType="Model1.Center" Width="1.5" PointX="10.75" PointY="5.375" Height="2.9417936197916656" />
         <AssociationConnector Association="Model1.CenterEvent">
           <ConnectorPoint PointX="11.8989262890625" PointY="8.701396484375" />
           <ConnectorPoint PointX="11.8989262890625" PointY="10.571656494140624" />
           <ConnectorPoint PointX="11.577533416341145" PointY="10.571656494140624" />
           <ConnectorPoint PointX="11.410866749674478" PointY="10.571656494140624" />
-          <ConnectorPoint PointX="11.172807210286459" PointY="10.571656494140624" />
-          <ConnectorPoint PointX="11.006140543619791" PointY="10.571656494140624" />
+          <ConnectorPoint PointX="11.174180874837239" PointY="10.571656494140624" />
+          <ConnectorPoint PointX="11.007514208170571" PointY="10.571656494140624" />
           <ConnectorPoint PointX="9.25" PointY="10.571656494140624" />
         </AssociationConnector>
         <EntityTypeShape EntityType="Model1.CenterReferral" Width="1.5" PointX="13.125" PointY="3.75" Height="1.9802864583333326" />
@@ -1475,13 +1478,13 @@
         <AssociationConnector Association="Model1.SpecialEventEventParticipant">
           <ConnectorPoint PointX="7.7511528461538459" PointY="12.5" />
           <ConnectorPoint PointX="7.375" PointY="12.123847153846153" />
-          <ConnectorPoint PointX="7.375" PointY="11.020939662706905" />
-          <ConnectorPoint PointX="6.625" PointY="11.020939662706905" />
+          <ConnectorPoint PointX="7.375" PointY="10.278595377604166" />
+          <ConnectorPoint PointX="6.625" PointY="10.278595377604166" />
         </AssociationConnector>
         <AssociationConnector Association="Model1.SpecialEventCenter">
-          <ConnectorPoint PointX="9.25" PointY="13.682444661458334" />
-          <ConnectorPoint PointX="11.1367159375" PointY="13.682444661458334" />
-          <ConnectorPoint PointX="11.1367159375" PointY="8.3167936197916656" />
+          <ConnectorPoint PointX="9.25" PointY="13.778595377604166" />
+          <ConnectorPoint PointX="11.090847541503905" PointY="13.778595377604166" />
+          <ConnectorPoint PointX="11.090847541503905" PointY="8.701396484375" />
         </AssociationConnector>
         <EntityTypeShape EntityType="Model1.GivenResource" Width="1.5" PointX="16.625" PointY="10.375" Height="2.1725878906249996" />
         <EntityTypeShape EntityType="Model1.LibraryItem" Width="1.5" PointX="5.375" PointY="5.25" Height="2.9417936197916656" />

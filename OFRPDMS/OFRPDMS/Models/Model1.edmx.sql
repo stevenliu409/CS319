@@ -12,7 +12,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 03/15/2013 15:42:39
+-- Date Created: 03/15/2013 16:15:45
 -- Generated from EDMX file: D:\cs319\CS319\OFRPDMS\OFRPDMS\Models\Model1.edmx
 -- --------------------------------------------------
 
@@ -313,7 +313,8 @@ CREATE TABLE [dbo].[SpecialEvents] (
     [GuestSpeaker] nvarchar(max)  NULL,
     [GuestSpeakerType] nvarchar(max)  NULL,
     [CenterId] int  NOT NULL,
-    [Id] int IDENTITY(1,1) NOT NULL
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Date] datetime  NOT NULL
 );
 GO
 
