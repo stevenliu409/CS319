@@ -12,7 +12,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 03/15/2013 16:15:45
+-- Date Created: 03/15/2013 23:30:27
 -- Generated from EDMX file: D:\cs319\CS319\OFRPDMS\OFRPDMS\Models\Model1.edmx
 -- --------------------------------------------------
 
@@ -26,12 +26,14 @@ GO
 -- --------------------------------------------------
 -- Dropping existing FOREIGN KEY constraints
 -- --------------------------------------------------
+
 IF OBJECT_ID(N'[dbo].[FK_GivenResourceCenter]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[GivenResources] DROP CONSTRAINT [FK_GivenResourceCenter];
 GO
 IF OBJECT_ID(N'[dbo].[FK_GivenResourceCenterFreeResource]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[GivenResources] DROP CONSTRAINT [FK_GivenResourceCenterFreeResource];
 GO
+
 IF OBJECT_ID(N'[dbo].[FK_PrimaryGuardianPrimaryGuardianBorrow]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[PrimaryGuardianBorrows] DROP CONSTRAINT [FK_PrimaryGuardianPrimaryGuardianBorrow];
 GO
@@ -91,12 +93,14 @@ IF OBJECT_ID(N'[dbo].[FK_SpecialEventCenter]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_LibraryItemPrimaryGuardianBorrow]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[LibraryItems] DROP CONSTRAINT [FK_LibraryItemPrimaryGuardianBorrow];
+IF OBJECT_ID(N'[dbo].[FK_CenterFreeResourceGivenResource]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[GivenResources] DROP CONSTRAINT [FK_CenterFreeResourceGivenResource];
 GO
 IF OBJECT_ID(N'[dbo].[FK_LibraryItemCenter]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[LibraryItems] DROP CONSTRAINT [FK_LibraryItemCenter];
 GO
-IF OBJECT_ID(N'[dbo].[FK_CenterFreeResourceGivenResource]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[GivenResources] DROP CONSTRAINT [FK_CenterFreeResourceGivenResource];
+IF OBJECT_ID(N'[dbo].[FK_PrimaryGuardianBorrowLibraryItem]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[PrimaryGuardianBorrows] DROP CONSTRAINT [FK_PrimaryGuardianBorrowLibraryItem];
 GO
 IF OBJECT_ID(N'[dbo].[FK_Video_inherits_LibraryItem]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[LibraryItems_Video] DROP CONSTRAINT [FK_Video_inherits_LibraryItem];
@@ -183,9 +187,12 @@ GO
 -- Creating table 'PrimaryGuardianBorrows'
 CREATE TABLE [dbo].[PrimaryGuardianBorrows] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [BorrowedDate] datetime  NOT NULL,
+    [BorrowDate] datetime  NOT NULL,
     [PrimaryGuardianId] int  NOT NULL,
-    [Returned] bit  NOT NULL
+    [Returned] bit  NOT NULL,
+    [LibraryItemId] int  NOT NULL,
+    [DueDate] datetime  NOT NULL,
+    [ReturnDate] datetime  NULL
 );
 GO
 
@@ -338,8 +345,7 @@ CREATE TABLE [dbo].[LibraryItems] (
     [Note] nvarchar(max)  NOT NULL,
     [LendingPeriod] nvarchar(max)  NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
-    [PrimaryGuardianBorrow_Id] int  NOT NULL,
-    [Center_Id] int  NOT NULL
+    [CenterId] int  NOT NULL
 );
 GO
 
@@ -766,34 +772,6 @@ ON [dbo].[SpecialEvents]
     ([CenterId]);
 GO
 
--- Creating foreign key on [PrimaryGuardianBorrow_Id] in table 'LibraryItems'
-ALTER TABLE [dbo].[LibraryItems]
-ADD CONSTRAINT [FK_LibraryItemPrimaryGuardianBorrow]
-    FOREIGN KEY ([PrimaryGuardianBorrow_Id])
-    REFERENCES [dbo].[PrimaryGuardianBorrows]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_LibraryItemPrimaryGuardianBorrow'
-CREATE INDEX [IX_FK_LibraryItemPrimaryGuardianBorrow]
-ON [dbo].[LibraryItems]
-    ([PrimaryGuardianBorrow_Id]);
-GO
-
--- Creating foreign key on [Center_Id] in table 'LibraryItems'
-ALTER TABLE [dbo].[LibraryItems]
-ADD CONSTRAINT [FK_LibraryItemCenter]
-    FOREIGN KEY ([Center_Id])
-    REFERENCES [dbo].[Centers]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_LibraryItemCenter'
-CREATE INDEX [IX_FK_LibraryItemCenter]
-ON [dbo].[LibraryItems]
-    ([Center_Id]);
-GO
-
 -- Creating foreign key on [CenterFreeResourceId] in table 'GivenResources'
 ALTER TABLE [dbo].[GivenResources]
 ADD CONSTRAINT [FK_CenterFreeResourceGivenResource]
@@ -806,6 +784,34 @@ ADD CONSTRAINT [FK_CenterFreeResourceGivenResource]
 CREATE INDEX [IX_FK_CenterFreeResourceGivenResource]
 ON [dbo].[GivenResources]
     ([CenterFreeResourceId]);
+GO
+
+-- Creating foreign key on [CenterId] in table 'LibraryItems'
+ALTER TABLE [dbo].[LibraryItems]
+ADD CONSTRAINT [FK_LibraryItemCenter]
+    FOREIGN KEY ([CenterId])
+    REFERENCES [dbo].[Centers]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_LibraryItemCenter'
+CREATE INDEX [IX_FK_LibraryItemCenter]
+ON [dbo].[LibraryItems]
+    ([CenterId]);
+GO
+
+-- Creating foreign key on [LibraryItemId] in table 'PrimaryGuardianBorrows'
+ALTER TABLE [dbo].[PrimaryGuardianBorrows]
+ADD CONSTRAINT [FK_PrimaryGuardianBorrowLibraryItem]
+    FOREIGN KEY ([LibraryItemId])
+    REFERENCES [dbo].[LibraryItems]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_PrimaryGuardianBorrowLibraryItem'
+CREATE INDEX [IX_FK_PrimaryGuardianBorrowLibraryItem]
+ON [dbo].[PrimaryGuardianBorrows]
+    ([LibraryItemId]);
 GO
 
 -- Creating foreign key on [Id] in table 'LibraryItems_Video'
