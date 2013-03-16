@@ -7,7 +7,6 @@
 
 <h2>Generate</h2>
 
-
 <table>
     <tr>
         <th>
@@ -19,13 +18,16 @@
         <th></th>
     </tr>
 
+  
+
+
     @for (int i = 0; i < 2; i++)
             {
                 <tr>
                     <td>
-                        (from u in context.PrimaryGuardians
-                    where u.DateCreated > myReport.startDay
-                    select u).ToArray().Length;
+                            <div class="display-field">
+                            @Html.DisplayFor(model => model.Centers.Find(0).Name)
+                            </div>
                     </td>
 
                     <td>

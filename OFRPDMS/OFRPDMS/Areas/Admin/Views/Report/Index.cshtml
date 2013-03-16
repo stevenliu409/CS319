@@ -46,20 +46,13 @@ Center2: <input type="checkbox" name="Center2" value="football"  /><br />
     <fieldset>
         <legend>Report</legend>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.startDay)
-        </div>
+
         <div class="editor-field">
-            @Html.EditorFor(model => model.startDay)
-            @Html.ValidationMessageFor(model => model.startDay)
+        <div id="start_day">Start Day :<input type="date" class="datepicker" /></div><br />
         </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.endDay)
-        </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.endDay)
-            @Html.ValidationMessageFor(model => model.endDay)
+        <div id="end_day">End Day :<input type="date" class="datepicker" /></div><br />
         </div>
 
         <p>
