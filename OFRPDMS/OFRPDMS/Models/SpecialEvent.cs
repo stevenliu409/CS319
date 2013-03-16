@@ -24,6 +24,7 @@ namespace OFRPDMS.Models
         public string GuestSpeakerType { get; set; }
         public int CenterId { get; set; }
         public int Id { get; set; }
+        public System.DateTime Date { get; set; }
     
         public virtual ICollection<EventParticipant> EventParticipants { get; set; }
         public virtual Center Center { get; set; }

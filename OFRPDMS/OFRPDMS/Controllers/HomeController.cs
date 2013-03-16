@@ -33,9 +33,14 @@ namespace OFRPDMS.Controllers
             if (!Roles.RoleExists("Staff"))
             {
                 Roles.CreateRole("Staff");
-            }
 
-            return View();
+            }
+            if (Roles.GetRolesForUser().Contains("Administrators"))
+                return RedirectToAction("Index", "Admin");
+            if (Roles.GetRolesForUser().Contains("Staff"))
+                return RedirectToAction("Index", "Staff");
+
+            return RedirectToAction("LogOn", "Account");
         }
 
         public ActionResult About()

@@ -35,6 +35,7 @@ namespace OFRPDMS.Models
         public DbSet<Account> Accounts { get; set; }
         public DbSet<CenterFreeResource> CenterFreeResources { get; set; }
         public DbSet<SpecialEvent> SpecialEvents { get; set; }
+        public DbSet<LibraryItem> LibraryItems { get; set; }
         public DbSet<Toy> Toys { get; set; }
         public DbSet<Video> Videos { get; set; }
         public DbSet<Book> Books { get; set; }

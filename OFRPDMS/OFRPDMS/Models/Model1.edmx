@@ -103,21 +103,17 @@
       <End Role="SpecialEvent" EntitySet="SpecialEvents" />
       <End Role="Center" EntitySet="Centers" />
     </AssociationSet>
-    <AssociationSet Name="GivenResourceCenter" Association="Model1.Store.GivenResourceCenter">
-      <End Role="GivenResource" EntitySet="GivenResources" />
-      <End Role="Center" EntitySet="Centers" />
-    </AssociationSet>
-    <AssociationSet Name="GivenResourceCenterFreeResource" Association="Model1.Store.GivenResourceCenterFreeResource">
-      <End Role="GivenResource" EntitySet="GivenResources" />
+    <AssociationSet Name="CenterFreeResourceGivenResource" Association="Model1.Store.CenterFreeResourceGivenResource">
       <End Role="CenterFreeResource" EntitySet="CenterFreeResources" />
-    </AssociationSet>
-    <AssociationSet Name="LibraryItemPrimaryGuardianBorrow" Association="Model1.Store.LibraryItemPrimaryGuardianBorrow">
-      <End Role="LibraryItem" EntitySet="LibraryItems" />
-      <End Role="PrimaryGuardianBorrow" EntitySet="PrimaryGuardianBorrows" />
+      <End Role="GivenResource" EntitySet="GivenResources" />
     </AssociationSet>
     <AssociationSet Name="LibraryItemCenter" Association="Model1.Store.LibraryItemCenter">
       <End Role="LibraryItem" EntitySet="LibraryItems" />
       <End Role="Center" EntitySet="Centers" />
+    </AssociationSet>
+    <AssociationSet Name="PrimaryGuardianBorrowLibraryItem" Association="Model1.Store.PrimaryGuardianBorrowLibraryItem">
+      <End Role="PrimaryGuardianBorrow" EntitySet="PrimaryGuardianBorrows" />
+      <End Role="LibraryItem" EntitySet="LibraryItems" />
     </AssociationSet>
     <AssociationSet Name="FK_Video_inherits_LibraryItem" Association="Model1.Store.FK_Video_inherits_LibraryItem">
       <End Role="LibraryItem" EntitySet="LibraryItems" />
@@ -137,9 +133,12 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="BorrowedDate" Type="datetime" Nullable="false" />
+    <Property Name="BorrowDate" Type="datetime" Nullable="false" />
     <Property Name="PrimaryGuardianId" Type="int" Nullable="false" />
     <Property Name="Returned" Type="bit" Nullable="false" />
+    <Property Name="LibraryItemId" Type="int" Nullable="false" />
+    <Property Name="DueDate" Type="datetime" Nullable="false" />
+    <Property Name="ReturnDate" Type="datetime" Nullable="true" />
   </EntityType>
   <EntityType Name="PrimaryGuardians">
     <Key>
@@ -154,7 +153,6 @@
     <Property Name="DateCreated" Type="datetime" Nullable="false" />
     <Property Name="Language" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Country" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="RelationshipToChild" Type="nvarchar(max)" Nullable="true" />
     <Property Name="CenterId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="SecondaryGuardians">
@@ -187,6 +185,7 @@
     <Property Name="LastName" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Birthdate" Type="datetime" Nullable="true" />
     <Property Name="PrimaryGuardianId" Type="int" Nullable="false" />
+    <Property Name="GuardianRelationship" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="Allergies">
     <Key>
@@ -221,7 +220,6 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="CenterId" Type="int" Nullable="false" />
-    <Property Name="Date" Type="datetime" Nullable="false" />
     <Property Name="Count" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Referrals">
@@ -231,6 +229,8 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="CenterReferralId" Type="int" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="DateReferred" Type="datetime" Nullable="false" />
+    <Property Name="CountReferred" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="CenterAccounts">
     <Key>
@@ -256,6 +256,7 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="NumberAvailable" Type="int" Nullable="true" />
     <Property Name="CenterId" Type="int" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="SpecialEvents">
     <Key>
@@ -266,6 +267,7 @@
     <Property Name="GuestSpeakerType" Type="nvarchar(max)" Nullable="true" />
     <Property Name="CenterId" Type="int" Nullable="false" />
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="GivenResources">
     <Key>
@@ -275,7 +277,7 @@
     <Property Name="DateGiven" Type="datetime" Nullable="true" />
     <Property Name="Count" Type="int" Nullable="false" />
     <Property Name="CenterId" Type="int" Nullable="false" />
-    <Property Name="CenterFreeResource_Id" Type="int" Nullable="false" />
+    <Property Name="CenterFreeResourceId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="LibraryItems">
     <Key>
@@ -289,8 +291,7 @@
     <Property Name="Note" Type="nvarchar(max)" Nullable="false" />
     <Property Name="LendingPeriod" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="PrimaryGuardianBorrow_Id" Type="int" Nullable="false" />
-    <Property Name="Center_Id" Type="int" Nullable="false" />
+    <Property Name="CenterId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="LibraryItems_Video">
     <Key>
@@ -507,39 +508,15 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="GivenResourceCenter">
-    <End Role="GivenResource" Type="Model1.Store.GivenResources" Multiplicity="*" />
-    <End Role="Center" Type="Model1.Store.Centers" Multiplicity="1" />
-    <ReferentialConstraint>
-      <Principal Role="Center">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="GivenResource">
-        <PropertyRef Name="CenterId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="GivenResourceCenterFreeResource">
-    <End Role="GivenResource" Type="Model1.Store.GivenResources" Multiplicity="*" />
+  <Association Name="CenterFreeResourceGivenResource">
     <End Role="CenterFreeResource" Type="Model1.Store.CenterFreeResources" Multiplicity="1" />
+    <End Role="GivenResource" Type="Model1.Store.GivenResources" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="CenterFreeResource">
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="GivenResource">
-        <PropertyRef Name="CenterFreeResource_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="LibraryItemPrimaryGuardianBorrow">
-    <End Role="LibraryItem" Type="Model1.Store.LibraryItems" Multiplicity="*" />
-    <End Role="PrimaryGuardianBorrow" Type="Model1.Store.PrimaryGuardianBorrows" Multiplicity="1" />
-    <ReferentialConstraint>
-      <Principal Role="PrimaryGuardianBorrow">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="LibraryItem">
-        <PropertyRef Name="PrimaryGuardianBorrow_Id" />
+        <PropertyRef Name="CenterFreeResourceId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -551,7 +528,19 @@
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="LibraryItem">
-        <PropertyRef Name="Center_Id" />
+        <PropertyRef Name="CenterId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="PrimaryGuardianBorrowLibraryItem">
+    <End Role="PrimaryGuardianBorrow" Type="Model1.Store.PrimaryGuardianBorrows" Multiplicity="*" />
+    <End Role="LibraryItem" Type="Model1.Store.LibraryItems" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="LibraryItem">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PrimaryGuardianBorrow">
+        <PropertyRef Name="LibraryItemId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -727,22 +716,18 @@
             <End Role="Center" EntitySet="Centers" />
           </AssociationSet>
           <EntitySet Name="GivenResources" EntityType="Model1.GivenResource" />
-          <AssociationSet Name="GivenResourceCenter" Association="Model1.GivenResourceCenter">
-            <End Role="GivenResource" EntitySet="GivenResources" />
-            <End Role="Center" EntitySet="Centers" />
-          </AssociationSet>
-          <AssociationSet Name="GivenResourceCenterFreeResource" Association="Model1.GivenResourceCenterFreeResource">
-            <End Role="GivenResource" EntitySet="GivenResources" />
-            <End Role="CenterFreeResource" EntitySet="CenterFreeResources" />
-          </AssociationSet>
           <EntitySet Name="LibraryItems" EntityType="Model1.LibraryItem" />
-          <AssociationSet Name="LibraryItemPrimaryGuardianBorrow" Association="Model1.LibraryItemPrimaryGuardianBorrow">
-            <End Role="LibraryItem" EntitySet="LibraryItems" />
-            <End Role="PrimaryGuardianBorrow" EntitySet="PrimaryGuardianBorrows" />
+          <AssociationSet Name="CenterFreeResourceGivenResource" Association="Model1.CenterFreeResourceGivenResource">
+            <End Role="CenterFreeResource" EntitySet="CenterFreeResources" />
+            <End Role="GivenResource" EntitySet="GivenResources" />
           </AssociationSet>
           <AssociationSet Name="LibraryItemCenter" Association="Model1.LibraryItemCenter">
             <End Role="LibraryItem" EntitySet="LibraryItems" />
             <End Role="Center" EntitySet="Centers" />
+          </AssociationSet>
+          <AssociationSet Name="PrimaryGuardianBorrowLibraryItem" Association="Model1.PrimaryGuardianBorrowLibraryItem">
+            <End Role="PrimaryGuardianBorrow" EntitySet="PrimaryGuardianBorrows" />
+            <End Role="LibraryItem" EntitySet="LibraryItems" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="PrimaryGuardianBorrow">
@@ -750,11 +735,14 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="DateTime" Name="BorrowedDate" Nullable="false" />
+          <Property Type="DateTime" Name="BorrowDate" Nullable="false" />
           <NavigationProperty Name="PrimaryGuardian" Relationship="Model1.PrimaryGuardianPrimaryGuardianBorrow" FromRole="PrimaryGuardianBorrow" ToRole="PrimaryGuardian" />
           <Property Type="Int32" Name="PrimaryGuardianId" Nullable="false" />
           <Property Type="Boolean" Name="Returned" Nullable="false" />
-          <NavigationProperty Name="LibraryItem" Relationship="Model1.LibraryItemPrimaryGuardianBorrow" FromRole="PrimaryGuardianBorrow" ToRole="LibraryItem" />
+          <NavigationProperty Name="LibraryItem" Relationship="Model1.PrimaryGuardianBorrowLibraryItem" FromRole="PrimaryGuardianBorrow" ToRole="LibraryItem" />
+          <Property Type="Int32" Name="LibraryItemId" Nullable="false" />
+          <Property Type="DateTime" Name="DueDate" Nullable="false" />
+          <Property Type="DateTime" Name="ReturnDate" Nullable="true" />
         </EntityType>
         <EntityType Name="PrimaryGuardian">
           <Key>
@@ -769,7 +757,6 @@
           <Property Type="DateTime" Name="DateCreated" Nullable="false" />
           <Property Type="String" Name="Language" Nullable="true" />
           <Property Type="String" Name="Country" Nullable="true" />
-          <Property Type="String" Name="RelationshipToChild" Nullable="true" />
           <NavigationProperty Name="EventParticipants" Relationship="Model1.EventParticipantPrimaryGuardian" FromRole="PrimaryGuardian" ToRole="EventParticipant" />
           <NavigationProperty Name="Children" Relationship="Model1.PrimaryGuardianChild" FromRole="PrimaryGuardian" ToRole="Child" />
           <NavigationProperty Name="Allergies" Relationship="Model1.PrimaryGuardianAllergy" FromRole="PrimaryGuardian" ToRole="Allergy" />
@@ -830,6 +817,7 @@
           <Property Type="Int32" Name="PrimaryGuardianId" Nullable="false" />
           <NavigationProperty Name="EventParticipants" Relationship="Model1.EventParticipantChild" FromRole="Child" ToRole="EventParticipant" />
           <NavigationProperty Name="Allergies" Relationship="Model1.ChildAllergy" FromRole="Child" ToRole="Allergy" />
+          <Property Type="String" Name="GuardianRelationship" Nullable="true" />
         </EntityType>
         <Association Name="PrimaryGuardianChild">
           <End Type="Model1.PrimaryGuardian" Role="PrimaryGuardian" Multiplicity="1" />
@@ -915,6 +903,7 @@
           <NavigationProperty Name="Center" Relationship="Model1.SpecialEventCenter" FromRole="SpecialEvent" ToRole="Center" />
           <Property Type="Int32" Name="CenterId" Nullable="false" />
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="DateTime" Name="Date" Nullable="false" />
         </EntityType>
         <EntityType Name="Center">
           <Key>
@@ -931,8 +920,7 @@
           <NavigationProperty Name="CenterFreeResources" Relationship="Model1.CenterCenterFreeResource" FromRole="Center" ToRole="CenterFreeResource" />
           <NavigationProperty Name="PrimaryGuardians" Relationship="Model1.PrimaryGuardianCenter" FromRole="Center" ToRole="PrimaryGuardian" />
           <NavigationProperty Name="SpecialEvents" Relationship="Model1.SpecialEventCenter" FromRole="Center" ToRole="SpecialEvent" />
-          <NavigationProperty Name="GivenResources" Relationship="Model1.GivenResourceCenter" FromRole="Center" ToRole="GivenResource" />
-          <NavigationProperty Name="LibraryItem" Relationship="Model1.LibraryItemCenter" FromRole="Center" ToRole="LibraryItem" />
+          <NavigationProperty Name="LibraryItems" Relationship="Model1.LibraryItemCenter" FromRole="Center" ToRole="LibraryItem" />
         </EntityType>
         <Association Name="CenterEvent">
           <End Type="Model1.Center" Role="Center" Multiplicity="1" />
@@ -954,7 +942,6 @@
           <NavigationProperty Name="Referrals" Relationship="Model1.CenterReferralReferral" FromRole="CenterReferral" ToRole="Referral" />
           <NavigationProperty Name="Center" Relationship="Model1.CenterCenterReferral" FromRole="CenterReferral" ToRole="Center" />
           <Property Type="Int32" Name="CenterId" Nullable="false" />
-          <Property Type="DateTime" Name="Date" Nullable="false" />
           <Property Type="Int32" Name="Count" Nullable="false" />
         </EntityType>
         <EntityType Name="Referral">
@@ -965,6 +952,8 @@
           <NavigationProperty Name="CenterReferral" Relationship="Model1.CenterReferralReferral" FromRole="Referral" ToRole="CenterReferral" />
           <Property Type="Int32" Name="CenterReferralId" Nullable="false" />
           <Property Type="String" Name="Name" Nullable="false" />
+          <Property Type="DateTime" Name="DateReferred" Nullable="false" />
+          <Property Type="Int32" Name="CountReferred" Nullable="false" />
         </EntityType>
         <Association Name="CenterReferralReferral">
           <End Type="Model1.CenterReferral" Role="CenterReferral" Multiplicity="1" />
@@ -1042,7 +1031,8 @@
           <Property Type="Int32" Name="NumberAvailable" Nullable="true" />
           <NavigationProperty Name="Center" Relationship="Model1.CenterCenterFreeResource" FromRole="CenterFreeResource" ToRole="Center" />
           <Property Type="Int32" Name="CenterId" Nullable="false" />
-          <NavigationProperty Name="GivenResource" Relationship="Model1.GivenResourceCenterFreeResource" FromRole="CenterFreeResource" ToRole="GivenResource" />
+          <NavigationProperty Name="GivenResources" Relationship="Model1.CenterFreeResourceGivenResource" FromRole="CenterFreeResource" ToRole="GivenResource" />
+          <Property Type="String" Name="Name" Nullable="false" />
         </EntityType>
         <Association Name="CenterCenterFreeResource">
           <End Type="Model1.Center" Role="Center" Multiplicity="1" />
@@ -1103,26 +1093,10 @@
           <Property Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
           <Property Type="DateTime" Name="DateGiven" Nullable="true" />
           <Property Type="Int32" Name="Count" Nullable="false" />
-          <NavigationProperty Name="Center" Relationship="Model1.GivenResourceCenter" FromRole="GivenResource" ToRole="Center" />
           <Property Type="Int32" Name="CenterId" Nullable="false" />
-          <NavigationProperty Name="CenterFreeResource" Relationship="Model1.GivenResourceCenterFreeResource" FromRole="GivenResource" ToRole="CenterFreeResource" />
+          <NavigationProperty Name="CenterFreeResource" Relationship="Model1.CenterFreeResourceGivenResource" FromRole="GivenResource" ToRole="CenterFreeResource" />
+          <Property Type="Int32" Name="CenterFreeResourceId" Nullable="false" />
         </EntityType>
-        <Association Name="GivenResourceCenter">
-          <End Type="Model1.GivenResource" Role="GivenResource" Multiplicity="*" />
-          <End Type="Model1.Center" Role="Center" Multiplicity="1" />
-          <ReferentialConstraint>
-            <Principal Role="Center">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="GivenResource">
-              <PropertyRef Name="CenterId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="GivenResourceCenterFreeResource">
-          <End Type="Model1.GivenResource" Role="GivenResource" Multiplicity="0..1" />
-          <End Type="Model1.CenterFreeResource" Role="CenterFreeResource" Multiplicity="1" />
-        </Association>
         <EntityType Name="LibraryItem" Abstract="true">
           <Key>
             <PropertyRef Name="Id" />
@@ -1135,8 +1109,9 @@
           <Property Type="String" Name="Note" Nullable="false" />
           <Property Type="String" Name="LendingPeriod" Nullable="false" />
           <Property Type="String" Name="Name" Nullable="false" />
-          <NavigationProperty Name="PrimaryGuardianBorrow" Relationship="Model1.LibraryItemPrimaryGuardianBorrow" FromRole="LibraryItem" ToRole="PrimaryGuardianBorrow" />
           <NavigationProperty Name="Center" Relationship="Model1.LibraryItemCenter" FromRole="LibraryItem" ToRole="Center" />
+          <Property Type="Int32" Name="CenterId" Nullable="false" />
+          <NavigationProperty Name="PrimaryGuardianBorrows" Relationship="Model1.PrimaryGuardianBorrowLibraryItem" FromRole="LibraryItem" ToRole="PrimaryGuardianBorrow" />
         </EntityType>
         <EntityType Name="Video" BaseType="Model1.LibraryItem" >
         </EntityType>
@@ -1144,13 +1119,41 @@
           <Property Type="String" Name="Sanitized" Nullable="false" />
         </EntityType>
         <EntityType Name="Book" BaseType="Model1.LibraryItem" />
-        <Association Name="LibraryItemPrimaryGuardianBorrow">
-          <End Type="Model1.LibraryItem" Role="LibraryItem" Multiplicity="1" />
-          <End Type="Model1.PrimaryGuardianBorrow" Role="PrimaryGuardianBorrow" Multiplicity="1" />
+        <Association Name="CenterFreeResourceGivenResource">
+          <End Type="Model1.CenterFreeResource" Role="CenterFreeResource" Multiplicity="1" />
+          <End Type="Model1.GivenResource" Role="GivenResource" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CenterFreeResource">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GivenResource">
+              <PropertyRef Name="CenterFreeResourceId" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
         <Association Name="LibraryItemCenter">
-          <End Type="Model1.LibraryItem" Role="LibraryItem" Multiplicity="1" />
+          <End Type="Model1.LibraryItem" Role="LibraryItem" Multiplicity="*" />
           <End Type="Model1.Center" Role="Center" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="Center">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LibraryItem">
+              <PropertyRef Name="CenterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PrimaryGuardianBorrowLibraryItem">
+          <End Type="Model1.PrimaryGuardianBorrow" Role="PrimaryGuardianBorrow" Multiplicity="*" />
+          <End Type="Model1.LibraryItem" Role="LibraryItem" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="LibraryItem">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PrimaryGuardianBorrow">
+              <PropertyRef Name="LibraryItemId" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -1162,9 +1165,12 @@
       <EntityTypeMapping TypeName="IsTypeOf(Model1.PrimaryGuardianBorrow)">
         <MappingFragment StoreEntitySet="PrimaryGuardianBorrows">
           <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="BorrowedDate" ColumnName="BorrowedDate" />
+          <ScalarProperty Name="BorrowDate" ColumnName="BorrowDate" />
           <ScalarProperty Name="PrimaryGuardianId" ColumnName="PrimaryGuardianId" />
           <ScalarProperty Name="Returned" ColumnName="Returned" />
+          <ScalarProperty Name="LibraryItemId" ColumnName="LibraryItemId" />
+          <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+          <ScalarProperty Name="ReturnDate" ColumnName="ReturnDate" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1180,7 +1186,6 @@
           <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
           <ScalarProperty Name="Language" ColumnName="Language" />
           <ScalarProperty Name="Country" ColumnName="Country" />
-          <ScalarProperty Name="RelationshipToChild" ColumnName="RelationshipToChild" />
           <ScalarProperty Name="CenterId" ColumnName="CenterId" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -1215,6 +1220,7 @@
           <ScalarProperty Name="LastName" ColumnName="LastName" />
           <ScalarProperty Name="Birthdate" ColumnName="Birthdate" />
           <ScalarProperty Name="PrimaryGuardianId" ColumnName="PrimaryGuardianId" />
+          <ScalarProperty Name="GuardianRelationship" ColumnName="GuardianRelationship" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1253,7 +1259,6 @@
         <MappingFragment StoreEntitySet="CenterReferrals">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="CenterId" ColumnName="CenterId" />
-          <ScalarProperty Name="Date" ColumnName="Date" />
           <ScalarProperty Name="Count" ColumnName="Count" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -1264,6 +1269,8 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="CenterReferralId" ColumnName="CenterReferralId" />
           <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="DateReferred" ColumnName="DateReferred" />
+          <ScalarProperty Name="CountReferred" ColumnName="CountReferred" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1292,6 +1299,7 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="NumberAvailable" ColumnName="NumberAvailable" />
           <ScalarProperty Name="CenterId" ColumnName="CenterId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1303,6 +1311,7 @@
           <ScalarProperty Name="GuestSpeaker" ColumnName="GuestSpeaker" />
           <ScalarProperty Name="GuestSpeakerType" ColumnName="GuestSpeakerType" />
           <ScalarProperty Name="CenterId" ColumnName="CenterId" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1313,6 +1322,7 @@
           <ScalarProperty Name="DateGiven" ColumnName="DateGiven" />
           <ScalarProperty Name="Count" ColumnName="Count" />
           <ScalarProperty Name="CenterId" ColumnName="CenterId" />
+          <ScalarProperty Name="CenterFreeResourceId" ColumnName="CenterFreeResourceId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1327,6 +1337,7 @@
           <ScalarProperty Name="Note" ColumnName="Note" />
           <ScalarProperty Name="LendingPeriod" ColumnName="LendingPeriod" />
           <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="CenterId" ColumnName="CenterId" />
         </MappingFragment>
       </EntityTypeMapping>
       <EntityTypeMapping TypeName="IsTypeOf(Model1.Video)">
@@ -1370,30 +1381,6 @@
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
     </AssociationSetMapping>
-    <AssociationSetMapping Name="GivenResourceCenterFreeResource" TypeName="Model1.GivenResourceCenterFreeResource" StoreEntitySet="GivenResources">
-      <EndProperty Name="CenterFreeResource">
-        <ScalarProperty Name="Id" ColumnName="CenterFreeResource_Id" />
-      </EndProperty>
-      <EndProperty Name="GivenResource">
-        <ScalarProperty Name="Id" ColumnName="Id" />
-      </EndProperty>
-    </AssociationSetMapping>
-    <AssociationSetMapping Name="LibraryItemPrimaryGuardianBorrow" TypeName="Model1.LibraryItemPrimaryGuardianBorrow" StoreEntitySet="LibraryItems">
-      <EndProperty Name="PrimaryGuardianBorrow">
-        <ScalarProperty Name="Id" ColumnName="PrimaryGuardianBorrow_Id" />
-      </EndProperty>
-      <EndProperty Name="LibraryItem">
-        <ScalarProperty Name="Id" ColumnName="Id" />
-      </EndProperty>
-    </AssociationSetMapping>
-    <AssociationSetMapping Name="LibraryItemCenter" TypeName="Model1.LibraryItemCenter" StoreEntitySet="LibraryItems">
-      <EndProperty Name="Center">
-        <ScalarProperty Name="Id" ColumnName="Center_Id" />
-      </EndProperty>
-      <EndProperty Name="LibraryItem">
-        <ScalarProperty Name="Id" ColumnName="Id" />
-      </EndProperty>
-    </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>
@@ -1415,23 +1402,24 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram Name="Model1" DisplayType="true" ZoomLevel="97" >
-        <EntityTypeShape EntityType="Model1.PrimaryGuardianBorrow" Width="1.5" PointX="0.5" PointY="4.875" Height="2.5571907552083326" />
-        <EntityTypeShape EntityType="Model1.PrimaryGuardian" Width="1.5" PointX="2.75" PointY="7.5" Height="4.4802050781250014" />
+        <EntityTypeShape EntityType="Model1.PrimaryGuardianBorrow" Width="1.5" PointX="0.5" PointY="4.875" Height="2.7494921874999996" />
+        <EntityTypeShape EntityType="Model1.PrimaryGuardian" Width="1.5" PointX="2.75" PointY="7.5" Height="3.9033007812499978" />
         <AssociationConnector Association="Model1.PrimaryGuardianPrimaryGuardianBorrow">
-          <ConnectorPoint PointX="2.75" PointY="8.21875" />
-          <ConnectorPoint PointX="0.53125" PointY="8.21875" />
-          <ConnectorPoint PointX="0.53125" PointY="7.4321907552083326" />
+          <ConnectorPoint PointX="2.75" PointY="8.28099659375" />
+          <ConnectorPoint PointX="0.53125" PointY="8.28099659375" />
+          <ConnectorPoint PointX="0.53125" PointY="7.6244921875" />
         </AssociationConnector>
         <EntityTypeShape EntityType="Model1.SecondaryGuardian" Width="1.5" PointX="0.625" PointY="9" Height="2.3648893229166656" />
         <EntityTypeShape EntityType="Model1.EventParticipant" Width="1.5" PointX="5.125" PointY="9" Height="2.5571907552083335" />
         <AssociationConnector Association="Model1.EventParticipantPrimaryGuardian">
-          <ConnectorPoint PointX="5.125" PointY="10.278595377604166" />
-          <ConnectorPoint PointX="4.25" PointY="10.278595377604166" />
+          <ConnectorPoint PointX="5.125" PointY="10.201650390624998" />
+          <ConnectorPoint PointX="4.25" PointY="10.201650390624998" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="Model1.Child" Width="1.5" PointX="4.875" PointY="12.375" Height="2.5571907552083335" />
+        <EntityTypeShape EntityType="Model1.Child" Width="1.5" PointX="4.875" PointY="12.375" Height="2.7494921874999996" />
         <AssociationConnector Association="Model1.PrimaryGuardianChild">
-          <ConnectorPoint PointX="4.2499999999999973" PointY="11.980205078125001" />
-          <ConnectorPoint PointX="4.875" PointY="12.375" />
+          <ConnectorPoint PointX="3.77832203125" PointY="11.403300781249998" />
+          <ConnectorPoint PointX="3.77832203125" PointY="13.74974609375" />
+          <ConnectorPoint PointX="4.875" PointY="13.74974609375" />
         </AssociationConnector>
         <AssociationConnector Association="Model1.EventParticipantChild">
           <ConnectorPoint PointX="5.75" PointY="11.557190755208334" />
@@ -1439,12 +1427,12 @@
         </AssociationConnector>
         <EntityTypeShape EntityType="Model1.Allergy" Width="1.875" PointX="4.25" PointY="16.25" Height="2.1725878906249996" />
         <AssociationConnector Association="Model1.PrimaryGuardianAllergy">
-          <ConnectorPoint PointX="3.46875" PointY="11.980205078125001" />
-          <ConnectorPoint PointX="3.46875" PointY="17.336293945312498" />
+          <ConnectorPoint PointX="3.2441390625" PointY="11.403300781249998" />
+          <ConnectorPoint PointX="3.2441390625" PointY="17.336293945312498" />
           <ConnectorPoint PointX="4.25" PointY="17.336293945312498" />
         </AssociationConnector>
         <AssociationConnector Association="Model1.ChildAllergy">
-          <ConnectorPoint PointX="5.5" PointY="14.932190755208334" />
+          <ConnectorPoint PointX="5.5" PointY="15.1244921875" />
           <ConnectorPoint PointX="5.5" PointY="16.25" />
         </AssociationConnector>
         <EntityTypeShape EntityType="Model1.Event" Width="1.5" PointX="7.75" PointY="9.75" Height="1.9802864583333335" />
@@ -1452,26 +1440,26 @@
           <ConnectorPoint PointX="7.75" PointY="10.354217331353453" />
           <ConnectorPoint PointX="6.625" PointY="10.354217331353453" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="Model1.SpecialEvent" Width="1.5" PointX="7.75" PointY="12.5" Height="2.3648893229166674" />
+        <EntityTypeShape EntityType="Model1.SpecialEvent" Width="1.5" PointX="7.75" PointY="12.5" Height="2.5571907552083335" />
         <EntityTypeShape EntityType="Model1.Center" Width="1.5" PointX="10.75" PointY="5.375" Height="2.9417936197916656" />
         <AssociationConnector Association="Model1.CenterEvent">
-          <ConnectorPoint PointX="11.992189374999999" PointY="8.3167936197916656" />
-          <ConnectorPoint PointX="11.992189374999999" PointY="10.495071614583333" />
-          <ConnectorPoint PointX="11.669270208333334" PointY="10.495071614583333" />
-          <ConnectorPoint PointX="11.502603541666666" PointY="10.495071614583333" />
-          <ConnectorPoint PointX="11.220049270833334" PointY="10.495071614583333" />
-          <ConnectorPoint PointX="11.053382604166666" PointY="10.495071614583333" />
-          <ConnectorPoint PointX="9.25" PointY="10.495071614583333" />
+          <ConnectorPoint PointX="11.8989262890625" PointY="8.701396484375" />
+          <ConnectorPoint PointX="11.8989262890625" PointY="10.571656494140624" />
+          <ConnectorPoint PointX="11.577533416341145" PointY="10.571656494140624" />
+          <ConnectorPoint PointX="11.410866749674478" PointY="10.571656494140624" />
+          <ConnectorPoint PointX="11.174180874837239" PointY="10.571656494140624" />
+          <ConnectorPoint PointX="11.007514208170571" PointY="10.571656494140624" />
+          <ConnectorPoint PointX="9.25" PointY="10.571656494140624" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="Model1.CenterReferral" Width="1.5" PointX="13.125" PointY="3.75" Height="2.172587890625" />
-        <EntityTypeShape EntityType="Model1.Referral" Width="1.5" PointX="15.875" PointY="3.875" Height="1.787985026041667" />
+        <EntityTypeShape EntityType="Model1.CenterReferral" Width="1.5" PointX="13.125" PointY="3.75" Height="1.9802864583333326" />
+        <EntityTypeShape EntityType="Model1.Referral" Width="1.5" PointX="15.875" PointY="3.875" Height="2.1725878906249996" />
         <AssociationConnector Association="Model1.CenterReferralReferral">
-          <ConnectorPoint PointX="14.625" PointY="4.7689925130208337" />
-          <ConnectorPoint PointX="15.875" PointY="4.7689925130208337" />
+          <ConnectorPoint PointX="14.625" PointY="4.8026432291666659" />
+          <ConnectorPoint PointX="15.875" PointY="4.8026432291666659" />
         </AssociationConnector>
         <AssociationConnector Association="Model1.CenterCenterReferral">
-          <ConnectorPoint PointX="12.25" PointY="5.6487939453125" />
-          <ConnectorPoint PointX="13.125" PointY="5.6487939453125" />
+          <ConnectorPoint PointX="12.25" PointY="5.5526432291666659" />
+          <ConnectorPoint PointX="13.125" PointY="5.5526432291666659" />
         </AssociationConnector>
         <EntityTypeShape EntityType="Model1.CenterAccount" Width="1.5" PointX="14.75" PointY="6.375" Height="1.7879850260416657" />
         <AssociationConnector Association="Model1.CenterCenterAccount">
@@ -1483,42 +1471,32 @@
           <ConnectorPoint PointX="16.25" PointY="7.2689925130208328" />
           <ConnectorPoint PointX="17.625" PointY="7.2689925130208328" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="Model1.CenterFreeResource" Width="1.5" PointX="13.125" PointY="10.25" Height="1.9802864583333335" />
+        <EntityTypeShape EntityType="Model1.CenterFreeResource" Width="1.5" PointX="13.125" PointY="10.25" Height="2.1725878906249996" />
         <AssociationConnector Association="Model1.CenterCenterFreeResource">
-          <ConnectorPoint PointX="11.585936875" PointY="8.3167936197916656" />
-          <ConnectorPoint PointX="11.585936875" PointY="11.362679036458331" />
-          <ConnectorPoint PointX="13.125" PointY="11.362679036458331" />
+          <ConnectorPoint PointX="11.494200083007812" PointY="8.701396484375" />
+          <ConnectorPoint PointX="11.494200083007812" PointY="11.497122192382811" />
+          <ConnectorPoint PointX="13.125" PointY="11.497122192382811" />
         </AssociationConnector>
         <AssociationConnector Association="Model1.PrimaryGuardianSecondaryGuardian">
           <ConnectorPoint PointX="2.75" PointY="10.182444661458334" />
           <ConnectorPoint PointX="2.125" PointY="10.182444661458334" />
         </AssociationConnector>
         <AssociationConnector Association="Model1.PrimaryGuardianCenter">
-          <ConnectorPoint PointX="4.25" PointY="8.5739957682291656" />
-          <ConnectorPoint PointX="10.75" PointY="8.5739957682291656" />
+          <ConnectorPoint PointX="4.25" PointY="8.5739957682291674" />
+          <ConnectorPoint PointX="10.75" PointY="8.5739957682291674" />
         </AssociationConnector>
         <AssociationConnector Association="Model1.SpecialEventEventParticipant">
           <ConnectorPoint PointX="7.7511528461538459" PointY="12.5" />
           <ConnectorPoint PointX="7.375" PointY="12.123847153846153" />
-          <ConnectorPoint PointX="7.375" PointY="11.020939662706905" />
-          <ConnectorPoint PointX="6.625" PointY="11.020939662706905" />
+          <ConnectorPoint PointX="7.375" PointY="10.278595377604166" />
+          <ConnectorPoint PointX="6.625" PointY="10.278595377604166" />
         </AssociationConnector>
         <AssociationConnector Association="Model1.SpecialEventCenter">
-          <ConnectorPoint PointX="9.25" PointY="13.682444661458334" />
-          <ConnectorPoint PointX="11.1367159375" PointY="13.682444661458334" />
-          <ConnectorPoint PointX="11.1367159375" PointY="8.3167936197916656" />
+          <ConnectorPoint PointX="9.25" PointY="13.778595377604166" />
+          <ConnectorPoint PointX="11.090847541503905" PointY="13.778595377604166" />
+          <ConnectorPoint PointX="11.090847541503905" PointY="8.701396484375" />
         </AssociationConnector>
         <EntityTypeShape EntityType="Model1.GivenResource" Width="1.5" PointX="16.625" PointY="10.375" Height="2.1725878906249996" />
-        <AssociationConnector Association="Model1.GivenResourceCenter">
-          <ConnectorPoint PointX="16.625" PointY="10.374999999999998" />
-          <ConnectorPoint PointX="16.25" PointY="9.9999999999999982" />
-          <ConnectorPoint PointX="16.25" PointY="8.7351413171562342" />
-          <ConnectorPoint PointX="12.25" PointY="8.7351413171562342" />
-        </AssociationConnector>
-        <AssociationConnector Association="Model1.GivenResourceCenterFreeResource">
-          <ConnectorPoint PointX="16.625" PointY="11.333895729166667" />
-          <ConnectorPoint PointX="14.625" PointY="11.333895729166667" />
-        </AssociationConnector>
         <EntityTypeShape EntityType="Model1.LibraryItem" Width="1.5" PointX="5.375" PointY="5.25" Height="2.9417936197916656" />
         <EntityTypeShape EntityType="Model1.Video" Width="1.5" PointX="6.5" PointY="2.625" Height="1.0187792968749996" IsExpanded="true" />
         <InheritanceConnector EntityType="Model1.Video" ManuallyRouted="true" >
@@ -1541,13 +1519,17 @@
           <ConnectorPoint PointX="11.25" PointY="4.5614263841693345" />
           <ConnectorPoint PointX="11.25" PointY="3.2687792968750031" />
         </InheritanceConnector>
-        <AssociationConnector Association="Model1.LibraryItemPrimaryGuardianBorrow">
-          <ConnectorPoint PointX="5.375" PointY="6.1487939453125" />
-          <ConnectorPoint PointX="2" PointY="6.1487939453125" />
+        <AssociationConnector Association="Model1.CenterFreeResourceGivenResource">
+          <ConnectorPoint PointX="14.625" PointY="11.3987939453125" />
+          <ConnectorPoint PointX="16.625" PointY="11.3987939453125" />
         </AssociationConnector>
         <AssociationConnector Association="Model1.LibraryItemCenter">
-          <ConnectorPoint PointX="6.875" PointY="6.7833968098958328" />
-          <ConnectorPoint PointX="10.75" PointY="6.7833968098958328" />
+          <ConnectorPoint PointX="6.875" PointY="6.8795475260416667" />
+          <ConnectorPoint PointX="10.75" PointY="6.8795475260416667" />
+        </AssociationConnector>
+        <AssociationConnector Association="Model1.PrimaryGuardianBorrowLibraryItem">
+          <ConnectorPoint PointX="2" PointY="6.34375" />
+          <ConnectorPoint PointX="5.375" PointY="6.34375" />
         </AssociationConnector>
       </Diagram>
     </edmx:Diagrams>

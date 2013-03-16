@@ -1,11 +1,13 @@
 @model OFRPDMS.Models.PrimaryGuardian
+@using OFRPDMS.Models
 
 @* This partial view defines form fields that will appear when creating and editing entities *@
 
-
-<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
-<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
 <script src="../../Scripts/Custom/Utility/autocomplete.js" type="text/jscript"></script>
+
+@Html.AntiForgeryToken()
+
+@Html.HiddenFor(model => model.Id)
 
 <div class="editor-label">
     @Html.LabelFor(model => model.FirstName)
@@ -38,7 +40,7 @@
 </div>
 <div class="editor-field">
     @Html.EditorFor(model => model.Phone)
-    @Html.ValidationMessageFor(model => model.Phone)
+     @Html.ValidationMessageFor(model => model.Phone)
 </div>
 
 <div class="editor-label">
@@ -47,14 +49,6 @@
 <div class="editor-field">
     @Html.EditorFor(model => model.PostalCodePrefix)
     @Html.ValidationMessageFor(model => model.PostalCodePrefix)
-</div>
-
-<div class="editor-label">
-    @Html.LabelFor(model => model.DateCreated)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.DateCreated)
-    @Html.ValidationMessageFor(model => model.DateCreated)
 </div>
 
 <div class="editor-label">
@@ -80,4 +74,21 @@
     @Html.DropDownList("CenterId", String.Empty)
     @Html.ValidationMessageFor(model => model.CenterId)
 </div>
+
+<div id="children">
+
+  @Html.EditorFor(model => model.Children)
+
+</div>
+
+<p>
+
+  @Html.LinkToAddNestedForm("Add More Child...", "#children", ".Child", "Children", typeof(Child))
+
+</p>
+
+
+
+
+
 

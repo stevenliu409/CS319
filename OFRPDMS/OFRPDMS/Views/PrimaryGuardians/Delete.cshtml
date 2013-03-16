@@ -50,15 +50,29 @@
         @Html.DisplayFor(model => model.Country)
     </div>
 
-    <div class="display-label">RelationshipToChild</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.RelationshipToChild)
-    </div>
-
     <div class="display-label">Center</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Center.Name)
     </div>
+
+    <div></div>
+    @foreach (var a in Model.Children)
+    {
+    <div class="display-field">
+        <b class="display-label">Child</b>
+        <div class="display-label">First Name</div>
+        @Html.DisplayFor(model => a.FirstName)
+        <div class="display-label">Last Name</div>
+        @Html.DisplayFor(model => a.LastName)
+        <div class="display-label">Birthdate</div>
+        @Html.DisplayFor(model => a.Birthdate)
+        <div class="display-label">RelationshipToChild</div>
+        <div class="display-field">
+        @Html.DisplayFor(model => a.RelationshipToGuardian)
+    </div>
+
+    </div>
+    }
 </fieldset>
 @using (Html.BeginForm()) {
     <p>

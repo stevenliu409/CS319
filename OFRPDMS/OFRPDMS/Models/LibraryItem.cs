@@ -7,8 +7,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System.ComponentModel.DataAnnotations;
-
 namespace OFRPDMS.Models
 {
     using System;
@@ -16,6 +14,11 @@ namespace OFRPDMS.Models
     
     public abstract partial class LibraryItem
     {
+        public LibraryItem()
+        {
+            this.PrimaryGuardianBorrows = new HashSet<PrimaryGuardianBorrow>();
+        }
+    
         public int Id { get; set; }
         public string Broken { get; set; }
         public string CheckedOut { get; set; }
@@ -24,10 +27,9 @@ namespace OFRPDMS.Models
         public string Note { get; set; }
         public string LendingPeriod { get; set; }
         public string Name { get; set; }
+        public int CenterId { get; set; }
     
-        public virtual PrimaryGuardianBorrow PrimaryGuardianBorrow { get; set; }
-
-        [Required]
         public virtual Center Center { get; set; }
+        public virtual ICollection<PrimaryGuardianBorrow> PrimaryGuardianBorrows { get; set; }
     }
 }

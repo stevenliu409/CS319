@@ -37,7 +37,9 @@ namespace OFRPDMS.Controllers
         public ActionResult Create()
         {
             ViewBag.CenterId = new SelectList(context.Centers, "Id", "Name");
-            return View();
+            var model = new PrimaryGuardian();
+            model.BuildChildren(1);
+            return View(model);
         } 
 
         //
@@ -49,6 +51,7 @@ namespace OFRPDMS.Controllers
 
             if (ModelState.IsValid)
             {
+                primaryguardian.DateCreated = DateTime.Now;
                 context.PrimaryGuardians.Add(primaryguardian);
                 context.SaveChanges();
                 return RedirectToAction("Index");
@@ -60,11 +63,12 @@ namespace OFRPDMS.Controllers
         
         //
         // GET: /PrimaryGuardians/Edit/5
- 
+
         public ActionResult Edit(int id)
         {
             PrimaryGuardian primaryguardian = context.PrimaryGuardians.Find(id);
             ViewBag.CenterId = new SelectList(context.Centers, "Id", "Name", primaryguardian.CenterId);
+           
             return View(primaryguardian);
         }
 
@@ -74,9 +78,30 @@ namespace OFRPDMS.Controllers
         [HttpPost]
         public ActionResult Edit(PrimaryGuardian primaryguardian)
         {
+
             if (ModelState.IsValid)
             {
+                primaryguardian.DateCreated = DateTime.Now;
+                context.PrimaryGuardians.Add(primaryguardian);
                 context.Entry(primaryguardian).State = EntityState.Modified;
+                foreach (var child in primaryguardian.Children.ToList())
+                {
+
+                    if (child.Id == 0)
+                    {
+
+                        context.Entry(child).State = EntityState.Added;
+
+                    }
+
+                    else
+                    {
+
+                        context.Entry(child).State = EntityState.Modified;
+
+                    }
+
+                }
                 context.SaveChanges();
                 return RedirectToAction("Index");
             }
