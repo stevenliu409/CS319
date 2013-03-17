@@ -21,7 +21,6 @@ namespace OFRPDMS.Models
     
         public int Id { get; set; }
         public int CenterId { get; set; }
-        public System.DateTime Date { get; set; }
         public int Count { get; set; }
     
         public virtual ICollection<Referral> Referrals { get; set; }

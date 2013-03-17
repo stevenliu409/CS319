@@ -7,8 +7,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System.ComponentModel.DataAnnotations;
-
 namespace OFRPDMS.Models
 {
     using System;
@@ -17,14 +15,14 @@ namespace OFRPDMS.Models
     public partial class PrimaryGuardianBorrow
     {
         public int Id { get; set; }
-        public System.DateTime BorrowedDate { get; set; }
+        public System.DateTime BorrowDate { get; set; }
         public int PrimaryGuardianId { get; set; }
         public bool Returned { get; set; }
+        public int LibraryItemId { get; set; }
+        public System.DateTime DueDate { get; set; }
+        public Nullable<System.DateTime> ReturnDate { get; set; }
     
         public virtual PrimaryGuardian PrimaryGuardian { get; set; }
-
-        // required because of 1 to 1 relationship with a LibraryItem
-        [Required]
         public virtual LibraryItem LibraryItem { get; set; }
     }
 }

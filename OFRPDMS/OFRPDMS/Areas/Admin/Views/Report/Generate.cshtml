@@ -1,0 +1,50 @@
+﻿@model IEnumerable<OFRPDMS.Models.Center>
+
+@{
+    ViewBag.Title = "Generate";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Generate</h2>
+<h2>@ViewBag.S</h2>
+<h2>Generate</h2>
+<table>
+    <tr>
+        <th>
+            Center
+        </th>
+        <th>
+            # of new patient
+        </th>
+        <th>
+            # of patient
+        </th>
+        <th></th>
+    </tr>
+
+    @{
+        int counter = 0;
+    }
+
+
+    @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                            <div class="display-field">
+                            @Html.DisplayFor(modelItem => item.Name)
+                            </div>
+                    </td>
+                    <td>
+                            @ViewBag.numOfNewPG[counter,0]
+                    </td>
+                    <td>
+                            @ViewBag.numOfPG[counter,0]
+                    </td>
+                </tr>
+                counter++;    
+            }
+
+
+</table>
+

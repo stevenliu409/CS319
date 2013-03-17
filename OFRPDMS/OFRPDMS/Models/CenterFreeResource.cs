@@ -14,11 +14,17 @@ namespace OFRPDMS.Models
     
     public partial class CenterFreeResource
     {
+        public CenterFreeResource()
+        {
+            this.GivenResources = new HashSet<GivenResource>();
+        }
+    
         public int Id { get; set; }
         public Nullable<int> NumberAvailable { get; set; }
         public int CenterId { get; set; }
+        public string Name { get; set; }
     
         public virtual Center Center { get; set; }
-        public virtual GivenResource GivenResource { get; set; }
+        public virtual ICollection<GivenResource> GivenResources { get; set; }
     }
 }
