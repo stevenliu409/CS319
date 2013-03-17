@@ -12,7 +12,9 @@ namespace OFRPDMS.Areas.Admin.Controllers
     {
         OFRPDMSContext context = new OFRPDMSContext();
         Report myReport = new Report();
-        int[,] pgTable = new int[2,0];
+        int[,] myArray = new int[,] { { 1, 2 }, { 3, 4 }, { 5, 6 }, { 7, 8 } };
+
+        
         //
         // GET: /Report/
 
@@ -26,12 +28,11 @@ namespace OFRPDMS.Areas.Admin.Controllers
 
         public ActionResult Generate()
         {
-            ViewBag.numOfNewPG = getNumOfNewPG();
-            return View();
+            ViewBag.numOfNewPG = getNumOfNewPGTable();
+            ViewBag.numOfPG = getNumOfPGTable();
+            return View(context.Centers);
         }
 
-
-        
         //
         // Post: /Index
 
@@ -43,20 +44,28 @@ namespace OFRPDMS.Areas.Admin.Controllers
         }
 
         // get the number of new PG(created after start date) 
-        private int getNumOfNewPG()
+        private int[,] getNumOfNewPGTable()
         {
-            return (from u in context.PrimaryGuardians
-                    where u.DateCreated > myReport.startDay
+            int[,] newPGTable = new int[5, 1];
+            for (int i = 0; i < context.Centers.ToArray().Length; i++)
+            {
+                newPGTable[i,0] = (from u in context.PrimaryGuardians
+                    where u.DateCreated > myReport.startDay && u.Center.Id==i
                     select u).ToArray().Length;
+            }
+            return newPGTable;
         }
 
-        private int[,] createPGTable()
+        private int[,] getNumOfPGTable()
         {
-            for (int i = 0; i < 2; i++)
+            int[,] pgTable = new int[5, 1];
+            for (int i = 0; i < context.Centers.ToArray().Length; i++)
             {
-
+                pgTable[i, 0] = (from u in context.PrimaryGuardians
+                                    where  u.Center.Id == i
+                                    select u).ToArray().Length;
             }
-                return pgTable;
+            return pgTable;
         }
         
     }

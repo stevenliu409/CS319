@@ -1,4 +1,4 @@
-﻿@model OFRPDMS.Models.OFRPDMSContext
+﻿@model IEnumerable<OFRPDMS.Models.Center>
 
 @{
     ViewBag.Title = "Generate";
@@ -6,9 +6,13 @@
 }
 
 <h2>Generate</h2>
-
+<h2>@ViewBag.S</h2>
+<h2>Generate</h2>
 <table>
     <tr>
+        <th>
+            Center
+        </th>
         <th>
             # of new patient
         </th>
@@ -18,21 +22,27 @@
         <th></th>
     </tr>
 
-  
+    @{
+        int counter = 0;
+    }
 
 
-    @for (int i = 0; i < 2; i++)
+    @foreach (var item in Model)
             {
                 <tr>
                     <td>
                             <div class="display-field">
-                            @Html.DisplayFor(model => model.Centers.Find(0).Name)
+                            @Html.DisplayFor(modelItem => item.Name)
                             </div>
                     </td>
-
                     <td>
+                            @ViewBag.numOfNewPG[counter,0]
+                    </td>
+                    <td>
+                            @ViewBag.numOfPG[counter,0]
                     </td>
                 </tr>
+                counter++;    
             }
 
 
