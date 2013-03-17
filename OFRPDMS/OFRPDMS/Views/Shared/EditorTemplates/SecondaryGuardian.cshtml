@@ -1,0 +1,45 @@
+﻿@model OFRPDMS.Models.SecondaryGuardian
+
+
+<div class="SecondaryGuardian">
+    
+    <div class="editor-label">
+        <b for="Secondary Guardian">Secondary Guardian</b>
+    </div>
+<div class="editor-label">
+    @Html.LabelFor(model => model.FirstName)
+</div>
+<div class="editor-field">
+
+    @Html.EditorFor(model => model.FirstName)
+    @Html.ValidationMessageFor(model => model.FirstName)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.LastName)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.LastName)
+   
+    @Html.ValidationMessageFor(model => model.LastName)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Phone)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.Phone)
+     @Html.ValidationMessageFor(model => model.Phone)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.RelationshipToChild)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.RelationshipToChild)
+    @Html.ValidationMessageFor(model => model.RelationshipToChild)
+</div>
+        @Html.HiddenFor(model =>model.Delete, new {@class = "mark-for-delete"})
+        @Html.LinkToRemoveNestedForm("Remove Secondary Guardian...", "div.SecondaryGuardian", "input.mark-for-delete")
+
+</div>

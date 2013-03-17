@@ -55,7 +55,44 @@
         @Html.DisplayFor(model => model.Center.Name)
     </div>
 
-    <div></div>
+  
+
+   <div>
+    @foreach (var allergy in Model.Allergies)
+    {
+    <div class="display-field">
+        <b class="display-label">Allergy</b>
+        <div class="display-label">Allergy Name</div>
+        @Html.DisplayFor(model => allergy.Note)
+    </div>
+    }
+    </div>
+
+    
+  <div>
+    @foreach (var secondaryguardian in Model.SecondaryGuardians)
+    {
+    <div class="display-field">
+        <b class="display-label">Secondary Guardian</b>
+        <div class="display-label">First Name</div>
+        @Html.DisplayFor(model => secondaryguardian.FirstName)
+        <div class="display-label">Last Name</div>
+        @Html.DisplayFor(model => secondaryguardian.LastName)
+        <div class="display-label">Phone</div>
+        @Html.DisplayFor(model => secondaryguardian.Phone)
+        <div class="display-label">RelationshipToChild</div>
+        <div class="display-field">
+        @Html.DisplayFor(model => secondaryguardian.RelationshipToChild)
+        </div>
+   </div>
+        
+   
+    }
+   </div>
+
+
+
+    <div>
     @foreach (var a in Model.Children)
     {
     <div class="display-field">
@@ -69,10 +106,11 @@
         <div class="display-label">RelationshipToChild</div>
         <div class="display-field">
         @Html.DisplayFor(model => a.RelationshipToGuardian)
-    </div>
+       </div>
 
     </div>
     }
+    </div>
 </fieldset>
 @using (Html.BeginForm()) {
     <p>

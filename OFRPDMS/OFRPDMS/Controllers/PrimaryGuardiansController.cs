@@ -38,7 +38,7 @@ namespace OFRPDMS.Controllers
         {
             ViewBag.CenterId = new SelectList(context.Centers, "Id", "Name");
             var model = new PrimaryGuardian();
-            model.BuildChildren(1);
+            model.BuildEntity(1);
             return View(model);
         } 
 
@@ -48,7 +48,7 @@ namespace OFRPDMS.Controllers
         [HttpPost]
         public ActionResult Create(PrimaryGuardian primaryguardian)
         {
-
+            PrimaryGuardian pr = new PrimaryGuardian();
             if (ModelState.IsValid)
             {
                 primaryguardian.DateCreated = DateTime.Now;
@@ -78,30 +78,45 @@ namespace OFRPDMS.Controllers
         [HttpPost]
         public ActionResult Edit(PrimaryGuardian primaryguardian)
         {
+            //PrimaryGuardian prim = new PrimaryGuardian();
+            //prim = primaryguardian;
 
+           
+            
             if (ModelState.IsValid)
             {
+                foreach (var child in primaryguardian.Children)
+                {
+                    child.Id = primaryguardian.Id;
+                    
+
+                }
+
+                foreach (var allergy in primaryguardian.Allergies)
+                {
+                    allergy.Id = primaryguardian.Id;
+
+
+                }
+
+                foreach (var second in primaryguardian.SecondaryGuardians)
+                {
+                    second.Id = primaryguardian.Id;
+
+
+                }
                 primaryguardian.DateCreated = DateTime.Now;
                 context.PrimaryGuardians.Add(primaryguardian);
                 context.Entry(primaryguardian).State = EntityState.Modified;
-                foreach (var child in primaryguardian.Children.ToList())
-                {
-
-                    if (child.Id == 0)
-                    {
-
-                        context.Entry(child).State = EntityState.Added;
-
-                    }
-
-                    else
-                    {
-
-                        context.Entry(child).State = EntityState.Modified;
-
-                    }
-
-                }
+                
+                
+                //context.Entry(prim).State = EntityState.Detached;
+                //context.PrimaryGuardians.Remove(context.PrimaryGuardians.Find(primaryguardian.Id));
+                //context.PrimaryGuardians.Add(prim);
+                //context.Entry(prim).State = EntityState.Modified;
+               // context.PrimaryGuardians.Add(primaryguardian);
+                //context.Entry(primaryguardian).State = EntityState.Modified;
+               
                 context.SaveChanges();
                 return RedirectToAction("Index");
             }

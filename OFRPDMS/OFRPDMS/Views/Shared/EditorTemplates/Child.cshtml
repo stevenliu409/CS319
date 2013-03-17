@@ -1,4 +1,5 @@
 @model OFRPDMS.Models.Child
+@using OFRPDMS.Models
          
 
 @* This partial view defines form fields that will appear when creating and editing entities *@
@@ -39,6 +40,7 @@
     @Html.EditorFor(model => model.RelationshipToGuardian)
     @Html.ValidationMessageFor(model => model.RelationshipToGuardian)
     </div>
+
 
         @Html.HiddenFor(model =>model.Delete, new {@class = "mark-for-delete"})
         @Html.LinkToRemoveNestedForm("Remove Child...", "div.Child", "input.mark-for-delete")

@@ -37,17 +37,16 @@
             Country
         </th>
         <th>
-            RelationshipToChild
+            Allergies
+        </th>
+
+        <th>
+            SecondaryGuardians
         </th>
         <th>
             PrimaryGuardianBorrows
         </th>
-        <th>
-            SecondaryGuardian
-        </th>
-        <th>
-            EventParticipants
-        </th>
+
         <th>
             Children
         </th>
@@ -85,11 +84,16 @@
 			@item.Country
         </td>
         <td>
+			@(item.Allergies == null ? "None" : item.Allergies.Count.ToString())
+        </td>
+            <td>
+			@(item.SecondaryGuardians == null ? "None" : item.SecondaryGuardians.Count.ToString())
+        </td>
+
+        <td>
 			@*@(item.PrimaryGuardianBorrows == null ? "None" : item.PrimaryGuardianBorrows.Count.ToString())*@
         </td>
-        <td>
-			@*@(item.SecondaryGuardians == null ? "None" : item.SecondaryGuardians.First().LastName)*@
-        </td>
+        
         <td>
 			@*@(item.EventParticipants == null ? "None" : item.EventParticipants.Count.ToString())*@
         </td>

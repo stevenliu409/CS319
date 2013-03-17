@@ -3,8 +3,6 @@
 
 @* This partial view defines form fields that will appear when creating and editing entities *@
 
-<script src="../../Scripts/Custom/Utility/autocomplete.js" type="text/jscript"></script>
-
 @Html.AntiForgeryToken()
 
 @Html.HiddenFor(model => model.Id)
@@ -75,14 +73,35 @@
     @Html.ValidationMessageFor(model => model.CenterId)
 </div>
 
+
+<div class="editor-label">
+        @Html.LabelFor(model =>model.Allergies)
+</div>
+<div id="allergies">
+        @Html.EditorFor(model =>model.Allergies)
+</div>
+<p>
+        @Html.LinkToAddNestedForm("Add More Allergy...", "#allergies", ".Allergy", "Allergies", typeof(Allergy))
+</p>
+
+
+<div id="secondaryGuardians">
+        @Html.EditorFor(model =>model.SecondaryGuardians)
+</div>
+
+<p>
+
+  @Html.LinkToAddNestedForm("Add More SecondaryGuardians...", "#secondaryGuardians", ".SecondaryGuardian", "SecondaryGuardians", typeof(SecondaryGuardian))
+
+</p>
+
+
 <div id="children">
 
   @Html.EditorFor(model => model.Children)
 
 </div>
-
 <p>
-
   @Html.LinkToAddNestedForm("Add More Child...", "#children", ".Child", "Children", typeof(Child))
 
 </p>

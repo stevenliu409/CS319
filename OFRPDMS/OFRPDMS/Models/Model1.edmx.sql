@@ -209,6 +209,7 @@ CREATE TABLE [dbo].[SecondaryGuardians] (
     [LastName] nvarchar(max)  NULL,
     [RelationshipToChild] nvarchar(max)  NULL,
     [Phone] int  NULL,
+	[Delete] bit NULL,
     [PrimaryGuardianId] int  NOT NULL
 );
 GO
@@ -241,6 +242,7 @@ CREATE TABLE [dbo].[Allergies] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [PrimaryGuardianId] int  NOT NULL,
     [ChildId] int  NOT NULL,
+	[Delete] bit NULL,
     [Note] nvarchar(max)  NULL
 );
 GO
@@ -550,7 +552,7 @@ ADD CONSTRAINT [FK_PrimaryGuardianChild]
     FOREIGN KEY ([PrimaryGuardianId])
     REFERENCES [dbo].[PrimaryGuardians]
         ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_PrimaryGuardianChild'
 CREATE INDEX [IX_FK_PrimaryGuardianChild]
@@ -587,7 +589,7 @@ ADD CONSTRAINT [FK_PrimaryGuardianAllergy]
     FOREIGN KEY ([PrimaryGuardianId])
     REFERENCES [dbo].[PrimaryGuardians]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_PrimaryGuardianAllergy'
 CREATE INDEX [IX_FK_PrimaryGuardianAllergy]
@@ -713,7 +715,7 @@ ADD CONSTRAINT [FK_PrimaryGuardianSecondaryGuardian]
     FOREIGN KEY ([PrimaryGuardianId])
     REFERENCES [dbo].[PrimaryGuardians]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_PrimaryGuardianSecondaryGuardian'
 CREATE INDEX [IX_FK_PrimaryGuardianSecondaryGuardian]
