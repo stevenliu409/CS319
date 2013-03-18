@@ -151,6 +151,7 @@
     <Property Name="RelationshipToChild" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Phone" Type="int" Nullable="true" />
     <Property Name="PrimaryGuardianId" Type="int" Nullable="false" />
+    <Property Name="Delete" Type="bit" Nullable="true" />
   </EntityType>
   <EntityType Name="EventParticipants">
     <Key>
@@ -171,7 +172,8 @@
     <Property Name="LastName" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Birthdate" Type="datetime" Nullable="true" />
     <Property Name="PrimaryGuardianId" Type="int" Nullable="false" />
-    <Property Name="GuardianRelationship" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="RelationshipToGuardian" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Delete" Type="bit" Nullable="true" />
   </EntityType>
   <EntityType Name="Allergies">
     <Key>
@@ -181,6 +183,7 @@
     <Property Name="PrimaryGuardianId" Type="int" Nullable="false" />
     <Property Name="ChildId" Type="int" Nullable="false" />
     <Property Name="Note" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Delete" Type="bit" Nullable="true" />
   </EntityType>
   <EntityType Name="Events">
     <Key>
@@ -736,6 +739,7 @@
           <Property Type="Int32" Name="Phone" Nullable="true" />
           <NavigationProperty Name="PrimaryGuardian" Relationship="Model1.PrimaryGuardianSecondaryGuardian" FromRole="SecondaryGuardian" ToRole="PrimaryGuardian" />
           <Property Type="Int32" Name="PrimaryGuardianId" Nullable="false" />
+          <Property Type="Boolean" Name="Delete" Nullable="true" />
         </EntityType>
         <EntityType Name="EventParticipant">
           <Key>
@@ -766,7 +770,8 @@
           <Property Type="Int32" Name="PrimaryGuardianId" Nullable="false" />
           <NavigationProperty Name="EventParticipants" Relationship="Model1.EventParticipantChild" FromRole="Child" ToRole="EventParticipant" />
           <NavigationProperty Name="Allergies" Relationship="Model1.ChildAllergy" FromRole="Child" ToRole="Allergy" />
-          <Property Type="String" Name="GuardianRelationship" Nullable="true" />
+          <Property Type="String" Name="RelationshipToGuardian" Nullable="true" />
+          <Property Type="Boolean" Name="Delete" Nullable="true" />
         </EntityType>
         <Association Name="PrimaryGuardianChild">
           <End Type="Model1.PrimaryGuardian" Role="PrimaryGuardian" Multiplicity="1" />
@@ -794,6 +799,7 @@
           <NavigationProperty Name="Child" Relationship="Model1.ChildAllergy" FromRole="Allergy" ToRole="Child" />
           <Property Type="Int32" Name="ChildId" Nullable="false" />
           <Property Type="String" Name="Note" Nullable="true" />
+          <Property Type="Boolean" Name="Delete" Nullable="true" />
         </EntityType>
         <Association Name="PrimaryGuardianAllergy">
           <End Type="Model1.PrimaryGuardian" Role="PrimaryGuardian" Multiplicity="1" />
@@ -1159,6 +1165,7 @@
           <ScalarProperty Name="RelationshipToChild" ColumnName="RelationshipToChild" />
           <ScalarProperty Name="Phone" ColumnName="Phone" />
           <ScalarProperty Name="PrimaryGuardianId" ColumnName="PrimaryGuardianId" />
+          <ScalarProperty Name="Delete" ColumnName="Delete" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1180,7 +1187,8 @@
           <ScalarProperty Name="LastName" ColumnName="LastName" />
           <ScalarProperty Name="Birthdate" ColumnName="Birthdate" />
           <ScalarProperty Name="PrimaryGuardianId" ColumnName="PrimaryGuardianId" />
-          <ScalarProperty Name="GuardianRelationship" ColumnName="GuardianRelationship" />
+          <ScalarProperty Name="RelationshipToGuardian" ColumnName="RelationshipToGuardian" />
+          <ScalarProperty Name="Delete" ColumnName="Delete" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1191,6 +1199,7 @@
           <ScalarProperty Name="PrimaryGuardianId" ColumnName="PrimaryGuardianId" />
           <ScalarProperty Name="ChildId" ColumnName="ChildId" />
           <ScalarProperty Name="Note" ColumnName="Note" />
+          <ScalarProperty Name="Delete" ColumnName="Delete" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1371,30 +1380,30 @@
           <ConnectorPoint PointX="0.53125" PointY="8.28099659375" />
           <ConnectorPoint PointX="0.53125" PointY="7.6244921874999987" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="Model1.SecondaryGuardian" Width="1.5" PointX="0.625" PointY="9" Height="2.3648893229166656" />
+        <EntityTypeShape EntityType="Model1.SecondaryGuardian" Width="1.5" PointX="0.625" PointY="9" Height="2.5571907552083317" />
         <EntityTypeShape EntityType="Model1.EventParticipant" Width="1.5" PointX="5.125" PointY="9" Height="2.5571907552083335" />
         <AssociationConnector Association="Model1.EventParticipantPrimaryGuardian">
           <ConnectorPoint PointX="5.125" PointY="10.201650390624998" />
           <ConnectorPoint PointX="4.25" PointY="10.201650390624998" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="Model1.Child" Width="1.5" PointX="4.875" PointY="12.375" Height="2.7494921874999996" />
+        <EntityTypeShape EntityType="Model1.Child" Width="1.5" PointX="4.875" PointY="12.375" Height="2.9417936197916656" />
         <AssociationConnector Association="Model1.PrimaryGuardianChild">
           <ConnectorPoint PointX="3.77832203125" PointY="11.403300781249998" />
-          <ConnectorPoint PointX="3.77832203125" PointY="13.74974609375" />
-          <ConnectorPoint PointX="4.875" PointY="13.74974609375" />
+          <ConnectorPoint PointX="3.77832203125" PointY="13.845896809895834" />
+          <ConnectorPoint PointX="4.875" PointY="13.845896809895834" />
         </AssociationConnector>
         <AssociationConnector Association="Model1.EventParticipantChild">
           <ConnectorPoint PointX="5.75" PointY="11.557190755208334" />
           <ConnectorPoint PointX="5.75" PointY="12.375" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="Model1.Allergy" Width="1.875" PointX="4.25" PointY="16.25" Height="2.1725878906249996" />
+        <EntityTypeShape EntityType="Model1.Allergy" Width="1.875" PointX="4.25" PointY="16.25" Height="2.3648893229166674" />
         <AssociationConnector Association="Model1.PrimaryGuardianAllergy">
-          <ConnectorPoint PointX="3.2441390625" PointY="11.403300781249998" />
-          <ConnectorPoint PointX="3.2441390625" PointY="17.336293945312498" />
-          <ConnectorPoint PointX="4.25" PointY="17.336293945312498" />
+          <ConnectorPoint PointX="3.232908515625" PointY="11.403300781249998" />
+          <ConnectorPoint PointX="3.232908515625" PointY="17.432444661458334" />
+          <ConnectorPoint PointX="4.25" PointY="17.432444661458334" />
         </AssociationConnector>
         <AssociationConnector Association="Model1.ChildAllergy">
-          <ConnectorPoint PointX="5.5" PointY="15.1244921875" />
+          <ConnectorPoint PointX="5.5" PointY="15.316793619791666" />
           <ConnectorPoint PointX="5.5" PointY="16.25" />
         </AssociationConnector>
         <EntityTypeShape EntityType="Model1.Event" Width="1.5" PointX="7.75" PointY="9.75" Height="1.9802864583333335" />
@@ -1440,8 +1449,8 @@
           <ConnectorPoint PointX="13.125" PointY="11.523074493408203" />
         </AssociationConnector>
         <AssociationConnector Association="Model1.PrimaryGuardianSecondaryGuardian">
-          <ConnectorPoint PointX="2.75" PointY="10.182444661458334" />
-          <ConnectorPoint PointX="2.125" PointY="10.182444661458334" />
+          <ConnectorPoint PointX="2.75" PointY="10.201650390624998" />
+          <ConnectorPoint PointX="2.125" PointY="10.201650390624998" />
         </AssociationConnector>
         <AssociationConnector Association="Model1.PrimaryGuardianCenter">
           <ConnectorPoint PointX="4.25" PointY="8.0691943359375" />

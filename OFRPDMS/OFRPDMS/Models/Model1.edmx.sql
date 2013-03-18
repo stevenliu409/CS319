@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 03/17/2013 21:04:24
+-- Date Created: 03/18/2013 00:08:51
 -- Generated from EDMX file: D:\cs319\CS319\OFRPDMS\OFRPDMS\Models\Model1.edmx
 -- --------------------------------------------------
 
@@ -220,8 +220,8 @@ CREATE TABLE [dbo].[SecondaryGuardians] (
     [LastName] nvarchar(max)  NULL,
     [RelationshipToChild] nvarchar(max)  NULL,
     [Phone] int  NULL,
-	[Delete] bit NULL,
-    [PrimaryGuardianId] int  NOT NULL
+    [PrimaryGuardianId] int  NOT NULL,
+    [Delete] bit  NULL
 );
 GO
 
@@ -242,8 +242,8 @@ CREATE TABLE [dbo].[Children] (
     [LastName] nvarchar(max)  NULL,
     [Birthdate] datetime  NULL,
     [PrimaryGuardianId] int  NOT NULL,
-	[Delete] bit NULL,
-    [RelationshipToGuardian] nvarchar(max)  NULL
+    [RelationshipToGuardian] nvarchar(max)  NULL,
+    [Delete] bit  NULL
 );
 GO
 
@@ -252,8 +252,8 @@ CREATE TABLE [dbo].[Allergies] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [PrimaryGuardianId] int  NOT NULL,
     [ChildId] int  NOT NULL,
-	[Delete] bit NULL,
-    [Note] nvarchar(max)  NULL
+    [Note] nvarchar(max)  NULL,
+    [Delete] bit  NULL
 );
 GO
 
