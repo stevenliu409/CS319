@@ -331,6 +331,8 @@
     <Content Include="Views\Shared\EditorTemplates\SecondaryGuardian.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\PrimaryGuardian.cshtml" />
+    <Content Include="Views\PrimaryGuardians\_ChildrenOrEdit.cshtml" />
+    <Content Include="Views\PrimaryGuardians\_CreateOrEdit.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

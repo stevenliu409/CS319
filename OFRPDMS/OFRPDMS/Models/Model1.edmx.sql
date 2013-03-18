@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 03/18/2013 00:08:51
+-- Date Created: 03/18/2013 01:44:41
 -- Generated from EDMX file: D:\cs319\CS319\OFRPDMS\OFRPDMS\Models\Model1.edmx
 -- --------------------------------------------------
 
@@ -228,10 +228,10 @@ GO
 -- Creating table 'EventParticipants'
 CREATE TABLE [dbo].[EventParticipants] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [EventId] int  NOT NULL,
     [ParticipantId] smallint  NOT NULL,
     [ParticipantType] nvarchar(max)  NOT NULL,
-    [SpecialEvent_Id] int  NOT NULL
+    [SpecialEventId] int  NULL,
+    [EventId] int  NULL
 );
 GO
 
@@ -609,20 +609,6 @@ ON [dbo].[Allergies]
     ([ChildId]);
 GO
 
--- Creating foreign key on [EventId] in table 'EventParticipants'
-ALTER TABLE [dbo].[EventParticipants]
-ADD CONSTRAINT [FK_EventEventParticipant]
-    FOREIGN KEY ([EventId])
-    REFERENCES [dbo].[Events]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_EventEventParticipant'
-CREATE INDEX [IX_FK_EventEventParticipant]
-ON [dbo].[EventParticipants]
-    ([EventId]);
-GO
-
 -- Creating foreign key on [CenterId] in table 'Events'
 ALTER TABLE [dbo].[Events]
 ADD CONSTRAINT [FK_CenterEvent]
@@ -735,20 +721,6 @@ ON [dbo].[PrimaryGuardians]
     ([CenterId]);
 GO
 
--- Creating foreign key on [SpecialEvent_Id] in table 'EventParticipants'
-ALTER TABLE [dbo].[EventParticipants]
-ADD CONSTRAINT [FK_SpecialEventEventParticipant]
-    FOREIGN KEY ([SpecialEvent_Id])
-    REFERENCES [dbo].[SpecialEvents]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_SpecialEventEventParticipant'
-CREATE INDEX [IX_FK_SpecialEventEventParticipant]
-ON [dbo].[EventParticipants]
-    ([SpecialEvent_Id]);
-GO
-
 -- Creating foreign key on [CenterId] in table 'SpecialEvents'
 ALTER TABLE [dbo].[SpecialEvents]
 ADD CONSTRAINT [FK_SpecialEventCenter]
@@ -803,6 +775,34 @@ ADD CONSTRAINT [FK_CenterFreeResourceGivenResource]
 CREATE INDEX [IX_FK_CenterFreeResourceGivenResource]
 ON [dbo].[GivenResources]
     ([CenterFreeResourceId]);
+GO
+
+-- Creating foreign key on [SpecialEventId] in table 'EventParticipants'
+ALTER TABLE [dbo].[EventParticipants]
+ADD CONSTRAINT [FK_SpecialEventEventParticipant]
+    FOREIGN KEY ([SpecialEventId])
+    REFERENCES [dbo].[SpecialEvents]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_SpecialEventEventParticipant'
+CREATE INDEX [IX_FK_SpecialEventEventParticipant]
+ON [dbo].[EventParticipants]
+    ([SpecialEventId]);
+GO
+
+-- Creating foreign key on [EventId] in table 'EventParticipants'
+ALTER TABLE [dbo].[EventParticipants]
+ADD CONSTRAINT [FK_EventEventParticipant]
+    FOREIGN KEY ([EventId])
+    REFERENCES [dbo].[Events]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_EventEventParticipant'
+CREATE INDEX [IX_FK_EventEventParticipant]
+ON [dbo].[EventParticipants]
+    ([EventId]);
 GO
 
 -- --------------------------------------------------

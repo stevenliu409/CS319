@@ -26,7 +26,7 @@ namespace OFRPDMS.Models
         public int Id { get; set; }
         public System.DateTime Date { get; set; }
     
-        public virtual ICollection<EventParticipant> EventParticipants { get; set; }
         public virtual Center Center { get; set; }
+        public virtual ICollection<EventParticipant> EventParticipants { get; set; }
     }
 }

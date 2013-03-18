@@ -57,10 +57,6 @@
       <End Role="Child" EntitySet="Children" />
       <End Role="Allergy" EntitySet="Allergies" />
     </AssociationSet>
-    <AssociationSet Name="EventEventParticipant" Association="Model1.Store.EventEventParticipant">
-      <End Role="Event" EntitySet="Events" />
-      <End Role="EventParticipant" EntitySet="EventParticipants" />
-    </AssociationSet>
     <AssociationSet Name="CenterEvent" Association="Model1.Store.CenterEvent">
       <End Role="Center" EntitySet="Centers" />
       <End Role="Event" EntitySet="Events" />
@@ -93,10 +89,6 @@
       <End Role="PrimaryGuardian" EntitySet="PrimaryGuardians" />
       <End Role="Center" EntitySet="Centers" />
     </AssociationSet>
-    <AssociationSet Name="SpecialEventEventParticipant" Association="Model1.Store.SpecialEventEventParticipant">
-      <End Role="SpecialEvent" EntitySet="SpecialEvents" />
-      <End Role="EventParticipant" EntitySet="EventParticipants" />
-    </AssociationSet>
     <AssociationSet Name="SpecialEventCenter" Association="Model1.Store.SpecialEventCenter">
       <End Role="SpecialEvent" EntitySet="SpecialEvents" />
       <End Role="Center" EntitySet="Centers" />
@@ -112,6 +104,14 @@
     <AssociationSet Name="CenterFreeResourceGivenResource" Association="Model1.Store.CenterFreeResourceGivenResource">
       <End Role="CenterFreeResource" EntitySet="CenterFreeResources" />
       <End Role="GivenResource" EntitySet="GivenResources" />
+    </AssociationSet>
+    <AssociationSet Name="SpecialEventEventParticipant" Association="Model1.Store.SpecialEventEventParticipant">
+      <End Role="SpecialEvent" EntitySet="SpecialEvents" />
+      <End Role="EventParticipant" EntitySet="EventParticipants" />
+    </AssociationSet>
+    <AssociationSet Name="EventEventParticipant" Association="Model1.Store.EventEventParticipant">
+      <End Role="Event" EntitySet="Events" />
+      <End Role="EventParticipant" EntitySet="EventParticipants" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="PrimaryGuardianBorrows">
@@ -158,10 +158,10 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="EventId" Type="int" Nullable="false" />
     <Property Name="ParticipantId" Type="smallint" Nullable="false" />
     <Property Name="ParticipantType" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="SpecialEvent_Id" Type="int" Nullable="false" />
+    <Property Name="SpecialEventId" Type="int" Nullable="true" />
+    <Property Name="EventId" Type="int" Nullable="true" />
   </EntityType>
   <EntityType Name="Children">
     <Key>
@@ -363,18 +363,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="EventEventParticipant">
-    <End Role="Event" Type="Model1.Store.Events" Multiplicity="1" />
-    <End Role="EventParticipant" Type="Model1.Store.EventParticipants" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Event">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="EventParticipant">
-        <PropertyRef Name="EventId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="CenterEvent">
     <End Role="Center" Type="Model1.Store.Centers" Multiplicity="1" />
     <End Role="Event" Type="Model1.Store.Events" Multiplicity="*" />
@@ -471,18 +459,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="SpecialEventEventParticipant">
-    <End Role="SpecialEvent" Type="Model1.Store.SpecialEvents" Multiplicity="1" />
-    <End Role="EventParticipant" Type="Model1.Store.EventParticipants" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="SpecialEvent">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="EventParticipant">
-        <PropertyRef Name="SpecialEvent_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="SpecialEventCenter">
     <End Role="SpecialEvent" Type="Model1.Store.SpecialEvents" Multiplicity="*" />
     <End Role="Center" Type="Model1.Store.Centers" Multiplicity="1" />
@@ -528,6 +504,30 @@
       </Principal>
       <Dependent Role="GivenResource">
         <PropertyRef Name="CenterFreeResourceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SpecialEventEventParticipant">
+    <End Role="SpecialEvent" Type="Model1.Store.SpecialEvents" Multiplicity="0..1" />
+    <End Role="EventParticipant" Type="Model1.Store.EventParticipants" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SpecialEvent">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="EventParticipant">
+        <PropertyRef Name="SpecialEventId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EventEventParticipant">
+    <End Role="Event" Type="Model1.Store.Events" Multiplicity="0..1" />
+    <End Role="EventParticipant" Type="Model1.Store.EventParticipants" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Event">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="EventParticipant">
+        <PropertyRef Name="EventId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -615,10 +615,6 @@
             <End Role="Allergy" EntitySet="Allergies" />
           </AssociationSet>
           <EntitySet Name="Events" EntityType="Model1.Event" />
-          <AssociationSet Name="EventEventParticipant" Association="Model1.EventEventParticipant">
-            <End Role="Event" EntitySet="Events" />
-            <End Role="EventParticipant" EntitySet="EventParticipants" />
-          </AssociationSet>
           <EntitySet Name="Centers" EntityType="Model1.Center" />
           <AssociationSet Name="CenterEvent" Association="Model1.CenterEvent">
             <End Role="Center" EntitySet="Centers" />
@@ -658,10 +654,6 @@
             <End Role="Center" EntitySet="Centers" />
           </AssociationSet>
           <EntitySet Name="SpecialEvents" EntityType="Model1.SpecialEvent" />
-          <AssociationSet Name="SpecialEventEventParticipant" Association="Model1.SpecialEventEventParticipant">
-            <End Role="SpecialEvent" EntitySet="SpecialEvents" />
-            <End Role="EventParticipant" EntitySet="EventParticipants" />
-          </AssociationSet>
           <AssociationSet Name="SpecialEventCenter" Association="Model1.SpecialEventCenter">
             <End Role="SpecialEvent" EntitySet="SpecialEvents" />
             <End Role="Center" EntitySet="Centers" />
@@ -680,6 +672,14 @@
           <AssociationSet Name="CenterFreeResourceGivenResource" Association="Model1.CenterFreeResourceGivenResource">
             <End Role="CenterFreeResource" EntitySet="CenterFreeResources" />
             <End Role="GivenResource" EntitySet="GivenResources" />
+          </AssociationSet>
+          <AssociationSet Name="SpecialEventEventParticipant" Association="Model1.SpecialEventEventParticipant">
+            <End Role="SpecialEvent" EntitySet="SpecialEvents" />
+            <End Role="EventParticipant" EntitySet="EventParticipants" />
+          </AssociationSet>
+          <AssociationSet Name="EventEventParticipant" Association="Model1.EventEventParticipant">
+            <End Role="Event" EntitySet="Events" />
+            <End Role="EventParticipant" EntitySet="EventParticipants" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="PrimaryGuardianBorrow">
@@ -748,11 +748,12 @@
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="PrimaryGuardians" Relationship="Model1.EventParticipantPrimaryGuardian" FromRole="EventParticipant" ToRole="PrimaryGuardian" />
           <NavigationProperty Name="Children" Relationship="Model1.EventParticipantChild" FromRole="EventParticipant" ToRole="Child" />
-          <NavigationProperty Name="Event" Relationship="Model1.EventEventParticipant" FromRole="EventParticipant" ToRole="Event" />
-          <Property Type="Int32" Name="EventId" Nullable="false" />
           <Property Type="Int16" Name="ParticipantId" Nullable="false" />
           <Property Type="String" Name="ParticipantType" Nullable="false" />
           <NavigationProperty Name="SpecialEvent" Relationship="Model1.SpecialEventEventParticipant" FromRole="EventParticipant" ToRole="SpecialEvent" />
+          <Property Type="Int32" Name="SpecialEventId" Nullable="true" />
+          <NavigationProperty Name="Event" Relationship="Model1.EventEventParticipant" FromRole="EventParticipant" ToRole="Event" />
+          <Property Type="Int32" Name="EventId" Nullable="true" />
         </EntityType>
         <Association Name="EventParticipantPrimaryGuardian">
           <End Type="Model1.EventParticipant" Role="EventParticipant" Multiplicity="*" />
@@ -830,23 +831,11 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <NavigationProperty Name="EventParticipants" Relationship="Model1.EventEventParticipant" FromRole="Event" ToRole="EventParticipant" />
           <Property Type="DateTime" Name="Date" Nullable="false" />
           <NavigationProperty Name="Center" Relationship="Model1.CenterEvent" FromRole="Event" ToRole="Center" />
           <Property Type="Int32" Name="CenterId" Nullable="false" />
+          <NavigationProperty Name="EventParticipants" Relationship="Model1.EventEventParticipant" FromRole="Event" ToRole="EventParticipant" />
         </EntityType>
-        <Association Name="EventEventParticipant">
-          <End Type="Model1.Event" Role="Event" Multiplicity="1" />
-          <End Type="Model1.EventParticipant" Role="EventParticipant" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Event">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="EventParticipant">
-              <PropertyRef Name="EventId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="SpecialEvent" >
           <Key>
             <PropertyRef Name="Id" />
@@ -854,11 +843,11 @@
           <Property Type="String" Name="Name" Nullable="false" />
           <Property Type="String" Name="GuestSpeaker" Nullable="true" />
           <Property Type="String" Name="GuestSpeakerType" Nullable="true" />
-          <NavigationProperty Name="EventParticipants" Relationship="Model1.SpecialEventEventParticipant" FromRole="SpecialEvent" ToRole="EventParticipant" />
           <NavigationProperty Name="Center" Relationship="Model1.SpecialEventCenter" FromRole="SpecialEvent" ToRole="Center" />
           <Property Type="Int32" Name="CenterId" Nullable="false" />
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="DateTime" Name="Date" Nullable="false" />
+          <NavigationProperty Name="EventParticipants" Relationship="Model1.SpecialEventEventParticipant" FromRole="SpecialEvent" ToRole="EventParticipant" />
         </EntityType>
         <EntityType Name="Center">
           <Key>
@@ -1025,10 +1014,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SpecialEventEventParticipant">
-          <End Type="Model1.SpecialEvent" Role="SpecialEvent" Multiplicity="1" />
-          <End Type="Model1.EventParticipant" Role="EventParticipant" Multiplicity="*" />
-        </Association>
         <Association Name="SpecialEventCenter">
           <End Type="Model1.SpecialEvent" Role="SpecialEvent" Multiplicity="*" />
           <End Type="Model1.Center" Role="Center" Multiplicity="1" />
@@ -1121,6 +1106,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="SpecialEventEventParticipant">
+          <End Type="Model1.SpecialEvent" Role="SpecialEvent" Multiplicity="0..1" />
+          <End Type="Model1.EventParticipant" Role="EventParticipant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SpecialEvent">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EventParticipant">
+              <PropertyRef Name="SpecialEventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EventEventParticipant">
+          <End Type="Model1.Event" Role="Event" Multiplicity="0..1" />
+          <End Type="Model1.EventParticipant" Role="EventParticipant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EventParticipant">
+              <PropertyRef Name="EventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1173,9 +1182,10 @@
       <EntityTypeMapping TypeName="IsTypeOf(Model1.EventParticipant)">
         <MappingFragment StoreEntitySet="EventParticipants">
           <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="EventId" ColumnName="EventId" />
           <ScalarProperty Name="ParticipantId" ColumnName="ParticipantId" />
           <ScalarProperty Name="ParticipantType" ColumnName="ParticipantType" />
+          <ScalarProperty Name="SpecialEventId" ColumnName="SpecialEventId" />
+          <ScalarProperty Name="EventId" ColumnName="EventId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1344,14 +1354,6 @@
         <ScalarProperty Name="Id" ColumnName="Children_Id" />
       </EndProperty>
     </AssociationSetMapping>
-    <AssociationSetMapping Name="SpecialEventEventParticipant" TypeName="Model1.SpecialEventEventParticipant" StoreEntitySet="EventParticipants">
-      <EndProperty Name="SpecialEvent">
-        <ScalarProperty Name="Id" ColumnName="SpecialEvent_Id" />
-      </EndProperty>
-      <EndProperty Name="EventParticipant">
-        <ScalarProperty Name="Id" ColumnName="Id" />
-      </EndProperty>
-    </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>
@@ -1381,10 +1383,10 @@
           <ConnectorPoint PointX="0.53125" PointY="7.6244921874999987" />
         </AssociationConnector>
         <EntityTypeShape EntityType="Model1.SecondaryGuardian" Width="1.5" PointX="0.625" PointY="9" Height="2.5571907552083317" />
-        <EntityTypeShape EntityType="Model1.EventParticipant" Width="1.5" PointX="5.125" PointY="9" Height="2.5571907552083335" />
+        <EntityTypeShape EntityType="Model1.EventParticipant" Width="1.5" PointX="5.125" PointY="9" Height="2.3648893229166656" />
         <AssociationConnector Association="Model1.EventParticipantPrimaryGuardian">
-          <ConnectorPoint PointX="5.125" PointY="10.201650390624998" />
-          <ConnectorPoint PointX="4.25" PointY="10.201650390624998" />
+          <ConnectorPoint PointX="5.125" PointY="10.182444661458334" />
+          <ConnectorPoint PointX="4.25" PointY="10.182444661458334" />
         </AssociationConnector>
         <EntityTypeShape EntityType="Model1.Child" Width="1.5" PointX="4.875" PointY="12.375" Height="2.9417936197916656" />
         <AssociationConnector Association="Model1.PrimaryGuardianChild">
@@ -1393,7 +1395,7 @@
           <ConnectorPoint PointX="4.875" PointY="13.845896809895834" />
         </AssociationConnector>
         <AssociationConnector Association="Model1.EventParticipantChild">
-          <ConnectorPoint PointX="5.75" PointY="11.557190755208334" />
+          <ConnectorPoint PointX="5.75" PointY="11.364889322916666" />
           <ConnectorPoint PointX="5.75" PointY="12.375" />
         </AssociationConnector>
         <EntityTypeShape EntityType="Model1.Allergy" Width="1.875" PointX="4.25" PointY="16.25" Height="2.3648893229166674" />
@@ -1407,20 +1409,16 @@
           <ConnectorPoint PointX="5.5" PointY="16.25" />
         </AssociationConnector>
         <EntityTypeShape EntityType="Model1.Event" Width="1.5" PointX="7.75" PointY="9.75" Height="1.9802864583333335" />
-        <AssociationConnector Association="Model1.EventEventParticipant">
-          <ConnectorPoint PointX="7.75" PointY="10.354217331353453" />
-          <ConnectorPoint PointX="6.625" PointY="10.354217331353453" />
-        </AssociationConnector>
         <EntityTypeShape EntityType="Model1.SpecialEvent" Width="1.5" PointX="7.75" PointY="12.5" Height="2.5571907552083335" />
         <EntityTypeShape EntityType="Model1.Center" Width="1.5" PointX="10.75" PointY="5.375" Height="2.9417936197916656" />
         <AssociationConnector Association="Model1.CenterEvent">
-          <ConnectorPoint PointX="11.903352541503907" PointY="8.701396484375" />
-          <ConnectorPoint PointX="11.903352541503907" PointY="10.623561096191406" />
-          <ConnectorPoint PointX="11.581158364461263" PointY="10.623561096191406" />
-          <ConnectorPoint PointX="11.414491697794595" PointY="10.623561096191406" />
-          <ConnectorPoint PointX="11.175630854085286" PointY="10.623561096191406" />
-          <ConnectorPoint PointX="11.008964187418618" PointY="10.623561096191406" />
-          <ConnectorPoint PointX="9.25" PointY="10.623561096191406" />
+          <ConnectorPoint PointX="11.905165015563965" PointY="8.701396484375" />
+          <ConnectorPoint PointX="11.905165015563965" PointY="10.636537246704101" />
+          <ConnectorPoint PointX="11.58133961186727" PointY="10.636537246704101" />
+          <ConnectorPoint PointX="11.414672945200602" PointY="10.636537246704101" />
+          <ConnectorPoint PointX="11.176083972600301" PointY="10.636537246704101" />
+          <ConnectorPoint PointX="11.009417305933633" PointY="10.636537246704101" />
+          <ConnectorPoint PointX="9.25" PointY="10.636537246704101" />
         </AssociationConnector>
         <EntityTypeShape EntityType="Model1.CenterReferral" Width="1.5" PointX="13.125" PointY="3.75" Height="1.9802864583333326" />
         <EntityTypeShape EntityType="Model1.Referral" Width="1.5" PointX="15.875" PointY="3.875" Height="2.1725878906249996" />
@@ -1456,16 +1454,10 @@
           <ConnectorPoint PointX="4.25" PointY="8.0691943359375" />
           <ConnectorPoint PointX="10.75" PointY="8.0691943359375" />
         </AssociationConnector>
-        <AssociationConnector Association="Model1.SpecialEventEventParticipant">
-          <ConnectorPoint PointX="7.7511528461538459" PointY="12.5" />
-          <ConnectorPoint PointX="7.375" PointY="12.123847153846153" />
-          <ConnectorPoint PointX="7.375" PointY="10.278595377604166" />
-          <ConnectorPoint PointX="6.625" PointY="10.278595377604166" />
-        </AssociationConnector>
         <AssociationConnector Association="Model1.SpecialEventCenter">
-          <ConnectorPoint PointX="9.25" PointY="13.778595377604166" />
-          <ConnectorPoint PointX="11.090847541503905" PointY="13.778595377604166" />
-          <ConnectorPoint PointX="11.090847541503905" PointY="8.701396484375" />
+          <ConnectorPoint PointX="9.25" PointY="13.682444661458334" />
+          <ConnectorPoint PointX="11.092750639266967" PointY="13.682444661458334" />
+          <ConnectorPoint PointX="11.092750639266967" PointY="8.701396484375" />
         </AssociationConnector>
         <EntityTypeShape EntityType="Model1.LibraryItem" Width="1.5" PointX="2.625" PointY="2.375" Height="3.3263964843749996" />
         <EntityTypeShape EntityType="Model1.LibraryResource" Width="1.5" PointX="5.625" PointY="4.375" Height="2.9417936197916656" />
@@ -1481,6 +1473,16 @@
         <AssociationConnector Association="Model1.CenterFreeResourceGivenResource">
           <ConnectorPoint PointX="14.625" PointY="11.5862939453125" />
           <ConnectorPoint PointX="17.25" PointY="11.5862939453125" />
+        </AssociationConnector>
+        <AssociationConnector Association="Model1.SpecialEventEventParticipant">
+          <ConnectorPoint PointX="7.7511528461538459" PointY="12.5" />
+          <ConnectorPoint PointX="7.375" PointY="12.123847153846153" />
+          <ConnectorPoint PointX="7.375" PointY="11.047038460385044" />
+          <ConnectorPoint PointX="6.625" PointY="11.047038460385044" />
+        </AssociationConnector>
+        <AssociationConnector Association="Model1.EventEventParticipant">
+          <ConnectorPoint PointX="7.75" PointY="10.502474558174923" />
+          <ConnectorPoint PointX="6.625" PointY="10.502474558174923" />
         </AssociationConnector>
       </Diagram>
     </edmx:Diagrams>
