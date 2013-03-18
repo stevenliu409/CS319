@@ -167,6 +167,7 @@
     <Content Include="bin\EntityFramework.xml" />
     <Content Include="bin\OFRPDMS.dll" />
     <Content Include="bin\OFRPDMS.pdb" />
+    <Content Include="Content\themes\base\images\calendar.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -255,7 +256,6 @@
     <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="Areas\Staff\Models\" />
     <Folder Include="Areas\Staff\Views\Shared\" />
-    <Folder Include="Views\NewFolder1\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -308,12 +308,12 @@
     <Content Include="Views\PrimaryGuardians\Details.cshtml" />
     <Content Include="Views\PrimaryGuardians\Edit.cshtml" />
     <Content Include="Views\PrimaryGuardians\Index.cshtml" />
-    <Content Include="Views\PrimaryGuardians\_ChildrenOrEdit.cshtml" />
-    <Content Include="Views\PrimaryGuardians\_CreateOrEdit.cshtml" />
     <Content Include="Views\PrimaryGuardians\_RegisterCenter.cshtml" />
     <Content Include="Views\Shared\_AdminNavPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="ClassDiagram2.cd" />
     <None Include="Models\Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Model1.Context.cs</LastGenOutput>
@@ -323,6 +323,10 @@
       <LastGenOutput>Model1.cs</LastGenOutput>
     </None>
     <Content Include="Views\Shared\EditorTemplates\Child.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\PrimaryGuardian.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Allergy.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\SecondaryGuardian.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\PrimaryGuardian.cshtml" />
   </ItemGroup>

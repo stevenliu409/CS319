@@ -18,7 +18,7 @@ namespace OFRPDMS.Models
         public Child()
         {
             this.EventParticipants = new HashSet<EventParticipant>();
-            this.Allergies = new HashSet<Allergy>();
+            this.Allergies = new List<Allergy>();
         }
 
         public int Id { get; set; }
@@ -30,7 +30,7 @@ namespace OFRPDMS.Models
 
         [DataType(DataType.Date)]
         public Nullable<System.DateTime> Birthdate { get; set; }
-        [Required]
+      
         public int PrimaryGuardianId { get; set; }
         [Required]
         [RegularExpression(@"^[a-zA-Z]{1,25}$", ErrorMessage = "Not a valid relationship")]
@@ -39,8 +39,8 @@ namespace OFRPDMS.Models
 
    
     
-        public virtual PrimaryGuardian PrimaryGuardian { get; set; }
+       public virtual PrimaryGuardian PrimaryGuardian { get; set; }
         public virtual ICollection<EventParticipant> EventParticipants { get; set; }
-        public virtual ICollection<Allergy> Allergies { get; set; }
+        public virtual IList<Allergy> Allergies { get; set; }
     }
 }

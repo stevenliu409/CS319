@@ -19,8 +19,8 @@ namespace OFRPDMS.Models
         {
             this.EventParticipants = new HashSet<EventParticipant>();
             this.Children = new List<Child>();
-            this.Allergies = new HashSet<Allergy>();
-            this.SecondaryGuardians = new HashSet<SecondaryGuardian>();
+            this.Allergies = new List<Allergy>();
+            this.SecondaryGuardians = new List<SecondaryGuardian>();
         }
     
         public int Id { get; set; }
@@ -45,22 +45,26 @@ namespace OFRPDMS.Models
         public int CenterId { get; set; }
     
         public virtual ICollection<EventParticipant> EventParticipants { get; set; }
-        public virtual ICollection<Allergy> Allergies { get; set; }
-        public virtual ICollection<SecondaryGuardian> SecondaryGuardians { get; set; }
+        public virtual IList<Allergy> Allergies { get; set; }
+        public virtual IList<SecondaryGuardian> SecondaryGuardians { get; set; }
         public virtual Center Center { get; set; }
         public virtual IList<Child> Children { get; set; }
 
 
-        public void BuildChildren(int count)
+        public void BuildEntity(int count)
         {
 
             for (int i = 0; i < count; i++)
             {
                 Children.Add(new Child());
+                Allergies.Add(new Allergy());
+                SecondaryGuardians.Add(new SecondaryGuardian());
 
             }
 
         }
+
+
 
     }
 }
