@@ -15,10 +15,10 @@ namespace OFRPDMS.Areas.Staff
         public override void RegisterArea(AreaRegistrationContext context)
         {
             context.MapRoute(
-               "Staff_default",
-               "Staff/Center/{centerIdArg}/{controller}/{action}/{id}",
-               new { centerIdArg = UrlParameter.Optional, controller = "Staff", action = "Index", id = UrlParameter.Optional }
-           );
+                "Staff_default",
+                "Staff/Center/{centerIdArg}/{controller}/{action}/{id}",
+                new { centerIdArg = UrlParameter.Optional, controller = "Staff", action = "Index", id = UrlParameter.Optional }
+            );
         }
     }
 }

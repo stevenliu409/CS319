@@ -70,6 +70,7 @@
     <Compile Include="Areas\Admin\Controllers\CentersController.cs" />
     <Compile Include="Areas\Admin\Controllers\ReportController.cs" />
     <Compile Include="Areas\Admin\Models\Report.cs" />
+    <Compile Include="Areas\Staff\Controllers\BorrowController.cs" />
     <Compile Include="Areas\Staff\Controllers\EventsController.cs" />
     <Compile Include="Areas\Staff\Controllers\FamiliesController.cs" />
     <Compile Include="Areas\Staff\Controllers\LibraryController.cs" />
@@ -91,9 +92,6 @@
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\AccountProfile.cs" />
     <Compile Include="Models\Allergy.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Book.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Center.cs">
@@ -122,6 +120,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\LibraryItem.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LibraryResource.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Model1.Context.cs">
@@ -153,12 +154,6 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SpecialEvent.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Toy.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Video.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -312,8 +307,15 @@
     <Content Include="Views\Shared\_AdminNavPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
-    <None Include="ClassDiagram2.cd" />
+    <Content Include="Areas\Staff\Views\Library\Create.cshtml" />
+    <Content Include="Areas\Staff\Views\Library\Delete.cshtml" />
+    <Content Include="Areas\Staff\Views\Library\Details.cshtml" />
+    <Content Include="Areas\Staff\Views\Library\Edit.cshtml" />
+    <Content Include="Areas\Staff\Views\Borrow\Index.cshtml" />
+    <Content Include="Areas\Staff\Views\Borrow\Details.cshtml" />
+    <Content Include="Areas\Staff\Views\Borrow\Create.cshtml" />
+    <Content Include="Areas\Staff\Views\Borrow\Edit.cshtml" />
+    <Content Include="Areas\Staff\Views\Borrow\Delete.cshtml" />
     <None Include="Models\Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Model1.Context.cs</LastGenOutput>

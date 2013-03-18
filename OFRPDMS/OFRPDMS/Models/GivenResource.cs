@@ -17,7 +17,6 @@ namespace OFRPDMS.Models
         public int Id { get; set; }
         public Nullable<System.DateTime> DateGiven { get; set; }
         public int Count { get; set; }
-        public int CenterId { get; set; }
         public int CenterFreeResourceId { get; set; }
     
         public virtual CenterFreeResource CenterFreeResource { get; set; }

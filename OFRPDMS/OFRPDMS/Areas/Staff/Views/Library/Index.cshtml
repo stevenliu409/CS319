@@ -1,5 +1,81 @@
-﻿@{
-    ViewBag.Title = "Library";
+﻿@model IEnumerable<OFRPDMS.Models.LibraryResource>
+
+@{
+    ViewBag.Title = "Index";
 }
 
-<h2>Library</h2>
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th>
+            Broken
+        </th>
+        <th>
+            CheckedOut
+        </th>
+        <th>
+            Value
+        </th>
+        <th>
+            Image
+        </th>
+        <th>
+            Note
+        </th>
+        <th>
+            Name
+        </th>
+        <th>
+            ItemType
+        </th>
+        <th>
+            Sanitized
+        </th>
+        <th>
+            Center
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Broken)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CheckedOut)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Value)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Image)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Note)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ItemType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Sanitized)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Center.Name)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

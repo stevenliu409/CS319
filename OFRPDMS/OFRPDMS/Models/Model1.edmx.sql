@@ -1,18 +1,8 @@
--- don't drop the database unless you need to recreate your database
--- this sql script will drop all foreign keys and tables it created
--- and then recreate tables
-
---ALTER DATABASE [OFRPDMS.Models.OFRPDMSContext]
---SET SINGLE_USER --or RESTRICTED_USER
---WITH ROLLBACK IMMEDIATE;
---GO
---DROP DATABASE [OFRPDMS.Models.OFRPDMSContext];
---GO
 
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 03/15/2013 23:30:27
+-- Date Created: 03/17/2013 21:04:24
 -- Generated from EDMX file: D:\cs319\CS319\OFRPDMS\OFRPDMS\Models\Model1.edmx
 -- --------------------------------------------------
 
@@ -93,6 +83,7 @@ IF OBJECT_ID(N'[dbo].[FK_SpecialEventCenter]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_LibraryItemPrimaryGuardianBorrow]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[LibraryItems] DROP CONSTRAINT [FK_LibraryItemPrimaryGuardianBorrow];
+GO
 IF OBJECT_ID(N'[dbo].[FK_CenterFreeResourceGivenResource]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[GivenResources] DROP CONSTRAINT [FK_CenterFreeResourceGivenResource];
 GO
@@ -110,6 +101,15 @@ IF OBJECT_ID(N'[dbo].[FK_Toy_inherits_LibraryItem]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_Book_inherits_LibraryItem]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[LibraryItems_Book] DROP CONSTRAINT [FK_Book_inherits_LibraryItem];
+GO
+IF OBJECT_ID(N'[dbo].[FK_GivenResourceCenterFreeResource]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[GivenResources] DROP CONSTRAINT [FK_GivenResourceCenterFreeResource];
+GO
+IF OBJECT_ID(N'[dbo].[FK_LibraryResourcePrimaryGuardianBorrow]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[PrimaryGuardianBorrows] DROP CONSTRAINT [FK_LibraryResourcePrimaryGuardianBorrow];
+GO
+IF OBJECT_ID(N'[dbo].[FK_LibraryResourceCenter]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[LibraryResources] DROP CONSTRAINT [FK_LibraryResourceCenter];
 GO
 
 -- --------------------------------------------------
@@ -172,6 +172,8 @@ IF OBJECT_ID(N'[dbo].[LibraryItems_Toy]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[LibraryItems_Book]', 'U') IS NOT NULL
     DROP TABLE [dbo].[LibraryItems_Book];
+IF OBJECT_ID(N'[dbo].[LibraryResources]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[LibraryResources];
 GO
 IF OBJECT_ID(N'[dbo].[EventParticipantPrimaryGuardian]', 'U') IS NOT NULL
     DROP TABLE [dbo].[EventParticipantPrimaryGuardian];
@@ -190,9 +192,9 @@ CREATE TABLE [dbo].[PrimaryGuardianBorrows] (
     [BorrowDate] datetime  NOT NULL,
     [PrimaryGuardianId] int  NOT NULL,
     [Returned] bit  NOT NULL,
-    [LibraryItemId] int  NOT NULL,
     [DueDate] datetime  NOT NULL,
-    [ReturnDate] datetime  NULL
+    [ReturnDate] datetime  NULL,
+    [LibraryResourceId] int  NOT NULL
 );
 GO
 
@@ -328,16 +330,6 @@ CREATE TABLE [dbo].[SpecialEvents] (
 );
 GO
 
--- Creating table 'GivenResources'
-CREATE TABLE [dbo].[GivenResources] (
-    [Id] int IDENTITY(1,1) NOT NULL,
-    [DateGiven] datetime  NULL,
-    [Count] int  NOT NULL,
-    [CenterId] int  NOT NULL,
-    [CenterFreeResourceId] int  NOT NULL
-);
-GO
-
 -- Creating table 'LibraryItems'
 CREATE TABLE [dbo].[LibraryItems] (
     [Id] int IDENTITY(1,1) NOT NULL,
@@ -348,26 +340,34 @@ CREATE TABLE [dbo].[LibraryItems] (
     [Note] nvarchar(max)  NOT NULL,
     [LendingPeriod] nvarchar(max)  NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
+    [CenterId] int  NOT NULL,
+    [Discriminator] nvarchar(max)  NOT NULL,
+    [Discriminator1] nvarchar(max)  NOT NULL,
+    [Sanitized] bit  NULL
+);
+GO
+
+-- Creating table 'LibraryResources'
+CREATE TABLE [dbo].[LibraryResources] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Broken] bit  NULL,
+    [CheckedOut] bit  NULL,
+    [Value] decimal(18,2)  NULL,
+    [Image] varbinary(max)  NULL,
+    [Note] nvarchar(max)  NULL,
+    [Name] nvarchar(max)  NULL,
+    [ItemType] nvarchar(max)  NOT NULL,
+    [Sanitized] bit  NULL,
     [CenterId] int  NOT NULL
 );
 GO
 
--- Creating table 'LibraryItems_Video'
-CREATE TABLE [dbo].[LibraryItems_Video] (
-    [Id] int  NOT NULL
-);
-GO
-
--- Creating table 'LibraryItems_Toy'
-CREATE TABLE [dbo].[LibraryItems_Toy] (
-    [Sanitized] nvarchar(max)  NOT NULL,
-    [Id] int  NOT NULL
-);
-GO
-
--- Creating table 'LibraryItems_Book'
-CREATE TABLE [dbo].[LibraryItems_Book] (
-    [Id] int  NOT NULL
+-- Creating table 'GivenResources'
+CREATE TABLE [dbo].[GivenResources] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [DateGiven] datetime  NULL,
+    [Count] int  NOT NULL,
+    [CenterFreeResourceId] int  NOT NULL
 );
 GO
 
@@ -473,33 +473,21 @@ ADD CONSTRAINT [PK_SpecialEvents]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [Id] in table 'GivenResources'
-ALTER TABLE [dbo].[GivenResources]
-ADD CONSTRAINT [PK_GivenResources]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
 -- Creating primary key on [Id] in table 'LibraryItems'
 ALTER TABLE [dbo].[LibraryItems]
 ADD CONSTRAINT [PK_LibraryItems]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [Id] in table 'LibraryItems_Video'
-ALTER TABLE [dbo].[LibraryItems_Video]
-ADD CONSTRAINT [PK_LibraryItems_Video]
+-- Creating primary key on [Id] in table 'LibraryResources'
+ALTER TABLE [dbo].[LibraryResources]
+ADD CONSTRAINT [PK_LibraryResources]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [Id] in table 'LibraryItems_Toy'
-ALTER TABLE [dbo].[LibraryItems_Toy]
-ADD CONSTRAINT [PK_LibraryItems_Toy]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
--- Creating primary key on [Id] in table 'LibraryItems_Book'
-ALTER TABLE [dbo].[LibraryItems_Book]
-ADD CONSTRAINT [PK_LibraryItems_Book]
+-- Creating primary key on [Id] in table 'GivenResources'
+ALTER TABLE [dbo].[GivenResources]
+ADD CONSTRAINT [PK_GivenResources]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -775,6 +763,34 @@ ON [dbo].[SpecialEvents]
     ([CenterId]);
 GO
 
+-- Creating foreign key on [LibraryResourceId] in table 'PrimaryGuardianBorrows'
+ALTER TABLE [dbo].[PrimaryGuardianBorrows]
+ADD CONSTRAINT [FK_LibraryResourcePrimaryGuardianBorrow]
+    FOREIGN KEY ([LibraryResourceId])
+    REFERENCES [dbo].[LibraryResources]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_LibraryResourcePrimaryGuardianBorrow'
+CREATE INDEX [IX_FK_LibraryResourcePrimaryGuardianBorrow]
+ON [dbo].[PrimaryGuardianBorrows]
+    ([LibraryResourceId]);
+GO
+
+-- Creating foreign key on [CenterId] in table 'LibraryResources'
+ALTER TABLE [dbo].[LibraryResources]
+ADD CONSTRAINT [FK_LibraryResourceCenter]
+    FOREIGN KEY ([CenterId])
+    REFERENCES [dbo].[Centers]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_LibraryResourceCenter'
+CREATE INDEX [IX_FK_LibraryResourceCenter]
+ON [dbo].[LibraryResources]
+    ([CenterId]);
+GO
+
 -- Creating foreign key on [CenterFreeResourceId] in table 'GivenResources'
 ALTER TABLE [dbo].[GivenResources]
 ADD CONSTRAINT [FK_CenterFreeResourceGivenResource]
@@ -787,61 +803,6 @@ ADD CONSTRAINT [FK_CenterFreeResourceGivenResource]
 CREATE INDEX [IX_FK_CenterFreeResourceGivenResource]
 ON [dbo].[GivenResources]
     ([CenterFreeResourceId]);
-GO
-
--- Creating foreign key on [CenterId] in table 'LibraryItems'
-ALTER TABLE [dbo].[LibraryItems]
-ADD CONSTRAINT [FK_LibraryItemCenter]
-    FOREIGN KEY ([CenterId])
-    REFERENCES [dbo].[Centers]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_LibraryItemCenter'
-CREATE INDEX [IX_FK_LibraryItemCenter]
-ON [dbo].[LibraryItems]
-    ([CenterId]);
-GO
-
--- Creating foreign key on [LibraryItemId] in table 'PrimaryGuardianBorrows'
-ALTER TABLE [dbo].[PrimaryGuardianBorrows]
-ADD CONSTRAINT [FK_PrimaryGuardianBorrowLibraryItem]
-    FOREIGN KEY ([LibraryItemId])
-    REFERENCES [dbo].[LibraryItems]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_PrimaryGuardianBorrowLibraryItem'
-CREATE INDEX [IX_FK_PrimaryGuardianBorrowLibraryItem]
-ON [dbo].[PrimaryGuardianBorrows]
-    ([LibraryItemId]);
-GO
-
--- Creating foreign key on [Id] in table 'LibraryItems_Video'
-ALTER TABLE [dbo].[LibraryItems_Video]
-ADD CONSTRAINT [FK_Video_inherits_LibraryItem]
-    FOREIGN KEY ([Id])
-    REFERENCES [dbo].[LibraryItems]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating foreign key on [Id] in table 'LibraryItems_Toy'
-ALTER TABLE [dbo].[LibraryItems_Toy]
-ADD CONSTRAINT [FK_Toy_inherits_LibraryItem]
-    FOREIGN KEY ([Id])
-    REFERENCES [dbo].[LibraryItems]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating foreign key on [Id] in table 'LibraryItems_Book'
-ALTER TABLE [dbo].[LibraryItems_Book]
-ADD CONSTRAINT [FK_Book_inherits_LibraryItem]
-    FOREIGN KEY ([Id])
-    REFERENCES [dbo].[LibraryItems]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- --------------------------------------------------
