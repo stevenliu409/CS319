@@ -314,8 +314,8 @@
     <Content Include="Areas\Staff\Views\Borrow\Index.cshtml" />
     <Content Include="Areas\Staff\Views\Borrow\Details.cshtml" />
     <Content Include="Areas\Staff\Views\Borrow\Create.cshtml" />
-    <Content Include="Areas\Staff\Views\Borrow\Edit.cshtml" />    
-    <Content Include="Areas\Staff\Views\Borrow\Delete.cshtml" />  
+    <Content Include="Areas\Staff\Views\Borrow\Edit.cshtml" />
+    <Content Include="Areas\Staff\Views\Borrow\Delete.cshtml" />
     <None Include="Models\Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Model1.Context.cs</LastGenOutput>
