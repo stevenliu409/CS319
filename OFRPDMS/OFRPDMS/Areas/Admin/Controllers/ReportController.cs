@@ -11,25 +11,27 @@ namespace OFRPDMS.Areas.Admin.Controllers
     public class ReportController : Controller
     {
         OFRPDMSContext context = new OFRPDMSContext();
-        Report myReport = new Report();
-        int[,] myArray = new int[,] { { 1, 2 }, { 3, 4 }, { 5, 6 }, { 7, 8 } };
+        ReportDBContext db = new ReportDBContext();
 
-        
+        DateTime startDay = new DateTime();
+        DateTime endDay = new DateTime();
+
         //
         // GET: /Report/
 
         public ActionResult Index()
         {
-            return View();
+            return View(new Report());
         }
 
         //
         // GET: /Report/Generate
 
-        public ActionResult Generate()
+        public ActionResult Generate(Report report)
         {
             ViewBag.numOfNewPG = getNumOfNewPGTable();
             ViewBag.numOfPG = getNumOfPGTable();
+            ViewBag.myReport = db.Report.First();
             return View(context.Centers);
         }
 
@@ -39,34 +41,46 @@ namespace OFRPDMS.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Index(Report report)
         {
-            myReport = report;
+            foreach (var entity in db.Report)
+                db.Report.Remove(entity);
+            db.SaveChanges();
+
+            db.Report.Add(report);
+            db.SaveChanges();
             return RedirectToAction("Generate","Report");
         }
 
         // get the number of new PG(created after start date) 
-        private int[,] getNumOfNewPGTable()
+        private int[] getNumOfNewPGTable()
         {
-            int[,] newPGTable = new int[5, 1];
-            for (int i = 0; i < context.Centers.ToArray().Length; i++)
+            int[] newPGTable = new int[5];
+            DateTime sday = db.Report.First().startDay;
+            DateTime eday = db.Report.First().endDay;
+            foreach (var pg in context.PrimaryGuardians)
             {
-                newPGTable[i,0] = (from u in context.PrimaryGuardians
-                    where u.DateCreated > myReport.startDay && u.Center.Id==i
-                    select u).ToArray().Length;
+                //created later than start day and earlier than end day
+                if (DateTime.Compare(pg.DateCreated, sday) > 0 && DateTime.Compare(pg.DateCreated, eday) < 0)
+                {
+                    newPGTable[pg.CenterId]++;
+                }
+                
             }
             return newPGTable;
         }
 
-        private int[,] getNumOfPGTable()
+        private int[] getNumOfPGTable()
         {
-            int[,] pgTable = new int[5, 1];
-            for (int i = 0; i < context.Centers.ToArray().Length; i++)
+            int[] pgTable = new int[5];
+            DateTime eday = db.Report.First().endDay;
+            foreach(var pg in context.PrimaryGuardians)
             {
-                pgTable[i, 0] = (from u in context.PrimaryGuardians
-                                    where  u.Center.Id == i
-                                    select u).ToArray().Length;
+                if (DateTime.Compare(pg.DateCreated, eday) < 0)
+                pgTable[pg.CenterId]++;
             }
             return pgTable;
         }
+
         
     }
 }
+

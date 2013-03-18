@@ -6,8 +6,9 @@
 }
 
 <h2>Generate</h2>
-<h2>@ViewBag.S</h2>
-<h2>Generate</h2>
+<h2>Start : @ViewBag.myReport.startDay</h2>
+<h2>End : @ViewBag.myReport.endDay</h2>
+
 <table>
     <tr>
         <th>
@@ -23,7 +24,7 @@
     </tr>
 
     @{
-        int counter = 0;
+        int counter = 1;
     }
 
 
@@ -36,10 +37,10 @@
                             </div>
                     </td>
                     <td>
-                            @ViewBag.numOfNewPG[counter,0]
+                            @ViewBag.numOfNewPG[counter]
                     </td>
                     <td>
-                            @ViewBag.numOfPG[counter,0]
+                            @ViewBag.numOfPG[counter]
                     </td>
                 </tr>
                 counter++;    

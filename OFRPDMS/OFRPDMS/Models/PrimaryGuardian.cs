@@ -64,6 +64,31 @@ namespace OFRPDMS.Models
 
         }
 
+        //// get the number of new PG(created after start date) 
+        //public int[,] getNumOfNewPGTable(List<PrimaryGuardian> pg, List<Center> center, DateTime startDay, DateTime endDay)
+        //{
+        //    int[,] newPGTable = new int[5, 1];
+        //    for (int i = 0; i < center.Count; i++)
+        //    {
+        //        newPGTable[i, 0] = (from u in pg
+        //                            where u.DateCreated > startDay && u.Center.Id == i
+        //                            select u).ToArray().Length;
+        //    }
+        //    return newPGTable;
+        //}
+
+        //private int[,] getNumOfPGTable()
+        //{
+        //    int[,] pgTable = new int[5, 1];
+        //    for (int i = 0; i < context.Centers.ToArray().Length; i++)
+        //    {
+        //        pgTable[i, 0] = (from u in context.PrimaryGuardians
+        //                         where u.Center.Id == i
+        //                         select u).ToArray().Length;
+        //    }
+        //    return pgTable;
+        //}
+
 
 
     }
