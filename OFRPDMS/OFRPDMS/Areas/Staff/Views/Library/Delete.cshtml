@@ -1,0 +1,64 @@
+﻿@model OFRPDMS.Models.LibraryResource
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>LibraryItem</legend>
+
+    <div class="display-label">Broken</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Broken)
+    </div>
+
+    <div class="display-label">CheckedOut</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CheckedOut)
+    </div>
+
+    <div class="display-label">Value</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Value)
+    </div>
+
+    <div class="display-label">Image</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Image)
+    </div>
+
+    <div class="display-label">Note</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Note)
+    </div>
+
+    <div class="display-label">Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">ItemType</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ItemType)
+    </div>
+
+    <div class="display-label">Sanitized</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Sanitized)
+    </div>
+
+    <div class="display-label">Center</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Center.Name)
+    </div>
+
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}

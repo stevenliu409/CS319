@@ -18,11 +18,11 @@ namespace OFRPDMS.Models
         public System.DateTime BorrowDate { get; set; }
         public int PrimaryGuardianId { get; set; }
         public bool Returned { get; set; }
-        public int LibraryItemId { get; set; }
         public System.DateTime DueDate { get; set; }
         public Nullable<System.DateTime> ReturnDate { get; set; }
+        public int LibraryResourceId { get; set; }
     
         public virtual PrimaryGuardian PrimaryGuardian { get; set; }
-        public virtual LibraryItem LibraryItem { get; set; }
+        public virtual LibraryResource LibraryResource { get; set; }
     }
 }

@@ -20,7 +20,7 @@ namespace OFRPDMS.Models
             this.EventParticipants = new HashSet<EventParticipant>();
             this.Allergies = new List<Allergy>();
         }
-
+    
         public int Id { get; set; }
         [Required]
         [RegularExpression(@"^[a-zA-Z]{1,25}$", ErrorMessage = "Not a valid first Name")]
@@ -35,11 +35,9 @@ namespace OFRPDMS.Models
         [Required]
         [RegularExpression(@"^[a-zA-Z]{1,25}$", ErrorMessage = "Not a valid relationship")]
         public string RelationshipToGuardian { get; set; }
-        public bool Delete { get; set; }
-
-   
+        public Nullable<bool> Delete { get; set; }
     
-       public virtual PrimaryGuardian PrimaryGuardian { get; set; }
+        public virtual PrimaryGuardian PrimaryGuardian { get; set; }
         public virtual ICollection<EventParticipant> EventParticipants { get; set; }
         public virtual IList<Allergy> Allergies { get; set; }
     }

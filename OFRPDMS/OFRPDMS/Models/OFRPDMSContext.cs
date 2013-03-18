@@ -20,6 +20,8 @@ namespace OFRPDMS.Models
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+
+            //modelBuilder.Entity<Book>().ToTable("LibraryItems");
         }
         public DbSet<PrimaryGuardianBorrow> PrimaryGuardianBorrows { get; set; }
         public DbSet<PrimaryGuardian> PrimaryGuardians { get; set; }
@@ -36,9 +38,9 @@ namespace OFRPDMS.Models
         public DbSet<CenterFreeResource> CenterFreeResources { get; set; }
         public DbSet<SpecialEvent> SpecialEvents { get; set; }
         public DbSet<LibraryItem> LibraryItems { get; set; }
-        public DbSet<Toy> Toys { get; set; }
-        public DbSet<Video> Videos { get; set; }
-        public DbSet<Book> Books { get; set; }
+        //public DbSet<Toy> Toys { get; set; }
+        //public DbSet<Video> Videos { get; set; }
         public DbSet<GivenResource> GivenResources { get; set; }
+        public DbSet<LibraryResource> LibraryResources { get; set; }
     }
 }

@@ -12,19 +12,25 @@ namespace OFRPDMS.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class LibraryItem
+    public partial class LibraryResource
     {
+        public LibraryResource()
+        {
+            this.PrimaryGuardianBorrows = new HashSet<PrimaryGuardianBorrow>();
+        }
+    
         public int Id { get; set; }
-        public string Broken { get; set; }
-        public string CheckedOut { get; set; }
-        public string Value { get; set; }
-        public string Image { get; set; }
+        public Nullable<bool> Broken { get; set; }
+        public Nullable<bool> CheckedOut { get; set; }
+        public Nullable<decimal> Value { get; set; }
+        public byte[] Image { get; set; }
         public string Note { get; set; }
-        public string LendingPeriod { get; set; }
         public string Name { get; set; }
-        public int CenterId { get; set; }
-        public string Discriminator { get; set; }
-        public string Discriminator1 { get; set; }
+        public string ItemType { get; set; }
         public Nullable<bool> Sanitized { get; set; }
+        public int CenterId { get; set; }
+    
+        public virtual ICollection<PrimaryGuardianBorrow> PrimaryGuardianBorrows { get; set; }
+        public virtual Center Center { get; set; }
     }
 }

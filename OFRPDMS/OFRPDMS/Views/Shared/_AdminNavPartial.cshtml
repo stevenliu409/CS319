@@ -2,6 +2,6 @@
 
 @foreach (var item in Model)
 {
-    <li>@Html.ActionLink(item.Name, "Index", "Staff",new { area = "Staff" }, null)</li>
+    <li>@Html.RouteLink(item.Name, "Staff_default", new { centerIdArg = item.Id, controller = "Staff", action = "Index" })</li>
 
 }

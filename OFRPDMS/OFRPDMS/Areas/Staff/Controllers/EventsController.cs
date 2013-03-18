@@ -20,61 +20,32 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
         public ViewResult Index()
         {
-            string[] roles = Roles.GetRolesForUser();
+            int centerID = AccountProfile.CurrentUser.CenterID;
 
-            if (roles.Any(item => item == "Administrators"))
-            {
-                var Events = db.Events.Include(e => e.Center);
-                return View(Events.ToList());
-            }
-            else
-            {
-                int centerID = AccountProfile.CurrentUser.CenterID;
-
-                var Events = db.Events.Where(Event => Event.CenterId == centerID);
-                return View(Events.ToList());
-            }
+            var Events = db.Events.Where(Event => Event.CenterId == centerID);
+            return View(Events.ToList());
         }
 
         //
         // GET: /Events/Details/5
 
         public ViewResult Details(int id)
-        {
-            string[] roles = Roles.GetRolesForUser();
+        {         
+            int centerID = AccountProfile.CurrentUser.CenterID;
 
-            if (roles.Any(item => item == "Administrators"))
-            {
-                Event anEvent = db.Events.Find(id);
-                return View(anEvent);
-            }
-            else
-            {
-                int centerID = AccountProfile.CurrentUser.CenterID;
+            Event anEvent = db.Events.Where(e => e.CenterId == centerID).Single(e => e.Id == id);
 
-                Event anEvent = db.Events.Where(e => e.CenterId == centerID).Single(e => e.Id == id);
-
-                return View(anEvent);
-            }
+            return View(anEvent);
         }
 
         //
         // GET: /Events/Create
 
         public ActionResult Create()
-        {
-            string[] roles = Roles.GetRolesForUser();
+        {          
+            int centerID = AccountProfile.CurrentUser.CenterID;
 
-            if (roles.Any(item => item == "Administrators"))
-            {
-                ViewBag.CenterId = new SelectList(db.Centers, "Id", "Name");
-            }
-            else
-            {
-                int centerID = AccountProfile.CurrentUser.CenterID;
-
-                ViewBag.CenterId = new SelectList(db.Centers.Where(c => c.Id == centerID), "Id", "Name");
-            }
+            ViewBag.CenterId = new SelectList(db.Centers.Where(c => c.Id == centerID), "Id", "Name");
 
             return View();
         } 
@@ -87,24 +58,11 @@ namespace OFRPDMS.Areas.Staff.Controllers
         {
             if (ModelState.IsValid)
             {
+                anEvent.CenterId = AccountProfile.CurrentUser.CenterID;
                 db.Events.Add(anEvent);
                 db.SaveChanges();
                 return RedirectToAction("Index");  
             }
-
-            string[] roles = Roles.GetRolesForUser();
-            if (roles.Any(item => item == "Administrators"))
-            {
-                ViewBag.CenterId = new SelectList(db.Centers, "Id", "Name");
-            }
-            else
-            {
-                int centerID = AccountProfile.CurrentUser.CenterID;
-
-                ViewBag.CenterId = new SelectList(db.Centers.Where(c => c.Id == centerID), "Id", "Name");
-            }
-
-            ViewBag.CenterId = new SelectList(db.Centers, "Id", "Name", anEvent.CenterId);
             return View(anEvent);
         }
         
@@ -113,21 +71,13 @@ namespace OFRPDMS.Areas.Staff.Controllers
  
         public ActionResult Edit(int id)
         {
-            string[] roles = Roles.GetRolesForUser();
 
-            Event anEvent;
-            if (roles.Any(item => item == "Administrators"))
-            {
-                anEvent = db.Events.Find(id);
-                ViewBag.CenterId = new SelectList(db.Centers, "Id", "Name", anEvent.CenterId);
-            }
-            else
-            {
-                int centerID = AccountProfile.CurrentUser.CenterID;
+            Event anEvent;            
+            int centerID = AccountProfile.CurrentUser.CenterID;
 
-                anEvent = db.Events.Find(id);
-                ViewBag.CenterId = new SelectList(db.Centers.Where(c => c.Id == centerID), "Id", "Name");
-            }
+            anEvent = db.Events.Find(id);
+            ViewBag.CenterId = new SelectList(db.Centers.Where(c => c.Id == centerID), "Id", "Name");
+           
             return View(anEvent);
         }
 
@@ -139,24 +89,15 @@ namespace OFRPDMS.Areas.Staff.Controllers
         {
             if (ModelState.IsValid)
             {
+                anEvent.CenterId = AccountProfile.CurrentUser.CenterID;
                 db.Entry(anEvent).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            int centerID = AccountProfile.CurrentUser.CenterID;
 
-            string[] roles = Roles.GetRolesForUser();
-
-            if (roles.Any(item => item == "Administrators"))
-            {
-                ViewBag.CenterId = new SelectList(db.Centers, "Id", "Name", anEvent.CenterId);
-            }
-            else
-            {
-
-                int centerID = AccountProfile.CurrentUser.CenterID;
-
-                ViewBag.CenterId = new SelectList(db.Centers.Where(c => c.Id == centerID), "Id", "Name");
-            }
+            ViewBag.CenterId = new SelectList(db.Centers.Where(c => c.Id == centerID), "Id", "Name");
+           
             return View(anEvent);
         }
 
@@ -165,21 +106,11 @@ namespace OFRPDMS.Areas.Staff.Controllers
  
         public ActionResult Delete(int id)
         {
-            string[] roles = Roles.GetRolesForUser();
+            int centerID = AccountProfile.CurrentUser.CenterID;
 
-            if (roles.Any(item => item == "Administrators"))
-            {
-                Event anEvent = db.Events.Find(id);
-                return View(anEvent);
-            }
-            else
-            {
-                int centerID = AccountProfile.CurrentUser.CenterID;
+            Event anEvent = db.Events.Where(e => e.CenterId == centerID).Single(e => e.Id == id);
 
-                Event anEvent = db.Events.Where(e => e.CenterId == centerID).Single(e => e.Id == id);
-
-                return View(anEvent);
-            }
+            return View(anEvent);          
         }
 
         //

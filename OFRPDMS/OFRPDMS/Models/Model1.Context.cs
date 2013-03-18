@@ -39,7 +39,8 @@ namespace OFRPDMS.Models
         public DbSet<Account> Accounts { get; set; }
         public DbSet<CenterFreeResource> CenterFreeResources { get; set; }
         public DbSet<SpecialEvent> SpecialEvents { get; set; }
-        public DbSet<GivenResource> GivenResources { get; set; }
         public DbSet<LibraryItem> LibraryItems { get; set; }
+        public DbSet<LibraryResource> LibraryResources { get; set; }
+        public DbSet<GivenResource> GivenResources { get; set; }
     }
 }

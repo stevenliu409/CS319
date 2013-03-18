@@ -16,8 +16,8 @@ namespace OFRPDMS.Areas.Staff
         {
             context.MapRoute(
                 "Staff_default",
-                "Staff/{controller}/{action}/{id}",
-                new { controller = "Staff", action = "Index", id = UrlParameter.Optional }
+                "Staff/Center/{centerIdArg}/{controller}/{action}/{id}",
+                new { centerIdArg = UrlParameter.Optional, controller = "Staff", action = "Index", id = UrlParameter.Optional }
             );
         }
     }
