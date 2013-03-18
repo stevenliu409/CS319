@@ -87,6 +87,8 @@ namespace OFRPDMS.Areas.Staff.Controllers
         {
             if (ModelState.IsValid)
             {
+                anEvent.CenterId = AccountProfile.CurrentUser.CenterID;
+                anEvent.Center = db.Centers.Find(anEvent.CenterId);
                 db.Events.Add(anEvent);
                 db.SaveChanges();
                 return RedirectToAction("Index");  
