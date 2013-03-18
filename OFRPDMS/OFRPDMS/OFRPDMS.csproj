@@ -70,11 +70,12 @@
     <Compile Include="Areas\Admin\Controllers\CentersController.cs" />
     <Compile Include="Areas\Admin\Controllers\ReportController.cs" />
     <Compile Include="Areas\Admin\Models\Report.cs" />
-    <Compile Include="Areas\Staff\Controllers\BorrowController.cs" />
+    <Compile Include="Areas\Staff\Controllers\CenterFreeResourcesController.cs" />
     <Compile Include="Areas\Staff\Controllers\EventsController.cs" />
     <Compile Include="Areas\Staff\Controllers\FamiliesController.cs" />
     <Compile Include="Areas\Staff\Controllers\LibraryController.cs" />
     <Compile Include="Areas\Staff\Controllers\SignInController.cs" />
+    <Compile Include="Areas\Staff\Models\CenterFreeResourcesEdit.cs" />
     <Compile Include="Areas\Staff\StaffAreaRegistration.cs" />
     <Compile Include="Areas\Staff\Controllers\StaffController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="Models\Allergy.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Book.cs" />
     <Compile Include="Models\Center.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -156,6 +158,8 @@
     <Compile Include="Models\SpecialEvent.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Toy.cs" />
+    <Compile Include="Models\Video.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -249,8 +253,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
-    <Folder Include="Areas\Staff\Models\" />
-    <Folder Include="Areas\Staff\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -314,8 +316,15 @@
     <Content Include="Areas\Staff\Views\Borrow\Index.cshtml" />
     <Content Include="Areas\Staff\Views\Borrow\Details.cshtml" />
     <Content Include="Areas\Staff\Views\Borrow\Create.cshtml" />
-    <Content Include="Areas\Staff\Views\Borrow\Edit.cshtml" />    
-    <Content Include="Areas\Staff\Views\Borrow\Delete.cshtml" />  
+    <Content Include="Areas\Staff\Views\Borrow\Edit.cshtml" />
+    <Content Include="Areas\Staff\Views\Borrow\Delete.cshtml" />
+    <Content Include="Areas\Staff\Views\CenterFreeResources\Create.cshtml" />
+    <Content Include="Areas\Staff\Views\CenterFreeResources\Delete.cshtml" />
+    <Content Include="Areas\Staff\Views\CenterFreeResources\Details.cshtml" />
+    <Content Include="Areas\Staff\Views\CenterFreeResources\Edit.cshtml" />
+    <Content Include="Areas\Staff\Views\CenterFreeResources\Index.cshtml" />
+    <Content Include="Areas\Staff\Views\CenterFreeResources\_CreateOrEdit.cshtml" />
+    <Content Include="Areas\Staff\Views\Shared\EditorTemplates\CenterFreeResource.cshtml" />
     <None Include="Models\Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Model1.Context.cs</LastGenOutput>
