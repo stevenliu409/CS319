@@ -69,6 +69,7 @@
     <Compile Include="Areas\Admin\Controllers\AdminController.cs" />
     <Compile Include="Areas\Admin\Controllers\CentersController.cs" />
     <Compile Include="Areas\Admin\Controllers\ReportController.cs" />
+    <Compile Include="Areas\Admin\Models\Report.cs" />
     <Compile Include="Areas\Staff\Controllers\EventsController.cs" />
     <Compile Include="Areas\Staff\Controllers\FamiliesController.cs" />
     <Compile Include="Areas\Staff\Controllers\LibraryController.cs" />
@@ -252,7 +253,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="Areas\Staff\Models\" />
     <Folder Include="Areas\Staff\Views\Shared\" />
