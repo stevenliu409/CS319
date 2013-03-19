@@ -19,10 +19,14 @@ namespace OFRPDMS.Tests.Controllers
             HomeController controller = new HomeController();
 
             // Act
-            ViewResult result = controller.Index() as ViewResult;
+            ActionResult result = controller.Index() as ActionResult;
 
             // Assert
             //Assert.AreEqual("Welcome to ASP.NET MVC!", result.ViewBag.Message);
+            Assert.IsInstanceOfType(result, typeof(RedirectToRouteResult));
+            RedirectToRouteResult redirectresult = (RedirectToRouteResult) result;
+            Assert.IsTrue(redirectresult.RouteValues.Values.Contains("Account"));
+            Assert.IsTrue(redirectresult.RouteValues.Values.Contains("LogOn"));
         }
 
         [TestMethod]

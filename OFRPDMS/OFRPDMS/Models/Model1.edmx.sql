@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 03/18/2013 01:44:41
+-- Date Created: 03/18/2013 21:51:00
 -- Generated from EDMX file: D:\cs319\CS319\OFRPDMS\OFRPDMS\Models\Model1.edmx
 -- --------------------------------------------------
 
@@ -228,7 +228,7 @@ GO
 -- Creating table 'EventParticipants'
 CREATE TABLE [dbo].[EventParticipants] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [ParticipantId] smallint  NOT NULL,
+    [ParticipantId] int  NOT NULL,
     [ParticipantType] nvarchar(max)  NOT NULL,
     [SpecialEventId] int  NULL,
     [EventId] int  NULL
@@ -550,7 +550,7 @@ ADD CONSTRAINT [FK_PrimaryGuardianChild]
     FOREIGN KEY ([PrimaryGuardianId])
     REFERENCES [dbo].[PrimaryGuardians]
         ([Id])
-    ON DELETE CASCADE ON UPDATE CASCADE;
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_PrimaryGuardianChild'
 CREATE INDEX [IX_FK_PrimaryGuardianChild]
@@ -587,7 +587,7 @@ ADD CONSTRAINT [FK_PrimaryGuardianAllergy]
     FOREIGN KEY ([PrimaryGuardianId])
     REFERENCES [dbo].[PrimaryGuardians]
         ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_PrimaryGuardianAllergy'
 CREATE INDEX [IX_FK_PrimaryGuardianAllergy]
@@ -699,7 +699,7 @@ ADD CONSTRAINT [FK_PrimaryGuardianSecondaryGuardian]
     FOREIGN KEY ([PrimaryGuardianId])
     REFERENCES [dbo].[PrimaryGuardians]
         ([Id])
-    ON DELETE CASCADE ON UPDATE CASCADE;
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_PrimaryGuardianSecondaryGuardian'
 CREATE INDEX [IX_FK_PrimaryGuardianSecondaryGuardian]

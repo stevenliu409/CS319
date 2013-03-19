@@ -21,7 +21,7 @@ namespace OFRPDMS.Models
         }
     
         public int Id { get; set; }
-        public short ParticipantId { get; set; }
+        public int ParticipantId { get; set; }
         public string ParticipantType { get; set; }
         public Nullable<int> SpecialEventId { get; set; }
         public Nullable<int> EventId { get; set; }
