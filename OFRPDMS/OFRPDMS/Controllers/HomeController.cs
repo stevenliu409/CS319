@@ -36,9 +36,9 @@ namespace OFRPDMS.Controllers
 
             }
             if (Roles.GetRolesForUser().Contains("Administrators"))
-                return RedirectToAction("Index", "Admin", new { area = "Admin" });
+                return RedirectToAction("Index", "Admin");
             if (Roles.GetRolesForUser().Contains("Staff"))
-                return RedirectToRoute("Staff_default", new { centerIdArg = -1, controller = "Staff", action = "Index" });
+                return RedirectToAction("Index", "Staff");
 
             return RedirectToAction("LogOn", "Account");
         }

@@ -1,0 +1,90 @@
+﻿@model IEnumerable<OFRPDMS.Models.PrimaryGuardian>
+
+@*This is a partial view is used to fetch primary guardians*@
+
+
+<script src="/Scripts/jquery.tmpl.js" type="text/javascript"></script>
+<script src="/Scripts/jquery.tmpl.min.js" type="text/javascript"></script>
+<div id = "Search_box"> Search: 
+<input type = "text" id = "PrimaryFirstName" /> 
+<input type = "button" id = "search_btn" value = "Search" />
+</div>
+
+
+<script type = "text/javascript">
+    function myFunction(id) {
+        $.ajax({
+            url: '/SignIn/Add',
+            type: "POST",
+            datatype: "json",
+            data: { id: id },
+            success: function () { }
+        });
+    }
+</script>
+
+<script id = "tabletemplate" type = "text/x-jquery-tmpl">
+<tr>
+    <td>${Fname}</td>
+    <td>${Lname}</td>
+    <td>${email}</td>
+    <td>${phone}</td>
+    <td>${prefix}</td>
+    <td>${datacreate}</td>
+    <td>${lang}</td>
+    <td>${country}</td>
+    <td><input type = "button" value = "Add" onclick = "myFunction(${id})" /></td>
+</tr>
+</script>
+<script type = "text/javascript">
+    $("#search_btn").click(function () {
+
+        var text = document.getElementById("PrimaryFirstName").value;
+        $.ajax({
+            url: '/SignIn/Search',
+            type: "POST",
+            datatype: "json",
+            data: { name: text },
+            success: function (data) {
+                $('#datatable').empty();
+                $('#tabletemplate').tmpl(data).appendTo('#datatable');
+            }
+        });
+    });
+</script>
+
+
+    <table>
+    <thead>
+        <tr>
+            <th>
+              FirstName
+            </th>
+            <th>
+                LastName
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+			     Phone
+            </th>
+            <th>
+			    PostalCodePrefix
+            </th>
+            <th>
+			    DateCreated
+            </th>
+            <th>
+			    Language
+            </th>
+            <th>
+			    Country
+            </th>
+        </tr>
+        </thead>
+       <tbody id = "datatable" >
+    
+        </tbody>
+        </table>
+
