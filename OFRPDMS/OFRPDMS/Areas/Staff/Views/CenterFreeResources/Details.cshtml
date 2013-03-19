@@ -1,0 +1,29 @@
+@model OFRPDMS.Models.CenterFreeResource
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>CenterFreeResource</legend>
+
+    <div class="display-label">NumberAvailable</div>
+    <div class="display-field">@Model.NumberAvailable</div>
+
+    <div class="display-label">Name</div>
+    <div class="display-field">@Model.Name</div>
+
+    <div class="display-label">Center</div>
+    <div class="display-field">@(Model.Center == null ? "None" : Model.Center.Name)</div>
+
+    <div class="display-label">GivenResources</div>
+    <div class="display-field">@(Model.GivenResources == null ? "None" : Model.GivenResources.Count.ToString())</div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+

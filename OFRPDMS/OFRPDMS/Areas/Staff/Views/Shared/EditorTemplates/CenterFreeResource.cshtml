@@ -1,0 +1,12 @@
+﻿@model OFRPDMS.Models.CenterFreeResource
+
+@* This partial view defines form fields that will appear when creating and editing entities *@
+<td>
+    @Html.LabelFor(model => model.NumberAvailable) @Html.EditorFor(model => model.NumberAvailable)
+    @Html.ValidationMessageFor(model => model.NumberAvailable)
+</td>
+<td>
+	@Html.LabelFor(model => model.Name)  @Html.EditorFor(model => model.Name)
+    @Html.ValidationMessageFor(model => model.Name)
+</td>
+
