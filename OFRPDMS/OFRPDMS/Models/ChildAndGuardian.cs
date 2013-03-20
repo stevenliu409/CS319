@@ -9,5 +9,7 @@ namespace OFRPDMS.Models
     {
         public PrimaryGuardian PrimaryGuardian{get;set;}
         public Child Child { get; set; }
+        public SecondaryGuardian SecondaryGuardian { get; set; }
+
     }
 }

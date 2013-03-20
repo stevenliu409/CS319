@@ -1,0 +1,22 @@
+﻿@model OFRPDMS.Models.EventParticipant
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script src ="@Url.Content("~/Scripts/Custom/Utility/autocomplete.js")" type="text/javascript"></script>
+@using (Html.BeginForm()) {
+    <div class = "search">
+   @Html.Partial("_searchguardian")
+   </div>
+    
+      
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

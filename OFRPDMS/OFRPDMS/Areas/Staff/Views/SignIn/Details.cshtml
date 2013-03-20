@@ -1,0 +1,30 @@
+﻿@model OFRPDMS.Models.EventParticipant
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>EventParticipant</legend>
+
+    <div class="display-label">Event</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Event.Id)
+    </div>
+
+    <div class="display-label">ParticipantId</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ParticipantId)
+    </div>
+
+    <div class="display-label">ParticipantType</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ParticipantType)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

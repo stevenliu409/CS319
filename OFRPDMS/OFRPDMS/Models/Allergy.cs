@@ -20,7 +20,6 @@ namespace OFRPDMS.Models
         public string Note { get; set; }
         public Nullable<bool> Delete { get; set; }
     
-
         public virtual PrimaryGuardian PrimaryGuardian { get; set; }
         public virtual Child Child { get; set; }
     }

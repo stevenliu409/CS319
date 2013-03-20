@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 03/18/2013 01:44:41
+-- Date Created: 03/18/2013 21:51:00
 -- Generated from EDMX file: D:\cs319\CS319\OFRPDMS\OFRPDMS\Models\Model1.edmx
 -- --------------------------------------------------
 
@@ -228,7 +228,7 @@ GO
 -- Creating table 'EventParticipants'
 CREATE TABLE [dbo].[EventParticipants] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [ParticipantId] smallint  NOT NULL,
+    [ParticipantId] int  NOT NULL,
     [ParticipantType] nvarchar(max)  NOT NULL,
     [SpecialEventId] int  NULL,
     [EventId] int  NULL
