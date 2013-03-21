@@ -20,32 +20,81 @@
         <th>
             # of patient
         </th>
-        <th></th>
     </tr>
 
-    @{
-        int counter = 1;
-    }
 
-
-    @foreach (var item in Model)
+    @for(int i =0; i < @ViewBag.center.Length; i++)
             {
                 <tr>
                     <td>
-                            <div class="display-field">
-                            @Html.DisplayFor(modelItem => item.Name)
-                            </div>
+                            @ViewBag.center[i].Name
                     </td>
                     <td>
-                            @ViewBag.numOfNewPG[counter]
+                            @ViewBag.numOfNewPG[(i+1)]
                     </td>
                     <td>
-                            @ViewBag.numOfPG[counter]
+                            @ViewBag.numOfPG[(i+1)]
                     </td>
                 </tr>
-                counter++;    
             }
-
-
 </table>
 
+<h2>Languages Spoken at Home </h2>
+<table>
+    <tr>
+        <th>
+        Language
+        </th>
+    @for(int i =0; i < @ViewBag.center.Length; i++)
+    {
+        <th>
+             @ViewBag.center[i].Name
+        </th>
+    }
+    </tr>
+
+        @for(int i =0; i < @ViewBag.distinctLanguage.Length; i++)
+    {
+        <tr>
+            <th>
+            @ViewBag.distinctLanguage[i]
+            </th>
+            @for (int j = 0; j < @ViewBag.center.Length; j++)
+            {
+                <th>
+                    @ViewBag.languageTable[i, j+1]
+                </th>
+            }
+        </tr>
+    }
+</table>
+
+<h2>Culture</h2>
+<table>
+    <tr>
+        <th>
+        Country
+        </th>
+    @for(int i =0; i < @ViewBag.center.Length; i++)
+    {
+        <th>
+             @ViewBag.center[i].Name
+        </th>
+    }
+    </tr>
+
+        @for(int i =0; i < @ViewBag.distinctCountry.Length; i++)
+    {
+        <tr>
+            <th>
+            @ViewBag.distinctCountry[i]
+            </th>
+            @for (int j = 0; j < @ViewBag.center.Length; j++)
+            {
+                <th>
+                    @ViewBag.countryTable[i, j+1]
+                </th>
+            }
+        </tr>
+    }
+</table>

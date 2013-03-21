@@ -114,7 +114,8 @@ namespace OFRPDMS.Areas.Staff.Controllers
         }
 
         [HttpPost]
-        public ActionResult Search(String name) {
+        public ActionResult Search(string name, string type) {
+            if (type == "Primary") {         
                 var _primaryguardian = db.PrimaryGuardians.Where(p => p.FirstName.Contains(name) || p.LastName.Contains(name)).ToList();
                 var collection = _primaryguardian.Select(pm => new
                 {
@@ -129,19 +130,70 @@ namespace OFRPDMS.Areas.Staff.Controllers
                     lang = pm.Language,
                     country = pm.Country,
 
+
                 });
                 return Json(collection, JsonRequestBehavior.AllowGet);
+            }
+            else if (type == "Child")
+            {
+                var _primaryguardian = db.Children.Where(c => c.FirstName.Contains(name)).ToList();
+                var collection = _primaryguardian.Select(pm => new
+                {
+
+                    id = pm.Id,
+                    Fname = pm.FirstName,
+                    Lname = pm.LastName,
+
+                });
+                return Json(collection, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var _primaryguardian = db.SecondaryGuardians.Where(s => s.FirstName.Contains(name)).ToList();
+                var collection = _primaryguardian.Select(pm => new
+                {
+
+                    id = pm.Id,
+                    Fname = pm.FirstName,
+                    Lname = pm.LastName,
+
+                });
+                return Json(collection, JsonRequestBehavior.AllowGet);
+
+            }
         }
 
-        public ActionResult Add(int id)
+        public ActionResult Add(int id, string type)
         {
-            var _primaryguardian = db.PrimaryGuardians.Find(id);
-            EventParticipant ep = new EventParticipant();
-            ep.ParticipantId = 1;
-            ep.ParticipantType = "primary";
-            db.EventParticipants.Add(ep);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (type == "Primary")
+            {
+                var _primaryguardian = db.PrimaryGuardians.Find(id);
+                EventParticipant ep = new EventParticipant();
+                ep.ParticipantId = (short)_primaryguardian.Id;
+                ep.ParticipantType = type;
+                db.EventParticipants.Add(ep);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            else if (type == "Child")
+            {
+                var _child = db.Children.Find(id);
+                EventParticipant ep = new EventParticipant();
+                ep.ParticipantId = (short)_child.Id;
+                ep.ParticipantType = type;
+                db.EventParticipants.Add(ep);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            else {
+                var _secondaryguardian = db.SecondaryGuardians.Find(id);
+                EventParticipant ep = new EventParticipant();
+                ep.ParticipantId = (short)_secondaryguardian.Id;
+                ep.ParticipantType = type;
+                db.EventParticipants.Add(ep);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
 
         }
     }

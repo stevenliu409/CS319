@@ -27,12 +27,22 @@ namespace OFRPDMS.Areas.Admin.Controllers
         //
         // GET: /Report/Generate
 
+        [HttpPost]
         public ActionResult Generate(Report report)
         {
-            ViewBag.numOfNewPG = getNumOfNewPGTable();
-            ViewBag.numOfPG = getNumOfPGTable();
-            ViewBag.myReport = db.Report.First();
+            //ViewBag.myReport = db.Report.First();
+            string[] disLanguage = getLanguages(report.startDay, report.endDay);
+            string[] disCountry = getCountrys(report.startDay, report.endDay);
+            ViewBag.myReport = report;
+            ViewBag.numOfNewPG = getNumOfNewPGTable(report.startDay, report.endDay);
+            ViewBag.numOfPG = getNumOfPGTable(report.endDay);
+            ViewBag.distinctLanguage = disLanguage;
+            ViewBag.distinctCountry = disCountry;
+            ViewBag.center = context.Centers.ToArray();
+            ViewBag.languageTable = getLanguageTable(disLanguage, report.startDay, report.endDay);
+            ViewBag.countryTable = getCountryTable(disCountry,report.startDay, report.endDay);
             return View(context.Centers);
+            
         }
 
         //
@@ -41,44 +51,138 @@ namespace OFRPDMS.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Index(Report report)
         {
-            foreach (var entity in db.Report)
-                db.Report.Remove(entity);
-            db.SaveChanges();
 
-            db.Report.Add(report);
-            db.SaveChanges();
+            startDay = report.startDay;
+            endDay = report.endDay;
+
+
+            ViewBag.myReport = report;
+            ViewBag.numOfNewPG = getNumOfNewPGTable(startDay, endDay);
+
+
             return RedirectToAction("Generate","Report");
         }
 
         // get the number of new PG(created after start date) 
-        private int[] getNumOfNewPGTable()
+        private int[] getNumOfNewPGTable(DateTime sday, DateTime eday)
         {
-            int[] newPGTable = new int[5];
-            DateTime sday = db.Report.First().startDay;
-            DateTime eday = db.Report.First().endDay;
-            foreach (var pg in context.PrimaryGuardians)
+            int[] newPGTable = new int[10];
+
+            foreach (var c in context.Centers)
             {
-                //created later than start day and earlier than end day
-                if (DateTime.Compare(pg.DateCreated, sday) > 0 && DateTime.Compare(pg.DateCreated, eday) < 0)
-                {
-                    newPGTable[pg.CenterId]++;
-                }
-                
+                IEnumerable<PrimaryGuardian> pgs = context.PrimaryGuardians.Where(pg => DateTime.Compare(pg.DateCreated, sday) > 0 && DateTime.Compare(pg.DateCreated, eday) < 0 && pg.CenterId == c.Id);
+                newPGTable[c.Id] = pgs.Count();
             }
+
             return newPGTable;
         }
 
-        private int[] getNumOfPGTable()
+        private int[] getNumOfChild(DateTime eday)
         {
-            int[] pgTable = new int[5];
-            DateTime eday = db.Report.First().endDay;
-            foreach(var pg in context.PrimaryGuardians)
+            int[] pgTable = new int[10];
+
+            foreach (var c in context.Centers)
             {
-                if (DateTime.Compare(pg.DateCreated, eday) < 0)
-                pgTable[pg.CenterId]++;
+                IEnumerable<PrimaryGuardian> pgs = context.PrimaryGuardians.Where(pg => DateTime.Compare(pg.DateCreated, eday) < 0 && pg.CenterId == c.Id);
+                IEnumerable<PrimaryGuardian> distinctPG = context.PrimaryGuardians.Distinct();
+                pgTable[c.Id] = pgs.Count();
             }
+
             return pgTable;
         }
+
+        private int[] getNumOfPGTable(DateTime eday)
+        {
+            int[] pgTable = new int[10];
+
+            foreach (var c in context.Centers)
+            {
+                IEnumerable<PrimaryGuardian> pgs = context.PrimaryGuardians.Where(pg => DateTime.Compare(pg.DateCreated, eday) < 0 && pg.CenterId == c.Id);
+                IEnumerable<PrimaryGuardian> distinctPG = context.PrimaryGuardians.Distinct();
+                pgTable[c.Id] = pgs.Count();
+            }
+
+            return pgTable;
+        }
+
+        private string[] getLanguages(DateTime sday, DateTime eday)
+        {
+            IEnumerable<PrimaryGuardian> pgs = context.PrimaryGuardians.Where(pg => DateTime.Compare(pg.DateCreated, sday) > 0
+                && DateTime.Compare(pg.DateCreated, eday) < 0 );
+            List<string> language = new List<string>();
+            
+            
+            foreach (var pg in pgs)
+            {
+                language.Add(pg.Language);
+            }
+
+            IEnumerable<string> distinctLanguage = language.Distinct();
+            language = distinctLanguage.ToList();
+            return distinctLanguage.ToArray();
+        }
+
+        private string[] getCountrys(DateTime sday, DateTime eday)
+        {
+            IEnumerable<PrimaryGuardian> pgs = context.PrimaryGuardians.Where(pg => DateTime.Compare(pg.DateCreated, sday) > 0
+                && DateTime.Compare(pg.DateCreated, eday) < 0);
+            List<string> country = new List<string>();
+
+
+            foreach (var pg in pgs)
+            {
+                country.Add(pg.Country);
+            }
+
+            IEnumerable<string> distinctCountry = country.Distinct();
+            country = distinctCountry.ToList();
+            return distinctCountry.ToArray();
+        }
+
+        private int[,] getCountryTable(string[] disCountry, DateTime sday, DateTime eday)
+        {
+            //row means language, column means center
+            int[,] countryTable = new int[100, 10];
+
+            IEnumerable<PrimaryGuardian> aa = context.PrimaryGuardians.Where(pg => DateTime.Compare(pg.DateCreated, sday) > 0
+                        && DateTime.Compare(pg.DateCreated, eday) < 0);
+
+            foreach (PrimaryGuardian pg in aa)
+            {
+                int cId = pg.CenterId;
+                string country = pg.Country;
+                int countryIndex = disCountry.ToList<string>().IndexOf(country);
+
+                countryTable[countryIndex, cId] += 1;
+            }
+
+            return countryTable;
+        }
+
+
+        private int[,] getLanguageTable(string[] disLanguage, DateTime sday, DateTime eday)
+        {
+            //row means language, column means center
+            int[,] languageTable = new int[100,10];
+
+            IEnumerable<PrimaryGuardian> aa = context.PrimaryGuardians.Where(pg => DateTime.Compare(pg.DateCreated, sday) > 0
+                        && DateTime.Compare(pg.DateCreated, eday) < 0);
+            
+            foreach (PrimaryGuardian pg in aa)
+            {
+                int cId = pg.CenterId;
+                string language = pg.Language;
+                int languageIndex = disLanguage.ToList<string>().IndexOf(language);
+
+                languageTable[languageIndex, cId] += 1;
+            }
+
+            return languageTable;
+        }
+
+
+
+
 
         
     }
