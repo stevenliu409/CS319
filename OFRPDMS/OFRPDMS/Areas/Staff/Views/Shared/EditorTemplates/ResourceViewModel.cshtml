@@ -1,0 +1,25 @@
+﻿@model OFRPDMS.Areas.Staff.ViewModels.ResourceViewModel
+
+@* This partial view defines form fields that will appear when creating and editing entities *@
+<tr>
+    
+    <td>
+        @Html.EditorFor(model => model.count)
+        @Html.ValidationMessageFor(model => model.count)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.resource.NumberAvailable)
+        @Html.HiddenFor(model => model.resource.NumberAvailable)       
+        @Html.HiddenFor(model => model.resource.Id)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.totalHandedOut)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.resource.Name)
+    </td>
+    <td>
+        @Html.ActionLink("Delete", "Delete", new { id = Model.resource.Id })
+    </td>
+</tr>
+

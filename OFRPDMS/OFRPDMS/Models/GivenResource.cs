@@ -20,5 +20,9 @@ namespace OFRPDMS.Models
         public int CenterFreeResourceId { get; set; }
     
         public virtual CenterFreeResource CenterFreeResource { get; set; }
+        public GivenResource()
+        {
+            DateGiven = System.DateTime.Now;
+        }
     }
 }

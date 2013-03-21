@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using OFRPDMS.Models;
 using OFRPDMS.Areas.Staff.Models;
+using OFRPDMS.Areas.Staff.ViewModels;
 
 namespace OFRPDMS.Areas.Staff.Controllers
 {   
@@ -48,9 +49,10 @@ namespace OFRPDMS.Areas.Staff.Controllers
         {
             if (ModelState.IsValid)
             {
+                centerfreeresource.CenterId = AccountProfile.CurrentUser.CenterID;
                 context.CenterFreeResources.Add(centerfreeresource);
                 context.SaveChanges();
-                return RedirectToAction("Index");  
+                return RedirectToAction("Edit");  
             }
 
             ViewBag.PossibleCenters = context.Centers;
@@ -58,30 +60,71 @@ namespace OFRPDMS.Areas.Staff.Controllers
         }
         
         //
-        // GET: /CenterFreeResources/Edit/5
+        // GET: /CenterFreeResources/Edit
  
         public ActionResult Edit()
         {
-            CenterFreeResourcesEdit centerfreeresourcesEdit = new CenterFreeResourcesEdit();
-            List<CenterFreeResource> resourceList = context.CenterFreeResources.ToList();
-            centerfreeresourcesEdit.CenterFreeResources = resourceList;
-            return View(centerfreeresourcesEdit);
+            ResourceViewModelsEdit resourcesEdit = new ResourceViewModelsEdit();
+            List<CenterFreeResource> resourceList = 
+                context.CenterFreeResources.Where(resource => resource.CenterId == 
+                    AccountProfile.CurrentUser.CenterID).ToList();
+            List<ResourceViewModel> resouceViewModelList = new List<ResourceViewModel>();
+            
+            foreach (var resource in resourceList)
+            {
+                ResourceViewModel r = new ResourceViewModel();
+                r.resource = resource;
+                r.count = (int)resource.NumberAvailable;
+                List<GivenResource> recordsOfGiven = resource.GivenResources.ToList();
+                foreach (var record in recordsOfGiven)
+                {
+                    r.totalHandedOut += record.Count;
+                }
+                resouceViewModelList.Add(r);
+            }
+            resourcesEdit.Resources = resouceViewModelList;
+            return View(resourcesEdit);
         }
 
         //
-        // POST: /CenterFreeResources/Edit/5
+        // POST: /CenterFreeResources/Edit
 
         [HttpPost]
-        public ActionResult Edit(CenterFreeResourcesEdit centerfreeresource)
+        public ActionResult Edit(ResourceViewModelsEdit resourcesEdit)
         {
-            //if (ModelState.IsValid)
-            //{
-            //    context.Entry(centerfreeresource).State = EntityState.Modified;
-            //    context.SaveChanges();
-            //    return RedirectToAction("Index");
-            //}
+            foreach (var item in resourcesEdit.Resources)
+            {
+                if (ModelState.IsValid)
+                {
+                    int handedOut = (int)(item.resource.NumberAvailable) - item.count;
+                    int newStock = item.count;
+                    //this if block allows the user to enter a negative number to indicate 
+                    //number handed out instead of current stock
+                    if (item.count < 0)
+                    {
+                        handedOut = -item.count;
+                        if((int)(item.resource.NumberAvailable) - handedOut < 0)
+                            handedOut = (int)(item.resource.NumberAvailable);
+                        newStock = (int)(item.resource.NumberAvailable) - handedOut;
+
+                    }
+
+                    CenterFreeResource aResource =  context.CenterFreeResources.Find(item.resource.Id);
+                    aResource.NumberAvailable = newStock;
+                    context.Entry(aResource).State = EntityState.Modified;
+                    context.SaveChanges();
+                    if (handedOut > 0)
+                    {
+                        GivenResource gr = new GivenResource();
+                        gr.Count = handedOut;
+                        gr.CenterFreeResourceId = item.resource.Id;
+                        context.GivenResources.Add(gr);
+                        context.SaveChanges();
+                    }
+                }
+            }
             ViewBag.PossibleCenters = context.Centers;
-            return View(centerfreeresource);
+            return RedirectToAction("Index");
         }
 
         //
@@ -102,7 +145,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
             CenterFreeResource centerfreeresource = context.CenterFreeResources.Single(x => x.Id == id);
             context.CenterFreeResources.Remove(centerfreeresource);
             context.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Edit");
         }
 
         protected override void Dispose(bool disposing)
