@@ -18,11 +18,11 @@ namespace OFRPDMS.Models
         public PrimaryGuardian()
         {
             this.EventParticipants = new HashSet<EventParticipant>();
-            this.Children = new HashSet<Child>();
-            this.Allergies = new HashSet<Allergy>();
-            this.SecondaryGuardians = new HashSet<SecondaryGuardian>();
+            this.Children = new List<Child>();
+            this.Allergies = new List<Allergy>();
+            this.SecondaryGuardians = new List<SecondaryGuardian>();
         }
-    
+        [Key]
         public int Id { get; set; }
         [Required]
         [RegularExpression(@"^[a-zA-Z]{1,25}$", ErrorMessage = "Not a valid first Name")]
@@ -41,10 +41,12 @@ namespace OFRPDMS.Models
         public int CenterId { get; set; }
     
         public virtual ICollection<EventParticipant> EventParticipants { get; set; }
-        public virtual ICollection<Child> Children { get; set; }
-        public virtual ICollection<Allergy> Allergies { get; set; }
-        public virtual ICollection<SecondaryGuardian> SecondaryGuardians { get; set; }
+        public virtual IList<Child> Children { get; set; }
+        public virtual IList<Allergy> Allergies { get; set; }
+        public virtual IList<SecondaryGuardian> SecondaryGuardians { get; set; }
         public virtual Center Center { get; set; }
+        
+        
 
 
         public void BuildEntity(int count)

@@ -38,7 +38,8 @@ namespace OFRPDMS.Controllers
         {
             ViewBag.CenterId = new SelectList(context.Centers, "Id", "Name");
             var model = new PrimaryGuardian();
-            model.BuildEntity(1);
+            //model.Children.Add(new Child());
+            
             return View(model);
         } 
 
@@ -48,10 +49,46 @@ namespace OFRPDMS.Controllers
         [HttpPost]
         public ActionResult Create(PrimaryGuardian primaryguardian)
         {
-            PrimaryGuardian pr = new PrimaryGuardian();
+
             if (ModelState.IsValid)
             {
                 primaryguardian.DateCreated = DateTime.Now;
+                int x = primaryguardian.SecondaryGuardians.Count();
+                for (var i = x-1; i >= 0; i--)
+                {
+                    if (primaryguardian.SecondaryGuardians[i].Delete == true)
+                    {
+                        primaryguardian.SecondaryGuardians.RemoveAt(i);
+                    }
+                   
+                }
+                int z = primaryguardian.Allergies.Count();
+                for (var i = z - 1; i >= 0; i--)
+                {
+                    if (primaryguardian.Allergies[i].Delete == true)
+                    {
+                        primaryguardian.Allergies.RemoveAt(i);
+                    }
+
+                }
+
+                int y = primaryguardian.Children.Count();
+                for (int i = y -1; i >= 0; i--)
+                {
+                    if (primaryguardian.Children[i].Delete == true)
+                    {
+                        primaryguardian.Children.RemoveAt(i);
+                    }
+                    //int z =primaryguardian.Children[i].Allergies.Count();
+                    //for (int j = z - 1; j >= 0; j--)
+                   // {
+                        //if (primaryguardian.Children[i].Allergies[j].Delete == true)
+                        //{
+                      //      primaryguardian.Children[i].Allergies.RemoveAt(j);
+                      //  }
+                    //}
+                }
+
                 context.PrimaryGuardians.Add(primaryguardian);
                 context.SaveChanges();
                 return RedirectToAction("Index");
@@ -85,27 +122,45 @@ namespace OFRPDMS.Controllers
             
             if (ModelState.IsValid)
             {
-                foreach (var child in primaryguardian.Children)
-                {
-                    child.Id = primaryguardian.Id;
-                    
-
-                }
-
-                foreach (var allergy in primaryguardian.Allergies)
-                {
-                    allergy.Id = primaryguardian.Id;
-
-
-                }
-
-                foreach (var second in primaryguardian.SecondaryGuardians)
-                {
-                    second.Id = primaryguardian.Id;
-
-
-                }
+                
                 primaryguardian.DateCreated = DateTime.Now;
+
+                int x = primaryguardian.SecondaryGuardians.Count();
+                for (var i = x - 1; i >= 0; i--)
+                {
+                    if (primaryguardian.SecondaryGuardians[i].Delete == true)
+                    {
+                        primaryguardian.SecondaryGuardians.RemoveAt(i);
+                    }
+                   
+                }
+                int z = primaryguardian.Allergies.Count();
+                for (var i = z - 1; i >= 0; i--)
+                {
+                    if (primaryguardian.Allergies[i].Delete == true)
+                    {
+                        primaryguardian.Allergies.RemoveAt(i);
+                    }
+
+                }
+
+
+                int y = primaryguardian.Children.Count();
+                for (var i = y - 1; i >= 0; i--)
+                {
+                    if (primaryguardian.Children[i].Delete == true)
+                    {
+                        primaryguardian.Children.RemoveAt(i);
+                    }
+                    //int z = primaryguardian.Children[i].Allergies.Count();
+                    //for (var j = z - 1; j >= 0; j--)
+                    //{
+                        //if (primaryguardian.Children[i].Allergies[j].Delete == true)
+                        //{
+                        //    primaryguardian.Children[i].Allergies.RemoveAt(j);
+                      //  }
+                    //}
+                }
                 context.PrimaryGuardians.Add(primaryguardian);
                 context.Entry(primaryguardian).State = EntityState.Modified;
                 

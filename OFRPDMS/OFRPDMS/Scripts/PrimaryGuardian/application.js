@@ -21,6 +21,10 @@ function removeNestedForm(element, container, deleteElement) {
 
     $container.hide();
 
+    $container.find(".input[data-val=true").each(function () {
+        $(this).removeAttr('data-val');
+    });
+
 }
 
 function addNestedForm(container, counter, ticks, content) {

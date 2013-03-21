@@ -74,6 +74,7 @@
 </div>
 
 
+
 <div class="editor-label">
         @Html.LabelFor(model =>model.Allergies)
 </div>
@@ -81,7 +82,7 @@
         @Html.EditorFor(model =>model.Allergies)
 </div>
 <p>
-        @Html.LinkToAddNestedForm("Add More Allergy...", "#allergies", ".Allergy", "Allergies", typeof(Allergy))
+        @Html.LinkToAddNestedForm(model=>model.Allergies,"Add More Allergy...", "#allergies", ".Allergy", "Allergies")
 </p>
 
 
@@ -91,7 +92,7 @@
 
 <p>
 
-  @Html.LinkToAddNestedForm("Add More SecondaryGuardians...", "#secondaryGuardians", ".SecondaryGuardian", "SecondaryGuardians", typeof(SecondaryGuardian))
+  @Html.LinkToAddNestedForm(model=>model.SecondaryGuardians,"Add More SecondaryGuardians...", "#secondaryGuardians", ".SecondaryGuardian", "SecondaryGuardians")
 
 </p>
 
@@ -102,7 +103,7 @@
 
 </div>
 <p>
-  @Html.LinkToAddNestedForm("Add More Child...", "#children", ".Child", "Children", typeof(Child))
+  @Html.LinkToAddNestedForm(model=>model.Children,"Add More Child...", "#children", ".Child", "Children")
 
 </p>
 

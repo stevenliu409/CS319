@@ -221,7 +221,7 @@ CREATE TABLE [dbo].[SecondaryGuardians] (
     [RelationshipToChild] nvarchar(max)  NULL,
     [Phone] int  NULL,
     [PrimaryGuardianId] int  NOT NULL,
-    [Delete] bit  NULL
+    [Delete] bit NOT NULL
 );
 GO
 
@@ -243,7 +243,7 @@ CREATE TABLE [dbo].[Children] (
     [Birthdate] datetime  NULL,
     [PrimaryGuardianId] int  NOT NULL,
     [RelationshipToGuardian] nvarchar(max)  NULL,
-    [Delete] bit  NULL
+    [Delete] bit  NOT NULL
 );
 GO
 
@@ -253,7 +253,7 @@ CREATE TABLE [dbo].[Allergies] (
     [PrimaryGuardianId] int  NOT NULL,
     [ChildId] int  NOT NULL,
     [Note] nvarchar(max)  NULL,
-    [Delete] bit  NULL
+    [Delete] bit   NOT NULL
 );
 GO
 
