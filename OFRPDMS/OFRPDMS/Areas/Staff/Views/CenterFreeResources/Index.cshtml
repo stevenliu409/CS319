@@ -5,49 +5,9 @@
 }
 
 <h2>Index</h2>
-
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Go to the Edit Page", "Edit")
 </p>
-<table>
-    <tr>
-        <th></th>
-        <th>
-            NumberAvailable
-        </th>
-        <th>
-            Name
-        </th>
-        <th>
-            Center
-        </th>
-        <th>
-            GivenResources
-        </th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-        <td>
-			@item.NumberAvailable
-        </td>
-        <td>
-			@item.Name
-        </td>
-        <td>
-			@(item.Center == null ? "None" : item.Center.Name)
-        </td>
-        <td>
-			@(item.GivenResources == null ? "None" : item.GivenResources.Count.ToString())
-        </td>
-    </tr>
-}
-
-</table>
 
 
