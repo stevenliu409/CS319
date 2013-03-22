@@ -813,7 +813,7 @@ ADD CONSTRAINT [FK_AllergyPrimaryGuardian]
     FOREIGN KEY ([PrimaryGuardianId])
     REFERENCES [dbo].[PrimaryGuardians]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_AllergyPrimaryGuardian'
 CREATE INDEX [IX_FK_AllergyPrimaryGuardian]

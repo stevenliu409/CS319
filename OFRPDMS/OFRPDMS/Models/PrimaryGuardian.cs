@@ -54,9 +54,9 @@ namespace OFRPDMS.Models
 
             for (int i = 0; i < count; i++)
             {
-                Children.Add(new Child());
-                //Allergies.Add(new Allergy());
-                SecondaryGuardians.Add(new SecondaryGuardian());
+                //Children.Add(new Child());
+                Allergies.Add(new Allergy());
+                //SecondaryGuardians.Add(new SecondaryGuardian());
 
             }
 
