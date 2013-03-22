@@ -31,9 +31,9 @@ namespace OFRPDMS.Models
         public string LastName { get; set; }
         [RegularExpression(@"^[\w-]+(\.[\w-]+)*@([a-z0-9-]+(\.[a-z0-9-]+)*?\.[a-z]{2,6}|(\d{1,3}\.){3}\d{1,3})(:\d{4})?$", ErrorMessage = "Not a valid Email")]
         public string Email { get; set; }
-        
+
         [RegularExpression(@"^[\d -]+$",ErrorMessage= "Not a valid Phonoe Number")]
-        public string Phone { get; set; }
+        public Nullable<long> Phone { get; set; }
 
         public string PostalCodePrefix { get; set; }
         public System.DateTime DateCreated { get; set; }
