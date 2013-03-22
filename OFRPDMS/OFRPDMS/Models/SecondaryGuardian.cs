@@ -20,7 +20,7 @@ namespace OFRPDMS.Models
         public string RelationshipToChild { get; set; }
         public Nullable<int> Phone { get; set; }
         public int PrimaryGuardianId { get; set; }
-        public Nullable<bool> Delete { get; set; }
+        public bool Delete { get; set; }
     
         public virtual PrimaryGuardian PrimaryGuardian { get; set; }
     }

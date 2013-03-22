@@ -221,7 +221,7 @@ CREATE TABLE [dbo].[SecondaryGuardians] (
     [RelationshipToChild] nvarchar(max)  NULL,
     [Phone] int  NULL,
     [PrimaryGuardianId] int  NOT NULL,
-    [Delete] bit  NULL
+    [Delete] bit NOT NULL
 );
 GO
 
@@ -243,7 +243,7 @@ CREATE TABLE [dbo].[Children] (
     [Birthdate] datetime  NULL,
     [PrimaryGuardianId] int  NOT NULL,
     [RelationshipToGuardian] nvarchar(max)  NULL,
-    [Delete] bit  NULL
+    [Delete] bit  NOT NULL
 );
 GO
 
@@ -253,7 +253,7 @@ CREATE TABLE [dbo].[Allergies] (
     [PrimaryGuardianId] int  NOT NULL,
     [ChildId] int  NOT NULL,
     [Note] nvarchar(max)  NULL,
-    [Delete] bit  NULL
+    [Delete] bit   NOT NULL
 );
 GO
 
@@ -279,7 +279,7 @@ GO
 CREATE TABLE [dbo].[CenterReferrals] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [CenterId] int  NOT NULL,
-    [Count] int  NOT NULL
+    [Name] nvarchar(max)  NOT NULL
 );
 GO
 
@@ -287,7 +287,6 @@ GO
 CREATE TABLE [dbo].[Referrals] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [CenterReferralId] int  NOT NULL,
-    [Name] nvarchar(max)  NOT NULL,
     [DateReferred] datetime  NOT NULL,
     [CountReferred] int  NOT NULL
 );
@@ -769,7 +768,7 @@ ADD CONSTRAINT [FK_CenterFreeResourceGivenResource]
     FOREIGN KEY ([CenterFreeResourceId])
     REFERENCES [dbo].[CenterFreeResources]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_CenterFreeResourceGivenResource'
 CREATE INDEX [IX_FK_CenterFreeResourceGivenResource]

@@ -1,0 +1,65 @@
+@model IEnumerable<OFRPDMS.Models.PrimaryGuardianBorrow>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th></th>
+        <th>
+            BorrowDate
+        </th>
+        <th>
+            Returned
+        </th>
+        <th>
+            DueDate
+        </th>
+        <th>
+            ReturnDate
+        </th>
+        <th>
+            PrimaryGuardian
+        </th>
+        <th>
+            LibraryResource
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+        <td>
+			@String.Format("{0:g}", item.BorrowDate)
+        </td>
+        <td>
+			@item.Returned
+        </td>
+        <td>
+			@String.Format("{0:g}", item.DueDate)
+        </td>
+        <td>
+			@String.Format("{0:g}", item.ReturnDate)
+        </td>
+        <td>
+			@(item.PrimaryGuardian == null ? "None" : item.PrimaryGuardian.LastName)
+        </td>
+        <td>
+			@(item.LibraryResource == null ? "None" : item.LibraryResource.Name)
+        </td>
+    </tr>
+}
+
+</table>
+
+

@@ -89,12 +89,15 @@
     <Compile Include="Areas\Admin\Controllers\CentersController.cs" />
     <Compile Include="Areas\Admin\Controllers\ReportController.cs" />
     <Compile Include="Areas\Admin\Models\Report.cs" />
+    <Compile Include="Areas\Staff\Controllers\CenterFreeResourcesController.cs" />
     <Compile Include="Areas\Staff\Controllers\EventsController.cs" />
     <Compile Include="Areas\Staff\Controllers\FamiliesController.cs" />
     <Compile Include="Areas\Staff\Controllers\LibraryController.cs" />
     <Compile Include="Areas\Staff\Controllers\SignInController.cs" />
+    <Compile Include="Areas\Staff\Models\ResourceViewModelsEdit.cs" />
     <Compile Include="Areas\Staff\StaffAreaRegistration.cs" />
     <Compile Include="Areas\Staff\Controllers\StaffController.cs" />
+    <Compile Include="Areas\Staff\ViewModels\ResourceViewModel.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Account\AccountModule.cs" />
     <Compile Include="Controllers\CenterController.cs" />
@@ -353,6 +356,13 @@
     <Content Include="Areas\Staff\Views\SignIn\Create.cshtml" />
     <Content Include="Areas\Staff\Views\SignIn\Details.cshtml" />
     <Content Include="Areas\Staff\Views\SignIn\Edit.cshtml" />
+    <Content Include="Areas\Staff\Views\CenterFreeResources\Create.cshtml" />
+    <Content Include="Areas\Staff\Views\CenterFreeResources\Delete.cshtml" />
+    <Content Include="Areas\Staff\Views\CenterFreeResources\Details.cshtml" />
+    <Content Include="Areas\Staff\Views\CenterFreeResources\Edit.cshtml" />
+    <Content Include="Areas\Staff\Views\CenterFreeResources\Index.cshtml" />
+    <Content Include="Areas\Staff\Views\CenterFreeResources\_CreateOrEdit.cshtml" />
+    <Content Include="Areas\Staff\Views\Shared\EditorTemplates\ResourceViewModel.cshtml" />
     <None Include="Models\Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Model1.Context.cs</LastGenOutput>

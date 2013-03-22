@@ -1,4 +1,4 @@
-@model OFRPDMS.Models.CenterFreeResource
+@model OFRPDMS.Models.PrimaryGuardianBorrow
 
 @{
     ViewBag.Title = "Create";
@@ -9,7 +9,7 @@
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
     <fieldset>
-        <legend>CenterFreeResource</legend>
+        <legend>PrimaryGuardianBorrow</legend>
 
 		@Html.Partial("_CreateOrEdit", Model)
 
@@ -20,7 +20,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Edit")
+    @Html.ActionLink("Back to List", "Index")
 </div>
 
-
+<script src="../../Scripts/PrimaryGuardian/application.js" language="javascript" type="text/javascript"></script>

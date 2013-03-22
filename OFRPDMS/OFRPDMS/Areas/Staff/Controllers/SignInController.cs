@@ -169,7 +169,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
             {
                 var _primaryguardian = db.PrimaryGuardians.Find(id);
                 EventParticipant ep = new EventParticipant();
-                ep.ParticipantId = (short)_primaryguardian.Id;
+                ep.ParticipantId = _primaryguardian.Id;
                 ep.ParticipantType = type;
                 db.EventParticipants.Add(ep);
                 db.SaveChanges();
@@ -179,7 +179,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
             {
                 var _child = db.Children.Find(id);
                 EventParticipant ep = new EventParticipant();
-                ep.ParticipantId = (short)_child.Id;
+                ep.ParticipantId = _child.Id;
                 ep.ParticipantType = type;
                 db.EventParticipants.Add(ep);
                 db.SaveChanges();
@@ -188,7 +188,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
             else {
                 var _secondaryguardian = db.SecondaryGuardians.Find(id);
                 EventParticipant ep = new EventParticipant();
-                ep.ParticipantId = (short)_secondaryguardian.Id;
+                ep.ParticipantId = _secondaryguardian.Id;
                 ep.ParticipantType = type;
                 db.EventParticipants.Add(ep);
                 db.SaveChanges();

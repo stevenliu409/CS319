@@ -1,0 +1,35 @@
+@model OFRPDMS.Models.PrimaryGuardianBorrow
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>PrimaryGuardianBorrow</legend>
+
+    <div class="display-label">BorrowDate</div>
+    <div class="display-field">@String.Format("{0:g}", Model.BorrowDate)</div>
+
+    <div class="display-label">Returned</div>
+    <div class="display-field">@Model.Returned</div>
+
+    <div class="display-label">DueDate</div>
+    <div class="display-field">@String.Format("{0:g}", Model.DueDate)</div>
+
+    <div class="display-label">ReturnDate</div>
+    <div class="display-field">@String.Format("{0:g}", Model.ReturnDate)</div>
+
+    <div class="display-label">PrimaryGuardian</div>
+    <div class="display-field">@(Model.PrimaryGuardian == null ? "None" : Model.PrimaryGuardian.LastName)</div>
+
+    <div class="display-label">LibraryResource</div>
+    <div class="display-field">@(Model.LibraryResource == null ? "None" : Model.LibraryResource.Name)</div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+
