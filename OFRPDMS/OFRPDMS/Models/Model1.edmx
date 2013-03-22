@@ -49,14 +49,6 @@
       <End Role="Child" EntitySet="Children" />
       <End Role="EventParticipantChild" EntitySet="EventParticipantChild" />
     </AssociationSet>
-    <AssociationSet Name="PrimaryGuardianAllergy" Association="Model1.Store.PrimaryGuardianAllergy">
-      <End Role="PrimaryGuardian" EntitySet="PrimaryGuardians" />
-      <End Role="Allergy" EntitySet="Allergies" />
-    </AssociationSet>
-    <AssociationSet Name="ChildAllergy" Association="Model1.Store.ChildAllergy">
-      <End Role="Child" EntitySet="Children" />
-      <End Role="Allergy" EntitySet="Allergies" />
-    </AssociationSet>
     <AssociationSet Name="CenterEvent" Association="Model1.Store.CenterEvent">
       <End Role="Center" EntitySet="Centers" />
       <End Role="Event" EntitySet="Events" />
@@ -112,6 +104,14 @@
     <AssociationSet Name="EventEventParticipant" Association="Model1.Store.EventEventParticipant">
       <End Role="Event" EntitySet="Events" />
       <End Role="EventParticipant" EntitySet="EventParticipants" />
+    </AssociationSet>
+    <AssociationSet Name="AllergyChild" Association="Model1.Store.AllergyChild">
+      <End Role="Allergy" EntitySet="Allergies" />
+      <End Role="Child" EntitySet="Children" />
+    </AssociationSet>
+    <AssociationSet Name="AllergyPrimaryGuardian" Association="Model1.Store.AllergyPrimaryGuardian">
+      <End Role="Allergy" EntitySet="Allergies" />
+      <End Role="PrimaryGuardian" EntitySet="PrimaryGuardians" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="PrimaryGuardianBorrows">
@@ -180,10 +180,10 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="PrimaryGuardianId" Type="int" Nullable="false" />
-    <Property Name="ChildId" Type="int" Nullable="false" />
     <Property Name="Note" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Delete" Type="bit" Nullable="true" />
+    <Property Name="ChildId" Type="int" Nullable="true" />
+    <Property Name="PrimaryGuardianId" Type="int" Nullable="true" />
   </EntityType>
   <EntityType Name="Events">
     <Key>
@@ -336,30 +336,6 @@
       </Principal>
       <Dependent Role="Child">
         <PropertyRef Name="PrimaryGuardianId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="PrimaryGuardianAllergy">
-    <End Role="PrimaryGuardian" Type="Model1.Store.PrimaryGuardians" Multiplicity="1" />
-    <End Role="Allergy" Type="Model1.Store.Allergies" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="PrimaryGuardian">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Allergy">
-        <PropertyRef Name="PrimaryGuardianId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="ChildAllergy">
-    <End Role="Child" Type="Model1.Store.Children" Multiplicity="1" />
-    <End Role="Allergy" Type="Model1.Store.Allergies" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Child">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Allergy">
-        <PropertyRef Name="ChildId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -531,6 +507,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="AllergyChild">
+    <End Role="Allergy" Type="Model1.Store.Allergies" Multiplicity="*" />
+    <End Role="Child" Type="Model1.Store.Children" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Child">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Allergy">
+        <PropertyRef Name="ChildId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AllergyPrimaryGuardian">
+    <End Role="Allergy" Type="Model1.Store.Allergies" Multiplicity="*" />
+    <End Role="PrimaryGuardian" Type="Model1.Store.PrimaryGuardians" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="PrimaryGuardian">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Allergy">
+        <PropertyRef Name="PrimaryGuardianId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_EventParticipantPrimaryGuardian_EventParticipant">
     <End Role="EventParticipant" Type="Model1.Store.EventParticipants" Multiplicity="1" />
     <End Role="EventParticipantPrimaryGuardian" Type="Model1.Store.EventParticipantPrimaryGuardian" Multiplicity="*" />
@@ -606,14 +606,6 @@
             <End Role="Child" EntitySet="Children" />
           </AssociationSet>
           <EntitySet Name="Allergies" EntityType="Model1.Allergy" />
-          <AssociationSet Name="PrimaryGuardianAllergy" Association="Model1.PrimaryGuardianAllergy">
-            <End Role="PrimaryGuardian" EntitySet="PrimaryGuardians" />
-            <End Role="Allergy" EntitySet="Allergies" />
-          </AssociationSet>
-          <AssociationSet Name="ChildAllergy" Association="Model1.ChildAllergy">
-            <End Role="Child" EntitySet="Children" />
-            <End Role="Allergy" EntitySet="Allergies" />
-          </AssociationSet>
           <EntitySet Name="Events" EntityType="Model1.Event" />
           <EntitySet Name="Centers" EntityType="Model1.Center" />
           <AssociationSet Name="CenterEvent" Association="Model1.CenterEvent">
@@ -681,6 +673,14 @@
             <End Role="Event" EntitySet="Events" />
             <End Role="EventParticipant" EntitySet="EventParticipants" />
           </AssociationSet>
+          <AssociationSet Name="AllergyChild" Association="Model1.AllergyChild">
+            <End Role="Allergy" EntitySet="Allergies" />
+            <End Role="Child" EntitySet="Children" />
+          </AssociationSet>
+          <AssociationSet Name="AllergyPrimaryGuardian" Association="Model1.AllergyPrimaryGuardian">
+            <End Role="Allergy" EntitySet="Allergies" />
+            <End Role="PrimaryGuardian" EntitySet="PrimaryGuardians" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="PrimaryGuardianBorrow">
           <Key>
@@ -711,10 +711,10 @@
           <Property Type="String" Name="Country" Nullable="true" />
           <NavigationProperty Name="EventParticipants" Relationship="Model1.EventParticipantPrimaryGuardian" FromRole="PrimaryGuardian" ToRole="EventParticipant" />
           <NavigationProperty Name="Children" Relationship="Model1.PrimaryGuardianChild" FromRole="PrimaryGuardian" ToRole="Child" />
-          <NavigationProperty Name="Allergies" Relationship="Model1.PrimaryGuardianAllergy" FromRole="PrimaryGuardian" ToRole="Allergy" />
           <NavigationProperty Name="SecondaryGuardians" Relationship="Model1.PrimaryGuardianSecondaryGuardian" FromRole="PrimaryGuardian" ToRole="SecondaryGuardian" />
           <NavigationProperty Name="Center" Relationship="Model1.PrimaryGuardianCenter" FromRole="PrimaryGuardian" ToRole="Center" />
           <Property Type="Int32" Name="CenterId" Nullable="false" />
+          <NavigationProperty Name="Allergies" Relationship="Model1.AllergyPrimaryGuardian" FromRole="PrimaryGuardian" ToRole="Allergy" />
         </EntityType>
         <Association Name="PrimaryGuardianPrimaryGuardianBorrow">
           <End Type="Model1.PrimaryGuardian" Role="PrimaryGuardian" Multiplicity="1" />
@@ -770,9 +770,9 @@
           <NavigationProperty Name="PrimaryGuardian" Relationship="Model1.PrimaryGuardianChild" FromRole="Child" ToRole="PrimaryGuardian" />
           <Property Type="Int32" Name="PrimaryGuardianId" Nullable="false" />
           <NavigationProperty Name="EventParticipants" Relationship="Model1.EventParticipantChild" FromRole="Child" ToRole="EventParticipant" />
-          <NavigationProperty Name="Allergies" Relationship="Model1.ChildAllergy" FromRole="Child" ToRole="Allergy" />
           <Property Type="String" Name="RelationshipToGuardian" Nullable="true" />
           <Property Type="Boolean" Name="Delete" Nullable="true" />
+          <NavigationProperty Name="Allergies" Relationship="Model1.AllergyChild" FromRole="Child" ToRole="Allergy" />
         </EntityType>
         <Association Name="PrimaryGuardianChild">
           <End Type="Model1.PrimaryGuardian" Role="PrimaryGuardian" Multiplicity="1" />
@@ -795,37 +795,13 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <NavigationProperty Name="PrimaryGuardian" Relationship="Model1.PrimaryGuardianAllergy" FromRole="Allergy" ToRole="PrimaryGuardian" />
-          <Property Type="Int32" Name="PrimaryGuardianId" Nullable="false" />
-          <NavigationProperty Name="Child" Relationship="Model1.ChildAllergy" FromRole="Allergy" ToRole="Child" />
-          <Property Type="Int32" Name="ChildId" Nullable="false" />
           <Property Type="String" Name="Note" Nullable="true" />
           <Property Type="Boolean" Name="Delete" Nullable="true" />
+          <NavigationProperty Name="Child" Relationship="Model1.AllergyChild" FromRole="Allergy" ToRole="Child" />
+          <Property Type="Int32" Name="ChildId" Nullable="true" />
+          <NavigationProperty Name="PrimaryGuardian" Relationship="Model1.AllergyPrimaryGuardian" FromRole="Allergy" ToRole="PrimaryGuardian" />
+          <Property Type="Int32" Name="PrimaryGuardianId" Nullable="true" />
         </EntityType>
-        <Association Name="PrimaryGuardianAllergy">
-          <End Type="Model1.PrimaryGuardian" Role="PrimaryGuardian" Multiplicity="1" />
-          <End Type="Model1.Allergy" Role="Allergy" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PrimaryGuardian">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Allergy">
-              <PropertyRef Name="PrimaryGuardianId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="ChildAllergy">
-          <End Type="Model1.Child" Role="Child" Multiplicity="1" />
-          <End Type="Model1.Allergy" Role="Allergy" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Child">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Allergy">
-              <PropertyRef Name="ChildId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Event">
           <Key>
             <PropertyRef Name="Id" />
@@ -1130,6 +1106,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="AllergyChild">
+          <End Type="Model1.Allergy" Role="Allergy" Multiplicity="*" />
+          <End Type="Model1.Child" Role="Child" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Child">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Allergy">
+              <PropertyRef Name="ChildId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AllergyPrimaryGuardian">
+          <End Type="Model1.Allergy" Role="Allergy" Multiplicity="*" />
+          <End Type="Model1.PrimaryGuardian" Role="PrimaryGuardian" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="PrimaryGuardian">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Allergy">
+              <PropertyRef Name="PrimaryGuardianId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1206,10 +1206,10 @@
       <EntityTypeMapping TypeName="IsTypeOf(Model1.Allergy)">
         <MappingFragment StoreEntitySet="Allergies">
           <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="PrimaryGuardianId" ColumnName="PrimaryGuardianId" />
-          <ScalarProperty Name="ChildId" ColumnName="ChildId" />
           <ScalarProperty Name="Note" ColumnName="Note" />
           <ScalarProperty Name="Delete" ColumnName="Delete" />
+          <ScalarProperty Name="ChildId" ColumnName="ChildId" />
+          <ScalarProperty Name="PrimaryGuardianId" ColumnName="PrimaryGuardianId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1385,29 +1385,20 @@
         <EntityTypeShape EntityType="Model1.SecondaryGuardian" Width="1.5" PointX="0.625" PointY="9" Height="2.5571907552083317" />
         <EntityTypeShape EntityType="Model1.EventParticipant" Width="1.5" PointX="5.125" PointY="9" Height="2.3648893229166656" />
         <AssociationConnector Association="Model1.EventParticipantPrimaryGuardian">
-          <ConnectorPoint PointX="5.125" PointY="10.182444661458334" />
-          <ConnectorPoint PointX="4.25" PointY="10.182444661458334" />
+          <ConnectorPoint PointX="5.125" PointY="10.201650390625" />
+          <ConnectorPoint PointX="4.25" PointY="10.201650390625" />
         </AssociationConnector>
         <EntityTypeShape EntityType="Model1.Child" Width="1.5" PointX="4.875" PointY="12.375" Height="2.9417936197916656" />
         <AssociationConnector Association="Model1.PrimaryGuardianChild">
-          <ConnectorPoint PointX="3.77832203125" PointY="11.403300781249998" />
-          <ConnectorPoint PointX="3.77832203125" PointY="13.845896809895834" />
+          <ConnectorPoint PointX="3.5" PointY="11.40330078125" />
+          <ConnectorPoint PointX="3.5" PointY="13.845896809895834" />
           <ConnectorPoint PointX="4.875" PointY="13.845896809895834" />
         </AssociationConnector>
         <AssociationConnector Association="Model1.EventParticipantChild">
           <ConnectorPoint PointX="5.75" PointY="11.364889322916666" />
           <ConnectorPoint PointX="5.75" PointY="12.375" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="Model1.Allergy" Width="1.875" PointX="4.25" PointY="16.25" Height="2.3648893229166674" />
-        <AssociationConnector Association="Model1.PrimaryGuardianAllergy">
-          <ConnectorPoint PointX="3.232908515625" PointY="11.403300781249998" />
-          <ConnectorPoint PointX="3.232908515625" PointY="17.432444661458334" />
-          <ConnectorPoint PointX="4.25" PointY="17.432444661458334" />
-        </AssociationConnector>
-        <AssociationConnector Association="Model1.ChildAllergy">
-          <ConnectorPoint PointX="5.5" PointY="15.316793619791666" />
-          <ConnectorPoint PointX="5.5" PointY="16.25" />
-        </AssociationConnector>
+        <EntityTypeShape EntityType="Model1.Allergy" Width="1.875" PointX="4.25" PointY="16.25" Height="1.5956835937500031" />
         <EntityTypeShape EntityType="Model1.Event" Width="1.5" PointX="7.75" PointY="9.75" Height="1.9802864583333335" />
         <EntityTypeShape EntityType="Model1.SpecialEvent" Width="1.5" PointX="7.75" PointY="12.5" Height="2.5571907552083335" />
         <EntityTypeShape EntityType="Model1.Center" Width="1.5" PointX="10.75" PointY="5.375" Height="2.9417936197916656" />
@@ -1483,6 +1474,15 @@
         <AssociationConnector Association="Model1.EventEventParticipant">
           <ConnectorPoint PointX="7.75" PointY="10.502474558174923" />
           <ConnectorPoint PointX="6.625" PointY="10.502474558174923" />
+        </AssociationConnector>
+        <AssociationConnector Association="Model1.AllergyChild">
+          <ConnectorPoint PointX="5.5" PointY="16.25" />
+          <ConnectorPoint PointX="5.5" PointY="15.316793619791666" />
+        </AssociationConnector>
+        <AssociationConnector Association="Model1.AllergyPrimaryGuardian">
+          <ConnectorPoint PointX="4.25" PointY="17.432444661458334" />
+          <ConnectorPoint PointX="3.1752875460535983" PointY="17.432444661458334" />
+          <ConnectorPoint PointX="3.1752875460535983" PointY="11.40330078125" />
         </AssociationConnector>
       </Diagram>
     </edmx:Diagrams>
