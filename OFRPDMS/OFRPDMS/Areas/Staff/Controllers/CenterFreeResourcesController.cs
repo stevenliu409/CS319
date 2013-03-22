@@ -123,7 +123,6 @@ namespace OFRPDMS.Areas.Staff.Controllers
                     }
                 }
             }
-            ViewBag.PossibleCenters = context.Centers;
             return RedirectToAction("Index");
         }
 
