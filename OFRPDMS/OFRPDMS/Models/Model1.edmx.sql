@@ -221,7 +221,7 @@ CREATE TABLE [dbo].[PrimaryGuardians] (
     [FirstName] nvarchar(max)  NULL,
     [LastName] nvarchar(max)  NULL,
     [Email] nvarchar(max)  NULL,
-    [Phone] int  NULL,
+    [Phone] nvarchar(max)  NULL,
     [PostalCodePrefix] nvarchar(max)  NULL,
     [DateCreated] datetime  NOT NULL,
     [Language] nvarchar(max)  NULL,
@@ -236,7 +236,7 @@ CREATE TABLE [dbo].[SecondaryGuardians] (
     [FirstName] nvarchar(max)  NULL,
     [LastName] nvarchar(max)  NULL,
     [RelationshipToChild] nvarchar(max)  NULL,
-    [Phone] int  NULL,
+    [Phone] nvarchar(max)  NULL,
     [PrimaryGuardianId] int  NOT NULL,
     [Delete] bit  NULL
 );

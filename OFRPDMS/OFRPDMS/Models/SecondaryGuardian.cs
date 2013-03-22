@@ -16,12 +16,13 @@ namespace OFRPDMS.Models
     public partial class SecondaryGuardian
     {
         public int Id { get; set; }
-        [RegularExpression(@"^[a-zA-Z]{1,25}$", ErrorMessage = "Not a valid First Name")]
+        //[RegularExpression(@"^[a-zA-Z]{1,25}$", ErrorMessage = "Not a valid First Name")]
         public string FirstName { get; set; }
-        [RegularExpression(@"^[a-zA-Z]{1,25}$", ErrorMessage = "Not a valid Last Name")]
+        //[RegularExpression(@"^[a-zA-Z]{1,25}$", ErrorMessage = "Not a valid Last Name")]
         public string LastName { get; set; }
         public string RelationshipToChild { get; set; }
-        public Nullable<int> Phone { get; set; }
+       // [RegularExpression(@"^[\d -]+$", ErrorMessage = "Not a valid Phonoe Number")]
+        public string Phone { get; set; }
         public int PrimaryGuardianId { get; set; }
         public Nullable<bool> Delete { get; set; }
     

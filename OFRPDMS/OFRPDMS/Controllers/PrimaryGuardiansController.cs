@@ -183,9 +183,10 @@ namespace OFRPDMS.Controllers
                       //  }
                     //}
                 }
-                PrimaryGuardian pr = context.PrimaryGuardians.Find(primaryguardian.Id);
-                context.PrimaryGuardians.Remove(pr);
-                context.PrimaryGuardians.Add(primaryguardian);
+                //PrimaryGuardian pr = context.PrimaryGuardians.Find(primaryguardian.Id);
+                //context.PrimaryGuardians.Remove(pr);
+                //context.PrimaryGuardians.Add(primaryguardian);
+                context.Entry(primaryguardian).State = EntityState.Modified;
                 context.SaveChanges();
                 return RedirectToAction("Index");
             }
