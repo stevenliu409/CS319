@@ -148,7 +148,10 @@ namespace OFRPDMS.Controllers
                     {
                         primaryguardian.SecondaryGuardians.RemoveAt(i);
                     }
-                   
+                    else
+                    {
+                        context.Entry(primaryguardian.SecondaryGuardians[i]).State = EntityState.Modified;
+                    }
                 }
 
                 //Check for null field in the Allergies , if all fields are null, then do not add to database
@@ -160,6 +163,10 @@ namespace OFRPDMS.Controllers
                     {
                         primaryguardian.Allergies.RemoveAt(i);
                     }
+                    else
+                    {
+                        context.Entry(primaryguardian.Allergies[i]).State = EntityState.Modified;
+                    }
 
                 }
 
@@ -167,12 +174,17 @@ namespace OFRPDMS.Controllers
                 //delete the element in the list which contains delete marked to "true"
 
                 int y = primaryguardian.Children.Count();
+
                 for (var i = y - 1; i >= 0; i--)
                 {
-                    if (primaryguardian.Children[i].Delete == true|| (primaryguardian.Children[i].Birthdate == null && primaryguardian.Children[i].FirstName ==null
-                        && primaryguardian.Children[i].LastName == null && primaryguardian.Children[i].RelationshipToGuardian ==null))
+                    if (primaryguardian.Children[i].Delete == true || (primaryguardian.Children[i].Birthdate == null && primaryguardian.Children[i].FirstName == null
+                        && primaryguardian.Children[i].LastName == null && primaryguardian.Children[i].RelationshipToGuardian == null))
                     {
                         primaryguardian.Children.RemoveAt(i);
+                    }
+                    else
+                    {
+                        context.Entry(primaryguardian.Children[i]).State = EntityState.Modified;
                     }
                     //int z = primaryguardian.Children[i].Allergies.Count();
                     //for (var j = z - 1; j >= 0; j--)
@@ -183,10 +195,9 @@ namespace OFRPDMS.Controllers
                       //  }
                     //}
                 }
-                PrimaryGuardian pr = context.PrimaryGuardians.Find(primaryguardian.Id);
-                context.PrimaryGuardians.Remove(pr);
-                context.PrimaryGuardians.Add(primaryguardian);
+                context.Entry(primaryguardian).State = EntityState.Modified;
                 context.SaveChanges();
+
                 return RedirectToAction("Index");
             }
             ViewBag.CenterId = new SelectList(context.Centers, "Id", "Name", primaryguardian.CenterId);

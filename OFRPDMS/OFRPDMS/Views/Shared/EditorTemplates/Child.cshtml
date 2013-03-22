@@ -40,7 +40,9 @@
     @Html.EditorFor(model => model.RelationshipToGuardian)
     @Html.ValidationMessageFor(model => model.RelationshipToGuardian)
     </div>
-   
+   @Html.Hidden("Id", Model.Id)
+   @Html.Hidden("PrimaryGuardianId", Model.PrimaryGuardianId)
+
    @*
     <div class="editor-label">
         @Html.LabelFor(model =>model.Allergies)
