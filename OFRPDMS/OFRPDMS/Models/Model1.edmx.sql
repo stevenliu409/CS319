@@ -617,7 +617,7 @@ ADD CONSTRAINT [FK_CenterReferralReferral]
     FOREIGN KEY ([CenterReferralId])
     REFERENCES [dbo].[CenterReferrals]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_CenterReferralReferral'
 CREATE INDEX [IX_FK_CenterReferralReferral]
