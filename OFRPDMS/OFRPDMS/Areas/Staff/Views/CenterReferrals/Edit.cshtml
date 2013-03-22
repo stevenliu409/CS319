@@ -1,0 +1,42 @@
+@model OFRPDMS.Areas.Staff.Models.ResourceViewModelsEdit
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Enter On-Hand Quantities of Each Resource</h2>
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <table>
+        <tr>
+            <th>
+                *Count
+            </th>            
+            <th>
+                Previous Stock
+            </th>
+            <th>
+                Total Handed Out
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Other Action
+            </th>
+        </tr>
+        <tr>
+            @Html.EditorFor(x => x.Resources)
+        </tr>
+    </table>
+    <input type="submit" value="Save" />       
+    
+}
+<p>
+    *Enter a positive number to indicate how many you have or enter a negative number to indicate how many you handed out.
+    Note: If you try to hand out more than 'Previous Stock', only previous stock is handed out so you will never have a negative stock. 
+</p>
+
