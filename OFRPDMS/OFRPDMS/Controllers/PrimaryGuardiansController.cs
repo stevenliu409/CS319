@@ -55,6 +55,10 @@ namespace OFRPDMS.Controllers
             if (ModelState.IsValid)
             {
                 primaryguardian.DateCreated = DateTime.Now;
+
+                //Check for null field in the SecondaryGuardian , if all fields are null, then do not add to database
+                //delete the element in the list which contains delete marked to "true"
+
                 int x = primaryguardian.SecondaryGuardians.Count();
                 for (var i = x-1; i >= 0; i--)
                 {
@@ -65,15 +69,22 @@ namespace OFRPDMS.Controllers
                     }
                    
                 }
-              /*  int z = primaryguardian.Allergies.Count();
-                for (var i = z - 1; i >= 0; i--)
+
+                //Check for null field in the Allergies , if all fields are null, then do not add to database
+                //delete the element in the list which contains delete marked to "true"
+
+               int z = primaryguardian.Allergies.Count();
+                for (var i = z - 1 ; i >= 0; i--)
                 {
-                    if (primaryguardian.Allergies[i].Delete == true)
+                    if (primaryguardian.Allergies[i].Delete == true || primaryguardian.Allergies[i].Note ==null)
                     {
                         primaryguardian.Allergies.RemoveAt(i);
                     }
 
-                }*/
+                }
+
+                //Check for null field in the Children , if all fields are null, then do not add to database
+                //delete the element in the list which contains delete marked to "true"
 
                 int y = primaryguardian.Children.Count();
                 for (int i = y -1; i >= 0; i--)
@@ -120,15 +131,14 @@ namespace OFRPDMS.Controllers
         [HttpPost]
         public ActionResult Edit(PrimaryGuardian primaryguardian)
         {
-            //PrimaryGuardian prim = new PrimaryGuardian();
-            //prim = primaryguardian;
-
-           
-            
+              
             if (ModelState.IsValid)
             {
                 
                 primaryguardian.DateCreated = DateTime.Now;
+
+                //Check for null field in the SecondaryGuardian , if all fields are null, then do not add to database
+                //delete the element in the list which contains delete marked to "true"
 
                 int x = primaryguardian.SecondaryGuardians.Count();
                 for (var i = x - 1; i >= 0; i--)
@@ -140,16 +150,21 @@ namespace OFRPDMS.Controllers
                     }
                    
                 }
-               /* int z = primaryguardian.Allergies.Count();
+
+                //Check for null field in the Allergies , if all fields are null, then do not add to database
+                //delete the element in the list which contains delete marked to "true"
+                int z = primaryguardian.Allergies.Count();
                 for (var i = z - 1; i >= 0; i--)
                 {
-                    if (primaryguardian.Allergies[i].Delete == true)
+                    if (primaryguardian.Allergies[i].Delete == true || primaryguardian.Allergies[i].Note == null)
                     {
                         primaryguardian.Allergies.RemoveAt(i);
                     }
 
-                }*/
+                }
 
+                //Check for null field in the Children , if all fields are null, then do not add to database
+                //delete the element in the list which contains delete marked to "true"
 
                 int y = primaryguardian.Children.Count();
                 for (var i = y - 1; i >= 0; i--)
@@ -171,16 +186,6 @@ namespace OFRPDMS.Controllers
                 PrimaryGuardian pr = context.PrimaryGuardians.Find(primaryguardian.Id);
                 context.PrimaryGuardians.Remove(pr);
                 context.PrimaryGuardians.Add(primaryguardian);
-               
-                
-                
-                //context.Entry(prim).State = EntityState.Detached;
-                //context.PrimaryGuardians.Remove(context.PrimaryGuardians.Find(primaryguardian.Id));
-                //context.PrimaryGuardians.Add(prim);
-                //context.Entry(prim).State = EntityState.Modified;
-               // context.PrimaryGuardians.Add(primaryguardian);
-                //context.Entry(primaryguardian).State = EntityState.Modified;
-               
                 context.SaveChanges();
                 return RedirectToAction("Index");
             }

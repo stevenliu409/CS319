@@ -31,7 +31,7 @@ namespace OFRPDMS.Models
         public string LastName { get; set; }
         [RegularExpression(@"^[\w-]+(\.[\w-]+)*@([a-z0-9-]+(\.[a-z0-9-]+)*?\.[a-z]{2,6}|(\d{1,3}\.){3}\d{1,3})(:\d{4})?$", ErrorMessage = "Not a valid Email")]
         public string Email { get; set; }
-        public Nullable<int> Phone { get; set; }
+        public Nullable<long> Phone { get; set; }
         public string PostalCodePrefix { get; set; }
         public System.DateTime DateCreated { get; set; }
         [RegularExpression(@"^[a-zA-Z]{1,25}$", ErrorMessage = "Not a valid Language Name")]
@@ -54,9 +54,9 @@ namespace OFRPDMS.Models
 
             for (int i = 0; i < count; i++)
             {
-                Children.Add(new Child());
-                //Allergies.Add(new Allergy());
-                SecondaryGuardians.Add(new SecondaryGuardian());
+                //Children.Add(new Child());
+                Allergies.Add(new Allergy());
+                //SecondaryGuardians.Add(new SecondaryGuardian());
 
             }
 
