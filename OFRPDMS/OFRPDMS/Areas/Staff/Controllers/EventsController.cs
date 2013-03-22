@@ -5,24 +5,37 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Profile;
 using System.Web.Security;
+using OFRPDMS.Account;
 using OFRPDMS.Models;
+using OFRPDMS.Repositories;
+
+using Ninject;
 
 namespace OFRPDMS.Areas.Staff.Controllers
 {
     public class EventsController : Controller
     {
-        private OFRPDMSContext db = new OFRPDMSContext();
+        private IRepositoryService repoService;
+        private IAccountService account;
+
+        public EventsController() {}
+
+        [Inject]
+        public EventsController(IAccountService account, IRepositoryService repoService)
+        {
+            this.account = account;
+            this.repoService = repoService;
+        }
 
         //
         // GET: /Events/
 
         public ViewResult Index()
         {
-            int centerID = AccountProfile.CurrentUser.CenterID;
+            int centerID = account.GetCurrentUserCenterId();
 
-            var Events = db.Events.Where(Event => Event.CenterId == centerID);
+            var Events = repoService.eventRepo.FindAllWithCenterId(centerID);
             return View(Events.ToList());
         }
 
@@ -31,9 +44,9 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
         public ViewResult Details(int id)
         {         
-            int centerID = AccountProfile.CurrentUser.CenterID;
+            int centerID = account.GetCurrentUserCenterId();
 
-            Event anEvent = db.Events.Where(e => e.CenterId == centerID).Single(e => e.Id == id);
+            Event anEvent = repoService.eventRepo.FindByIdAndCenterId(id, centerID);
 
             return View(anEvent);
         }
@@ -42,10 +55,12 @@ namespace OFRPDMS.Areas.Staff.Controllers
         // GET: /Events/Create
 
         public ActionResult Create()
-        {          
-            int centerID = AccountProfile.CurrentUser.CenterID;
+        {
+            int centerID = account.GetCurrentUserCenterId();
 
-            ViewBag.CenterId = new SelectList(db.Centers.Where(c => c.Id == centerID), "Id", "Name");
+            IEnumerable<Center> centers = repoService.centerRepo.FindListById(centerID);
+
+            ViewBag.CenterId = new SelectList(centers, "Id", "Name");
 
             return View();
         } 
@@ -58,9 +73,8 @@ namespace OFRPDMS.Areas.Staff.Controllers
         {
             if (ModelState.IsValid)
             {
-                anEvent.CenterId = AccountProfile.CurrentUser.CenterID;
-                db.Events.Add(anEvent);
-                db.SaveChanges();
+                anEvent.CenterId = account.GetCurrentUserCenterId();
+                repoService.eventRepo.Insert(anEvent);
                 return RedirectToAction("Index");  
             }
             return View(anEvent);
@@ -72,11 +86,14 @@ namespace OFRPDMS.Areas.Staff.Controllers
         public ActionResult Edit(int id)
         {
 
-            Event anEvent;            
-            int centerID = AccountProfile.CurrentUser.CenterID;
+            Event anEvent;
+            int centerID = account.GetCurrentUserCenterId();
 
-            anEvent = db.Events.Find(id);
-            ViewBag.CenterId = new SelectList(db.Centers.Where(c => c.Id == centerID), "Id", "Name");
+            anEvent = repoService.eventRepo.FindById(id);
+
+            IEnumerable<Center> centers = repoService.centerRepo.FindListById(centerID);
+
+            ViewBag.CenterId = new SelectList(centers, "Id", "Name");
            
             return View(anEvent);
         }
@@ -89,14 +106,15 @@ namespace OFRPDMS.Areas.Staff.Controllers
         {
             if (ModelState.IsValid)
             {
-                anEvent.CenterId = AccountProfile.CurrentUser.CenterID;
-                db.Entry(anEvent).State = EntityState.Modified;
-                db.SaveChanges();
+                anEvent.CenterId = account.GetCurrentUserCenterId();
+                repoService.eventRepo.Update(anEvent);
                 return RedirectToAction("Index");
             }
-            int centerID = AccountProfile.CurrentUser.CenterID;
+            int centerID = account.GetCurrentUserCenterId();
 
-            ViewBag.CenterId = new SelectList(db.Centers.Where(c => c.Id == centerID), "Id", "Name");
+            IEnumerable<Center> centers = repoService.centerRepo.FindListById(centerID);
+
+            ViewBag.CenterId = new SelectList(centers, "Id", "Name");
            
             return View(anEvent);
         }
@@ -106,9 +124,9 @@ namespace OFRPDMS.Areas.Staff.Controllers
  
         public ActionResult Delete(int id)
         {
-            int centerID = AccountProfile.CurrentUser.CenterID;
+            int centerID = account.GetCurrentUserCenterId();
 
-            Event anEvent = db.Events.Where(e => e.CenterId == centerID).Single(e => e.Id == id);
+            Event anEvent = repoService.eventRepo.FindByIdAndCenterId(id, centerID);
 
             return View(anEvent);          
         }
@@ -118,16 +136,15 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
-        {            
-            Event anEvent = db.Events.Find(id);
-            db.Events.Remove(anEvent);
-            db.SaveChanges();
+        {
+            Event anEvent = repoService.eventRepo.FindById(id);
+            repoService.eventRepo.Delete(anEvent);
             return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
         {
-            db.Dispose();
+            repoService.eventRepo.Dispose();
             base.Dispose(disposing);
         }
     }

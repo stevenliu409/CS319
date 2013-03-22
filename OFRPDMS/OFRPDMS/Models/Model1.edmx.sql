@@ -566,7 +566,7 @@ ADD CONSTRAINT [FK_PrimaryGuardianChild]
     FOREIGN KEY ([PrimaryGuardianId])
     REFERENCES [dbo].[PrimaryGuardians]
         ([Id])
-    ON DELETE CASCADE ON UPDATE CASCADE;
+    ON DELETE CASCADE;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_PrimaryGuardianChild'
 CREATE INDEX [IX_FK_PrimaryGuardianChild]

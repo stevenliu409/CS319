@@ -1,43 +1,48 @@
-﻿using System;
+﻿using Ninject;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using OFRPDMS.Models;
+using OFRPDMS.Account;
+using OFRPDMS.Repositories;
 
 using System.Data;
 using System.Data.Entity;
-using System.Web.Security;
 
 namespace OFRPDMS.Controllers
 {
     public class HomeController : Controller
     {
-        private OFRPDMSContext context = new OFRPDMSContext();
-        private PrimaryGuardian _primaryguardian;
+        private IAccountService accountService;
+        private IRepositoryService repoService;
 
-        public HomeController()
+        public HomeController() {}
+
+        [Inject]
+        public HomeController(IAccountService accountService, IRepositoryService repoService)
         {
-      
-            _primaryguardian = context.PrimaryGuardians.FirstOrDefault();
+            this.accountService = accountService;
+            this.repoService = repoService;
         }
 
         public ActionResult Index()
         {
             ViewBag.Message = "Welcome to ASP.NET MVC!";
 
-            if (!Roles.RoleExists("Administrators"))
+            if (!accountService.RoleExists("Administrators"))
             {
-                Roles.CreateRole("Administrators");
+                accountService.CreateRole("Administrators");
             }
-            if (!Roles.RoleExists("Staff"))
+            if (!accountService.RoleExists("Staff"))
             {
-                Roles.CreateRole("Staff");
+                accountService.CreateRole("Staff");
 
             }
-            if (Roles.GetRolesForUser().Contains("Administrators"))
-                return RedirectToAction("Index", "Admin", new { area = "Admin" }); 
-            if (Roles.GetRolesForUser().Contains("Staff"))
+            if (accountService.GetRolesForUser().Contains("Administrators"))
+                return RedirectToAction("Index", "Admin", new { area = "Admin" });
+            if (accountService.GetRolesForUser().Contains("Staff"))
                 return RedirectToRoute("Staff_default", new { centerIdArg = -1, controller = "Staff", action = "Index" });
 
             return RedirectToAction("LogOn", "Account");
@@ -63,8 +68,7 @@ namespace OFRPDMS.Controllers
 
         public ActionResult Nav()
         {
-
-            return PartialView("_AdminNavPartial", context.Centers);
+            return PartialView("_AdminNavPartial", repoService.centerRepo.FindAll());
         }
     }
 }

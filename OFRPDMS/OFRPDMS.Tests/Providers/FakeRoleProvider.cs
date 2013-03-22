@@ -14,11 +14,12 @@ using System.Text;
 
 using System.Web.Security;
 
+// To be removed
 namespace OFRPDMS.Tests.Providers
 {
     class FakeRoleProvider : RoleProvider
     {
-        private string eventSource = "OdbcRoleProvider";
+        private string eventSource = "FakeRoleProvider";
         private string eventLog = "Application";
         private string exceptionMessage = "An exception occurred. Please check the Event Log.";
 
@@ -122,6 +123,11 @@ namespace OFRPDMS.Tests.Providers
 
         public override string[] GetRolesForUser(string username)
         {
+            if (username == null)
+            {
+                throw new ArgumentNullException();
+            }
+
             if (username == "admin")
             {
                 string[] roles = new string[] { "Administrators", "Staff" };

@@ -1,12 +1,16 @@
-﻿using System;
+﻿using Ninject;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using System.Web.Security;
+using OFRPDMS.Account;
 using OFRPDMS.Models;
+using OFRPDMS.Repositories;
 
 namespace OFRPDMS.Areas.Staff.Controllers
 { 
@@ -14,61 +18,48 @@ namespace OFRPDMS.Areas.Staff.Controllers
     {
         private string[] ValidTypes = new string[3] { "video", "book", "toy" };
 
-        private OFRPDMSContext db = new OFRPDMSContext();
+        private IRepositoryService repoService;
+        private IAccountService account;
+
+        public LibraryController() {}
+
+        [Inject]
+        public LibraryController( IAccountService account, IRepositoryService repoService)
+        {
+            this.repoService = repoService;
+            this.account = account;
+        }
 
         //
         // GET: /Staff/Library/
 
-        public ActionResult Index(int centerIdArg)
+        public ActionResult Index()
         {
-            bool valid = VerifyCenterId(centerIdArg);
+            int centerID = account.GetCurrentUserCenterId();
 
-            // staff is trying to access center they're not associated with
-            if (!valid)
-            {
-                return RedirectToAction("Index", "Staff");
-            }
-
-            if (centerIdArg == 0)
-            {
-                // administrator is viewing everything
-                var libraryitems = db.LibraryResources.Include(l => l.Center);
-                return View(libraryitems.ToList());
-            }
-            else
-            {
-                var libraryitems = db.LibraryResources.Include(l => l.Center).Where(l => l.CenterId == centerIdArg);
-                return View(libraryitems.ToList());
-            }
+            var libraryitems = repoService.libraryRepo.FindAllWithCenterId(centerID);
+            return View(libraryitems.ToList());
         }
 
         //
         // GET: /Staff/Library/Details/5
 
-        public ActionResult Details(int centerIdArg, int id)
+        public ActionResult Details(int id)
         {
-            bool valid = VerifyCenterId(centerIdArg);
-            if (!valid)
-            {
-                return RedirectToAction("Index", "Staff");
-            }
+            int centerID = account.GetCurrentUserCenterId();
 
-            LibraryResource libraryitem = db.LibraryResources.Find(id);
+            LibraryResource libraryitem = repoService.libraryRepo.FindByIdAndCenterId(id, centerID);
             return View(libraryitem);
         }
 
         //
         // GET: /Staff/Library/Create
 
-        public ActionResult Create(int centerIdArg)
+        public ActionResult Create()
         {
-            bool valid = VerifyCenterId(centerIdArg);
-            if (!valid)
-            {
-                return RedirectToAction("Index", "Staff");
-            }
+            int centerID = account.GetCurrentUserCenterId();
 
-            ViewBag.CenterId = new SelectList(db.Centers.Where(c => c.Id == centerIdArg), "Id", "Name");
+            ViewBag.CenterId = new SelectList(repoService.centerRepo.FindListById(centerID), "Id", "Name");
             ViewBag.ItemTypes = new SelectList(ValidTypes.AsEnumerable());
             return View();
         } 
@@ -77,39 +68,30 @@ namespace OFRPDMS.Areas.Staff.Controllers
         // POST: /Staff/Library/Create
 
         [HttpPost]
-        public ActionResult Create(int centerIdArg, LibraryResource libraryitem)
+        public ActionResult Create(LibraryResource libraryitem)
         {
-            bool valid = VerifyCenterId(centerIdArg);
-            if (!valid)
-            {
-                return RedirectToAction("Index", "Staff");
-            }
+            int centerID = account.GetCurrentUserCenterId();
 
             if (ModelState.IsValid)
             {
-                db.LibraryResources.Add(libraryitem);
-                db.SaveChanges();
+                repoService.libraryRepo.Add(libraryitem);
                 return RedirectToAction("Index");  
             }
 
             ViewBag.ItemType = new SelectList(ValidTypes.AsEnumerable());
-            ViewBag.CenterId = new SelectList(db.Centers, "Id", "Name", libraryitem.CenterId);
+            ViewBag.CenterId = new SelectList(repoService.centerRepo.FindListById(centerID), "Id", "Name", libraryitem.CenterId);
             return View(libraryitem);
         }
         
         //
         // GET: /Staff/Library/Edit/5
  
-        public ActionResult Edit(int centerIdArg, int id)
+        public ActionResult Edit(int id)
         {
-            bool valid = VerifyCenterId(centerIdArg);
-            if (!valid)
-            {
-                return RedirectToAction("Index", "Staff");
-            }
+            int centerID = account.GetCurrentUserCenterId();
 
-            LibraryResource libraryitem = db.LibraryResources.Find(id);
-            ViewBag.CenterId = new SelectList(db.Centers, "Id", "Name", libraryitem.CenterId);
+            LibraryResource libraryitem = repoService.libraryRepo.FindByIdAndCenterId(id, centerID);
+            ViewBag.CenterId = new SelectList(repoService.centerRepo.FindListById(centerID), "Id", "Name", libraryitem.CenterId);
             return View(libraryitem);
         }
 
@@ -117,36 +99,27 @@ namespace OFRPDMS.Areas.Staff.Controllers
         // POST: /Staff/Library/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(int centerIdArg, LibraryResource libraryitem)
+        public ActionResult Edit(LibraryResource libraryitem)
         {
-            bool valid = VerifyCenterId(centerIdArg);
-            if (!valid)
-            {
-                return RedirectToAction("Index", "Staff");
-            }
+            int centerID = account.GetCurrentUserCenterId();
 
             if (ModelState.IsValid)
             {
-                db.Entry(libraryitem).State = EntityState.Modified;
-                db.SaveChanges();
+                repoService.libraryRepo.Update(libraryitem);
                 return RedirectToAction("Index");
             }
-            ViewBag.CenterId = new SelectList(db.Centers, "Id", "Name", libraryitem.CenterId);
+            ViewBag.CenterId = new SelectList(repoService.centerRepo.FindListById(centerID), "Id", "Name", libraryitem.CenterId);
             return View(libraryitem);
         }
 
         //
         // GET: /Staff/Library/Delete/5
  
-        public ActionResult Delete(int centerIdArg, int id)
+        public ActionResult Delete(int id)
         {
-            bool valid = VerifyCenterId(centerIdArg);
-            if (!valid)
-            {
-                return RedirectToAction("Index", "Staff");
-            }
+            int centerID = account.GetCurrentUserCenterId();
 
-            LibraryResource libraryitem = db.LibraryResources.Find(id);
+            LibraryResource libraryitem = repoService.libraryRepo.FindByIdAndCenterId(id, centerID);
             return View(libraryitem);
         }
 
@@ -154,17 +127,10 @@ namespace OFRPDMS.Areas.Staff.Controllers
         // POST: /Staff/Library/Delete/5
 
         [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(int centerIdArg, int id)
+        public ActionResult DeleteConfirmed(int id)
         {
-            bool valid = VerifyCenterId(centerIdArg);
-            if (!valid)
-            {
-                return RedirectToAction("Index", "Staff");
-            }
-
-            LibraryResource libraryitem = db.LibraryResources.Find(id);
-            db.LibraryResources.Remove(libraryitem);
-            db.SaveChanges();
+            LibraryResource libraryitem = repoService.libraryRepo.FindById(id);
+            repoService.libraryRepo.Delete(libraryitem);
             return RedirectToAction("Index");
         }
 
@@ -173,11 +139,9 @@ namespace OFRPDMS.Areas.Staff.Controllers
         // then sets CenterId in the viewbag if valid
         private bool VerifyCenterId(int id)
         {
-            
-            string[] roles = Roles.GetRolesForUser();
 
             // Administrator
-            if (roles.Any(item => item == "Administrators"))
+            if (User.IsInRole("Administrators"))
             {
                 ViewBag.StaffCenterId = id;
                 return true; // always valid for administrator
@@ -185,7 +149,8 @@ namespace OFRPDMS.Areas.Staff.Controllers
             // Staff
             else
             {
-                int staffCenterId = AccountProfile.CurrentUser.CenterID;
+                
+                int staffCenterId = account.GetCurrentUserCenterId();
                 if (staffCenterId == id)
                 {
                     ViewBag.StaffCenterId = id;
@@ -203,7 +168,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            db.Dispose();
+            repoService.libraryRepo.Dispose();
             base.Dispose(disposing);
         }
     }
