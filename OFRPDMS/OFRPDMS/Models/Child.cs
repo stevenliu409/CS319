@@ -19,7 +19,7 @@ namespace OFRPDMS.Models
         {
             this.EventParticipants = new HashSet<EventParticipant>();
             this.Allergies = new List<Allergy>();
-        
+           // Allergies.Add(new Allergy());
             
           
         }

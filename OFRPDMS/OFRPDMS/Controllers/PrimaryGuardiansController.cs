@@ -38,6 +38,7 @@ namespace OFRPDMS.Controllers
         {
             ViewBag.CenterId = new SelectList(context.Centers, "Id", "Name");
             var model = new PrimaryGuardian();
+            //model.BuildEntity(1);
             //model.Children.Add(new Child());
             
             return View(model);
@@ -50,19 +51,21 @@ namespace OFRPDMS.Controllers
         public ActionResult Create(PrimaryGuardian primaryguardian)
         {
 
+
             if (ModelState.IsValid)
             {
                 primaryguardian.DateCreated = DateTime.Now;
                 int x = primaryguardian.SecondaryGuardians.Count();
                 for (var i = x-1; i >= 0; i--)
                 {
-                    if (primaryguardian.SecondaryGuardians[i].Delete == true)
+                    if (primaryguardian.SecondaryGuardians[i].Delete == true || (primaryguardian.SecondaryGuardians[i].RelationshipToChild == null && primaryguardian.SecondaryGuardians[i].FirstName == null
+                        && primaryguardian.SecondaryGuardians[i].LastName == null))
                     {
                         primaryguardian.SecondaryGuardians.RemoveAt(i);
                     }
                    
                 }
-                int z = primaryguardian.Allergies.Count();
+              /*  int z = primaryguardian.Allergies.Count();
                 for (var i = z - 1; i >= 0; i--)
                 {
                     if (primaryguardian.Allergies[i].Delete == true)
@@ -70,15 +73,17 @@ namespace OFRPDMS.Controllers
                         primaryguardian.Allergies.RemoveAt(i);
                     }
 
-                }
+                }*/
 
                 int y = primaryguardian.Children.Count();
                 for (int i = y -1; i >= 0; i--)
                 {
-                    if (primaryguardian.Children[i].Delete == true)
+                    if (primaryguardian.Children[i].Delete == true || (primaryguardian.Children[i].Birthdate == null && primaryguardian.Children[i].FirstName ==null
+                        && primaryguardian.Children[i].LastName == null && primaryguardian.Children[i].RelationshipToGuardian ==null))
                     {
                         primaryguardian.Children.RemoveAt(i);
                     }
+                  
                     //int z =primaryguardian.Children[i].Allergies.Count();
                     //for (int j = z - 1; j >= 0; j--)
                    // {
@@ -128,13 +133,14 @@ namespace OFRPDMS.Controllers
                 int x = primaryguardian.SecondaryGuardians.Count();
                 for (var i = x - 1; i >= 0; i--)
                 {
-                    if (primaryguardian.SecondaryGuardians[i].Delete == true)
+                    if (primaryguardian.SecondaryGuardians[i].Delete == true || (primaryguardian.SecondaryGuardians[i].RelationshipToChild == null && primaryguardian.SecondaryGuardians[i].FirstName == null
+                        && primaryguardian.SecondaryGuardians[i].LastName == null))
                     {
                         primaryguardian.SecondaryGuardians.RemoveAt(i);
                     }
                    
                 }
-                int z = primaryguardian.Allergies.Count();
+               /* int z = primaryguardian.Allergies.Count();
                 for (var i = z - 1; i >= 0; i--)
                 {
                     if (primaryguardian.Allergies[i].Delete == true)
@@ -142,13 +148,14 @@ namespace OFRPDMS.Controllers
                         primaryguardian.Allergies.RemoveAt(i);
                     }
 
-                }
+                }*/
 
 
                 int y = primaryguardian.Children.Count();
                 for (var i = y - 1; i >= 0; i--)
                 {
-                    if (primaryguardian.Children[i].Delete == true)
+                    if (primaryguardian.Children[i].Delete == true|| (primaryguardian.Children[i].Birthdate == null && primaryguardian.Children[i].FirstName ==null
+                        && primaryguardian.Children[i].LastName == null && primaryguardian.Children[i].RelationshipToGuardian ==null))
                     {
                         primaryguardian.Children.RemoveAt(i);
                     }
@@ -161,8 +168,10 @@ namespace OFRPDMS.Controllers
                       //  }
                     //}
                 }
+                PrimaryGuardian pr = context.PrimaryGuardians.Find(primaryguardian.Id);
+                context.PrimaryGuardians.Remove(pr);
                 context.PrimaryGuardians.Add(primaryguardian);
-                context.Entry(primaryguardian).State = EntityState.Modified;
+               
                 
                 
                 //context.Entry(prim).State = EntityState.Detached;

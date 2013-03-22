@@ -40,14 +40,17 @@
     @Html.EditorFor(model => model.RelationshipToGuardian)
     @Html.ValidationMessageFor(model => model.RelationshipToGuardian)
     </div>
-    @*
+   
+   @*
     <div class="editor-label">
         @Html.LabelFor(model =>model.Allergies)
     </div>
     
+    
     <div id="allergiesNested">
        @Html.EditorFor(model => model.Allergies)
-    </div>
+    </div>*@
+   @*
     <p>
         @Html.LinkToAddNestedForm(model=>model.Allergies,"Add More Allergy...", "#allergiesNested", ".Allergy", "Allergies")
     </p>*@

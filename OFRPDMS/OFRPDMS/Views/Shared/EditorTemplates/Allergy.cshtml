@@ -3,10 +3,9 @@
 <div class ="Allergy">
 
     <div class="editor-field">
-        @Html.EditorFor(model => model.Note)
+        @Html.TextAreaFor(model => model.Note)
         @Html.ValidationMessageFor(model => model.Note)
     </div>
-        @Html.HiddenFor(model =>model.Delete, new {@class = "mark-for-delete"})
-        @Html.LinkToRemoveNestedForm("Remove Allergy...", "div.Allergy", "input.mark-for-delete")
+    
 
 </div>
