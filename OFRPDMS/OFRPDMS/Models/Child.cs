@@ -17,18 +17,18 @@ namespace OFRPDMS.Models
     {
         public Child()
         {
-            this.EventParticipants = new HashSet<EventParticipant>();
-            this.Allergies = new List<Allergy>();
-        
-            
-          
+           this.EventParticipants = new HashSet<EventParticipant>();
+           this.Allergies = new HashSet<Allergy>();
+          // Allergies.Add(new Allergy());
+           
+         
         }
     
         public int Id { get; set; }
         //[Required]
-        [RegularExpression(@"^[a-zA-Z]{1,25}$", ErrorMessage = "Not a valid first Name")]
+        //[RegularExpression(@"^[a-zA-Z]{1,25}$", ErrorMessage = "Not a valid first Name")]
         public string FirstName { get; set; }
-        [RegularExpression(@"^[a-zA-Z]{1,25}$", ErrorMessage = "Not a valid last Name")]
+        //[RegularExpression(@"^[a-zA-Z]{1,25}$", ErrorMessage = "Not a valid last Name")]
         public string LastName { get; set; }
 
         [DataType(DataType.Date)]
@@ -36,13 +36,13 @@ namespace OFRPDMS.Models
       
         public int PrimaryGuardianId { get; set; }
         //[Required]
-        [RegularExpression(@"^[a-zA-Z]{1,25}$", ErrorMessage = "Not a valid relationship")]
+        //[RegularExpression(@"^[a-zA-Z]{1,25}$", ErrorMessage = "Not a valid relationship")]
         public string RelationshipToGuardian { get; set; }
         public Nullable<bool> Delete { get; set; }
     
         public virtual PrimaryGuardian PrimaryGuardian { get; set; }
         public virtual ICollection<EventParticipant> EventParticipants { get; set; }
-        public virtual IList<Allergy> Allergies { get; set; }
+        public virtual ICollection<Allergy> Allergies { get; set; }
 
         public void AllergyBuildEntity(int count)
         {
@@ -50,7 +50,7 @@ namespace OFRPDMS.Models
             for (int i = 0; i < count; i++)
             {
                 Allergies.Add(new Allergy());
-               
+
 
             }
 
@@ -59,4 +59,4 @@ namespace OFRPDMS.Models
 
 
 
-}
+ }

@@ -15,12 +15,12 @@ namespace OFRPDMS.Models
     public partial class Allergy
     {
         public int Id { get; set; }
-        public int PrimaryGuardianId { get; set; }
-        public int ChildId { get; set; }
         public string Note { get; set; }
         public Nullable<bool> Delete { get; set; }
+        public Nullable<int> ChildId { get; set; }
+        public Nullable<int> PrimaryGuardianId { get; set; }
     
-        public virtual PrimaryGuardian PrimaryGuardian { get; set; }
         public virtual Child Child { get; set; }
+        public virtual PrimaryGuardian PrimaryGuardian { get; set; }
     }
 }

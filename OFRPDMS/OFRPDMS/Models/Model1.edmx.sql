@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 03/18/2013 21:51:00
+-- Date Created: 03/22/2013 00:42:34
 -- Generated from EDMX file: D:\cs319\CS319\OFRPDMS\OFRPDMS\Models\Model1.edmx
 -- --------------------------------------------------
 
@@ -16,7 +16,6 @@ GO
 -- --------------------------------------------------
 -- Dropping existing FOREIGN KEY constraints
 -- --------------------------------------------------
-
 IF OBJECT_ID(N'[dbo].[FK_GivenResourceCenter]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[GivenResources] DROP CONSTRAINT [FK_GivenResourceCenter];
 GO
@@ -111,6 +110,21 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_LibraryResourceCenter]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[LibraryResources] DROP CONSTRAINT [FK_LibraryResourceCenter];
 GO
+IF OBJECT_ID(N'[dbo].[FK_CenterFreeResourceGivenResource]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[GivenResources] DROP CONSTRAINT [FK_CenterFreeResourceGivenResource];
+GO
+IF OBJECT_ID(N'[dbo].[FK_SpecialEventEventParticipant]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[EventParticipants] DROP CONSTRAINT [FK_SpecialEventEventParticipant];
+GO
+IF OBJECT_ID(N'[dbo].[FK_EventEventParticipant]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[EventParticipants] DROP CONSTRAINT [FK_EventEventParticipant];
+GO
+IF OBJECT_ID(N'[dbo].[FK_AllergyChild]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Allergies] DROP CONSTRAINT [FK_AllergyChild];
+GO
+IF OBJECT_ID(N'[dbo].[FK_AllergyPrimaryGuardian]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Allergies] DROP CONSTRAINT [FK_AllergyPrimaryGuardian];
+GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -175,6 +189,9 @@ IF OBJECT_ID(N'[dbo].[LibraryItems_Book]', 'U') IS NOT NULL
 IF OBJECT_ID(N'[dbo].[LibraryResources]', 'U') IS NOT NULL
     DROP TABLE [dbo].[LibraryResources];
 GO
+IF OBJECT_ID(N'[dbo].[GivenResources]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[GivenResources];
+GO
 IF OBJECT_ID(N'[dbo].[EventParticipantPrimaryGuardian]', 'U') IS NOT NULL
     DROP TABLE [dbo].[EventParticipantPrimaryGuardian];
 GO
@@ -204,7 +221,7 @@ CREATE TABLE [dbo].[PrimaryGuardians] (
     [FirstName] nvarchar(max)  NULL,
     [LastName] nvarchar(max)  NULL,
     [Email] nvarchar(max)  NULL,
-    [Phone] int  NULL,
+    [Phone] bigint  NULL,
     [PostalCodePrefix] nvarchar(max)  NULL,
     [DateCreated] datetime  NOT NULL,
     [Language] nvarchar(max)  NULL,
@@ -219,9 +236,9 @@ CREATE TABLE [dbo].[SecondaryGuardians] (
     [FirstName] nvarchar(max)  NULL,
     [LastName] nvarchar(max)  NULL,
     [RelationshipToChild] nvarchar(max)  NULL,
-    [Phone] int  NULL,
+    [Phone] bigint  NULL,
     [PrimaryGuardianId] int  NOT NULL,
-    [Delete] bit NOT NULL
+    [Delete] bit  NULL
 );
 GO
 
@@ -243,17 +260,17 @@ CREATE TABLE [dbo].[Children] (
     [Birthdate] datetime  NULL,
     [PrimaryGuardianId] int  NOT NULL,
     [RelationshipToGuardian] nvarchar(max)  NULL,
-    [Delete] bit  NOT NULL
+    [Delete] bit  NULL
 );
 GO
 
 -- Creating table 'Allergies'
 CREATE TABLE [dbo].[Allergies] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [PrimaryGuardianId] int  NOT NULL,
-    [ChildId] int  NOT NULL,
     [Note] nvarchar(max)  NULL,
-    [Delete] bit   NOT NULL
+    [Delete] bit  NULL,
+    [ChildId] int  NULL,
+    [PrimaryGuardianId] int  NULL
 );
 GO
 
@@ -271,7 +288,7 @@ CREATE TABLE [dbo].[Centers] (
     [Name] nvarchar(max)  NULL,
     [Email] nvarchar(max)  NULL,
     [Address] nvarchar(max)  NOT NULL,
-    [Phone] nvarchar(max)  NOT NULL
+    [Phone] bigint  NULL,
 );
 GO
 
@@ -580,34 +597,6 @@ ON [dbo].[EventParticipantChild]
     ([Children_Id]);
 GO
 
--- Creating foreign key on [PrimaryGuardianId] in table 'Allergies'
-ALTER TABLE [dbo].[Allergies]
-ADD CONSTRAINT [FK_PrimaryGuardianAllergy]
-    FOREIGN KEY ([PrimaryGuardianId])
-    REFERENCES [dbo].[PrimaryGuardians]
-        ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_PrimaryGuardianAllergy'
-CREATE INDEX [IX_FK_PrimaryGuardianAllergy]
-ON [dbo].[Allergies]
-    ([PrimaryGuardianId]);
-GO
-
--- Creating foreign key on [ChildId] in table 'Allergies'
-ALTER TABLE [dbo].[Allergies]
-ADD CONSTRAINT [FK_ChildAllergy]
-    FOREIGN KEY ([ChildId])
-    REFERENCES [dbo].[Children]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_ChildAllergy'
-CREATE INDEX [IX_FK_ChildAllergy]
-ON [dbo].[Allergies]
-    ([ChildId]);
-GO
-
 -- Creating foreign key on [CenterId] in table 'Events'
 ALTER TABLE [dbo].[Events]
 ADD CONSTRAINT [FK_CenterEvent]
@@ -802,6 +791,34 @@ ADD CONSTRAINT [FK_EventEventParticipant]
 CREATE INDEX [IX_FK_EventEventParticipant]
 ON [dbo].[EventParticipants]
     ([EventId]);
+GO
+
+-- Creating foreign key on [ChildId] in table 'Allergies'
+ALTER TABLE [dbo].[Allergies]
+ADD CONSTRAINT [FK_AllergyChild]
+    FOREIGN KEY ([ChildId])
+    REFERENCES [dbo].[Children]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_AllergyChild'
+CREATE INDEX [IX_FK_AllergyChild]
+ON [dbo].[Allergies]
+    ([ChildId]);
+GO
+
+-- Creating foreign key on [PrimaryGuardianId] in table 'Allergies'
+ALTER TABLE [dbo].[Allergies]
+ADD CONSTRAINT [FK_AllergyPrimaryGuardian]
+    FOREIGN KEY ([PrimaryGuardianId])
+    REFERENCES [dbo].[PrimaryGuardians]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_AllergyPrimaryGuardian'
+CREATE INDEX [IX_FK_AllergyPrimaryGuardian]
+ON [dbo].[Allergies]
+    ([PrimaryGuardianId]);
 GO
 
 -- --------------------------------------------------
