@@ -21,7 +21,7 @@ namespace OFRPDMS.Models
         [RegularExpression(@"^[a-zA-Z]{1,25}$", ErrorMessage = "Not a valid Last Name")]
         public string LastName { get; set; }
         public string RelationshipToChild { get; set; }
-        public Nullable<int> Phone { get; set; }
+        public Nullable<long> Phone { get; set; }
         public int PrimaryGuardianId { get; set; }
         public Nullable<bool> Delete { get; set; }
     
