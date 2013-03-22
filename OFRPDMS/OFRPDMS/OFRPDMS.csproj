@@ -75,12 +75,15 @@
     <Compile Include="Areas\Staff\Controllers\FamiliesController.cs" />
     <Compile Include="Areas\Staff\Controllers\LibraryController.cs" />
     <Compile Include="Areas\Staff\Controllers\SignInController.cs" />
+    <Compile Include="Areas\Staff\Models\ReferralViewModelsEdit.cs" />
     <Compile Include="Areas\Staff\Models\ResourceViewModelsEdit.cs" />
     <Compile Include="Areas\Staff\StaffAreaRegistration.cs" />
     <Compile Include="Areas\Staff\Controllers\StaffController.cs" />
+    <Compile Include="Areas\Staff\ViewModels\ReferralViewModel.cs" />
     <Compile Include="Areas\Staff\ViewModels\ResourceViewModel.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CenterController.cs" />
+    <Compile Include="Areas\Staff\Controllers\CenterReferralsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PrimaryGuardiansController.cs" />
     <Compile Include="Global.asax.cs">
@@ -330,6 +333,13 @@
     <Content Include="Areas\Staff\Views\CenterFreeResources\Index.cshtml" />
     <Content Include="Areas\Staff\Views\CenterFreeResources\_CreateOrEdit.cshtml" />
     <Content Include="Areas\Staff\Views\Shared\EditorTemplates\ResourceViewModel.cshtml" />
+    <Content Include="Areas\Staff\Views\CenterReferrals\_CreateOrEdit.cshtml" />
+    <Content Include="Areas\Staff\Views\CenterReferrals\Index.cshtml" />
+    <Content Include="Areas\Staff\Views\CenterReferrals\Create.cshtml" />
+    <Content Include="Areas\Staff\Views\CenterReferrals\Delete.cshtml" />
+    <Content Include="Areas\Staff\Views\CenterReferrals\Details.cshtml" />
+    <Content Include="Areas\Staff\Views\CenterReferrals\Edit.cshtml" />
+    <Content Include="Areas\Staff\Views\Shared\EditorTemplates\ReferralViewModel.cshtml" />
     <None Include="Models\Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Model1.Context.cs</LastGenOutput>
@@ -347,6 +357,12 @@
     <Content Include="Views\Shared\EditorTemplates\PrimaryGuardian.cshtml" />
     <Content Include="Views\PrimaryGuardians\_ChildrenOrEdit.cshtml" />
     <Content Include="Views\PrimaryGuardians\_CreateOrEdit.cshtml" />
+    <Content Include="Views\CenterReferrals\Create.cshtml" />
+    <Content Include="Views\CenterReferrals\Edit.cshtml" />
+    <Content Include="Views\CenterReferrals\Delete.cshtml" />
+    <Content Include="Views\CenterReferrals\Details.cshtml" />
+    <Content Include="Views\CenterReferrals\Index.cshtml" />
+    <Content Include="Views\CenterReferrals\_CreateOrEdit.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

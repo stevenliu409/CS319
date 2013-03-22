@@ -20,5 +20,9 @@ namespace OFRPDMS.Models
         public int CountReferred { get; set; }
     
         public virtual CenterReferral CenterReferral { get; set; }
+        public Referral()
+        {
+            DateReferred = System.DateTime.Now;
+        }
     }
 }

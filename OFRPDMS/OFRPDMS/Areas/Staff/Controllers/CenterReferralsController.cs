@@ -11,29 +11,29 @@ using OFRPDMS.Areas.Staff.ViewModels;
 
 namespace OFRPDMS.Areas.Staff.Controllers
 {   
-    public class CenterFreeResourcesController : Controller
+    public class CenterReferralsController : Controller
     {
         private OFRPDMSContext context = new OFRPDMSContext();
 
         //
-        // GET: /CenterFreeResources/
+        // GET: /CenterReferrals/
 
         public ViewResult Index()
         {
-            return View(context.CenterFreeResources.Include(centerfreeresource => centerfreeresource.Center).Include(centerfreeresource => centerfreeresource.GivenResources).ToList());
+            return View(context.CenterReferrals.Include(centerreferral => centerreferral.Center).Include(centerreferral => centerreferral.Referrals).ToList());
         }
 
         //
-        // GET: /CenterFreeResources/Details/5
+        // GET: /CenterReferrals/Details/5
 
         public ViewResult Details(int id)
         {
-            CenterFreeResource centerfreeresource = context.CenterFreeResources.Single(x => x.Id == id);
-            return View(centerfreeresource);
+            CenterReferral centerreferral = context.CenterReferrals.Single(x => x.Id == id);
+            return View(centerreferral);
         }
 
         //
-        // GET: /CenterFreeResources/Create
+        // GET: /CenterReferrals/Create
 
         public ActionResult Create()
         {
@@ -42,108 +42,88 @@ namespace OFRPDMS.Areas.Staff.Controllers
         } 
 
         //
-        // POST: /CenterFreeResources/Create
+        // POST: /CenterReferrals/Create
 
         [HttpPost]
-        public ActionResult Create(CenterFreeResource centerfreeresource)
+        public ActionResult Create(CenterReferral centerreferral)
         {
             if (ModelState.IsValid)
             {
-                centerfreeresource.CenterId = AccountProfile.CurrentUser.CenterID;
-                context.CenterFreeResources.Add(centerfreeresource);
+                centerreferral.CenterId = AccountProfile.CurrentUser.CenterID;
+                context.CenterReferrals.Add(centerreferral);
                 context.SaveChanges();
                 return RedirectToAction("Edit");  
             }
-
-            ViewBag.PossibleCenters = context.Centers;
-            return View(centerfreeresource);
+            return View(centerreferral);
         }
         
         //
-        // GET: /CenterFreeResources/Edit
+        // GET: /CenterReferrals/Edit/
  
         public ActionResult Edit()
         {
-            ResourceViewModelsEdit resourcesEdit = new ResourceViewModelsEdit();
-            List<CenterFreeResource> resourceList = 
-                context.CenterFreeResources.Where(resource => resource.CenterId == 
+            ReferralViewModelsEdit referralsEdit = new ReferralViewModelsEdit();
+            List<CenterReferral> referralsList =
+                context.CenterReferrals.Where(referral => referral.CenterId ==
                     AccountProfile.CurrentUser.CenterID).ToList();
-            List<ResourceViewModel> resouceViewModelList = new List<ResourceViewModel>();
-            
-            foreach (var resource in resourceList)
+            List<ReferralViewModel> referralViewModelList = new List<ReferralViewModel>();
+
+            foreach (var referral in referralsList)
             {
-                ResourceViewModel r = new ResourceViewModel();
-                r.resource = resource;
-                r.count = (int)resource.NumberAvailable;
-                List<GivenResource> recordsOfGiven = resource.GivenResources.ToList();
-                foreach (var record in recordsOfGiven)
+                ReferralViewModel r = new ReferralViewModel();
+                r.referral = referral;
+                r.count = 0;
+                List<Referral> recordsOfReferralsMade = referral.Referrals.ToList();
+                foreach (var record in recordsOfReferralsMade)
                 {
-                    r.totalHandedOut += record.Count;
+                    r.totalNumberMade += record.CountReferred;
                 }
-                resouceViewModelList.Add(r);
+                referralViewModelList.Add(r);
             }
-            resourcesEdit.Resources = resouceViewModelList;
-            return View(resourcesEdit);
+            referralsEdit.Referrals = referralViewModelList;
+            return View(referralsEdit);
         }
 
         //
-        // POST: /CenterFreeResources/Edit
+        // POST: /CenterReferrals/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(ResourceViewModelsEdit resourcesEdit)
+        public ActionResult Edit(ReferralViewModelsEdit referralsEdit)
         {
-            foreach (var item in resourcesEdit.Resources)
+            foreach (var item in referralsEdit.Referrals)
             {
                 if (ModelState.IsValid)
                 {
-                    int handedOut = (int)(item.resource.NumberAvailable) - item.count;
-                    int newStock = item.count;
-                    //this if block allows the user to enter a negative number to indicate 
-                    //number handed out instead of current stock
-                    if (item.count < 0)
+                    if (item.count > 0)
                     {
-                        handedOut = -item.count;
-                        if((int)(item.resource.NumberAvailable) - handedOut < 0)
-                            handedOut = (int)(item.resource.NumberAvailable);
-                        newStock = (int)(item.resource.NumberAvailable) - handedOut;
-
-                    }
-
-                    CenterFreeResource aResource =  context.CenterFreeResources.Find(item.resource.Id);
-                    aResource.NumberAvailable = newStock;
-                    context.Entry(aResource).State = EntityState.Modified;
-                    context.SaveChanges();
-                    if (handedOut > 0)
-                    {
-                        GivenResource gr = new GivenResource();
-                        gr.Count = handedOut;
-                        gr.CenterFreeResourceId = item.resource.Id;
-                        context.GivenResources.Add(gr);
+                        Referral r = new Referral();
+                        r.CountReferred = item.count;
+                        r.CenterReferralId = item.referral.Id;
+                        context.Referrals.Add(r);
                         context.SaveChanges();
                     }
                 }
             }
-            ViewBag.PossibleCenters = context.Centers;
             return RedirectToAction("Index");
         }
 
         //
-        // GET: /CenterFreeResources/Delete/5
+        // GET: /CenterReferrals/Delete/5
  
         public ActionResult Delete(int id)
         {
-            CenterFreeResource centerfreeresource = context.CenterFreeResources.Single(x => x.Id == id);
-            return View(centerfreeresource);
+            CenterReferral centerreferral = context.CenterReferrals.Single(x => x.Id == id);
+            return View(centerreferral);
         }
 
         //
-        // POST: /CenterFreeResources/Delete/5
+        // POST: /CenterReferrals/Delete/5
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            CenterFreeResource centerfreeresource = context.CenterFreeResources.Single(x => x.Id == id);
-            context.CenterFreeResources.Remove(centerfreeresource);
+            CenterReferral centerreferral = context.CenterReferrals.Single(x => x.Id == id);
+            context.CenterReferrals.Remove(centerreferral);
             context.SaveChanges();
             return RedirectToAction("Edit");
         }

@@ -1,0 +1,21 @@
+﻿@model OFRPDMS.Areas.Staff.ViewModels.ReferralViewModel
+
+@* This partial view defines form fields that will appear when creating and editing entities *@
+<tr>
+    
+    <td>
+        @Html.EditorFor(model => model.count)
+        @Html.ValidationMessageFor(model => model.count)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.totalNumberMade)
+        @Html.HiddenFor(model => model.referral.Id)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.referral.Name)
+    </td>
+    <td>
+        @Html.ActionLink("Delete", "Delete", new { id = Model.referral.Id })
+    </td>
+</tr>
+
