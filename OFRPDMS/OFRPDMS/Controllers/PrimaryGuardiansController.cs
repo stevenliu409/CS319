@@ -171,16 +171,6 @@ namespace OFRPDMS.Controllers
                 PrimaryGuardian pr = context.PrimaryGuardians.Find(primaryguardian.Id);
                 context.PrimaryGuardians.Remove(pr);
                 context.PrimaryGuardians.Add(primaryguardian);
-               
-                
-                
-                //context.Entry(prim).State = EntityState.Detached;
-                //context.PrimaryGuardians.Remove(context.PrimaryGuardians.Find(primaryguardian.Id));
-                //context.PrimaryGuardians.Add(prim);
-                //context.Entry(prim).State = EntityState.Modified;
-               // context.PrimaryGuardians.Add(primaryguardian);
-                //context.Entry(primaryguardian).State = EntityState.Modified;
-               
                 context.SaveChanges();
                 return RedirectToAction("Index");
             }
