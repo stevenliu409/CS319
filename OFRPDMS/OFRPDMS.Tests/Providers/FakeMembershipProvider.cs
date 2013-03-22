@@ -6,7 +6,7 @@ using System.Web.Security;
 
 using Moq;
 
-
+// To be removed
 namespace OFRPDMS.Tests.Providers
 {
 
@@ -153,7 +153,9 @@ namespace OFRPDMS.Tests.Providers
 
         public override MembershipUser GetUser(string username, bool userIsOnline)
         {
-            throw new NotImplementedException();
+            Mock<MembershipUser> user = new Mock<MembershipUser>();
+            user.Setup(u => u.UserName).Returns(() => username);
+            return user.Object;
         }
 
         public override string GetUserNameByEmail(string email)
