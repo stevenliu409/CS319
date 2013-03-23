@@ -105,6 +105,7 @@
     <Compile Include="Controllers\CenterController.cs" />
     <Compile Include="Areas\Staff\Controllers\CenterReferralsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PrimaryGuardianBorrowsController.cs" />
     <Compile Include="Controllers\PrimaryGuardiansController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -119,6 +120,7 @@
     <Compile Include="Models\Allergy.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Book.cs" />
     <Compile Include="Models\Center.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -181,6 +183,8 @@
     <Compile Include="Models\SpecialEvent.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Toy.cs" />
+    <Compile Include="Models\Video.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\CenterRepository.cs" />
     <Compile Include="Repositories\DbRepositoryService.cs" />
@@ -246,7 +250,6 @@
     <Content Include="Scripts\modernizr-1.7.js" />
     <Content Include="Scripts\modernizr-1.7.min.js" />
     <Content Include="Scripts\PrimaryGuardian\application.js" />
-    <Content Include="Views\Center\CenterRegister.aspx" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_AdminLayout.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml">
@@ -286,8 +289,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
-    <Folder Include="Areas\Staff\Models\" />
-    <Folder Include="Areas\Staff\Views\Shared\" />
     <Folder Include="Utils\" />
   </ItemGroup>
   <ItemGroup>
@@ -390,12 +391,12 @@
     <Content Include="Views\Shared\EditorTemplates\PrimaryGuardian.cshtml" />
     <Content Include="Views\PrimaryGuardians\_ChildrenOrEdit.cshtml" />
     <Content Include="Views\PrimaryGuardians\_CreateOrEdit.cshtml" />
-    <Content Include="Views\CenterReferrals\Create.cshtml" />
-    <Content Include="Views\CenterReferrals\Edit.cshtml" />
-    <Content Include="Views\CenterReferrals\Delete.cshtml" />
-    <Content Include="Views\CenterReferrals\Details.cshtml" />
-    <Content Include="Views\CenterReferrals\Index.cshtml" />
-    <Content Include="Views\CenterReferrals\_CreateOrEdit.cshtml" />
+    <Content Include="Views\PrimaryGuardianBorrows\Create.cshtml" />
+    <Content Include="Views\PrimaryGuardianBorrows\Delete.cshtml" />
+    <Content Include="Views\PrimaryGuardianBorrows\Details.cshtml" />
+    <Content Include="Views\PrimaryGuardianBorrows\Edit.cshtml" />
+    <Content Include="Views\PrimaryGuardianBorrows\Index.cshtml" />
+    <Content Include="Views\PrimaryGuardianBorrows\_CreateOrEdit.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
