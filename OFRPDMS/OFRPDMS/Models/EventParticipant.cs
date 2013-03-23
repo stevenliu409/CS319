@@ -14,21 +14,19 @@ namespace OFRPDMS.Models
     
     public partial class EventParticipant
     {
-        public EventParticipant()
-        {
-            this.PrimaryGuardians = new HashSet<PrimaryGuardian>();
-            this.Children = new HashSet<Child>();
-        }
-    
         public int Id { get; set; }
         public int ParticipantId { get; set; }
         public string ParticipantType { get; set; }
         public Nullable<int> SpecialEventId { get; set; }
         public Nullable<int> EventId { get; set; }
+        public Nullable<int> PrimaryGuardianId { get; set; }
+        public Nullable<int> ChildId { get; set; }
+        public Nullable<int> SecondaryGuardianId { get; set; }
     
-        public virtual ICollection<PrimaryGuardian> PrimaryGuardians { get; set; }
-        public virtual ICollection<Child> Children { get; set; }
         public virtual SpecialEvent SpecialEvent { get; set; }
         public virtual Event Event { get; set; }
+        public virtual PrimaryGuardian PrimaryGuardian { get; set; }
+        public virtual Child Child { get; set; }
+        public virtual SecondaryGuardian SecondaryGuardian { get; set; }
     }
 }
