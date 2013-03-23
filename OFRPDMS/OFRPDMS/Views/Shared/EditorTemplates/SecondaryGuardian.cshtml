@@ -39,7 +39,9 @@
     @Html.EditorFor(model => model.RelationshipToChild)
     @Html.ValidationMessageFor(model => model.RelationshipToChild)
 </div>
-        @Html.HiddenFor(model =>model.Delete, new {@class = "mark-for-delete"})
-        @Html.LinkToRemoveNestedForm("Remove Secondary Guardian...", "div.SecondaryGuardian", "input.mark-for-delete")
+    @Html.Hidden("Id", Model.Id)
+    @Html.Hidden("PrimaryGuardianId", Model.PrimaryGuardianId)
+    @Html.HiddenFor(model =>model.Delete, new {@class = "mark-for-delete"})
+    @Html.LinkToRemoveNestedForm("Remove Secondary Guardian...", "div.SecondaryGuardian", "input.mark-for-delete")
 
 </div>

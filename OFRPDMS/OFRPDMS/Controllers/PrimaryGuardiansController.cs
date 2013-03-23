@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using OFRPDMS.Models;
@@ -143,14 +144,38 @@ namespace OFRPDMS.Controllers
                 int x = primaryguardian.SecondaryGuardians.Count();
                 for (var i = x - 1; i >= 0; i--)
                 {
-                    if (primaryguardian.SecondaryGuardians[i].Delete == true || (primaryguardian.SecondaryGuardians[i].RelationshipToChild == null && primaryguardian.SecondaryGuardians[i].FirstName == null
-                        && primaryguardian.SecondaryGuardians[i].LastName == null))
+                    string[] includeFields = new string[] { "FirstName", "LastName", "RelationshipToChild", "Phone" };
+                    IEnumerable<PropertyInfo> properties = typeof(SecondaryGuardian).GetProperties().Where(prop => includeFields.Contains(prop.Name));
+                    bool validSG = false;
+
+                    // if any input fields are not null, then the SecondaryGuardian is valid
+                    validSG = properties.Any(
+                        p => p.GetValue(primaryguardian.SecondaryGuardians[i], null) != null);
+
+                    if (primaryguardian.SecondaryGuardians[i].Delete == true || !validSG)
                     {
+                        if (primaryguardian.SecondaryGuardians[i].Id != 0)
+                        {
+                            SecondaryGuardian sg = context.SecondaryGuardians.Find(primaryguardian.SecondaryGuardians[i].Id);
+                            context.SecondaryGuardians.Remove(sg);
+                        }
                         primaryguardian.SecondaryGuardians.RemoveAt(i);
                     }
                     else
                     {
-                        context.Entry(primaryguardian.SecondaryGuardians[i]).State = EntityState.Modified;
+                        primaryguardian.SecondaryGuardians[i].PrimaryGuardianId = primaryguardian.Id;
+
+                        // this is a newly created secondary guardian
+                        if (primaryguardian.SecondaryGuardians[i].Id == 0)
+                        {
+                            context.SecondaryGuardians.Add(primaryguardian.SecondaryGuardians[i]);
+                            primaryguardian.SecondaryGuardians.RemoveAt(i);
+                        }
+                        // existing secondary guardian was modified
+                        else
+                        {
+                            context.Entry(primaryguardian.SecondaryGuardians[i]).State = EntityState.Modified;
+                        }
                     }
                 }
 
@@ -177,6 +202,16 @@ namespace OFRPDMS.Controllers
 
                 for (var i = y - 1; i >= 0; i--)
                 {
+                    string[] includeFields = new string[] { "FirstName", "LastName", "Birthdate", "RelationshipToGuardian" };
+                    IEnumerable<PropertyInfo> properties = typeof(Child).GetProperties().Where(prop => includeFields.Contains(prop.Name));
+                    bool validChild = false;
+                    
+
+                    // if any input fields are not null, then the SecondaryGuardian is valid
+                    validChild = properties.Any(
+                        p => p.GetValue(primaryguardian.SecondaryGuardians[i], null) != null &&
+                                        !includeFields.Contains(p.Name));
+
                     // child needs to be deleted
                     if (primaryguardian.Children[i].Delete == true || (primaryguardian.Children[i].Birthdate == null && primaryguardian.Children[i].FirstName == null
                         && primaryguardian.Children[i].LastName == null && primaryguardian.Children[i].RelationshipToGuardian == null))
