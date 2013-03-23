@@ -184,7 +184,22 @@ namespace OFRPDMS.Controllers
                     }
                     else
                     {
-                        context.Entry(primaryguardian.Children[i]).State = EntityState.Modified;
+                        primaryguardian.Children[i].PrimaryGuardianId = primaryguardian.Id;
+
+                        // this is a newly created child
+                        if (primaryguardian.Children[i].Id == 0)
+                        {
+                            context.Children.Add(primaryguardian.Children[i]);
+
+                            // iterating backwards, so just remove from list since we added already
+                            // no need to change index
+                            primaryguardian.Children.Remove(primaryguardian.Children[i]);
+                        }
+                        // existing child was modified
+                        else
+                        {
+                            context.Entry(primaryguardian.Children[i]).State = EntityState.Modified;
+                        }
                     }
                     //int z = primaryguardian.Children[i].Allergies.Count();
                     //for (var j = z - 1; j >= 0; j--)
