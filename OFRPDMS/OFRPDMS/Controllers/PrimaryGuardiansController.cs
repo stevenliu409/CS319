@@ -177,9 +177,15 @@ namespace OFRPDMS.Controllers
 
                 for (var i = y - 1; i >= 0; i--)
                 {
+                    // child needs to be deleted
                     if (primaryguardian.Children[i].Delete == true || (primaryguardian.Children[i].Birthdate == null && primaryguardian.Children[i].FirstName == null
                         && primaryguardian.Children[i].LastName == null && primaryguardian.Children[i].RelationshipToGuardian == null))
                     {
+                        if (primaryguardian.Children[i].Id != 0)
+                        {
+                            Child child = context.Children.Find(primaryguardian.Children[i].Id);
+                            context.Children.Remove(child);
+                        }
                         primaryguardian.Children.RemoveAt(i);
                     }
                     else
@@ -190,10 +196,7 @@ namespace OFRPDMS.Controllers
                         if (primaryguardian.Children[i].Id == 0)
                         {
                             context.Children.Add(primaryguardian.Children[i]);
-
-                            // iterating backwards, so just remove from list since we added already
-                            // no need to change index
-                            primaryguardian.Children.Remove(primaryguardian.Children[i]);
+                            primaryguardian.Children.RemoveAt(i);
                         }
                         // existing child was modified
                         else
