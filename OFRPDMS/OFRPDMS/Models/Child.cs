@@ -18,9 +18,8 @@ namespace OFRPDMS.Models
         public Child()
         {
            this.EventParticipants = new HashSet<EventParticipant>();
-           this.Allergies = new HashSet<Allergy>();
-          // Allergies.Add(new Allergy());
-           
+           //this.Allergies = new Allergy();
+        
          
         }
     
@@ -39,17 +38,19 @@ namespace OFRPDMS.Models
         //[RegularExpression(@"^[a-zA-Z]{1,25}$", ErrorMessage = "Not a valid relationship")]
         public string RelationshipToGuardian { get; set; }
         public Nullable<bool> Delete { get; set; }
+        public string Allergies;
     
         public virtual PrimaryGuardian PrimaryGuardian { get; set; }
         public virtual ICollection<EventParticipant> EventParticipants { get; set; }
-        public virtual ICollection<Allergy> Allergies { get; set; }
+       // public virtual Allergy Allergies { get; set; }
+        public System.DateTime DateCreated { get; set; }
 
         public void AllergyBuildEntity(int count)
         {
 
             for (int i = 0; i < count; i++)
             {
-                Allergies.Add(new Allergy());
+                //Allergies.Add(new Allergy());
 
 
             }

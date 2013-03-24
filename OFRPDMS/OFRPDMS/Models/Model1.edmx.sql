@@ -227,7 +227,8 @@ CREATE TABLE [dbo].[PrimaryGuardians] (
     [DateCreated] datetime  NOT NULL,
     [Language] nvarchar(max)  NULL,
     [Country] nvarchar(max)  NULL,
-    [CenterId] int  NOT NULL
+    [CenterId] int  NOT NULL,
+	[Allergies] nvarchar(max) NULL
 );
 GO
 
@@ -264,6 +265,8 @@ CREATE TABLE [dbo].[Children] (
     [Birthdate] datetime  NULL,
     [PrimaryGuardianId] int  NOT NULL,
     [RelationshipToGuardian] nvarchar(max)  NULL,
+	[Allergies] nvarchar(max) NULL,
+	[DateCreated] datetime NOT NULL,
     [Delete] bit  NULL
 );
 GO

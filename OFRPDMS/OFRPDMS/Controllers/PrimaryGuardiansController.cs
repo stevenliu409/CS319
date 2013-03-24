@@ -57,6 +57,11 @@ namespace OFRPDMS.Controllers
             {
                 primaryguardian.DateCreated = DateTime.Now;
 
+                foreach (var child in primaryguardian.Children)
+                {
+                    child.DateCreated = DateTime.Now;
+                }
+
                 //Check for null field in the SecondaryGuardian , if all fields are null, then do not add to database
                 //delete the element in the list which contains delete marked to "true"
 
@@ -74,7 +79,7 @@ namespace OFRPDMS.Controllers
                 //Check for null field in the Allergies , if all fields are null, then do not add to database
                 //delete the element in the list which contains delete marked to "true"
 
-               int z = primaryguardian.Allergies.Count();
+              /* int z = primaryguardian.Allergies.Count();
                 for (var i = z - 1 ; i >= 0; i--)
                 {
                     if (primaryguardian.Allergies[i].Delete == true || primaryguardian.Allergies[i].Note ==null)
@@ -82,7 +87,7 @@ namespace OFRPDMS.Controllers
                         primaryguardian.Allergies.RemoveAt(i);
                     }
 
-                }
+                }*/
 
                 //Check for null field in the Children , if all fields are null, then do not add to database
                 //delete the element in the list which contains delete marked to "true"
@@ -204,17 +209,24 @@ namespace OFRPDMS.Controllers
 
                 //Check for null field in the Allergies , if all fields are null, then do not add to database
                 //delete the element in the list which contains delete marked to "true"
-                int z = primaryguardian.Allergies.Count();
-                for (var i = z - 1; i >= 0; i--)
-                {
-                   
-                   if (primaryguardian.Allergies[i].Note == null || primaryguardian.Allergies[i].Delete == true)
+                //int z = primaryguardian.Allergies.Count();
+                //for (var i = z - 1; i >= 0; i--)
+               // {
+                    //string[] includeFields = new string[] { "Note" };
+                    //IEnumerable<PropertyInfo> properties = typeof(Allergy).GetProperties().Where(prop => includeFields.Contains(prop.Name));
+                    //bool validAllergy = false;
+
+                    //validAllergy = properties.Any(
+                      // p => p.GetValue(primaryguardian.Allergies, null) != null);
+                /*
+                   if (primaryguardian.Allergies.Note == null || primaryguardian.Allergies.Delete == true)
                     {
-                         Allergy allergy = context.Allergies.Find(primaryguardian.Allergies[i].Id);
-                         if (allergy != null)
+                         if (primaryguardian.Allergies.Id != 0)
                          {
+
+                             Allergy allergy = context.Allergies.Find(primaryguardian.Allergies.Id);
                              context.Allergies.Remove(allergy);
-                             primaryguardian.Allergies.RemoveAt(i);
+                             
                          }
                          else
                          {
@@ -233,11 +245,11 @@ namespace OFRPDMS.Controllers
                         }
                         else
                         {
-                            context.Entry(primaryguardian.Allergies[i]).State = EntityState.Modified;
+                            context.Entry(primaryguardian.Allergies).State = EntityState.Modified;
                         }
                     }
 
-                }
+                }*/
 
                 //Check for null field in the Children , if all fields are null, then do not add to database
                 //delete the element in the list which contains delete marked to "true"
@@ -253,7 +265,7 @@ namespace OFRPDMS.Controllers
 
                     // if any input fields are not null, then the SecondaryGuardian is valid
                     validChild = properties.Any(
-                        p => p.GetValue(primaryguardian.SecondaryGuardians[i], null) != null &&
+                        p => p.GetValue(primaryguardian.Children[i], null) != null &&
                                         !includeFields.Contains(p.Name));
 
                     // child needs to be deleted
@@ -268,7 +280,7 @@ namespace OFRPDMS.Controllers
                         if (primaryguardian.Children[i].Id != 0)
                         {
                             Child child = context.Children.Find(primaryguardian.Children[i].Id);
-                            context.Children.Remove(child);
+
                         }
 
                         primaryguardian.Children.RemoveAt(i);
