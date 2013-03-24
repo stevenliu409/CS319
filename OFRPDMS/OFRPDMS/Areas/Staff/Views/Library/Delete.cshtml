@@ -3,12 +3,12 @@
 @{
     ViewBag.Title = "Delete";
 }
-
-<h2>Delete</h2>
+<fieldset>
+<h2>Delete Library Item</h2>
 
 <h3>Are you sure you want to delete this?</h3>
-<fieldset>
-    <legend>LibraryResource</legend>
+
+    <legend></legend>
 
     <div class="display-label">Broken</div>
     <div class="display-field">@Model.Broken</div>
@@ -39,7 +39,7 @@
 
     <div class="display-label">Center</div>
     <div class="display-field">@(Model.Center == null ? "None" : Model.Center.Name)</div>
-</fieldset>
+
 @using (Html.BeginForm()) {
     <p>
         <input type="submit" value="Delete" /> |
@@ -47,4 +47,4 @@
     </p>
 }
 
-
+</fieldset>

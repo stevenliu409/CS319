@@ -3,11 +3,11 @@
 @{
     ViewBag.Title = "Details";
 }
-
-<h2>Details</h2>
-
 <fieldset>
-    <legend>EventParticipant</legend>
+<h2>Sign In Details</h2>
+
+
+    <legend></legend>
 
     <div class="display-label">Event</div>
     <div class="display-field">
@@ -23,8 +23,10 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.ParticipantType)
     </div>
-</fieldset>
+
 <p>
     @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+   
 </p>
+ @Html.ActionLink("Back to List", "Index")
+</fieldset>

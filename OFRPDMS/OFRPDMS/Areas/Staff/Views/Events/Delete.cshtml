@@ -3,12 +3,12 @@
 @{
     ViewBag.Title = "Delete";
 }
-
-<h2>Delete</h2>
+<fieldset>
+<h2>Delete Event</h2>
 
 <h3>Are you sure you want to delete this?</h3>
-<fieldset>
-    <legend>Event</legend>
+
+    <legend></legend>
 
     <div class="display-label">Date</div>
     <div class="display-field">
@@ -19,11 +19,13 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.Center.Name)
     </div>
-</fieldset>
+
 @using (Html.BeginForm())
 {
     <p>
-        <input type="submit" value="Delete" /> |
-        @Html.ActionLink("Back to List", "Index")
+        <input type="submit" value="Delete" /> 
     </p>
+    
+        @Html.ActionLink("Back to List", "Index")
 }
+</fieldset>

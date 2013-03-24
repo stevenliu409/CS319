@@ -1,16 +1,16 @@
 ﻿@{
     Layout = "~/Views/Shared/_LayoutGlobal.cshtml";
 }
-<div id="menucontainer">
+<div class ="page-sidebar"id="menucontainer">
     <ul id="menu">
-        <li>@Html.ActionLink("Families", "Index", "Families")</li>
+        <li class="sticker sticker-color-blue">@Html.ActionLink("Families", "Index", "Families")</li>  </ul>
        <!-- @*<li>@Html.ActionLink("Sign In", "Index", "SignIn")</li>*@-->
-      <li>@Html.RouteLink("Sign In", "Staff_default",  new { controller = "SignIn", action = "Index"})</li>
-        <li>@Html.ActionLink("Event", "Index","Events")</li>
-        <li>@Html.ActionLink("Resources", "Edit","CenterFreeResources")</li>
-        <li>@Html.ActionLink("Referrals", "Edit","CenterReferrals")</li>
-        <li>@Html.ActionLink("Library", "Index","Library")</li>
-    </ul>
+        <ul><li class="sticker sticker-color-orange">@Html.RouteLink("Sign In", "Staff_default",  new { controller = "SignIn", action = "Index"})</li></ul>
+       <ul> <li class="sticker sticker-color-blue">@Html.ActionLink("Event", "Index","Events")</li></ul>
+        <ul><li class="sticker sticker-color-orange">@Html.ActionLink("Resources", "Edit","CenterFreeResources")</li></ul>
+       <ul> <li class="sticker sticker-color-blue">@Html.ActionLink("Referrals", "Edit","CenterReferrals")</li></ul>
+        <ul><li class="sticker sticker-color-orange">@Html.ActionLink("Library", "Index","Library")</li></ul>
+  
 </div>
 <div id="main">
     @RenderBody()

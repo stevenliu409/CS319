@@ -3,11 +3,11 @@
 @{
     ViewBag.Title = "Details";
 }
-
-<h2>Details</h2>
-
 <fieldset>
-    <legend>PrimaryGuardian</legend>
+<h2>Primary Guardian Details</h2>
+
+
+    <legend></legend>
 
     <div class="display-label">FirstName</div>
     <div class="display-field">
@@ -105,8 +105,9 @@
    
     }
    </div>
-</fieldset>
+
 <p>
     @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+<fieldset>

@@ -7,18 +7,18 @@
     
 }
 
-
-<h2>Create</h2>
+<fieldset>
+<h2>Create Primary Guardian</h2>
 
 @using (Html.BeginForm("Create", "PrimaryGuardians", FormMethod.Post))
 {
-    <fieldset>
-        <legend>PrimaryGuardian</legend>
+    
+        <legend></legend>
 
 		@Html.EditorForModel()
        
 
-    </fieldset>
+    
     <p><input type="submit" value="Create" id ="submit_btn" /></p>
     
    }
@@ -26,7 +26,7 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
-
+</fieldset>
 <script src="../../Scripts/PrimaryGuardian/application.js" language="javascript" type="text/javascript"></script>
 
 

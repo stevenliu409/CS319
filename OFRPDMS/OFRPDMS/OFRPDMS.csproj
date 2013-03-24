@@ -205,6 +205,8 @@
     <Content Include="Content\themes\base\fonts\iconFont.svg" />
     <Content Include="Content\themes\base\fonts\license.txt" />
     <Content Include="Content\themes\base\images\calendar.png" />
+    <Content Include="Content\themes\base\images\options.jpg" />
+    <Content Include="Content\themes\base\images\optionsmain.jpg" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -393,6 +395,7 @@
     <Content Include="Areas\Staff\Views\CenterReferrals\Details.cshtml" />
     <Content Include="Areas\Staff\Views\CenterReferrals\Edit.cshtml" />
     <Content Include="Areas\Staff\Views\Shared\EditorTemplates\ReferralViewModel.cshtml" />
+    <Content Include="Areas\Admin\Views\Report\Generate.cshtml" />
     <None Include="Content\themes\base\fonts\iconFont.eot" />
     <None Include="Content\themes\base\fonts\iconFont.ttf" />
     <None Include="Content\themes\base\fonts\iconFont.woff" />

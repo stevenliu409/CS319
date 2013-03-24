@@ -294,7 +294,7 @@ CREATE TABLE [dbo].[Centers] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [Name] nvarchar(max)  NULL,
     [Email] nvarchar(max)  NULL,
-    [Address] nvarchar(max)  NOT NULL,
+    [Address] nvarchar(max)  NULL,
     [Phone] bigint  NULL,
 );
 GO
@@ -538,7 +538,7 @@ ADD CONSTRAINT [FK_CenterEvent]
     FOREIGN KEY ([CenterId])
     REFERENCES [dbo].[Centers]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_CenterEvent'
 CREATE INDEX [IX_FK_CenterEvent]
@@ -566,7 +566,7 @@ ADD CONSTRAINT [FK_CenterCenterReferral]
     FOREIGN KEY ([CenterId])
     REFERENCES [dbo].[Centers]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_CenterCenterReferral'
 CREATE INDEX [IX_FK_CenterCenterReferral]
@@ -580,7 +580,7 @@ ADD CONSTRAINT [FK_CenterCenterAccount]
     FOREIGN KEY ([CenterId])
     REFERENCES [dbo].[Centers]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_CenterCenterAccount'
 CREATE INDEX [IX_FK_CenterCenterAccount]
@@ -608,7 +608,7 @@ ADD CONSTRAINT [FK_CenterCenterFreeResource]
     FOREIGN KEY ([CenterId])
     REFERENCES [dbo].[Centers]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_CenterCenterFreeResource'
 CREATE INDEX [IX_FK_CenterCenterFreeResource]
@@ -636,7 +636,7 @@ ADD CONSTRAINT [FK_PrimaryGuardianCenter]
     FOREIGN KEY ([CenterId])
     REFERENCES [dbo].[Centers]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_PrimaryGuardianCenter'
 CREATE INDEX [IX_FK_PrimaryGuardianCenter]
@@ -650,7 +650,7 @@ ADD CONSTRAINT [FK_SpecialEventCenter]
     FOREIGN KEY ([CenterId])
     REFERENCES [dbo].[Centers]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_SpecialEventCenter'
 CREATE INDEX [IX_FK_SpecialEventCenter]
@@ -678,7 +678,7 @@ ADD CONSTRAINT [FK_LibraryResourceCenter]
     FOREIGN KEY ([CenterId])
     REFERENCES [dbo].[Centers]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_LibraryResourceCenter'
 CREATE INDEX [IX_FK_LibraryResourceCenter]
@@ -762,7 +762,7 @@ ADD CONSTRAINT [FK_EventParticipantPrimaryGuardian]
     FOREIGN KEY ([PrimaryGuardianId])
     REFERENCES [dbo].[PrimaryGuardians]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_EventParticipantPrimaryGuardian'
 CREATE INDEX [IX_FK_EventParticipantPrimaryGuardian]

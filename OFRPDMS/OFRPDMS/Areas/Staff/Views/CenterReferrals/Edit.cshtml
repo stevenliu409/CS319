@@ -3,14 +3,14 @@
 @{
     ViewBag.Title = "Edit";
 }
-
+<fieldset>
 <h2>Enter How Many Referrals You Have Made</h2>
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
-    <table>
+    <table = "hovered">
         <tr>
             <th>
                 Number of Referrals Made Today
@@ -33,4 +33,4 @@
     
 }
 
-
+</fieldset>

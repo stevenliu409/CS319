@@ -5,20 +5,21 @@ to use a different color start by replacing all instances of
 ----------------------------------------------------------*/
 body {
     background-color: #FFFFFF;
-    font-size: .85em;
-    font-family: "Trebuchet MS", Verdana, Helvetica, Sans-Serif;
+    font-size: .87em;
+    --font-family: "Trebuchet MS", Verdana, Helvetica, Sans-Serif;
     margin: 0;
     padding: 0;
     color: #696969;
+    border:  1px
 }
 
 a:link {
-    color: #034af3;
-    text-decoration: underline;
+    --color: #034af3;
+    text-decoration: none;
 }
 
 a:visited {
-    color: #505abc;
+    --color: #034af3;
 }
 
 a:hover {
@@ -33,6 +34,7 @@ a:active {
 p, ul {
     margin-bottom: 20px;
     line-height: 1.6em;
+    
 }
 
 header,
@@ -57,6 +59,7 @@ h1 {
 
 h2 {
     padding: 0 0 10px 0;
+    margin-left: 80px
 }
 
 h3 {
@@ -70,6 +73,8 @@ h4 {
 h5, h6 {
     font-size: 1em;
 }
+
+
 
 /* PRIMARY LAYOUT ELEMENTS   
 ----------------------------------------------------------*/
@@ -96,27 +101,30 @@ header h1, #header h1 {
     color: #008287;
     border: none;
     line-height: 2em;
-    font-size: 32px !important;
+    font-size: 30px !important;
+    font-weight:lighter;
+    padding-top: 14px;
+    padding-left: 27px
    
 }
 #menucontainer 
 { 
-    float: left; 
-    width: 20%;  
+    --float: left; 
+   --width: 20%;  
 }
 #admin_nav 
 { 
     float: right; 
-    margin-right: 40px;  
+    margin-right : 40px;  
 }
 #main 
 {
     margin-left: 140px;
     margin-top: 40px;
-    padding: 30px 30px 15px 30px;
+    --padding: 30px 30px 15px 30px;
     background-color: #fff;
     width: 80%;
-    min-height: 400px;
+    --min-height: 400px;
 }
 
 footer, 
@@ -130,6 +138,7 @@ footer,
     line-height: normal;
     margin-left: 130px;
     font-size: .9em;    
+  
 }
 
 /* TAB MENU   
@@ -140,44 +149,17 @@ ul
     margin:0;
     padding:0;
 }
-ul#menu a:link,ul#menu a:visited
-{
-    display:block;
-    font-weight:bold;
-    color:#FFFFFF;
-    background-color: #4C4C4C;
-    width:120px;
-    text-align:center;
-    padding:4px;
-    text-decoration:none;
-    text-transform:uppercase;
-    margin-top: 20px;
-}
+
 ul#menu a:hover,ul#menu a:active
 {
     background-color:#1A1A1A;
 }
-ul#admin_menu a:link,ul#admin_menu a:visited
-{
-    display:inline;
-    font-weight:bold;
-    color:#FFFFFF;
-    background-color: #4C4C4C;
-    width:120px;
-    text-align:center;
-    padding:4px;
-    text-decoration:none;
-    text-transform:uppercase;
-    margin-top: 20px;
-}
+
 li
 {
     display:inline;
 }
-ul#admin_menu a:hover,ul#admin_menu a:active
-{
-    background-color:#1A1A1A;
-}
+
 /* FORM LAYOUT ELEMENTS   
 ----------------------------------------------------------*/
 
@@ -203,6 +185,7 @@ input[type="password"] {
     font-size: 1.2em;
     color: #444;
     width: 200px;
+    margin-bottom: 20px
 }
 
 select {
@@ -220,22 +203,6 @@ input[type="submit"] {
 /* TABLE
 ----------------------------------------------------------*/
 
-table {
-    border: solid 1px #e8eef4;
-    border-collapse: collapse;
-}
-
-table td {
-    padding: 5px;
-    border: solid 1px #e8eef4;
-}
-
-table th {
-    padding: 6px 5px;
-    text-align: left;
-    background-color: #e8eef4;
-    border: solid 1px #e8eef4;
-}
 
 /* MISC  
 ----------------------------------------------------------*/
@@ -249,7 +216,7 @@ table th {
 
 nav, 
 #menucontainer {
-    margin-top: 40px;
+    --margin-top: 40px;
 }
 
 div#title {
@@ -262,7 +229,6 @@ div#title {
     text-align: right;
     display: block;
     margin: 10px;
-    color: White;
     position:absolute;
     Right:0px;
     top:0px;

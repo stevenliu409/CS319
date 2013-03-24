@@ -4,7 +4,7 @@
 @{
     ViewBag.Title = "Index";
 }
-
+  <fieldset>
 <h2>Report</h2>
 
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
@@ -12,8 +12,8 @@
 
 @using (Html.BeginForm("Generate", "Report")) {
     @Html.ValidationSummary(true)
-    <fieldset>
-        <legend>Report</legend>
+  
+        <legend></legend>
 
         <div class="editor-label">
             @Html.LabelFor(model => model.startDay)
@@ -33,6 +33,7 @@
         <p>
             <input type="submit" value="Generate Report" title= "Generate Report" />
         </p>
-    </fieldset>
+ 
 }
+   </fieldset>
 

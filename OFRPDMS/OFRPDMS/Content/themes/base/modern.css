@@ -969,9 +969,9 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
   line-height: 22pt;
   font-smooth: always;
   color: #008287;
-  width: 40%;
-  margin-left:470px;
-  margin-top:80px
+ --width: 40%;
+  --margin-left:30px;
+  --margin-top:80px
 }
 .metrouicss h2:hover {
   color: #008287;
@@ -1027,7 +1027,7 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
   color: #515151;
   font-size: 90%;
   width: 60%;
-  margin-left:470px
+  --margin-left:470px
 }
 .metrouicss h5:hover {
  
@@ -1038,18 +1038,19 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
 .metrouicss h6 {
   font-family: 'Segoe UI Semibold', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
   font-weight: 600;
-  font-size: 11pt;
+  font-size: 20pt;
   letter-spacing: 0.01em;
   line-height: 13pt;
   font-smooth: always;
-  color: rgba(0, 0, 0, 0.6);
+  color: #008287;
   font-size: 80%;
+  margin-left:15px
 }
 .metrouicss h6:hover {
-  color: rgba(0, 0, 0, 0.8);
+  color: #008287;
 }
 .metrouicss h6:active {
-  color: rgba(0, 0, 0, 0.4);
+  color: #008287;
 }
 .metrouicss body,
 .metrouicss p,
@@ -1192,7 +1193,7 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
 }
 .metrouicss ul li,
 .metrouicss ol li {
-  display: list-item;
+  --display: list-item;
   font-size: 14px;
   line-height: 20px;
 }
@@ -4109,6 +4110,26 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
   border-collapse: separate;
   margin: 0 0 20px;
 }
+.metrouicss table th
+{
+  display: table-cell;
+  vertical-align: bottom;
+  padding-bottom: 5px;
+  padding-top: 10px;
+  padding-left: 5px;
+  border-bottom: 1px #ddd solid;
+  border-right: 1px #ddd solid;
+  border-left: 1px transparent solid;
+  border-top: 1px transparent solid;
+  font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-weight: 500;
+  font-size: 12pt;
+  letter-spacing: 0.01em;
+  line-height: 13pt;
+  font-smooth: always;
+  color: rgba(0, 0, 0, 0.6);
+  text-align: left;
+}
 .metrouicss table thead tr th,
 .metrouicss table thead tr td {
   display: table-cell;
@@ -4138,6 +4159,7 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
 .metrouicss table thead tr td.last {
   border-right: 1px transparent solid;
 }
+.metrouicss table th:last-child,
 .metrouicss table thead tr th:last-child,
 .metrouicss table thead tr td:last-child {
   border-right: 1px transparent solid;
@@ -4786,7 +4808,7 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
 }
 .metrouicss .page-sidebar {
   display: block;
-  width: 213px;
+  width: 150px;
   float: left;
   min-height: 100% !important;
   height: auto;
@@ -4794,7 +4816,7 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
   padding-top: 10px;
   padding-bottom: 10px;
   margin-top: 10px;
-  margin-left: 7px;
+  margin-left: 15px;
 }
 .metrouicss .page-sidebar a {
   font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
@@ -4804,6 +4826,7 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
   line-height: 13pt;
   font-smooth: always;
   color: #000000;
+  --background-color: #FFF;
   display: block;
   width: 100%;
   padding: 5px 20px 5px 10px;
@@ -6078,11 +6101,11 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
 }
 .metrouicss fieldset {
   position: relative;
-  margin-top: 30px;
+  --margin-top: 30px;
   border: 0px #eaeaea solid;
-  width: 25%;
-  padding: 10px;
-  margin-left:470px
+  width: 90%;
+  --padding: 10px;
+  --margin-left:30px
 }
 .metrouicss fieldset legend {
   padding-left: 10px;

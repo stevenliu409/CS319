@@ -4,8 +4,8 @@
 @{
     ViewBag.Title = "Index";
 }
-
-<h2>Index</h2>
+<fieldset>
+<h2>Sign Ins</h2>
 <div>
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -47,7 +47,7 @@
 
 
 
-<table>
+<table class ="hovered">
     <tr>
         <th>
             Event Date
@@ -61,7 +61,7 @@
         <th>
             Participant Type
         </th>
-        <th></th>
+    
     </tr> 
     @foreach(var item in Model){
    <tr>
@@ -106,3 +106,4 @@
     </tr>
         }   
 </table>
+</fieldset>
