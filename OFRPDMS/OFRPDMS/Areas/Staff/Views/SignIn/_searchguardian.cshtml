@@ -30,13 +30,15 @@
     function addparticipant(id) {
         var _type = document.getElementById("ptype").value;
         var _eventid = document.getElementById("oSelect").value;
-        
+
         $.ajax({
             url: '/SignIn/Add',
             type: "POST",
             datatype: "json",
             data: { id: id, type: _type, eventid: _eventid },
-            success: function () { }
+            success: function () {
+                window.alert("add successful");
+            }
         });
     }
     $("#search_btn").click(function () {
