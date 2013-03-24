@@ -21,6 +21,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
             var eventparticipants = db.EventParticipants.Include(e => e.Event);
             IEnumerable<PrimaryGuardian> pgs = db.PrimaryGuardians;
             ViewBag.pgs = pgs;
+            ViewBag.CurrentPage = "SignIn";
             return View(eventparticipants.ToList());
         }
 

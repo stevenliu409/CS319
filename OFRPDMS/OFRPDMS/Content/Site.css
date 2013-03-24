@@ -155,7 +155,8 @@ ul#menu a:link,ul#menu a:visited
 }
 ul#menu a:hover,ul#menu a:active
 {
-    background-color:#1A1A1A;
+    background-color:#FFFFFF;
+    color:#1A1A1A;
 }
 ul#admin_menu a:link,ul#admin_menu a:visited
 {
@@ -177,6 +178,14 @@ li
 ul#admin_menu a:hover,ul#admin_menu a:active
 {
     background-color:#1A1A1A;
+}
+
+body#Families a#FamiliesNav,
+body#Referrals a#ReferralsNav,
+body#Resources a#ResourcesNav,
+body#SignIn a#SignInNav, body#Library a#LibraryNav,body#Events a#EventsNav{
+    background-color:#FFFFFF;
+    color:#1A1A1A;
 }
 /* FORM LAYOUT ELEMENTS   
 ----------------------------------------------------------*/

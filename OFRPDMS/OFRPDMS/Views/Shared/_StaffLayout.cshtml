@@ -3,12 +3,12 @@
 }
 <div id="menucontainer">
     <ul id="menu">
-        <li>@Html.ActionLink("+ New Families", "Index", "Families")</li>
-        <li>@Html.ActionLink("Sign In", "Index","SignIn")</li>
-        <li>@Html.ActionLink("Event", "Index","Events")</li>
-        <li>@Html.ActionLink("Resources", "Edit","CenterFreeResources")</li>
-        <li>@Html.ActionLink("Referrals", "Edit","CenterReferrals")</li>
-        <li>@Html.ActionLink("Library", "Index","Library")</li>
+        <li>@Html.ActionLink("+ New Families", "Index", "Families", null, new { id = "FamiliesNav"})</li>
+        <li>@Html.ActionLink("Sign In", "Index", "SignIn", null, new { id = "SignInNav" })</li>
+        <li>@Html.ActionLink("Event", "Index", "Events", null, new { id = "EventsNav" })</li>
+        <li>@Html.ActionLink("Resources", "Edit", "CenterFreeResources", null, new { id = "ResourcesNav" })</li>
+        <li>@Html.ActionLink("Referrals", "Edit", "CenterReferrals", null, new { id = "ReferralsNav" })</li>
+        <li>@Html.ActionLink("Library", "Index", "Library", null, new { id = "LibraryNav" })</li>
     </ul>
 </div>
 <div id="main">
