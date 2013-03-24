@@ -36,6 +36,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
             int centerID = account.GetCurrentUserCenterId();
 
             var Events = repoService.eventRepo.FindAllWithCenterId(centerID);
+            ViewBag.CurrentPage = "Events";
             return View(Events.ToList());
         }
 

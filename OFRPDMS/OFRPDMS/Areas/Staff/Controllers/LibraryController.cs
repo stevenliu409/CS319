@@ -38,6 +38,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
             int centerID = account.GetCurrentUserCenterId();
 
             var libraryitems = repoService.libraryRepo.FindAllWithCenterId(centerID);
+            ViewBag.CurrentPage = "Library";
             return View(libraryitems.ToList());
         }
 

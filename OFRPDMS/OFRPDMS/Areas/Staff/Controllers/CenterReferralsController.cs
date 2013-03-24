@@ -81,6 +81,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
                 referralViewModelList.Add(r);
             }
             referralsEdit.Referrals = referralViewModelList;
+            ViewBag.CurrentPage = "Referrals";
             return View(referralsEdit);
         }
 
