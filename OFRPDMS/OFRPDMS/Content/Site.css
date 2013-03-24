@@ -4,7 +4,7 @@ to use a different color start by replacing all instances of
 #5c87b2 with your new color.
 ----------------------------------------------------------*/
 body {
-    background-color: #F0F0F0;
+    background-color: #FFFFFF;
     font-size: .85em;
     font-family: "Trebuchet MS", Verdana, Helvetica, Sans-Serif;
     margin: 0;
@@ -46,7 +46,7 @@ section {
 ----------------------------------------------------------*/
 h1, h2, h3, h4, h5, h6 {
     font-size: 1.5em;
-    color: #000;
+    color: #008287;
 }
 
 h1 {
@@ -90,14 +90,14 @@ header, #header {
 }
 
 header h1, #header h1 {
-    font-weight: bold;
+    
     padding: 5px 0;
     margin: 0;
-    color: #fff;
+    color: #008287;
     border: none;
     line-height: 2em;
     font-size: 32px !important;
-    text-shadow: 1px 1px 2px #111;
+   
 }
 #menucontainer 
 { 
@@ -180,12 +180,12 @@ ul#admin_menu a:hover,ul#admin_menu a:active
     background-color:#1A1A1A;
 }
 
-body#Families a#FamiliesNav,
-body#Referrals a#ReferralsNav,
-body#Resources a#ResourcesNav,
-body#SignIn a#SignInNav, body#Library a#LibraryNav,body#Events a#EventsNav{
+body#Families a#FamiliesNav,
+body#Referrals a#ReferralsNav,
+body#Resources a#ResourcesNav,
+body#SignIn a#SignInNav, body#Library a#LibraryNav,body#Events a#EventsNav{
     background-color:#FFFFFF;
-    color:#1A1A1A;
+    color:#1A1A1A;
 }
 /* FORM LAYOUT ELEMENTS   
 ----------------------------------------------------------*/
@@ -278,13 +278,12 @@ div#title {
 }
 
 #logindisplay a:link {
-    color: white;
-    text-decoration: underline;
-}
+    color:#008287;
+   
 
 #logindisplay a:visited {
-    color: white;
-    text-decoration: underline;
+    color: #008287;
+    
 }
 
 #logindisplay a:hover {
@@ -295,7 +294,7 @@ div#title {
 /* Styles for validation helpers
 -----------------------------------------------------------*/
 .field-validation-error {
-    color: #ff0000;
+    color: #FF0000;
 }
 
 .field-validation-valid {
