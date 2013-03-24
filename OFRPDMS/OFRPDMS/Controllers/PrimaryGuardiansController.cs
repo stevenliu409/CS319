@@ -247,7 +247,13 @@ namespace OFRPDMS.Controllers
                         || (primaryguardian.Children[i].Delete == true && (primaryguardian.Children[i].Birthdate == null && primaryguardian.Children[i].FirstName == null
                         && primaryguardian.Children[i].LastName == null && primaryguardian.Children[i].RelationshipToGuardian == null)))
                     {
-                       
+
+                        if (primaryguardian.Children[i].Id != 0)
+                        {
+                            Child child = context.Children.Find(primaryguardian.Children[i].Id);
+                            context.Children.Remove(child);
+                        }
+
                         primaryguardian.Children.RemoveAt(i);
                     }
                   
