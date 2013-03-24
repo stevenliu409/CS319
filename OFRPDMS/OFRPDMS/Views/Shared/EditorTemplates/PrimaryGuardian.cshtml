@@ -64,6 +64,13 @@
     @Html.EditorFor(model => model.Country)
     @Html.ValidationMessageFor(model => model.Country)
 </div>
+<div class="editor-label">
+        @Html.LabelFor(model => model.Allergies)
+</div>
+<div class="editor-field">
+        @Html.TextAreaFor(model => model.Allergies)
+        @Html.ValidationMessageFor(model => model.Allergies)
+</div>
 
 <div class="editor-label">
     @Html.LabelFor(model => model.CenterId, "Center")
@@ -75,17 +82,19 @@
 
 
 
+@*
 <div class="editor-label">
         @Html.LabelFor(model =>model.Allergies)
 </div>
 
 <div id="allergies">
         @Html.EditorFor(model =>model.Allergies)
-</div>
+</div>*@
 
+@*
 <p>
         @Html.LinkToAddNestedForm(model=>model.Allergies,"Add More Allergy...", "#allergies", ".Allergy", "Allergies")
-</p>
+</p>*@
 
 
 <div id="secondaryGuardians">

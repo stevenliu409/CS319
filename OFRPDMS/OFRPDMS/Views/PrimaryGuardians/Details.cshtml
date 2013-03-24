@@ -48,23 +48,18 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.Country)
     </div>
+    <div class="display-label">Allergies</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Allergies)
+
+    </div>
 
     <div class="display-label">Center</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Center.Name)
     </div>
+    
 
-    <div>
-    <b class="display-label">Allergy</b>
-    @foreach (var allergy in Model.Allergies)
-    {
-    <div class="display-field">
-        
-        <div class="display-label">Allergy Name</div>
-        @Html.DisplayFor(model => allergy.Note)
-    </div>
-    }
-    </div>
 
 
   <div>
@@ -100,6 +95,10 @@
         <div class="display-label">RelationshipToChild</div>
         <div class="display-field">
         @Html.DisplayFor(model => child.RelationshipToGuardian)
+        </div>
+        <div class="display-label">Allergies</div>
+        <div class="display-field">
+        @Html.DisplayFor(model => child.Allergies)
         </div>
    </div>
         

@@ -84,7 +84,7 @@
 			@item.Country
         </td>
         <td>
-			@(item.Allergies.Select(i=>i.Note) == null ? "None" : item.Allergies.Count.ToString())
+			@item.Allergies
         </td>
             <td>
 			@(item.SecondaryGuardians== null ? "None" : item.SecondaryGuardians.Count.ToString())
