@@ -1,5 +1,4 @@
-﻿@model IEnumerable<OFRPDMS.Models.Center>
-
+﻿
 @{
     ViewBag.Title = "Generate";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -51,19 +50,24 @@
              @ViewBag.center[i].Name
         </th>
     }
+    <th>
+    Total
+    </th>
     </tr>
 
         @for(int i =0; i < @ViewBag.distinctLanguage.Length; i++)
     {
+
         <tr>
             <th>
             @ViewBag.distinctLanguage[i]
             </th>
-            @for (int j = 0; j < @ViewBag.center.Length; j++)
+            @for (int j = 1; j < @ViewBag.center.Length + 2; j++)
             {
                 <th>
-                    @ViewBag.languageTable[i, j+1]
+                    @ViewBag.languageTable[i, j]
                 </th>
+                
             }
         </tr>
     }
@@ -81,6 +85,9 @@
              @ViewBag.center[i].Name
         </th>
     }
+        <th>
+    Total
+    </th>
     </tr>
 
         @for(int i =0; i < @ViewBag.distinctCountry.Length; i++)
@@ -89,10 +96,10 @@
             <th>
             @ViewBag.distinctCountry[i]
             </th>
-            @for (int j = 0; j < @ViewBag.center.Length; j++)
+            @for (int j = 1; j < @ViewBag.center.Length+2; j++)
             {
                 <th>
-                    @ViewBag.countryTable[i, j+1]
+                    @ViewBag.countryTable[i, j]
                 </th>
             }
         </tr>
