@@ -25,13 +25,16 @@ namespace OFRPDMS.Models
         [Key]
         public int Id { get; set; }
         [Required]
-        [RegularExpression(@"^[a-zA-Z]{1,25}$", ErrorMessage = "Not a valid first Name")]
+        [RegularExpression(@"^[a-zA-Z]{1,25}$", ErrorMessage = "Not a valid First Name")]
         public string FirstName { get; set; }
         [RegularExpression(@"^[a-zA-Z]{1,25}$", ErrorMessage = "Not a valid Last Name")]
         public string LastName { get; set; }
         [RegularExpression(@"^[\w-]+(\.[\w-]+)*@([a-z0-9-]+(\.[a-z0-9-]+)*?\.[a-z]{2,6}|(\d{1,3}\.){3}\d{1,3})(:\d{4})?$", ErrorMessage = "Not a valid Email")]
         public string Email { get; set; }
+
+        [RegularExpression(@"^[\d -]+$",ErrorMessage= "Not a valid Phonoe Number")]
         public Nullable<long> Phone { get; set; }
+
         public string PostalCodePrefix { get; set; }
         public System.DateTime DateCreated { get; set; }
         [RegularExpression(@"^[a-zA-Z]{1,25}$", ErrorMessage = "Not a valid Language Name")]

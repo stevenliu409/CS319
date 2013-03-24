@@ -3,10 +3,12 @@
 }
 <div id="menucontainer">
     <ul id="menu">
-        <li>@Html.ActionLink("+ New Families", "Index", "Families")</li>
-        <li>@Html.ActionLink("Sign In", "Index","SignIn")</li>
+        <li>@Html.ActionLink("Families", "Index", "Families")</li>
+       <!-- @*<li>@Html.ActionLink("Sign In", "Index", "SignIn")</li>*@-->
+      <li>@Html.RouteLink("Sign In", "Staff_default",  new { controller = "SignIn", action = "Index"})</li>
         <li>@Html.ActionLink("Event", "Index","Events")</li>
         <li>@Html.ActionLink("Resources", "Edit","CenterFreeResources")</li>
+        <li>@Html.ActionLink("Referrals", "Edit","CenterReferrals")</li>
         <li>@Html.ActionLink("Library", "Index","Library")</li>
     </ul>
 </div>

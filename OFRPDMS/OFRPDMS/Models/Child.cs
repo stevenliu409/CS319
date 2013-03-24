@@ -26,9 +26,9 @@ namespace OFRPDMS.Models
     
         public int Id { get; set; }
         //[Required]
-        [RegularExpression(@"^[a-zA-Z]{1,25}$", ErrorMessage = "Not a valid first Name")]
+        //[RegularExpression(@"^[a-zA-Z]{1,25}$", ErrorMessage = "Not a valid first Name")]
         public string FirstName { get; set; }
-        [RegularExpression(@"^[a-zA-Z]{1,25}$", ErrorMessage = "Not a valid last Name")]
+        //[RegularExpression(@"^[a-zA-Z]{1,25}$", ErrorMessage = "Not a valid last Name")]
         public string LastName { get; set; }
 
         [DataType(DataType.Date)]
@@ -36,7 +36,7 @@ namespace OFRPDMS.Models
       
         public int PrimaryGuardianId { get; set; }
         //[Required]
-        [RegularExpression(@"^[a-zA-Z]{1,25}$", ErrorMessage = "Not a valid relationship")]
+        //[RegularExpression(@"^[a-zA-Z]{1,25}$", ErrorMessage = "Not a valid relationship")]
         public string RelationshipToGuardian { get; set; }
         public Nullable<bool> Delete { get; set; }
     

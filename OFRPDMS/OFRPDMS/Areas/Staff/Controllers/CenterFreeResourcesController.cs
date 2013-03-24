@@ -20,7 +20,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
         public ViewResult Index()
         {
-            return View(context.CenterFreeResources.Include(centerfreeresource => centerfreeresource.Center).Include(centerfreeresource => centerfreeresource.GivenResources).ToList());
+            return View();
         }
 
         //
@@ -123,7 +123,6 @@ namespace OFRPDMS.Areas.Staff.Controllers
                     }
                 }
             }
-            ViewBag.PossibleCenters = context.Centers;
             return RedirectToAction("Index");
         }
 

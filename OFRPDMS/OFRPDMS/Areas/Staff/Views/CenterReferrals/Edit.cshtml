@@ -1,0 +1,36 @@
+@model OFRPDMS.Areas.Staff.Models.ReferralViewModelsEdit
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Enter How Many Referrals You Have Made</h2>
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <table>
+        <tr>
+            <th>
+                Number of Referrals Made Today
+            </th>  
+            <th>
+                Total Referrals Made
+            </th>
+            <th>
+                Referral Name
+            </th>
+            <th>
+                Other Action
+            </th>
+        </tr>
+        <tr>
+            @Html.EditorFor(x => x.Referrals)
+        </tr>
+    </table>
+    <input type="submit" value="Save" />       
+    
+}
+
+

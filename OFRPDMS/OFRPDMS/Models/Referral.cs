@@ -16,10 +16,13 @@ namespace OFRPDMS.Models
     {
         public int Id { get; set; }
         public int CenterReferralId { get; set; }
-        public string Name { get; set; }
         public System.DateTime DateReferred { get; set; }
         public int CountReferred { get; set; }
     
         public virtual CenterReferral CenterReferral { get; set; }
+        public Referral()
+        {
+            DateReferred = System.DateTime.Now;
+        }
     }
 }

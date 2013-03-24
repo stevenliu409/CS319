@@ -1,0 +1,29 @@
+@model OFRPDMS.Models.CenterReferral
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this? All statistics that belong to this resource will also be deleted.</h3>
+<fieldset>
+    <legend>CenterFreeResource</legend>
+
+    <div class="display-label">Name</div>
+    <div class="display-field">@Model.Name</div>
+
+    <div class="display-label">Center</div>
+    <div class="display-field">@(Model.Center == null ? "None" : Model.Center.Name)</div>
+@*
+    <div class="display-label">GivenResources</div>
+    <div class="display-field">@(Model.GivenResources == null ? "None" : Model.GivenResources.Count.ToString())</div>*@
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "Edit")
+    </p>
+}
+
+
