@@ -15,13 +15,21 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
         //
         // GET: /Staff/SignIn/
+        public ViewResult Index(int id=0) {
+            int centerid = AccountProfile.CurrentUser.CenterID;
+            // var eventparticipants = db.EventParticipants.Include(e => e.Event);
+            var _ep = db.EventParticipants.Where(ep => ep.EventId == id).ToList();
+             
+             return View(_ep);
+        }
 
-        public ViewResult Index()
+        [HttpPost,ActionName("Index")]
+        public ActionResult ReIndex(int id)
         {
-            var eventparticipants = db.EventParticipants.Include(e => e.Event);
-            IEnumerable<PrimaryGuardian> pgs = db.PrimaryGuardians;
-            ViewBag.pgs = pgs;
-            return View(eventparticipants.ToList());
+            int centerid = AccountProfile.CurrentUser.CenterID;
+           // var eventparticipants = db.EventParticipants.Include(e => e.Event);
+            var _ep = db.EventParticipants.Where(ep => ep.EventId == id).ToList();
+            return RedirectToRoute("Staff_default", new { centerIdArg = centerid, controller = "SignIn", action = "Index" , id = id});
         }
 
         //
@@ -163,38 +171,58 @@ namespace OFRPDMS.Areas.Staff.Controllers
             }
         }
 
-        public ActionResult Add(int id, string type)
+        public void Add(int id, string type, int eventid)
         {
             if (type == "Primary")
             {
                 var _primaryguardian = db.PrimaryGuardians.Find(id);
                 EventParticipant ep = new EventParticipant();
-                ep.ParticipantId = _primaryguardian.Id;
+                ep.PrimaryGuardianId = _primaryguardian.Id;
                 ep.ParticipantType = type;
+                ep.EventId = eventid;
                 db.EventParticipants.Add(ep);
                 db.SaveChanges();
-                return RedirectToAction("Index");
             }
             else if (type == "Child")
             {
                 var _child = db.Children.Find(id);
                 EventParticipant ep = new EventParticipant();
-                ep.ParticipantId = _child.Id;
+                ep.ChildId = _child.Id;
                 ep.ParticipantType = type;
+                ep.EventId = eventid;
                 db.EventParticipants.Add(ep);
                 db.SaveChanges();
-                return RedirectToAction("Index");
             }
             else {
                 var _secondaryguardian = db.SecondaryGuardians.Find(id);
                 EventParticipant ep = new EventParticipant();
-                ep.ParticipantId = _secondaryguardian.Id;
+                ep.SecondaryGuardianId = _secondaryguardian.Id;
                 ep.ParticipantType = type;
+                ep.EventId = eventid;
                 db.EventParticipants.Add(ep);
                 db.SaveChanges();
-                return RedirectToAction("Index");
             }
 
         }
+        [HttpPost]
+        public ActionResult findEvent() {
+            int centerID = AccountProfile.CurrentUser.CenterID;
+            var _events = db.Events.Where(e => e.CenterId == centerID).ToList();
+            var collection = _events.Select(e => new
+            {
+
+                id = e.Id,
+                date = e.Date.ToString("MM/dd/yyyy"),
+ 
+            });
+            return Json(collection, JsonRequestBehavior.AllowGet);
+        }
+
+        //[HttpPost]
+        //public ActionResult findEventParticipant(int eventid) {
+          
+        //    return Json(_ep, JsonRequestBehavior.AllowGet);
+        //}
+
     }
 }

@@ -108,6 +108,7 @@
     <Compile Include="Controllers\CenterController.cs" />
     <Compile Include="Areas\Staff\Controllers\CenterReferralsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PrimaryGuardianBorrowsController.cs" />
     <Compile Include="Controllers\PrimaryGuardiansController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

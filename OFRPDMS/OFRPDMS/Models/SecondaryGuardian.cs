@@ -15,6 +15,11 @@ namespace OFRPDMS.Models
     
     public partial class SecondaryGuardian
     {
+        public SecondaryGuardian()
+        {
+            this.EventParticipants = new HashSet<EventParticipant>();
+        }
+    
         public int Id { get; set; }
         //[RegularExpression(@"^[a-zA-Z]{1,25}$", ErrorMessage = "Not a valid First Name")]
         public string FirstName { get; set; }
@@ -27,5 +32,6 @@ namespace OFRPDMS.Models
         public Nullable<bool> Delete { get; set; }
     
         public virtual PrimaryGuardian PrimaryGuardian { get; set; }
+        public virtual ICollection<EventParticipant> EventParticipants { get; set; }
     }
 }
