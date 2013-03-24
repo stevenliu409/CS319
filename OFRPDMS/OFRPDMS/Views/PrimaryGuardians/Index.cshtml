@@ -47,8 +47,6 @@
         @*<th>
             PrimaryGuardianBorrows
         </th>*@
-
-
         <th>
             Children
         </th>
@@ -91,17 +89,20 @@
             <td>
 			@(item.SecondaryGuardians== null ? "None" : item.SecondaryGuardians.Count.ToString())
         </td>
-
-        <td>
-			@*@(item.PrimaryGuardianBorrows == null ? "None" : item.PrimaryGuardianBorrows.Count.ToString())*@
-        </td>
-        
-        <td>
-			@*@(item.EventParticipants == null ? "None" : item.EventParticipants.Count.ToString())*@
-        </td>
-        <td>
+         <td>
 			@(item.Children == null ? "None" : item.Children.Count.ToString())
         </td>
+        
+        @*
+        <td>
+	        @(item.PrimaryGuardianBorrows == null ? "None" : item.PrimaryGuardianBorrows.Count.ToString())
+        </td>
+        *@
+        @*
+        <td>
+			@(item.EventParticipants == null ? "None" : item.EventParticipants.Count.ToString())
+        </td>*@
+       
     </tr>
 }
 
