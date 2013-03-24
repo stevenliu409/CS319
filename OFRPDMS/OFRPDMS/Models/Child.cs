@@ -43,6 +43,7 @@ namespace OFRPDMS.Models
         public virtual PrimaryGuardian PrimaryGuardian { get; set; }
         public virtual ICollection<EventParticipant> EventParticipants { get; set; }
        // public virtual Allergy Allergies { get; set; }
+        public System.DateTime DateCreated { get; set; }
 
         public void AllergyBuildEntity(int count)
         {

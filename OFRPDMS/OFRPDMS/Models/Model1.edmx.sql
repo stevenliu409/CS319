@@ -266,6 +266,7 @@ CREATE TABLE [dbo].[Children] (
     [PrimaryGuardianId] int  NOT NULL,
     [RelationshipToGuardian] nvarchar(max)  NULL,
 	[Allergies] nvarchar(max) NULL,
+	[DateCreated] datetime NOT NULL,
     [Delete] bit  NULL
 );
 GO
