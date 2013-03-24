@@ -207,7 +207,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
         [HttpPost]
         public ActionResult findEvent() {
             int centerID = AccountProfile.CurrentUser.CenterID;
-            var _events = db.Events.Where(e => e.CenterId == centerID).ToList();
+            var _events = db.Events.Where(e => e.CenterId == centerID).OrderByDescending(e=>e.Date).ToList();
             var collection = _events.Select(e => new
             {
 
@@ -217,12 +217,6 @@ namespace OFRPDMS.Areas.Staff.Controllers
             });
             return Json(collection, JsonRequestBehavior.AllowGet);
         }
-
-        //[HttpPost]
-        //public ActionResult findEventParticipant(int eventid) {
-          
-        //    return Json(_ep, JsonRequestBehavior.AllowGet);
-        //}
 
     }
 }

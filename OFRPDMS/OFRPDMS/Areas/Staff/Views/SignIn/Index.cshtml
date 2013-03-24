@@ -10,11 +10,14 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+
 <p>
 <select id="oSelect">
 </select>
 </p>
+
 </div>
+
 
 <script type = "text/javascript">
     $(document).ready(function () {
@@ -26,6 +29,7 @@
                 $('#oSelect').append(new Option("",0));
                 for (var i = 0; i < data.length; i++) {
                     $('#oSelect').append(new Option(data[i].date, data[i].id));
+
                 }
             }
         });
@@ -37,7 +41,7 @@
             type: 'POST',
             data: { id: _eventid },
             success: function () {
-             
+                window.location = "@Url.Action("/index/")" + _eventid;
             }
         });
     });
@@ -46,8 +50,8 @@
 
 
 
-
 <table class ="hovered">
+
     <tr>
         <th>
             Event Date
