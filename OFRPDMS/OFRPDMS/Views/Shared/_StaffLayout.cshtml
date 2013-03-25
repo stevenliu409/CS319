@@ -6,7 +6,7 @@
     <ul id="menu">
         <li class="sticker sticker-color-blue">@Html.ActionLink("Families", "Index", "Families", null, new { id = currentController == "PrimaryGuardians" ? "current" : "" })</li>  
         <li class="sticker sticker-color-orange">@Html.RouteLink("Sign In", "Staff_default",  new { controller = "SignIn", action = "Index"}, new { id = currentController == "SignIn" ? "current" : "" })</li>
-        <li class="sticker sticker-color-blue">@Html.ActionLink("Event", "Index","Events", null, new { id = currentController == "Events" ? "current" : "" })</li>
+        <li class="sticker sticker-color-blue">@Html.ActionLink("Drop-In Sessions", "Index","Events", null, new { id = currentController == "Events" ? "current" : "" })</li>
         <li class="sticker sticker-color-orange">@Html.ActionLink("Resources", "Edit","CenterFreeResources", null, new { id = currentController == "CenterFreeResources" ? "current" : "" })</li>
         <li class="sticker sticker-color-blue">@Html.ActionLink("Referrals", "Edit","CenterReferrals", null, new { id = currentController == "CenterReferrals" ? "current" : "" })</li>
         <li class="sticker sticker-color-orange">@Html.ActionLink("Library", "Index","Library", null, new { id = currentController == "Library" ? "current" : "" })</li>

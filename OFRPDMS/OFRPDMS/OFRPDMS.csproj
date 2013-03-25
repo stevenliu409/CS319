@@ -100,6 +100,7 @@
     <Compile Include="Areas\Staff\Controllers\FamiliesController.cs" />
     <Compile Include="Areas\Staff\Controllers\LibraryController.cs" />
     <Compile Include="Areas\Staff\Controllers\SignInController.cs" />
+    <Compile Include="Areas\Staff\Controllers\SpecialEventController.cs" />
     <Compile Include="Areas\Staff\Models\ReferralViewModelsEdit.cs" />
     <Compile Include="Areas\Staff\Models\ResourceViewModelsEdit.cs" />
     <Compile Include="Areas\Staff\StaffAreaRegistration.cs" />
@@ -400,6 +401,11 @@
     <Content Include="Areas\Staff\Views\CenterReferrals\Edit.cshtml" />
     <Content Include="Areas\Staff\Views\Shared\EditorTemplates\ReferralViewModel.cshtml" />
     <Content Include="Areas\Admin\Views\Report\Generate.cshtml" />
+    <Content Include="Areas\Staff\Views\SpecialEvent\Index.cshtml" />
+    <Content Include="Areas\Staff\Views\SpecialEvent\Details.cshtml" />
+    <Content Include="Areas\Staff\Views\SpecialEvent\Create.cshtml" />
+    <Content Include="Areas\Staff\Views\SpecialEvent\Edit.cshtml" />
+    <Content Include="Areas\Staff\Views\SpecialEvent\Delete.cshtml" />
     <None Include="Content\themes\base\fonts\iconFont.eot" />
     <None Include="Content\themes\base\fonts\iconFont.ttf" />
     <None Include="Content\themes\base\fonts\iconFont.woff" />
