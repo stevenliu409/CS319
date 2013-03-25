@@ -407,6 +407,7 @@
     <Content Include="Areas\Staff\Views\SpecialEvent\Create.cshtml" />
     <Content Include="Areas\Staff\Views\SpecialEvent\Edit.cshtml" />
     <Content Include="Areas\Staff\Views\SpecialEvent\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Report\TrackPG.cshtml" />
     <None Include="Content\themes\base\fonts\iconFont.eot" />
     <None Include="Content\themes\base\fonts\iconFont.ttf" />
     <None Include="Content\themes\base\fonts\iconFont.woff" />
