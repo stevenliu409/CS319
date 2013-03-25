@@ -24,7 +24,8 @@ namespace OFRPDMS.Areas.Staff.Controllers
                     AccountProfile.CurrentUser.CenterID = centerIdArg;
             }
             ViewBag.CurrentCenterId = "c"+ centerIdArg.ToString();
-            //ViewBag.CurrentCenterName = db.Centers.Find(centerIdArg).Name;
+            int centerid = AccountProfile.CurrentUser.CenterID;
+            ViewBag.CurrentCenterName = db.Centers.Find(centerid).Name;
             return View();
         }
 
