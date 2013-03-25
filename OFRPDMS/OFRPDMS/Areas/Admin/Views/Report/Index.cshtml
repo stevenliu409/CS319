@@ -32,10 +32,12 @@
                });
          });
      </script>
+
 @using (Html.BeginForm("Generate", "Report"))
 {
-    @Html.ValidationSummary(true)
     
+    @Html.ValidationSummary(true)
+    <fieldset>
         <legend></legend>
 
         <div class="editor-label">
@@ -69,7 +71,8 @@
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.startDay)
-            @Html.ValidationMessageFor(model => model.startDay)
+
+		@Html.ValidationMessageFor(model => model.startDay)
         </div>
         <div class="editor-label">
             @Html.LabelFor(model => model.endDay)
@@ -98,7 +101,7 @@
 <script type = "text/javascript">
     function myFunction(id) {
         var _type = document.getElementById("ptype").value;
-        
+
         document.getElementById("pgid").value = id;
         document.getElementById("type").value = _type;
         alert("Added");
@@ -177,8 +180,7 @@
         <p>
             <input type="submit" value="Check Visit History"/>
         </p>
-
- 
+    </fieldset>
 }
 
 
