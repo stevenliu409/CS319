@@ -51,20 +51,21 @@ namespace OFRPDMS.Areas.Staff.Controllers
                     datacreate = pm.DateCreated.ToString(),
                     lang = pm.Language,
                     country = pm.Country,
-                    allergy = pm.Allergies
+                    allergy = pm.Allergies,
 
                 });
                 return Json(collection, JsonRequestBehavior.AllowGet);
             }
             else if (type == "Child")
             {
-                var _primaryguardian = db.Children.Where(c => c.FirstName.Contains(name) || c.LastName.Contains(name)).ToList();
+                var _primaryguardian = db.Children.Where(c => c.FirstName.Contains(name) || c.LastName.Contains(name) || c.Allergies.Contains(name)).ToList();
                 var collection = _primaryguardian.Select(pm => new
                 {
 
                     id = pm.Id,
                     Fname = pm.FirstName,
                     Lname = pm.LastName,
+                    allergy = pm.Allergies,
 
                 });
                 return Json(collection, JsonRequestBehavior.AllowGet);
