@@ -11,6 +11,7 @@ namespace OFRPDMS.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     
     public partial class Center
     {
@@ -26,6 +27,7 @@ namespace OFRPDMS.Models
         }
     
         public int Id { get; set; }
+        [Required]
         public string Name { get; set; }
         public string Email { get; set; }
         public string Address { get; set; }

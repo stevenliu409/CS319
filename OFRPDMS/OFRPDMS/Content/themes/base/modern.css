@@ -1055,7 +1055,7 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
 .metrouicss body,
 .metrouicss p,
 .metrouicss div {
-  font-family: 'Segoe UI Semilight', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  --font-family: 'Segoe UI Semilight', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
   font-weight: 300;
   font-size: 11pt;
   letter-spacing: 0.02em;
