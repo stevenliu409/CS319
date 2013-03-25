@@ -9,52 +9,52 @@
 
     <legend></legend>
 
-    <div class="display-label">FirstName</div>
+    <b class="display-label">FirstName</b>
     <div class="display-field">
         @Html.DisplayFor(model => model.FirstName)
     </div>
 
-    <div class="display-label">LastName</div>
+    <b class="display-label">LastName</b>
     <div class="display-field">
         @Html.DisplayFor(model => model.LastName)
     </div>
 
-    <div class="display-label">Email</div>
+    <b class="display-label">Email</b>
     <div class="display-field">
         @Html.DisplayFor(model => model.Email)
     </div>
 
-    <div class="display-label">Phone</div>
+    <b class="display-label">Phone</b>
     <div class="display-field">
         @Html.DisplayFor(model => model.Phone)
     </div>
 
-    <div class="display-label">PostalCodePrefix</div>
+    <b class="display-label">PostalCodePrefix</b>
     <div class="display-field">
         @Html.DisplayFor(model => model.PostalCodePrefix)
     </div>
 
-    <div class="display-label">DateCreated</div>
+    <b class="display-label">DateCreated</b>
     <div class="display-field">
         @Html.DisplayFor(model => model.DateCreated)
     </div>
 
-    <div class="display-label">Language</div>
+    <b class="display-label">Language</b>
     <div class="display-field">
         @Html.DisplayFor(model => model.Language)
     </div>
 
-    <div class="display-label">Country</div>
+    <b class="display-label">Country</b>
     <div class="display-field">
         @Html.DisplayFor(model => model.Country)
     </div>
-    <div class="display-label">Allergies</div>
+    <b class="display-label">Allergies</b>
     <div class="display-field">
         @Html.DisplayFor(model => model.Allergies)
 
     </div>
 
-    <div class="display-label">Center</div>
+    <b class="display-label">Center</b>
     <div class="display-field">
         @Html.DisplayFor(model => model.Center.Name)
     </div>
@@ -65,42 +65,56 @@
   <div>
     @foreach (var secondaryguardian in Model.SecondaryGuardians)
     {
-    <div class="display-field">
-        <b class="display-label">Secondary Guardian</b>
-        <div class="display-label">First Name</div>
+ 
+        <b class="display-label">Secondary Guardian:</b>
+        <div></div>
+        <b class="display-label">First Name</b>
+        <div class="display-field">
         @Html.DisplayFor(model => secondaryguardian.FirstName)
-        <div class="display-label">Last Name</div>
+        </div>
+        <b class="display-label">Last Name</b>
+        <div class="display-field">
         @Html.DisplayFor(model => secondaryguardian.LastName)
+        </div>
         <div class="display-label">Phone</div>
+        <div class="display-field">
         @Html.DisplayFor(model => secondaryguardian.Phone)
-        <div class="display-label">RelationshipToChild</div>
+        </div>
+        <b class="display-label">RelationshipToChild</b>
         <div class="display-field">
         @Html.DisplayFor(model => secondaryguardian.RelationshipToChild)
         </div>
-   </div>
+
     }
    </div>
 
     <div>
     @foreach (var child in Model.Children)
     {
-    <div class="display-field">
+  
         <b class="display-label">Child</b>
-        <div class="display-label">First Name</div>
+        <div></div>
+        <b class="display-label">First Name</b>
+        <div class="display-field">
         @Html.DisplayFor(model => child.FirstName)
-        <div class="display-label">Last Name</div>
+        </div>
+        <b class="display-label">Last Name</b>
+        <div class="display-field">
         @Html.DisplayFor(model => child.LastName)
-        <div class="display-label">Birthdate</div>
+        </div>
+        <b class="display-label">Birthdate</b>
+        <div class="display-field">
         @Html.DisplayFor(model => child.Birthdate)
-        <div class="display-label">RelationshipToChild</div>
+        </div>
+        <b class="display-label">RelationshipToChild</b>
         <div class="display-field">
         @Html.DisplayFor(model => child.RelationshipToGuardian)
         </div>
-        <div class="display-label">Allergies</div>
+        <b class="display-label">Allergies</b>
         <div class="display-field">
         @Html.DisplayFor(model => child.Allergies)
         </div>
-   </div>
+  
         
    
     }
@@ -110,4 +124,5 @@
     @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
-<fieldset>
+
+</fieldset>
