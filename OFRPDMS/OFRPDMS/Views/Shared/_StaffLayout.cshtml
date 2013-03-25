@@ -4,9 +4,11 @@
 }
 <div class ="page-sidebar"id="menucontainer">
         <ul id="menu">
-            <li class="sticker sticker-color-blue">@Html.ActionLink("Families", "Index", "PrimaryGuardians", null, new { id = currentController == "PrimaryGuardians" ? "current" : "" })</li>  
+             <li class="sticker sticker-color-orange">@Html.ActionLink("Home", "Index", "Staff", null, new { id = currentController == "Staff" ? "current" : "" })</li>  
         </ul>
-
+        <ul>
+             <li class="sticker sticker-color-blue">@Html.ActionLink("Families", "Index", "PrimaryGuardians", null, new { id = currentController == "PrimaryGuardians" ? "current" : "" })</li>  
+        </ul>
         <ul>    
             <li class="sticker sticker-color-orange">@Html.RouteLink("Sign In", "Staff_default",  new { controller = "SignIn", action = "Index"}, new { id = currentController == "SignIn" ? "current" : "" })</li>
         </ul>
