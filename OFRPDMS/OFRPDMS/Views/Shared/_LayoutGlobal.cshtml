@@ -22,12 +22,14 @@
             </div>
         </div>
         @if (Request.IsAuthenticated && HttpContext.Current.User.IsInRole("Administrators"))
-        {             
+        {   
+            <div id ="center">          
             <div  id="admin_nav">
                 <ul id="admin_menu">
                     <li>@Html.ActionLink("Admin", "Index", "Admin", new { area = "Admin" }, new { id = currentArea == "Admin"? "currentCenter":"" })</li>
                         @Html.Action("Nav", "Admin", new { area = "Admin" })
                 </ul>
+            </div>
             </div>
         }
         <div id="admin_main">

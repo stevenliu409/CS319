@@ -37,7 +37,7 @@
 {
     
     @Html.ValidationSummary(true)
-    <fieldset>
+    
         <legend></legend>
 
         <div class="editor-label">
@@ -58,13 +58,13 @@
         <p>
             <input type="submit" value="Generate Report" title= "Generate Report" />
         </p>
-    </fieldset>
+    
 }
 
 @using (Html.BeginForm("TrackPG", "Report")) {
     @Html.ValidationSummary(true)
-    <fieldset>
-        <legend>Visit History</legend>
+    
+        <div>Visit History</div>
 
         <div class="editor-label">
             @Html.LabelFor(model => model.startDay)
@@ -140,7 +140,7 @@
 </script>
 
 
-    <table>
+    <table class ="hovered">
     <thead>
         <tr>
             <th>
@@ -180,7 +180,7 @@
         <p>
             <input type="submit" value="Check Visit History"/>
         </p>
-    </fieldset>
+    
 }
 
 

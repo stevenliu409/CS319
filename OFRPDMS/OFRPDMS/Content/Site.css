@@ -115,7 +115,7 @@ header h1, #header h1 {
 #admin_nav 
 { 
     float: right; 
-    margin-right : 40px;  
+    margin-right : 20px;  
 }
 #main 
 {
@@ -226,7 +226,7 @@ input[type="submit"] {
 
 nav, 
 #menucontainer {
-    --margin-top: 40px;
+    margin-top: 35px;
 }
 
 div#title {
@@ -242,6 +242,11 @@ div#title {
     position:absolute;
     Right:0px;
     top:0px;
+}
+
+#center
+{
+       
 }
 
 #logindisplay a:link {
