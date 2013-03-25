@@ -11,8 +11,6 @@ namespace OFRPDMS.Areas.Admin.Controllers
     public class ReportController : Controller
     {
         OFRPDMSContext context = new OFRPDMSContext();
-        PGIDContext db = new PGIDContext();
-        
 
         DateTime startDay = new DateTime();
         DateTime endDay = new DateTime();
@@ -37,6 +35,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
             ViewBag.myReport = report;
             ViewBag.numOfNewPG = getNumOfNewPGTable(report.startDay, report.endDay);
             ViewBag.numOfPG = getNumOfPGTable(report.endDay);
+            ViewBag.numOfVisit = getNumOfVisitTable(report.startDay, report.endDay);
             ViewBag.distinctLanguage = disLanguage;
             ViewBag.distinctCountry = disCountry;
             ViewBag.center = context.Centers.ToArray();
@@ -52,7 +51,21 @@ namespace OFRPDMS.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult TrackPG(Report report)
         {
-            int name = db.pgids.First().pgid;
+            if (report.type == "Primary")
+            {
+                ViewBag.first = context.PrimaryGuardians.Find(report.pgid).FirstName;
+                ViewBag.last = context.PrimaryGuardians.Find(report.pgid).LastName;
+            }
+            else if (report.type == "Child")
+            {
+                ViewBag.first = context.Children.Find(report.pgid).FirstName;
+                ViewBag.last = context.Children.Find(report.pgid).LastName;
+            }
+
+            ViewBag.type = report.type;
+  
+            ViewBag.visitHistory = getVisitHistory(report.startDay, report.endDay, report.type, report.pgid).ToArray();
+            
             return View();
         }
 
@@ -97,7 +110,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
                 });
                 return Json(collection, JsonRequestBehavior.AllowGet);
             }
-            else if (type == "Child")
+            else
             {
                 var _primaryguardian = context.Children.Where(c => c.FirstName.Contains(name)).ToList();
                 var collection = _primaryguardian.Select(pm => new
@@ -110,59 +123,8 @@ namespace OFRPDMS.Areas.Admin.Controllers
                 });
                 return Json(collection, JsonRequestBehavior.AllowGet);
             }
-            else
-            {
-                var _primaryguardian = context.SecondaryGuardians.Where(s => s.FirstName.Contains(name)).ToList();
-                var collection = _primaryguardian.Select(pm => new
-                {
 
-                    id = pm.Id,
-                    Fname = pm.FirstName,
-                    Lname = pm.LastName,
-
-                });
-                return Json(collection, JsonRequestBehavior.AllowGet);
-
-            }
-        }
-
-        public ActionResult Add(int id, string type)
-        {
-            if (type == "Primary")
-            {
-                PGID mypgid = new PGID();
-
-                
-                foreach (var entity in db.pgids)
-                    db.pgids.Remove(entity);
-                db.SaveChanges();
-                
-
-                mypgid.pgid = id;
-                db.pgids.Add(mypgid);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            else if (type == "Child")
-            {
-                var _child = context.Children.Find(id);
-                EventParticipant ep = new EventParticipant();
-                ep.ParticipantId = _child.Id;
-                ep.ParticipantType = type;
-                context.EventParticipants.Add(ep);
-                context.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            else {
-                var _secondaryguardian = context.SecondaryGuardians.Find(id);
-                EventParticipant ep = new EventParticipant();
-                ep.ParticipantId = _secondaryguardian.Id;
-                ep.ParticipantType = type;
-                context.EventParticipants.Add(ep);
-                context.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
+            
         }
 
         // get the number of new PG(created after start date) 
@@ -178,6 +140,47 @@ namespace OFRPDMS.Areas.Admin.Controllers
 
             return newPGTable;
         }
+        private int[] getNumOfVisitTable(DateTime sday, DateTime eday)
+        {
+            int[] newVisitTable = new int[10];
+
+            foreach (var c in context.Centers)
+            {
+                IEnumerable<Event> evts = context.Events.Where(evt => DateTime.Compare(evt.Date, sday) > 0 && DateTime.Compare(evt.Date, eday) < 0 && evt.CenterId == c.Id);
+                newVisitTable[c.Id] = evts.Count();
+            }
+
+            return newVisitTable;
+        }
+
+        private List<DateTime> getVisitHistory(DateTime sday, DateTime eday, string type, int id)
+        {
+            List<DateTime> dt = new List<DateTime>();
+            if (type == "Primary")
+            {
+                PrimaryGuardian pg = context.PrimaryGuardians.Find(id);
+                    IEnumerable<EventParticipant> evtps = context.EventParticipants.Where(evtp => evtp.PrimaryGuardianId == id 
+                        && DateTime.Compare(evtp.Event.Date, sday) > 0 
+                        && DateTime.Compare(evtp.Event.Date, eday) < 0);
+                foreach(var evtp in evtps)
+                {
+                    dt.Add(evtp.Event.Date);
+                }              
+            }
+            else if (type == "Child")
+            {
+                Child pg = context.Children.Find(id);
+                IEnumerable<EventParticipant> evtps = context.EventParticipants.Where(evtp => evtp.PrimaryGuardianId == id
+                    && DateTime.Compare(evtp.Event.Date, sday) > 0
+                    && DateTime.Compare(evtp.Event.Date, eday) < 0);
+                foreach (var evtp in evtps)
+                {
+                    dt.Add(evtp.Event.Date);
+                }
+            }
+            return dt;
+        }
+   
 
         //private int[] getNumOfChild(DateTime eday)
         //{

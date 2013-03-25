@@ -13,6 +13,7 @@ namespace OFRPDMS.Areas.Admin.Models
         public DateTime startDay { get; set; }
         public DateTime endDay { get; set; }
         public int pgid { get; set; }
+        public string type { get; set; }
     }
 
     public class ReportContext : DbContext

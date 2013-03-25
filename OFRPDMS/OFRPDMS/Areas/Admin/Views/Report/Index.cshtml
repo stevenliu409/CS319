@@ -3,7 +3,6 @@
 
 @{
     ViewBag.Title = "Index";
-    int pid;
 }
 
 <h2>Report</h2>
@@ -38,7 +37,7 @@
     </fieldset>
 }
 
-@using (Html.BeginForm("TrackPG/", "Report")) {
+@using (Html.BeginForm("TrackPG", "Report")) {
     @Html.ValidationSummary(true)
     <fieldset>
         <legend>Visit History</legend>
@@ -58,6 +57,8 @@
             @Html.ValidationMessageFor(model => model.endDay)
         </div>
 
+        @Html.Hidden("pgid")
+        @Html.Hidden("type")
         <div class = "search">
         <script src="/Scripts/jquery.tmpl.js" type="text/javascript"></script>
 <script src="/Scripts/jquery.tmpl.min.js" type="text/javascript"></script>
@@ -65,7 +66,6 @@
 <input type = "text" id = "PrimaryFirstName" /> 
 <select id = "ptype"> 
 <option>Primary</option>
-<option>Secondary</option>
 <option>Child</option>
 </select>
 <input type = "button" id = "search_btn" value = "Search" />
@@ -76,13 +76,10 @@
 <script type = "text/javascript">
     function myFunction(id) {
         var _type = document.getElementById("ptype").value;
-        $.ajax({
-            url: '/Admin/Report/Add',
-            type: "POST",
-            datatype: "json",
-            data: { id: id, type: _type },
-            success: function () { }
-        });
+        
+        document.getElementById("pgid").value = id;
+        document.getElementById("type").value = _type;
+        alert("Added");
     }
 </script>
 
@@ -157,7 +154,6 @@
 
         <p>
             <input type="submit" value="Check Visit History"/>
-            @Html.ActionLink("Report", "TrackPG", new {s="dd",  })
         </p>
     </fieldset>
 }
