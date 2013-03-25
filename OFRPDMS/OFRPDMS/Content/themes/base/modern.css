@@ -1061,6 +1061,7 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
   letter-spacing: 0.02em;
   line-height: 14pt;
   font-smooth: always;
+  
 }
 .metrouicss p.long-text {
   font-family: 'PT Serif Caption', sans-serif, serif !important;
@@ -3275,6 +3276,7 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
   cursor: pointer;
   width: auto;
   *zoom: 1;
+  margin-left:8px
 }
 .metrouicss button:before,
 .metrouicss .button:before,

@@ -1,0 +1,40 @@
+﻿@model OFRPDMS.Models.SpecialEvent
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>SpecialEvent</legend>
+
+    <div class="display-label">Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">GuestSpeaker</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.GuestSpeaker)
+    </div>
+
+    <div class="display-label">GuestSpeakerType</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.GuestSpeakerType)
+    </div>
+
+    <div class="display-label">Center</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Center.Name)
+    </div>
+
+    <div class="display-label">Date</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Date)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

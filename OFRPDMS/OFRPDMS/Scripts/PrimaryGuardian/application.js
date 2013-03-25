@@ -1,7 +1,7 @@
 ﻿
 $(document).ready(function () {
 
-    $('.pickDate').datepicker({
+   $('.pickDate').datepicker({
        dateFormat: 'yy-mm-dd',
         showOn: "both",
         buttonText: "Calendar",

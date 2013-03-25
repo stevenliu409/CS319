@@ -1,5 +1,6 @@
 ﻿@{
     Layout = "~/Views/Shared/_LayoutGlobal.cshtml";
+    var currentController = ViewContext.RouteData.Values["controller"] as string ?? "Home";
 }
 <div class ="page-sidebar" id="menucontainer">
     <ul id="menu">

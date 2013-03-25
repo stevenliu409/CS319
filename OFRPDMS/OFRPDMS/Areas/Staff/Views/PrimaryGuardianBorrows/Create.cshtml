@@ -1,26 +1,27 @@
-@model OFRPDMS.Models.CenterReferral
+@model OFRPDMS.Models.PrimaryGuardianBorrow
 
 @{
     ViewBag.Title = "Create";
 }
-
-<h2>Create</h2>
+<fieldset>
+<h2>Check-Out an Item</h2>
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
-    <fieldset>
-        <legend>CenterReferral</legend>
+    
+        <legend></legend>
 
 		@Html.Partial("_CreateOrEdit", Model)
 
         <p>
             <input type="submit" value="Create" />
         </p>
-    </fieldset>
+    
 }
 
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
 
-
+<script src="../../Scripts/PrimaryGuardian/application.js" language="javascript" type="text/javascript"></script>
+</fieldset>

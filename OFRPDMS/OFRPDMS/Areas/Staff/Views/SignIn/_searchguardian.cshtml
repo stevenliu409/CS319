@@ -5,6 +5,7 @@
 
 <script src="/Scripts/jquery.tmpl.js" type="text/javascript"></script>
 <script src="/Scripts/jquery.tmpl.min.js" type="text/javascript"></script>
+<script src="/Scripts/dialog.js" type="text/javascript"></script>
 <div id = "Search_box"> Search: 
 <input type = "text" id = "PrimaryFirstName" /> 
 <select id = "ptype"> 
@@ -37,7 +38,15 @@
             datatype: "json",
             data: { id: id, type: _type, eventid: _eventid },
             success: function () {
-                window.alert("add successful");
+                $.Dialog({
+                    'title': 'Options Alert',
+                    'content': '   Add Successful !',
+                    'buttons': {
+                        'Ok': {
+                            'action': function () { }
+                        }
+                    }
+                });
             }
         });
     }
@@ -68,11 +77,12 @@
     <td>${datacreate}</td>
     <td>${lang}</td>
     <td>${country}</td>
+    <td>${Allergies}</td>
     <td><input type = "button" value = "Add" onclick = "addparticipant(${id})" /></td>
 </tr>
 </script>
 
-    <table >
+    <table class= "hovered" >
     <thead>
         <tr>
             <th>
@@ -98,6 +108,9 @@
             </th>
             <th>
 			    Country
+             </th>
+             <th>
+                Allergies
              </th>
           <th>
           

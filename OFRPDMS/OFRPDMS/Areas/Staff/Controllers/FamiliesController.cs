@@ -13,6 +13,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
         public ActionResult Index()
         {
+            ViewBag.CurrentPage = "Families";
             return View();
         }
 
