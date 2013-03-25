@@ -2,12 +2,18 @@
     Layout = "~/Views/Shared/_LayoutGlobal.cshtml";
     var currentController = ViewContext.RouteData.Values["controller"] as string ?? "Home";
 }
-<div id="menucontainer">
+<div class ="page-sidebar" id="menucontainer">
     <ul id="menu">
-        <li>@Html.ActionLink("+ New Centers", "Index", "Centers", null, new { id = currentController == "Centers" ? "current" : ""})</li>
-        <li>@Html.ActionLink("Generate Report", "Index","Report", null, new { id = currentController == "Report" ? "current" : ""})</li>
+
+        <li class="sticker sticker-color-blue"> @Html.ActionLink("Centers", "Index", "Centers")</li>
+       
+    </ul>
+    <ul>
+         <li class="sticker sticker-color-orange">@Html.ActionLink("Generate Report", "Index", "Report")</li>
     </ul>
 </div>
+
 <div id="main">
     @RenderBody()
 </div>
+

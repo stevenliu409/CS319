@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 03/22/2013 00:42:34
--- Generated from EDMX file: D:\cs319\CS319\OFRPDMS\OFRPDMS\Models\Model1.edmx
+-- Date Created: 03/22/2013 16:36:14
+-- Generated from EDMX file: C:\Users\Steven\Desktop\CS319\OFRPDMS\OFRPDMS\Models\Model1.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -125,6 +125,15 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_AllergyPrimaryGuardian]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Allergies] DROP CONSTRAINT [FK_AllergyPrimaryGuardian];
 GO
+IF OBJECT_ID(N'[dbo].[FK_EventParticipantPrimaryGuardian]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[EventParticipants] DROP CONSTRAINT [FK_EventParticipantPrimaryGuardian];
+GO
+IF OBJECT_ID(N'[dbo].[FK_EventParticipantChild]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[EventParticipants] DROP CONSTRAINT [FK_EventParticipantChild];
+GO
+IF OBJECT_ID(N'[dbo].[FK_EventParticipantSecondaryGuardian]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[EventParticipants] DROP CONSTRAINT [FK_EventParticipantSecondaryGuardian];
+GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -178,14 +187,6 @@ GO
 IF OBJECT_ID(N'[dbo].[LibraryItems]', 'U') IS NOT NULL
     DROP TABLE [dbo].[LibraryItems];
 GO
-IF OBJECT_ID(N'[dbo].[LibraryItems_Video]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[LibraryItems_Video];
-GO
-IF OBJECT_ID(N'[dbo].[LibraryItems_Toy]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[LibraryItems_Toy];
-GO
-IF OBJECT_ID(N'[dbo].[LibraryItems_Book]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[LibraryItems_Book];
 IF OBJECT_ID(N'[dbo].[LibraryResources]', 'U') IS NOT NULL
     DROP TABLE [dbo].[LibraryResources];
 GO
@@ -223,10 +224,11 @@ CREATE TABLE [dbo].[PrimaryGuardians] (
     [Email] nvarchar(max)  NULL,
     [Phone] bigint  NULL,
     [PostalCodePrefix] nvarchar(max)  NULL,
-    [DateCreated] datetime  NOT NULL,
-    [Language] nvarchar(max)  NULL,
+    [DateCreated] datetime2  NOT NULL,
+    [Language] nvarchar(max) NULL,
     [Country] nvarchar(max)  NULL,
-    [CenterId] int  NOT NULL
+    [CenterId] int  NOT NULL,
+	[Allergies] nvarchar(max) NULL
 );
 GO
 
@@ -248,7 +250,10 @@ CREATE TABLE [dbo].[EventParticipants] (
     [ParticipantId] int  NOT NULL,
     [ParticipantType] nvarchar(max)  NOT NULL,
     [SpecialEventId] int  NULL,
-    [EventId] int  NULL
+    [EventId] int  NULL,
+    [PrimaryGuardianId] int  NULL,
+    [ChildId] int  NULL,
+    [SecondaryGuardianId] int  NULL
 );
 GO
 
@@ -260,6 +265,8 @@ CREATE TABLE [dbo].[Children] (
     [Birthdate] datetime  NULL,
     [PrimaryGuardianId] int  NOT NULL,
     [RelationshipToGuardian] nvarchar(max)  NULL,
+	[Allergies] nvarchar(max) NULL,
+	[DateCreated] datetime2 NOT NULL,
     [Delete] bit  NULL
 );
 GO
@@ -287,7 +294,7 @@ CREATE TABLE [dbo].[Centers] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [Name] nvarchar(max)  NULL,
     [Email] nvarchar(max)  NULL,
-    [Address] nvarchar(max)  NOT NULL,
+    [Address] nvarchar(max)  NULL,
     [Phone] bigint  NULL,
 );
 GO
@@ -384,20 +391,6 @@ CREATE TABLE [dbo].[GivenResources] (
     [DateGiven] datetime  NULL,
     [Count] int  NOT NULL,
     [CenterFreeResourceId] int  NOT NULL
-);
-GO
-
--- Creating table 'EventParticipantPrimaryGuardian'
-CREATE TABLE [dbo].[EventParticipantPrimaryGuardian] (
-    [EventParticipants_Id] int  NOT NULL,
-    [PrimaryGuardians_Id] int  NOT NULL
-);
-GO
-
--- Creating table 'EventParticipantChild'
-CREATE TABLE [dbo].[EventParticipantChild] (
-    [EventParticipants_Id] int  NOT NULL,
-    [Children_Id] int  NOT NULL
 );
 GO
 
@@ -507,18 +500,6 @@ ADD CONSTRAINT [PK_GivenResources]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [EventParticipants_Id], [PrimaryGuardians_Id] in table 'EventParticipantPrimaryGuardian'
-ALTER TABLE [dbo].[EventParticipantPrimaryGuardian]
-ADD CONSTRAINT [PK_EventParticipantPrimaryGuardian]
-    PRIMARY KEY NONCLUSTERED ([EventParticipants_Id], [PrimaryGuardians_Id] ASC);
-GO
-
--- Creating primary key on [EventParticipants_Id], [Children_Id] in table 'EventParticipantChild'
-ALTER TABLE [dbo].[EventParticipantChild]
-ADD CONSTRAINT [PK_EventParticipantChild]
-    PRIMARY KEY NONCLUSTERED ([EventParticipants_Id], [Children_Id] ASC);
-GO
-
 -- --------------------------------------------------
 -- Creating all FOREIGN KEY constraints
 -- --------------------------------------------------
@@ -537,29 +518,6 @@ ON [dbo].[PrimaryGuardianBorrows]
     ([PrimaryGuardianId]);
 GO
 
--- Creating foreign key on [EventParticipants_Id] in table 'EventParticipantPrimaryGuardian'
-ALTER TABLE [dbo].[EventParticipantPrimaryGuardian]
-ADD CONSTRAINT [FK_EventParticipantPrimaryGuardian_EventParticipant]
-    FOREIGN KEY ([EventParticipants_Id])
-    REFERENCES [dbo].[EventParticipants]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating foreign key on [PrimaryGuardians_Id] in table 'EventParticipantPrimaryGuardian'
-ALTER TABLE [dbo].[EventParticipantPrimaryGuardian]
-ADD CONSTRAINT [FK_EventParticipantPrimaryGuardian_PrimaryGuardian]
-    FOREIGN KEY ([PrimaryGuardians_Id])
-    REFERENCES [dbo].[PrimaryGuardians]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_EventParticipantPrimaryGuardian_PrimaryGuardian'
-CREATE INDEX [IX_FK_EventParticipantPrimaryGuardian_PrimaryGuardian]
-ON [dbo].[EventParticipantPrimaryGuardian]
-    ([PrimaryGuardians_Id]);
-GO
-
 -- Creating foreign key on [PrimaryGuardianId] in table 'Children'
 ALTER TABLE [dbo].[Children]
 ADD CONSTRAINT [FK_PrimaryGuardianChild]
@@ -574,36 +532,13 @@ ON [dbo].[Children]
     ([PrimaryGuardianId]);
 GO
 
--- Creating foreign key on [EventParticipants_Id] in table 'EventParticipantChild'
-ALTER TABLE [dbo].[EventParticipantChild]
-ADD CONSTRAINT [FK_EventParticipantChild_EventParticipant]
-    FOREIGN KEY ([EventParticipants_Id])
-    REFERENCES [dbo].[EventParticipants]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating foreign key on [Children_Id] in table 'EventParticipantChild'
-ALTER TABLE [dbo].[EventParticipantChild]
-ADD CONSTRAINT [FK_EventParticipantChild_Child]
-    FOREIGN KEY ([Children_Id])
-    REFERENCES [dbo].[Children]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_EventParticipantChild_Child'
-CREATE INDEX [IX_FK_EventParticipantChild_Child]
-ON [dbo].[EventParticipantChild]
-    ([Children_Id]);
-GO
-
 -- Creating foreign key on [CenterId] in table 'Events'
 ALTER TABLE [dbo].[Events]
 ADD CONSTRAINT [FK_CenterEvent]
     FOREIGN KEY ([CenterId])
     REFERENCES [dbo].[Centers]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_CenterEvent'
 CREATE INDEX [IX_FK_CenterEvent]
@@ -631,7 +566,7 @@ ADD CONSTRAINT [FK_CenterCenterReferral]
     FOREIGN KEY ([CenterId])
     REFERENCES [dbo].[Centers]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_CenterCenterReferral'
 CREATE INDEX [IX_FK_CenterCenterReferral]
@@ -645,7 +580,7 @@ ADD CONSTRAINT [FK_CenterCenterAccount]
     FOREIGN KEY ([CenterId])
     REFERENCES [dbo].[Centers]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_CenterCenterAccount'
 CREATE INDEX [IX_FK_CenterCenterAccount]
@@ -673,7 +608,7 @@ ADD CONSTRAINT [FK_CenterCenterFreeResource]
     FOREIGN KEY ([CenterId])
     REFERENCES [dbo].[Centers]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_CenterCenterFreeResource'
 CREATE INDEX [IX_FK_CenterCenterFreeResource]
@@ -701,7 +636,7 @@ ADD CONSTRAINT [FK_PrimaryGuardianCenter]
     FOREIGN KEY ([CenterId])
     REFERENCES [dbo].[Centers]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_PrimaryGuardianCenter'
 CREATE INDEX [IX_FK_PrimaryGuardianCenter]
@@ -715,7 +650,7 @@ ADD CONSTRAINT [FK_SpecialEventCenter]
     FOREIGN KEY ([CenterId])
     REFERENCES [dbo].[Centers]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_SpecialEventCenter'
 CREATE INDEX [IX_FK_SpecialEventCenter]
@@ -743,7 +678,7 @@ ADD CONSTRAINT [FK_LibraryResourceCenter]
     FOREIGN KEY ([CenterId])
     REFERENCES [dbo].[Centers]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_LibraryResourceCenter'
 CREATE INDEX [IX_FK_LibraryResourceCenter]
@@ -819,6 +754,48 @@ ADD CONSTRAINT [FK_AllergyPrimaryGuardian]
 CREATE INDEX [IX_FK_AllergyPrimaryGuardian]
 ON [dbo].[Allergies]
     ([PrimaryGuardianId]);
+GO
+
+-- Creating foreign key on [PrimaryGuardianId] in table 'EventParticipants'
+ALTER TABLE [dbo].[EventParticipants]
+ADD CONSTRAINT [FK_EventParticipantPrimaryGuardian]
+    FOREIGN KEY ([PrimaryGuardianId])
+    REFERENCES [dbo].[PrimaryGuardians]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_EventParticipantPrimaryGuardian'
+CREATE INDEX [IX_FK_EventParticipantPrimaryGuardian]
+ON [dbo].[EventParticipants]
+    ([PrimaryGuardianId]);
+GO
+
+-- Creating foreign key on [ChildId] in table 'EventParticipants'
+ALTER TABLE [dbo].[EventParticipants]
+ADD CONSTRAINT [FK_EventParticipantChild]
+    FOREIGN KEY ([ChildId])
+    REFERENCES [dbo].[Children]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_EventParticipantChild'
+CREATE INDEX [IX_FK_EventParticipantChild]
+ON [dbo].[EventParticipants]
+    ([ChildId]);
+GO
+
+-- Creating foreign key on [SecondaryGuardianId] in table 'EventParticipants'
+ALTER TABLE [dbo].[EventParticipants]
+ADD CONSTRAINT [FK_EventParticipantSecondaryGuardian]
+    FOREIGN KEY ([SecondaryGuardianId])
+    REFERENCES [dbo].[SecondaryGuardians]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_EventParticipantSecondaryGuardian'
+CREATE INDEX [IX_FK_EventParticipantSecondaryGuardian]
+ON [dbo].[EventParticipants]
+    ([SecondaryGuardianId]);
 GO
 
 -- --------------------------------------------------

@@ -1,45 +1,113 @@
 ﻿@model IEnumerable<OFRPDMS.Models.EventParticipant>
+           
 
 @{
     ViewBag.Title = "Index";
 }
-<h2>Sign In</h2>
-
+<fieldset>
+<h2>Sign Ins</h2>
+<div>
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table>
-    <tr>
-        <th>
-            Event
-        </th>
-        <th>
-            ParticipantId
-        </th>
-        <th>
-            ParticipantType
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
+<p>
+<select id="oSelect">
+</select>
+</p>
+
+</div>
+
+
+<script type = "text/javascript">
+    $(document).ready(function () {
+        $.ajax({
+            url: '/SignIn/findEvent',
+            type: 'POST',
+            success: function (data) {
+                $('#oSelect').empty();
+                $('#oSelect').append(new Option("",0));
+                for (var i = 0; i < data.length; i++) {
+                    $('#oSelect').append(new Option(data[i].date, data[i].id));
+
+                }
+            }
+        });
+    });
+    $('#oSelect').change(function () {
+        var _eventid = document.getElementById("oSelect").value;
+        $.ajax({
+            url: '/SignIn/Index',
+            type: 'POST',
+            data: { id: _eventid },
+            success: function () {
+                window.location = "@Url.Action("/index/")" + _eventid;
+            }
+        });
+    });
+
+</script>
+
+
+
+<table class ="hovered">
+
     <tr>
+        <th>
+            Event Date
+        </th>
+        <th>
+            Participant's First Name
+        </th>
+         <th>
+            Participant's Last Name
+        </th>
+        <th>
+            Participant Type
+        </th>
+    
+    </tr> 
+    @foreach(var item in Model){
+   <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Event.Id)
+            @item.Event.Date.ToString("MM/dd/yyyy")
+
         </td>
+        
+        @if (item.ParticipantType == "Primary")
+        { <td>
+            @Html.DisplayFor(modelItem => item.PrimaryGuardian.FirstName)
+            </td>
+            <td>
+            @Html.DisplayFor(modelItem => item.PrimaryGuardian.LastName)
+            </td>
+        }
+        @if (item.ParticipantType == "Secondary") { 
+            <td>
+             @Html.DisplayFor(modelItem => item.SecondaryGuardian.FirstName)
+             </td><td>
+              @Html.DisplayFor(modelItem => item.SecondaryGuardian.LastName)
+              </td>
+        }
+        @if (item.ParticipantType == "Child")
+        {
         <td>
-            @Html.DisplayFor(modelItem => item.ParticipantId)
-        </td>
+          @Html.DisplayFor(modelItem => item.Child.FirstName)
+          </td>
+            <td>
+            @Html.DisplayFor(modelItem => item.Child.LastName)
+            </td>
+        }
+        
         <td>
             @Html.DisplayFor(modelItem => item.ParticipantType)
         </td>
 
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
         </td>
     </tr>
-}
-
+        }   
 </table>
+</fieldset>

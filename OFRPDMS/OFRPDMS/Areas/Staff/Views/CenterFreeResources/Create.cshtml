@@ -3,24 +3,25 @@
 @{
     ViewBag.Title = "Create";
 }
-
+<fieldset>
 <h2>Create a New Resource</h2>
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
-    <fieldset>
-        <legend>CenterFreeResource</legend>
+    
+        <legend></legend>
 
 		@Html.Partial("_CreateOrEdit", Model)
 
         <p>
             <input type="submit" value="Create" />
         </p>
-    </fieldset>
+    
 }
 
 <div>
     @Html.ActionLink("Back to List", "Edit")
 </div>
+</fieldset>
 
 

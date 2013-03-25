@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Create";
 }
-
+<fieldset>
 <h2>Create a New Library Item</h2>
 
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
@@ -11,8 +11,8 @@
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
-    <fieldset>
-        <legend>LibraryItem</legend>
+    
+        <legend></legend>
 
         <div class="editor-label">
             @Html.LabelFor(model => model.Broken)
@@ -89,9 +89,10 @@
         <p>
             <input type="submit" value="Create" />
         </p>
-    </fieldset>
+  
 }
 
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+  </fieldset>

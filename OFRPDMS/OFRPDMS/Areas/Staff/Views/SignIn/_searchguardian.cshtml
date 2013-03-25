@@ -12,39 +12,35 @@
 <option>Secondary</option>
 <option>Child</option>
 </select>
+<select id="oSelect"></select>
 <input type = "button" id = "search_btn" value = "Search" />
-
 </div>
 
-
 <script type = "text/javascript">
-    function myFunction(id) {
+    $.ajax({
+        url: '/SignIn/findEvent',
+        type: 'POST',
+        success: function (data) {
+            $('#oSelect').empty();
+            for (var i = 0; i < data.length; i++) {
+                $('#oSelect').append(new Option(data[i].date, data[i].id));
+            }
+        }
+    });
+    function addparticipant(id) {
         var _type = document.getElementById("ptype").value;
+        var _eventid = document.getElementById("oSelect").value;
+
         $.ajax({
             url: '/SignIn/Add',
             type: "POST",
             datatype: "json",
-            data: { id: id, type: _type },
-            success: function () { }
+            data: { id: id, type: _type, eventid: _eventid },
+            success: function () {
+                window.alert("add successful");
+            }
         });
     }
-</script>
-
-<script id = "tabletemplate" type = "text/x-jquery-tmpl">
-<tr>
-    <td>${Fname}</td>
-    <td>${Lname}</td>
-    <td>${email}</td>
-    <td>${phone}</td>
-    <td>${prefix}</td>
-    <td>${datacreate}</td>
-    <td>${lang}</td>
-    <td>${country}</td>
-    <td><input type = "button" value = "Add" onclick = "myFunction(${id})" /></td>
-</tr>
-</script>
-
-<script type = "text/javascript">
     $("#search_btn").click(function () {
         var text = document.getElementById("PrimaryFirstName").value;
         var _type = document.getElementById("ptype").value.toString();
@@ -59,10 +55,24 @@
             }
         });
     });
+
 </script>
 
+<script id = "tabletemplate" type = "text/x-jquery-tmpl">
+<tr>
+    <td>${Fname}</td>
+    <td>${Lname}</td>
+    <td>${email}</td>
+    <td>${phone}</td>
+    <td>${prefix}</td>
+    <td>${datacreate}</td>
+    <td>${lang}</td>
+    <td>${country}</td>
+    <td><input type = "button" value = "Add" onclick = "addparticipant(${id})" /></td>
+</tr>
+</script>
 
-    <table>
+    <table >
     <thead>
         <tr>
             <th>
@@ -88,11 +98,14 @@
             </th>
             <th>
 			    Country
-            </th>
+             </th>
+          <th>
+          
+          </th>
         </tr>
         </thead>
        <tbody id = "datatable" >
-    
+       
         </tbody>
         </table>
 

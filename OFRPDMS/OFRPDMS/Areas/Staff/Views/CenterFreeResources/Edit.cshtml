@@ -3,14 +3,14 @@
 @{
     ViewBag.Title = "Edit";
 }
-
+<fieldset>
 <h2>Enter On-Hand Quantities of Each Resource</h2>
 <p>
     @Html.ActionLink("Create a New Resource", "Create")
 </p>
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
-    <table>
+    <table class= "hovered">
         <tr>
             <th>
                 *Count
@@ -39,4 +39,4 @@
     *Enter a positive number(includeing 0) to indicate how many you have or enter a negative number to indicate how many you handed out.
     Note: If you try to hand out more than 'Previous Stock', only previous stock is handed out so you will never have a negative stock. 
 </p>
-
+</fieldset>

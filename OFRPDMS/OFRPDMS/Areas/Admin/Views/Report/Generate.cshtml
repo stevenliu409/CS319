@@ -4,12 +4,12 @@
     ViewBag.Title = "Generate";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
+<fieldset>
 <h2>Generate</h2>
 <h2>Start : @ViewBag.myReport.startDay</h2>
 <h2>End : @ViewBag.myReport.endDay</h2>
 
-<table>
+<table class="hovered">
     <tr>
         <th>
             Center
@@ -40,7 +40,7 @@
 </table>
 
 <h2>Languages Spoken at Home </h2>
-<table>
+<table class ="hovered">
     <tr>
         <th>
         Language
@@ -70,7 +70,7 @@
 </table>
 
 <h2>Culture</h2>
-<table>
+<table class="hovered">
     <tr>
         <th>
         Country
@@ -98,3 +98,4 @@
         </tr>
     }
 </table>
+</fieldset>
