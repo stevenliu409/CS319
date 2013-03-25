@@ -1,7 +1,9 @@
 ﻿@model IEnumerable<OFRPDMS.Models.Center>
-
+@{
+    var currentCenterId = ViewContext.RouteData.Values["centerIdArg"] as string ?? "Home";    
+}
 @foreach (var item in Model)
 {
-    <li>@Html.RouteLink(item.Name, "Staff_default", new { centerIdArg = item.Id, controller = "Staff", action = "Index" })</li>
+    <li>@Html.RouteLink(item.Name, "Staff_default", new { centerIdArg = item.Id, controller = "Staff", action = "Index" }, new { id = currentCenterId == item.Id.ToString() ? "currentCenter" : ""})</li>
 
 }
