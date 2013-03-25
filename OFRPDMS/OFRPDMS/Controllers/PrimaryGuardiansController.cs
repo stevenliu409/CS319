@@ -140,8 +140,6 @@ namespace OFRPDMS.Controllers
               
             if (ModelState.IsValid)
             {
-                
-                primaryguardian.DateCreated = DateTime.Now;
 
                 //Check for null field in the SecondaryGuardian , if all fields are null, then do not add to database
                 //delete the element in the list which contains delete marked to "true"
