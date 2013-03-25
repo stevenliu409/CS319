@@ -28,15 +28,13 @@
             }
         }
     });
-    function addparticipant(id) {
-        var _type = document.getElementById("ptype").value;
+    function addparticipant(id,type) {
         var _eventid = document.getElementById("oSelect").value;
-
         $.ajax({
             url: '/SignIn/Add',
             type: "POST",
             datatype: "json",
-            data: { id: id, type: _type, eventid: _eventid },
+            data: { id: id, type: type, eventid: _eventid },
             success: function () {
                 $.Dialog({
                     'title': 'Options Alert',
@@ -49,7 +47,7 @@
                 });
             }
         });
-    }
+   }
     $("#search_btn").click(function () {
         var text = document.getElementById("PrimaryFirstName").value;
         var _type = document.getElementById("ptype").value.toString();
@@ -78,7 +76,7 @@
     <td>${lang}</td>
     <td>${country}</td>
     <td>${Allergies}</td>
-    <td><input type = "button" value = "Add" onclick = "addparticipant(${id})" /></td>
+    <td><input type = "button" value = "Add" onclick = "addparticipant(${id},${type})" /></td>
 </tr>
 </script>
 

@@ -137,7 +137,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
                     datacreate = pm.DateCreated.ToString(),
                     lang = pm.Language,
                     country = pm.Country,
-
+                    type = 1
 
                 });
                 return Json(collection, JsonRequestBehavior.AllowGet);
@@ -151,6 +151,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
                     id = pm.Id,
                     Fname = pm.FirstName,
                     Lname = pm.LastName,
+                    type = 3
 
                 });
                 return Json(collection, JsonRequestBehavior.AllowGet);
@@ -164,31 +165,31 @@ namespace OFRPDMS.Areas.Staff.Controllers
                     id = pm.Id,
                     Fname = pm.FirstName,
                     Lname = pm.LastName,
-
+                    type = 2
                 });
                 return Json(collection, JsonRequestBehavior.AllowGet);
 
             }
         }
 
-        public void Add(int id, string type, int eventid)
+        public void Add(int id, int type, int eventid)
         {
-            if (type == "Primary")
+            if (type == 1)
             {
                 var _primaryguardian = db.PrimaryGuardians.Find(id);
                 EventParticipant ep = new EventParticipant();
                 ep.PrimaryGuardianId = _primaryguardian.Id;
-                ep.ParticipantType = type;
+                ep.ParticipantType = "Primary";
                 ep.EventId = eventid;
                 db.EventParticipants.Add(ep);
                 db.SaveChanges();
             }
-            else if (type == "Child")
+            else if (type == 3)
             {
                 var _child = db.Children.Find(id);
                 EventParticipant ep = new EventParticipant();
                 ep.ChildId = _child.Id;
-                ep.ParticipantType = type;
+                ep.ParticipantType = "Child";
                 ep.EventId = eventid;
                 db.EventParticipants.Add(ep);
                 db.SaveChanges();
@@ -197,7 +198,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
                 var _secondaryguardian = db.SecondaryGuardians.Find(id);
                 EventParticipant ep = new EventParticipant();
                 ep.SecondaryGuardianId = _secondaryguardian.Id;
-                ep.ParticipantType = type;
+                ep.ParticipantType = "Secondary";
                 ep.EventId = eventid;
                 db.EventParticipants.Add(ep);
                 db.SaveChanges();
