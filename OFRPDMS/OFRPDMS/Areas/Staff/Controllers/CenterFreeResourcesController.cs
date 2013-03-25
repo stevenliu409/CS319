@@ -83,6 +83,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
                 resouceViewModelList.Add(r);
             }
             resourcesEdit.Resources = resouceViewModelList;
+            ViewBag.CurrentPage = "Resources";
             return View(resourcesEdit);
         }
 
