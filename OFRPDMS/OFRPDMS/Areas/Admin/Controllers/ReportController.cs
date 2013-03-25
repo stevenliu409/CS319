@@ -16,6 +16,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
 
         DateTime startDay = new DateTime();
         DateTime endDay = new DateTime();
+      
 
         //
         // GET: /Report/

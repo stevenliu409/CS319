@@ -77,13 +77,13 @@
 			@item.PostalCodePrefix
         </td>
         <td>
-			@item.DateCreated
+			@item.DateCreated.ToShortDateString()
         </td>
         <td>
 			@item.Language
         </td>
         <td>
-			@item.Country
+			@item.Country 
         </td>
         <td>
 			@(item.Allergies == null? "None" : item.Allergies)
