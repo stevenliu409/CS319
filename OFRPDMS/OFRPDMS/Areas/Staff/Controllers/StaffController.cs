@@ -21,6 +21,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
                 if (centerIdArg != -1)
                     AccountProfile.CurrentUser.CenterID = centerIdArg;
             }
+            ViewBag.CurrentCenterId = "c"+ centerIdArg.ToString();
             return View();
         }
 

@@ -179,14 +179,14 @@ ul#admin_menu a:hover,ul#admin_menu a:active
 {
     background-color:#1A1A1A;
 }
-
-body#Families a#FamiliesNav,
-body#Referrals a#ReferralsNav,
-body#Resources a#ResourcesNav,
-body#SignIn a#SignInNav, body#Library a#LibraryNav,body#Events a#EventsNav{
+ul#menu a#current,
+ul#admin_menu a#currentCenter
+{
     background-color:#FFFFFF;
     color:#1A1A1A;
 }
+
+
 /* FORM LAYOUT ELEMENTS   
 ----------------------------------------------------------*/
 
@@ -279,9 +279,9 @@ div#title {
 
 #logindisplay a:link {
     color:#008287;
-   
+}
 
-#logindisplay a:visited {
+#logindisplay a:visited{
     color: #008287;
     
 }

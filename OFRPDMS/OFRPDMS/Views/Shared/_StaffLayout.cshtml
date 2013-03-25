@@ -1,14 +1,15 @@
 ﻿@{
     Layout = "~/Views/Shared/_LayoutGlobal.cshtml";
+    var currentController = ViewContext.RouteData.Values["controller"] as string ?? "Home";
 }
 <div id="menucontainer">
     <ul id="menu">
-        <li>@Html.ActionLink("+ New Families", "Index", "Families", null, new { id = "FamiliesNav"})</li>
-        <li>@Html.ActionLink("Sign In", "Index", "SignIn", null, new { id = "SignInNav" })</li>
-        <li>@Html.ActionLink("Event", "Index", "Events", null, new { id = "EventsNav" })</li>
-        <li>@Html.ActionLink("Resources", "Edit", "CenterFreeResources", null, new { id = "ResourcesNav" })</li>
-        <li>@Html.ActionLink("Referrals", "Edit", "CenterReferrals", null, new { id = "ReferralsNav" })</li>
-        <li>@Html.ActionLink("Library", "Index", "Library", null, new { id = "LibraryNav" })</li>
+        <li>@Html.ActionLink("Families", "Index", "Families", null, new { id = currentController == "Families" ? "current" : ""})</li>
+        <li>@Html.ActionLink("Sign In", "Index", "SignIn", null, new { id = currentController == "SignIn" ? "current" : "" })</li>
+        <li>@Html.ActionLink("Drop-In Sessions", "Index", "Events", null, new { id = currentController == "Events" ? "current" : "" })</li>
+        <li>@Html.ActionLink("Resources", "Edit", "CenterFreeResources", null, new { id = currentController == "CenterFreeResources" ? "current" : "" })</li>
+        <li>@Html.ActionLink("Referrals", "Edit", "CenterReferrals", null, new { id = currentController == "CenterReferrals" ? "current" : "" })</li>
+        <li>@Html.ActionLink("Library", "Index", "Library", null, new { id = currentController == "Library" ? "current" : "" })</li>
     </ul>
 </div>
 <div id="main">
