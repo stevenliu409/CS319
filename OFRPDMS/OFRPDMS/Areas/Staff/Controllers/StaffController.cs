@@ -10,6 +10,8 @@ namespace OFRPDMS.Areas.Staff.Controllers
 {
     public class StaffController : Controller
     {
+        private OFRPDMSContext db = new OFRPDMSContext();
+
         //
         // GET: /Staff/Staff/
 
@@ -22,8 +24,69 @@ namespace OFRPDMS.Areas.Staff.Controllers
                     AccountProfile.CurrentUser.CenterID = centerIdArg;
             }
             ViewBag.CurrentCenterId = "c"+ centerIdArg.ToString();
+            int centerid = AccountProfile.CurrentUser.CenterID;
+            ViewBag.CurrentCenterName = db.Centers.Find(centerid).Name;
             return View();
         }
 
+
+
+
+        [HttpPost]
+        public ActionResult Search(string name, string type)
+        {
+            if (type == "Primary")
+            {
+                var _primaryguardian = db.PrimaryGuardians.Where(p => p.FirstName.Contains(name) || p.LastName.Contains(name) || 
+                    p.Allergies.Contains(name) || p.Country.Contains(name) || p.Language.Contains(name) || p.Email.Contains(name)).ToList();
+                var collection = _primaryguardian.Select(pm => new
+                {
+
+                    id = pm.Id,
+                    Fname = pm.FirstName,
+                    Lname = pm.LastName,
+                    email = pm.Email,
+                    phone = pm.Phone,
+                    prefix = pm.PostalCodePrefix,
+                    datacreate = pm.DateCreated.ToString(),
+                    lang = pm.Language,
+                    country = pm.Country,
+                    allergy = pm.Allergies,
+
+                });
+                return Json(collection, JsonRequestBehavior.AllowGet);
+            }
+            else if (type == "Child")
+            {
+                var _primaryguardian = db.Children.Where(c => c.FirstName.Contains(name) || c.LastName.Contains(name) || c.Allergies.Contains(name)).ToList();
+                var collection = _primaryguardian.Select(pm => new
+                {
+
+                    id = pm.Id,
+                    Fname = pm.FirstName,
+                    Lname = pm.LastName,
+                    allergy = pm.Allergies,
+
+                });
+                return Json(collection, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var _primaryguardian = db.SecondaryGuardians.Where(s => s.FirstName.Contains(name)).ToList();
+                var collection = _primaryguardian.Select(pm => new
+                {
+
+                    id = pm.Id,
+                    Fname = pm.FirstName,
+                    Lname = pm.LastName,
+
+                });
+                return Json(collection, JsonRequestBehavior.AllowGet);
+
+            }
+        }
     }
+
+
+
 }

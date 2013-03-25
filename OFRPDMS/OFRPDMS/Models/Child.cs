@@ -38,7 +38,7 @@ namespace OFRPDMS.Models
         //[RegularExpression(@"^[a-zA-Z]{1,25}$", ErrorMessage = "Not a valid relationship")]
         public string RelationshipToGuardian { get; set; }
         public Nullable<bool> Delete { get; set; }
-        public string Allergies;
+        public string Allergies{get;set;}
 
         public System.DateTime DateCreated { get; set; }
         public virtual PrimaryGuardian PrimaryGuardian { get; set; }

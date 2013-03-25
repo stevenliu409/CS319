@@ -1,9 +1,10 @@
 ﻿@{
     ViewBag.Title = "Index";
 }
-
-@*<h2>Staff</h2>*@
-<!--@*
+<fieldset id="center">
+@{
+<h1>@ViewBag.CurrentCenterName</h1>
+ }
 @model IEnumerable<OFRPDMS.Models.ChildAndGuardian>
 
 @*This is a partial view is used to fetch primary guardians*@
@@ -18,21 +19,11 @@
 <option>Secondary</option>
 <option>Child</option>
 </select>
-<select id="oSelect"></select>
 <input type = "button" id = "search_btn" value = "Search" />
 </div>
 
 <script type = "text/javascript">
-    $.ajax({
-        url: '/SignIn/findEvent',
-        type: 'POST',
-        success: function (data) {
-            $('#oSelect').empty();
-            for (var i = 0; i < data.length; i++) {
-                $('#oSelect').append(new Option(data[i].date, data[i].id));
-            }
-        }
-    });
+
     function addparticipant(id) {
         var _type = document.getElementById("ptype").value;
         var _eventid = document.getElementById("oSelect").value;
@@ -51,7 +42,7 @@
         var text = document.getElementById("PrimaryFirstName").value;
         var _type = document.getElementById("ptype").value.toString();
         $.ajax({
-            url: '/SignIn/Search',
+            url: '/Staff/Search',
             type: "POST",
             datatype: "json",
             data: { name: text, type: _type },
@@ -74,10 +65,11 @@
     <td>${datacreate}</td>
     <td>${lang}</td>
     <td>${country}</td>
+    <td>${allergy}</td>
 </tr>
 </script>
 <div>
-    <table >
+    <table class="hovered" >
     <thead>
         <tr>
             <th>
@@ -104,6 +96,9 @@
             <th>
 			    Country
              </th>
+             <th>
+                Allergies
+             </th>
           <th>
           
           </th>
@@ -115,4 +110,6 @@
         </table>
 
         </div>
-        </div>  -->
+        </div>  
+
+  </fieldset>
