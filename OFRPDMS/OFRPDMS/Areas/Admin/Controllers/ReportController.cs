@@ -12,7 +12,6 @@ namespace OFRPDMS.Areas.Admin.Controllers
     public class ReportController : Controller
     {
         OFRPDMSContext context = new OFRPDMSContext();
-        ReportDBContext db = new ReportDBContext();
 
         DateTime startDay = new DateTime();
         DateTime endDay = new DateTime();
@@ -38,6 +37,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
             ViewBag.myReport = report;
             ViewBag.numOfNewPG = getNumOfNewPGTable(report.startDay, report.endDay);
             ViewBag.numOfPG = getNumOfPGTable(report.endDay);
+            ViewBag.numOfVisit = getNumOfVisitTable(report.startDay, report.endDay);
             ViewBag.distinctLanguage = disLanguage;
             ViewBag.distinctCountry = disCountry;
             ViewBag.center = context.Centers.ToArray();
@@ -45,6 +45,30 @@ namespace OFRPDMS.Areas.Admin.Controllers
             ViewBag.countryTable = getCountryTable(disCountry,report.startDay, report.endDay);
             return View(context.Centers);
             
+        }
+
+        //
+        // GET: /Report/Generate
+
+        [HttpPost]
+        public ActionResult TrackPG(Report report)
+        {
+            if (report.type == "Primary")
+            {
+                ViewBag.first = context.PrimaryGuardians.Find(report.pgid).FirstName;
+                ViewBag.last = context.PrimaryGuardians.Find(report.pgid).LastName;
+            }
+            else if (report.type == "Child")
+            {
+                ViewBag.first = context.Children.Find(report.pgid).FirstName;
+                ViewBag.last = context.Children.Find(report.pgid).LastName;
+            }
+
+            ViewBag.type = report.type;
+  
+            ViewBag.visitHistory = getVisitHistory(report.startDay, report.endDay, report.type, report.pgid).ToArray();
+            
+            return View();
         }
 
         //
@@ -175,6 +199,46 @@ namespace OFRPDMS.Areas.Admin.Controllers
 
 
 
+        [HttpPost]
+        public ActionResult Search(string name, string type)
+        {
+            if (type == "Primary")
+            {
+                var _primaryguardian = context.PrimaryGuardians.Where(p => p.FirstName.Contains(name) || p.LastName.Contains(name)).ToList();
+                var collection = _primaryguardian.Select(pm => new
+                {
+
+                    id = pm.Id,
+                    Fname = pm.FirstName,
+                    Lname = pm.LastName,
+                    email = pm.Email,
+                    phone = pm.Phone,
+                    prefix = pm.PostalCodePrefix,
+                    datacreate = pm.DateCreated.ToString(),
+                    lang = pm.Language,
+                    country = pm.Country,
+
+
+                });
+                return Json(collection, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var _primaryguardian = context.Children.Where(c => c.FirstName.Contains(name)).ToList();
+                var collection = _primaryguardian.Select(pm => new
+                {
+
+                    id = pm.Id,
+                    Fname = pm.FirstName,
+                    Lname = pm.LastName,
+
+                });
+                return Json(collection, JsonRequestBehavior.AllowGet);
+            }
+
+            
+        }
+
         // get the number of new PG(created after start date) 
         private int[] getNumOfNewPGTable(DateTime sday, DateTime eday)
         {
@@ -188,20 +252,61 @@ namespace OFRPDMS.Areas.Admin.Controllers
 
             return newPGTable;
         }
-
-        private int[] getNumOfChild(DateTime eday)
+        private int[] getNumOfVisitTable(DateTime sday, DateTime eday)
         {
-            int[] pgTable = new int[10];
+            int[] newVisitTable = new int[10];
 
             foreach (var c in context.Centers)
             {
-                IEnumerable<PrimaryGuardian> pgs = context.PrimaryGuardians.Where(pg => DateTime.Compare(pg.DateCreated, eday) < 0 && pg.CenterId == c.Id);
-                IEnumerable<PrimaryGuardian> distinctPG = context.PrimaryGuardians.Distinct();
-                pgTable[c.Id] = pgs.Count();
+                IEnumerable<Event> evts = context.Events.Where(evt => DateTime.Compare(evt.Date, sday) > 0 && DateTime.Compare(evt.Date, eday) < 0 && evt.CenterId == c.Id);
+                newVisitTable[c.Id] = evts.Count();
             }
 
-            return pgTable;
+            return newVisitTable;
         }
+
+        private List<DateTime> getVisitHistory(DateTime sday, DateTime eday, string type, int id)
+        {
+            List<DateTime> dt = new List<DateTime>();
+            if (type == "Primary")
+            {
+                PrimaryGuardian pg = context.PrimaryGuardians.Find(id);
+                    IEnumerable<EventParticipant> evtps = context.EventParticipants.Where(evtp => evtp.PrimaryGuardianId == id 
+                        && DateTime.Compare(evtp.Event.Date, sday) > 0 
+                        && DateTime.Compare(evtp.Event.Date, eday) < 0);
+                foreach(var evtp in evtps)
+                {
+                    dt.Add(evtp.Event.Date);
+                }              
+            }
+            else if (type == "Child")
+            {
+                Child pg = context.Children.Find(id);
+                IEnumerable<EventParticipant> evtps = context.EventParticipants.Where(evtp => evtp.PrimaryGuardianId == id
+                    && DateTime.Compare(evtp.Event.Date, sday) > 0
+                    && DateTime.Compare(evtp.Event.Date, eday) < 0);
+                foreach (var evtp in evtps)
+                {
+                    dt.Add(evtp.Event.Date);
+                }
+            }
+            return dt;
+        }
+   
+
+        //private int[] getNumOfChild(DateTime eday)
+        //{
+        //    int[] pgTable = new int[10];
+            
+        //    foreach (var c in context.Centers)
+        //    {
+        //        IEnumerable<PrimaryGuardian> chs = context.Children.Where(ch => DateTime.Compare(ch., eday) < 0 && pg.CenterId == c.Id);
+        //        IEnumerable<PrimaryGuardian> distinctPG = context.PrimaryGuardians.Distinct();
+        //        pgTable[c.Id] = pgs.Count();
+        //    }
+
+        //    return pgTable;
+        //}
 
         private int[] getNumOfPGTable(DateTime eday)
         {
@@ -216,6 +321,16 @@ namespace OFRPDMS.Areas.Admin.Controllers
 
             return pgTable;
         }
+
+        //private int getNumOfSignIn(DateTime sday, DateTime eday)
+        //{
+        //    IEnumerable<Event> events = context.Events.Where(evt => DateTime.Compare(evt.Date, sday) > 0 && DateTime.Compare(evt.Date, eday) < 0);
+        //    foreach(Event evt in events)
+        //    {
+                
+        //    }
+
+        //}
 
         private string[] getLanguages(DateTime sday, DateTime eday)
         {
@@ -268,6 +383,18 @@ namespace OFRPDMS.Areas.Admin.Controllers
                 countryTable[countryIndex, cId] += 1;
             }
 
+            //get row total
+            for (int i = 0; i < disCountry.Length; i++)
+            {
+                int rowTotal = 0;
+                for (int j = 1; j < context.Centers.Count() + 1; j++)
+                {
+                    rowTotal += countryTable[i, j];
+                }
+                int length = context.Centers.Count() + 1;
+                countryTable[i, length] = rowTotal;
+            }
+
             return countryTable;
         }
 
@@ -289,11 +416,22 @@ namespace OFRPDMS.Areas.Admin.Controllers
                 languageTable[languageIndex, cId] += 1;
             }
 
+            for (int i = 0; i < disLanguage.Length; i++)
+            {
+                int rowTotal = 0;
+                for (int j = 1; j < context.Centers.Count()+1; j++)
+                {
+                    rowTotal += languageTable[i, j];
+                }
+                int length = context.Centers.Count()+1;
+                languageTable[i, length] = rowTotal;
+            }
+
             return languageTable;
         }
 
 
-
+        
 
 
         
