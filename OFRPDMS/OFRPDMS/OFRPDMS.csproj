@@ -102,11 +102,10 @@
     <Compile Include="Areas\Staff\ViewModels\ResourceViewModel.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Account\AccountModule.cs" />
-    <Compile Include="Controllers\CenterController.cs" />
     <Compile Include="Areas\Staff\Controllers\CenterReferralsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\PrimaryGuardianBorrowsController.cs" />
-    <Compile Include="Controllers\PrimaryGuardiansController.cs" />
+    <Compile Include="Areas\Staff\Controllers\PrimaryGuardianBorrowsController.cs" />
+    <Compile Include="Areas\Staff\Controllers\PrimaryGuardiansController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -202,6 +201,7 @@
     <Content Include="bin\EntityFramework.xml" />
     <Content Include="bin\OFRPDMS.dll" />
     <Content Include="bin\OFRPDMS.pdb" />
+    <Content Include="Content\themes\base\fonts\license.txt" />
     <Content Include="Content\themes\base\images\calendar.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -230,6 +230,9 @@
     <Content Include="Content\themes\base\jquery.ui.slider.css" />
     <Content Include="Content\themes\base\jquery.ui.tabs.css" />
     <Content Include="Content\themes\base\jquery.ui.theme.css" />
+    <Content Include="Content\themes\base\modern-responsive.css" />
+    <Content Include="Content\themes\base\modern.css" />
+    <Content Include="Content\themes\base\theme-dark.css" />
     <Content Include="Global.asax" />
     <Content Include="Models\Model1.edmx.sql" />
     <Content Include="Scripts\Custom\PrimaryGuardian\AddNewChildEntry.js" />
@@ -337,12 +340,12 @@
     <Content Include="Areas\Staff\Views\Events\_CreateOrEdit.cshtml" />
     <Content Include="Views\Account\_RegisterCenterStaff.cshtml" />
     <Content Include="Views\Shared\_LayoutGlobal.cshtml" />
-    <Content Include="Views\PrimaryGuardians\Create.cshtml" />
-    <Content Include="Views\PrimaryGuardians\Delete.cshtml" />
-    <Content Include="Views\PrimaryGuardians\Details.cshtml" />
-    <Content Include="Views\PrimaryGuardians\Edit.cshtml" />
-    <Content Include="Views\PrimaryGuardians\Index.cshtml" />
-    <Content Include="Views\PrimaryGuardians\_RegisterCenter.cshtml" />
+    <Content Include="Areas\Staff\Views\PrimaryGuardians\Create.cshtml" />
+    <Content Include="Areas\Staff\Views\PrimaryGuardians\Delete.cshtml" />
+    <Content Include="Areas\Staff\Views\PrimaryGuardians\Details.cshtml" />
+    <Content Include="Areas\Staff\Views\PrimaryGuardians\Edit.cshtml" />
+    <Content Include="Areas\Staff\Views\PrimaryGuardians\Index.cshtml" />
+    <Content Include="Areas\Staff\Views\PrimaryGuardians\_RegisterCenter.cshtml" />
     <Content Include="Views\Shared\_AdminNavPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -374,6 +377,10 @@
     <Content Include="Areas\Staff\Views\CenterReferrals\Details.cshtml" />
     <Content Include="Areas\Staff\Views\CenterReferrals\Edit.cshtml" />
     <Content Include="Areas\Staff\Views\Shared\EditorTemplates\ReferralViewModel.cshtml" />
+    <None Include="Content\themes\base\fonts\iconFont.eot" />
+    <None Include="Content\themes\base\fonts\iconFont.svg" />
+    <None Include="Content\themes\base\fonts\iconFont.ttf" />
+    <None Include="Content\themes\base\fonts\iconFont.woff" />
     <None Include="Models\Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Model1.Context.cs</LastGenOutput>
@@ -389,14 +396,14 @@
     <Content Include="Views\Shared\EditorTemplates\SecondaryGuardian.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\PrimaryGuardian.cshtml" />
-    <Content Include="Views\PrimaryGuardians\_ChildrenOrEdit.cshtml" />
-    <Content Include="Views\PrimaryGuardians\_CreateOrEdit.cshtml" />
-    <Content Include="Views\PrimaryGuardianBorrows\Create.cshtml" />
-    <Content Include="Views\PrimaryGuardianBorrows\Delete.cshtml" />
-    <Content Include="Views\PrimaryGuardianBorrows\Details.cshtml" />
-    <Content Include="Views\PrimaryGuardianBorrows\Edit.cshtml" />
-    <Content Include="Views\PrimaryGuardianBorrows\Index.cshtml" />
-    <Content Include="Views\PrimaryGuardianBorrows\_CreateOrEdit.cshtml" />
+    <Content Include="Areas\Staff\Views\PrimaryGuardians\_ChildrenOrEdit.cshtml" />
+    <Content Include="Areas\Staff\Views\PrimaryGuardians\_CreateOrEdit.cshtml" />
+    <Content Include="Areas\Staff\Views\PrimaryGuardianBorrows\Create.cshtml" />
+    <Content Include="Areas\Staff\Views\PrimaryGuardianBorrows\Delete.cshtml" />
+    <Content Include="Areas\Staff\Views\PrimaryGuardianBorrows\Details.cshtml" />
+    <Content Include="Areas\Staff\Views\PrimaryGuardianBorrows\Edit.cshtml" />
+    <Content Include="Areas\Staff\Views\PrimaryGuardianBorrows\Index.cshtml" />
+    <Content Include="Areas\Staff\Views\PrimaryGuardianBorrows\_CreateOrEdit.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

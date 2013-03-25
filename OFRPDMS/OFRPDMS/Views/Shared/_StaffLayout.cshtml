@@ -4,12 +4,13 @@
 }
 <div id="menucontainer">
     <ul id="menu">
-        <li>@Html.ActionLink("Families", "Index", "Families", null, new { id = currentController == "Families" ? "current" : ""})</li>
+        <li>@Html.ActionLink("Families", "Index", "PrimaryGuardians", null, new { id = currentController == "PrimaryGuardians" ? "current" : "" })</li>
         <li>@Html.ActionLink("Sign In", "Index", "SignIn", null, new { id = currentController == "SignIn" ? "current" : "" })</li>
         <li>@Html.ActionLink("Drop-In Sessions", "Index", "Events", null, new { id = currentController == "Events" ? "current" : "" })</li>
         <li>@Html.ActionLink("Resources", "Edit", "CenterFreeResources", null, new { id = currentController == "CenterFreeResources" ? "current" : "" })</li>
         <li>@Html.ActionLink("Referrals", "Edit", "CenterReferrals", null, new { id = currentController == "CenterReferrals" ? "current" : "" })</li>
         <li>@Html.ActionLink("Library", "Index", "Library", null, new { id = currentController == "Library" ? "current" : "" })</li>
+        <li>@Html.ActionLink("Check-Out Library Items", "Index", "PrimaryGuardianBorrows", null, new { id = currentController == "PrimaryGuardianBorrows" ? "current" : "" })</li>
     </ul>
 </div>
 <div id="main">
