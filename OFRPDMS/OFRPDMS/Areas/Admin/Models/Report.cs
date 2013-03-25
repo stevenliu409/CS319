@@ -23,6 +23,8 @@ namespace OFRPDMS.Areas.Admin.Models
         public DateTime startDay { get; set; }
         [DataType(DataType.Date)]
         public DateTime endDay { get; set; }
+        public int pgid { get; set; }
+        public string type { get; set; } 
         [DataType(DataType.Date)]
         public Nullable<DateTime> dstart { get; set; }
         [DataType(DataType.Date)]
