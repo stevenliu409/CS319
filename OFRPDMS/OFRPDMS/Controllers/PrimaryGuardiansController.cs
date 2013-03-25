@@ -56,6 +56,12 @@ namespace OFRPDMS.Controllers
             if (ModelState.IsValid)
             {
                 primaryguardian.DateCreated = DateTime.Now;
+                foreach (Child a in primaryguardian.Children)
+                {
+                    a.DateCreated = primaryguardian.DateCreated;
+                }
+
+                
 
                 //Check for null field in the SecondaryGuardian , if all fields are null, then do not add to database
                 //delete the element in the list which contains delete marked to "true"
@@ -74,7 +80,7 @@ namespace OFRPDMS.Controllers
                 //Check for null field in the Allergies , if all fields are null, then do not add to database
                 //delete the element in the list which contains delete marked to "true"
 
-               int z = primaryguardian.Allergies.Count();
+              /* int z = primaryguardian.Allergies.Count();
                 for (var i = z - 1 ; i >= 0; i--)
                 {
                     if (primaryguardian.Allergies[i].Delete == true || primaryguardian.Allergies[i].Note ==null)
@@ -82,7 +88,7 @@ namespace OFRPDMS.Controllers
                         primaryguardian.Allergies.RemoveAt(i);
                     }
 
-                }
+                }*/
 
                 //Check for null field in the Children , if all fields are null, then do not add to database
                 //delete the element in the list which contains delete marked to "true"
@@ -117,26 +123,33 @@ namespace OFRPDMS.Controllers
         
         //
         // GET: /PrimaryGuardians/Edit/5
-
+       public static PrimaryGuardian pr;
         public ActionResult Edit(int id)
         {
-            PrimaryGuardian primaryguardian = context.PrimaryGuardians.Find(id);
-            ViewBag.CenterId = new SelectList(context.Centers, "Id", "Name", primaryguardian.CenterId);
+            pr = context.PrimaryGuardians.Find(id);
+            ViewBag.CenterId = new SelectList(context.Centers, "Id", "Name", pr.CenterId);
+            
            
-            return View(primaryguardian);
+            return View(pr);
         }
 
         //
         // POST: /PrimaryGuardians/Edit/5
-
+       
         [HttpPost]
         public ActionResult Edit(PrimaryGuardian primaryguardian)
         {
+            
               
             if (ModelState.IsValid)
             {
-                
-                primaryguardian.DateCreated = DateTime.Now;
+
+                primaryguardian.DateCreated = pr.DateCreated;
+                foreach (Child a in primaryguardian.Children)
+                {
+                    a.DateCreated = primaryguardian.DateCreated;
+                }
+
 
                 //Check for null field in the SecondaryGuardian , if all fields are null, then do not add to database
                 //delete the element in the list which contains delete marked to "true"
@@ -202,43 +215,7 @@ namespace OFRPDMS.Controllers
                     }
                 }
 
-                //Check for null field in the Allergies , if all fields are null, then do not add to database
-                //delete the element in the list which contains delete marked to "true"
-                int z = primaryguardian.Allergies.Count();
-                for (var i = z - 1; i >= 0; i--)
-                {
-                   
-                   if (primaryguardian.Allergies[i].Note == null || primaryguardian.Allergies[i].Delete == true)
-                    {
-                         Allergy allergy = context.Allergies.Find(primaryguardian.Allergies[i].Id);
-                         if (allergy != null)
-                         {
-                             context.Allergies.Remove(allergy);
-                             primaryguardian.Allergies.RemoveAt(i);
-                         }
-                         else
-                         {
-                             primaryguardian.Allergies.RemoveAt(i);
-                         }
-
-                    }
-                    else
-                    {
-                        primaryguardian.Allergies[i].PrimaryGuardianId = primaryguardian.Id;
-
-                        if (primaryguardian.Allergies[i].Id == 0)
-                        {
-                            context.Allergies.Add(primaryguardian.Allergies[i]);
-                            primaryguardian.Allergies.RemoveAt(i);
-                        }
-                        else
-                        {
-                            context.Entry(primaryguardian.Allergies[i]).State = EntityState.Modified;
-                        }
-                    }
-
-                }
-
+              
                 //Check for null field in the Children , if all fields are null, then do not add to database
                 //delete the element in the list which contains delete marked to "true"
 
@@ -253,7 +230,7 @@ namespace OFRPDMS.Controllers
 
                     // if any input fields are not null, then the SecondaryGuardian is valid
                     validChild = properties.Any(
-                        p => p.GetValue(primaryguardian.SecondaryGuardians[i], null) != null &&
+                        p => p.GetValue(primaryguardian.Children[i], null) != null &&
                                         !includeFields.Contains(p.Name));
 
                     // child needs to be deleted
@@ -316,7 +293,9 @@ namespace OFRPDMS.Controllers
                 context.SaveChanges();
 
                 return RedirectToAction("Index");
-            }
+                }
+
+             
             ViewBag.CenterId = new SelectList(context.Centers, "Id", "Name", primaryguardian.CenterId);
             return View(primaryguardian);
         }

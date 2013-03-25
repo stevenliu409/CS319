@@ -19,7 +19,8 @@ namespace OFRPDMS.Models
         {
             this.EventParticipants = new HashSet<EventParticipant>();
             this.Children = new List<Child>();
-            this.Allergies = new List<Allergy>();
+           
+           
             this.SecondaryGuardians = new List<SecondaryGuardian>();
         }
         [Key]
@@ -42,10 +43,11 @@ namespace OFRPDMS.Models
         [RegularExpression(@"^[a-zA-Z]{1,25}$", ErrorMessage = "Not a valid Country Name")]
         public string Country { get; set; }
         public int CenterId { get; set; }
+        public string Allergies { get; set; }
     
         public virtual ICollection<EventParticipant> EventParticipants { get; set; }
         public virtual IList<Child> Children { get; set; }
-        public virtual IList<Allergy> Allergies { get; set; }
+        //public virtual Allergy Allergies { get; set; }
         public virtual IList<SecondaryGuardian> SecondaryGuardians { get; set; }
         public virtual Center Center { get; set; }
         
@@ -58,7 +60,8 @@ namespace OFRPDMS.Models
             for (int i = 0; i < count; i++)
             {
                 //Children.Add(new Child());
-                Allergies.Add(new Allergy());
+                //Allergies.Add(new Allergy());
+            
                 //SecondaryGuardians.Add(new SecondaryGuardian());
 
             }

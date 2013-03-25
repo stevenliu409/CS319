@@ -155,6 +155,45 @@
         <p>
             <input type="submit" value="Check Visit History"/>
         </p>
+
     </fieldset>
 }
 
+
+@using (Html.BeginForm("GenerateExcel", "Report")) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Download Excel File</legend>
+
+        <p>hello</p>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.startDay, "Start Date")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.startDay, "End Date")
+            @Html.ValidationMessageFor(model => model.startDay)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.endDay)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.endDay)
+            @Html.ValidationMessageFor(model => model.endDay)
+        </div>
+        <br />
+
+        <div class="editor-label">
+            @Html.Label("id", "Excel Version")
+        </div>
+        <div class="editor-field">
+            @Html.RadioButton("mode", 1, true) Excel 2003 and older (.xls format recommended for compatability)<br />
+            @Html.RadioButton("mode", 2) Excel 2007 and newer (.xlsx format)<br />
+            @Html.RadioButton("mode", 3) CSV file <br />
+        </div>
+
+        <p>
+            <input type="submit" value="Download Report" title= "Download Report" />
+        </p>
+    </fieldset>
+}

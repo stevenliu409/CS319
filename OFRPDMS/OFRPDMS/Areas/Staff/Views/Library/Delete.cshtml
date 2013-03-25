@@ -3,43 +3,43 @@
 @{
     ViewBag.Title = "Delete";
 }
-
-<h2>Delete</h2>
+<fieldset>
+<h2>Delete Library Item</h2>
 
 <h3>Are you sure you want to delete this?</h3>
-<fieldset>
-    <legend>LibraryResource</legend>
 
-    <div class="display-label">Broken</div>
+    <legend></legend>
+
+    <b class="display-label">Broken</b>
     <div class="display-field">@Model.Broken</div>
 
-    <div class="display-label">CheckedOut</div>
+    <b class="display-label">CheckedOut</b>
     <div class="display-field">@Model.CheckedOut</div>
 
-    <div class="display-label">Value</div>
+    <b class="display-label">Value</b>
     <div class="display-field">@String.Format("{0:F}", Model.Value)</div>
 
-    <div class="display-label">Image</div>
+    <b class="display-label">Image</b>
     <div class="display-field">@Html.DisplayTextFor(_ => Model.Image).ToString()</div>
 
-    <div class="display-label">Note</div>
+    <b class="display-label">Note</b>
     <div class="display-field">@Model.Note</div>
 
-    <div class="display-label">Name</div>
+    <b class="display-label">Name</b>
     <div class="display-field">@Model.Name</div>
 
-    <div class="display-label">ItemType</div>
+    <b class="display-label">ItemType</b>
     <div class="display-field">@Model.ItemType</div>
 
-    <div class="display-label">Sanitized</div>
+    <b class="display-label">Sanitized</b>
     <div class="display-field">@Model.Sanitized</div>
 
-    <div class="display-label">PrimaryGuardianBorrows</div>
+    <b class="display-label">PrimaryGuardianBorrows</b>
     <div class="display-field">@(Model.PrimaryGuardianBorrows == null ? "None" : Model.PrimaryGuardianBorrows.Count.ToString())</div>
 
-    <div class="display-label">Center</div>
+    <b class="display-label">Center</b>
     <div class="display-field">@(Model.Center == null ? "None" : Model.Center.Name)</div>
-</fieldset>
+
 @using (Html.BeginForm()) {
     <p>
         <input type="submit" value="Delete" /> |
@@ -47,4 +47,4 @@
     </p>
 }
 
-
+</fieldset>

@@ -4,34 +4,36 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
-
 <fieldset>
-    <legend>Center</legend>
+<h2>Center Details</h2>
 
-    <div class="display-label">Name</div>
+    <legend></legend>
+
+    <b class="display-label">Name</b>
     <div class="display-field">
         @Html.DisplayFor(model => model.Name)
     </div>
 
-    <div class="display-label">Email</div>
+    <b class="display-label">Email</b>
     <div class="display-field">
         @Html.DisplayFor(model => model.Email)
     </div>
 
-    <div class="display-label">Address</div>
+    <b class="display-label">Address</b>
     <div class="display-field">
         @Html.DisplayFor(model => model.Address)
     </div>
 
-    <div class="display-label">Phone</div>
+    <b class="display-label">Phone</b>
     <div class="display-field">
         @Html.DisplayFor(model => model.Phone)
     </div>
-</fieldset>
-<p>
+
+    <p>
     @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+</fieldset>
+
 
 
