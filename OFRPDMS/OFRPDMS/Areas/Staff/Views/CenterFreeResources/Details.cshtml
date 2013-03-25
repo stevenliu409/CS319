@@ -9,16 +9,16 @@
 
     <legend></legend>
 
-    <div class="display-label">NumberAvailable</div>
+    <b class="display-label">NumberAvailable</b>
     <div class="display-field">@Model.NumberAvailable</div>
 
-    <div class="display-label">Name</div>
+    <b class="display-label">Name</b>
     <div class="display-field">@Model.Name</div>
 
-    <div class="display-label">Center</div>
+    <b class="display-label">Center</b>
     <div class="display-field">@(Model.Center == null ? "None" : Model.Center.Name)</div>
 
-    <div class="display-label">GivenResources</div>
+    <b class="display-label">GivenResources</b>
     <div class="display-field">@(Model.GivenResources == null ? "None" : Model.GivenResources.Count.ToString())</div>
 
 <p>

@@ -145,6 +145,11 @@ namespace OFRPDMS.Areas.Admin.Controllers
                 {
                     string[] CsvLine = Content[i];
 
+                    if (CsvLine.Length == 0)
+                    {
+                        continue;
+                    }
+
                     // first one doesn't have comma
                     byte[] val1 = new System.Text.UTF8Encoding(true).GetBytes(CsvLine[0]);
                     Response.OutputStream.Write(val1, 0, val1.Length);

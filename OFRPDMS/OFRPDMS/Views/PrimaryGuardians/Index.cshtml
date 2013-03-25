@@ -11,7 +11,9 @@
 </p>
 <table = "hovered">
     <tr>
+        <th>
         
+        </th>
         <th>
             FirstName
         </th>
@@ -84,13 +86,13 @@
 			@item.Country
         </td>
         <td>
-			@item.Allergies
-        </td>
-            <td>
-			@(item.SecondaryGuardians== null ? "None" : item.SecondaryGuardians.Count.ToString())
+			@(item.Allergies == null? "None" : item.Allergies)
         </td>
          <td>
-			@(item.Children == null ? "None" : item.Children.Count.ToString())
+			@(item.SecondaryGuardians.Count == 0 ? "None" : item.SecondaryGuardians.Count.ToString())
+        </td>
+         <td>
+			@(item.Children.Count == 0 ? "None" : item.Children.Count.ToString())
         </td>
         
         @*
