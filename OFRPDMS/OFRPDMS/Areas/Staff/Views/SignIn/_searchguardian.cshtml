@@ -30,23 +30,30 @@
     });
     function addparticipant(id,type) {
         var _eventid = document.getElementById("oSelect").value;
-        $.ajax({
-            url: '/SignIn/Add',
-            type: "POST",
-            datatype: "json",
-            data: { id: id, type: type, eventid: _eventid },
-            success: function () {
-                $.Dialog({
-                    'title': 'Options Alert',
-                    'content': '   Add Successful !',
-                    'buttons': {
-                        'Ok': {
-                            'action': function () { }
+        if (_eventid != 0) {
+            $.ajax({
+                url: '/SignIn/Add',
+                type: "POST",
+                datatype: "json",
+                data: { id: id, type: type, eventid: _eventid },
+                success: function () {
+                    $.Dialog({
+                        'title': 'Options Alert',
+                        'content': '   Add Successful !',
+                        'buttons': {
+                            'Ok': {
+                                'action': function () { }
+                            }
                         }
-                    }
-                });
-            }
-        });
+                    });
+                }
+            });
+        }
+        else { 
+        
+        alert("no drop-in session available");
+        }
+
    }
     $("#search_btn").click(function () {
         var text = document.getElementById("PrimaryFirstName").value;
