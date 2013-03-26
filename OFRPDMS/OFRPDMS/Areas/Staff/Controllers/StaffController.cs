@@ -48,7 +48,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
                     email = pm.Email,
                     phone = pm.Phone,
                     prefix = pm.PostalCodePrefix,
-                    datacreate = pm.DateCreated.ToString("mm/dd/yyyy"),
+                    datacreate = pm.DateCreated.ToString("MM/dd/yyyy"),
                     lang = pm.Language,
                     country = pm.Country,
                     allergy = pm.Allergies,
