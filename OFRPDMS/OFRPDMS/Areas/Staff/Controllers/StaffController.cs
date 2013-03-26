@@ -72,7 +72,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
             }
             else
             {
-                var _primaryguardian = db.SecondaryGuardians.Where(s => s.FirstName.Contains(name)).ToList();
+                var _primaryguardian = db.SecondaryGuardians.Where(s => s.FirstName.Contains(name) || s.RelationshipToChild.Contains(name) || s.LastName.Contains(name)).ToList();
                 var collection = _primaryguardian.Select(pm => new
                 {
 
