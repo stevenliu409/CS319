@@ -12,6 +12,7 @@ namespace OFRPDMS.Areas.Admin.Models
     public class Report
     {
 
+        
         public int Id { get; set; }
         [DataType(DataType.Date)]
         public DateTime startDay { get; set; }
@@ -19,6 +20,7 @@ namespace OFRPDMS.Areas.Admin.Models
         public DateTime endDay { get; set; }
         public int pgid { get; set; }
         public string type { get; set; } 
+
     }
 
     public class ReportContext : DbContext
