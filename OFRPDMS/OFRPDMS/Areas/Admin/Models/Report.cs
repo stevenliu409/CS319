@@ -12,12 +12,6 @@ namespace OFRPDMS.Areas.Admin.Models
     public class Report
     {
 
-        public Report()
-        {
-            dstart = null;
-            dend = null;
-            
-        }
         public int Id { get; set; }
         [DataType(DataType.Date)]
         public DateTime startDay { get; set; }
@@ -25,10 +19,6 @@ namespace OFRPDMS.Areas.Admin.Models
         public DateTime endDay { get; set; }
         public int pgid { get; set; }
         public string type { get; set; } 
-        [DataType(DataType.Date)]
-        public Nullable<DateTime> dstart { get; set; }
-        [DataType(DataType.Date)]
-        public Nullable<DateTime> dend { get; set; }
     }
 
     public class ReportContext : DbContext
