@@ -292,10 +292,10 @@ GO
 -- Creating table 'Centers'
 CREATE TABLE [dbo].[Centers] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [Name] nvarchar(max)  NULL,
+    [Name] nvarchar(max)  NOT NULL,
     [Email] nvarchar(max)  NULL,
     [Address] nvarchar(max)  NULL,
-    [Phone] bigint  NULL,
+    [Phone] bigint NOT NULL,
 );
 GO
 
@@ -664,7 +664,7 @@ ADD CONSTRAINT [FK_LibraryResourcePrimaryGuardianBorrow]
     FOREIGN KEY ([LibraryResourceId])
     REFERENCES [dbo].[LibraryResources]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_LibraryResourcePrimaryGuardianBorrow'
 CREATE INDEX [IX_FK_LibraryResourcePrimaryGuardianBorrow]
@@ -678,7 +678,7 @@ ADD CONSTRAINT [FK_LibraryResourceCenter]
     FOREIGN KEY ([CenterId])
     REFERENCES [dbo].[Centers]
         ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_LibraryResourceCenter'
 CREATE INDEX [IX_FK_LibraryResourceCenter]

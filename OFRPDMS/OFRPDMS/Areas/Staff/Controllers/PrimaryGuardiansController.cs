@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Reflection;
 using System.Web;
+using System.Web.Security;
 using System.Web.Mvc;
 using OFRPDMS.Models;
 
@@ -19,7 +20,8 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
         public ViewResult Index()
         {
-            var primaryguardians = context.PrimaryGuardians.Include(p => p.Center);
+            int centerId = AccountProfile.CurrentUser.CenterID;
+            var primaryguardians = context.PrimaryGuardians.Where(p => p.CenterId == centerId).Include(p => p.Center);
             return View(primaryguardians.ToList());
         }
 
@@ -28,7 +30,8 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
         public ViewResult Details(int id)
         {
-            PrimaryGuardian primaryguardian = context.PrimaryGuardians.Find(id);
+            int centerId = AccountProfile.CurrentUser.CenterID;
+            PrimaryGuardian primaryguardian = context.PrimaryGuardians.Where(p => p.CenterId == centerId).Single(p => p.Id == id);
             return View(primaryguardian);
         }
 
@@ -37,7 +40,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.CenterId = new SelectList(context.Centers, "Id", "Name");
+            ViewBag.CenterId2 = AccountProfile.CurrentUser.CenterID;
             var model = new PrimaryGuardian();
             //model.BuildEntity(1);
             //model.Children.Add(new Child());
@@ -126,8 +129,10 @@ namespace OFRPDMS.Areas.Staff.Controllers
        public static PrimaryGuardian pr;
         public ActionResult Edit(int id)
         {
-            pr = context.PrimaryGuardians.Find(id);
-            ViewBag.CenterId = new SelectList(context.Centers, "Id", "Name", pr.CenterId);
+            int centerId = AccountProfile.CurrentUser.CenterID;
+
+            ViewBag.CenterId2 = centerId;
+            pr = context.PrimaryGuardians.Where(p => p.CenterId == centerId).Single(p => p.Id == id);
             
            
             return View(pr);
@@ -305,6 +310,8 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
         public ActionResult Delete(int id)
         {
+            string[] roles = Roles.GetRolesForUser();
+            ViewBag.IsAdmin = roles.Contains("Administrators");
             PrimaryGuardian primaryguardian = context.PrimaryGuardians.Find(id);
             return View(primaryguardian);
         }

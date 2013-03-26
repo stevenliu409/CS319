@@ -3,13 +3,14 @@
 @{
     ViewBag.Title = "Index";
 }
+<fieldset>
 
 <h2>Primary Guardians</h2>
 
 <p>
     @Html.ActionLink("Add a New Family", "Create")
 </p>
-<table = "hovered">
+<table class= "hovered">
     <tr>
         <th>
         
@@ -77,13 +78,13 @@
 			@item.PostalCodePrefix
         </td>
         <td>
-			@item.DateCreated
+			@item.DateCreated.ToShortDateString()
         </td>
         <td>
 			@item.Language
         </td>
         <td>
-			@item.Country
+			@item.Country 
         </td>
         <td>
 			@(item.Allergies == null? "None" : item.Allergies)
@@ -109,4 +110,5 @@
 }
 
 </table>
+</fieldset>
 

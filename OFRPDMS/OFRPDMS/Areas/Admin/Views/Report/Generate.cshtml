@@ -1,24 +1,38 @@
-﻿@model IEnumerable<OFRPDMS.Models.Center>
-
+﻿
 @{
     ViewBag.Title = "Generate";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 <fieldset>
 <h2>Generate</h2>
-<h2>Start : @ViewBag.myReport.startDay</h2>
-<h2>End : @ViewBag.myReport.endDay</h2>
+<h2>Start : @ViewBag.myReport.startDay.ToShortDateString()</h2>
+<h2>End : @ViewBag.myReport.endDay.ToShortDateString()</h2>
 
 <table class="hovered">
-    <tr>
+
+    @for (int i = 0; i < @ViewBag.pgTable.GetLength(0); i++)
+    {
+        <tr>
+        @for (int j = 0; j < @ViewBag.pgTable.GetLength(1); j++)
+         {
+           <th>
+           @ViewBag.pgTable[i,j]
+           </th>  
+         }
+         </tr>
+    }
+@*    <tr>
         <th>
             Center
         </th>
         <th>
-            # of new patient
+            # of new parents
         </th>
         <th>
-            # of patient
+            # of parents
+        </th>
+        <th>
+            # of visit
         </th>
     </tr>
 
@@ -35,43 +49,75 @@
                     <td>
                             @ViewBag.numOfPG[(i+1)]
                     </td>
+                    <td>
+                            @ViewBag.numOfVisit[(i+1)]
+                    </td>
                 </tr>
-            }
+            }*@
 </table>
 
 <h2>Languages Spoken at Home </h2>
 <table class ="hovered">
-    <tr>
+
+    @for (int i = 0; i < @ViewBag.languageTable.GetLength(0); i++)
+    {
+        <tr>
+        @for (int j = 0; j < @ViewBag.languageTable.GetLength(1); j++)
+         {
+           <th>
+           @ViewBag.languageTable[i,j]
+           </th>  
+         }
+         </tr>
+    }
+@*    <tr>
         <th>
         Language
         </th>
-    @for(int i =0; i < @ViewBag.center.Length; i++)
+    @for (int i = 0; i < @ViewBag.center.Length; i++)
     {
         <th>
              @ViewBag.center[i].Name
         </th>
     }
+    <th>
+    Total
+    </th>
     </tr>
 
         @for(int i =0; i < @ViewBag.distinctLanguage.Length; i++)
     {
+
         <tr>
             <th>
             @ViewBag.distinctLanguage[i]
             </th>
-            @for (int j = 0; j < @ViewBag.center.Length; j++)
+            @for (int j = 1; j < @ViewBag.center.Length + 2; j++)
             {
                 <th>
-                    @ViewBag.languageTable[i, j+1]
+                    @ViewBag.languageTable[i, j]
                 </th>
+                
             }
         </tr>
-    }
+    }*@
 </table>
 
 <h2>Culture</h2>
 <table class="hovered">
-    <tr>
+
+    @for (int i = 0; i < @ViewBag.countryTable.GetLength(0); i++)
+    {
+        <tr>
+        @for (int j = 0; j < @ViewBag.countryTable.GetLength(1); j++)
+         {
+           <th>
+           @ViewBag.countryTable[i,j]
+           </th>  
+         }
+         </tr>
+    }
+@*    <tr>
         <th>
         Country
         </th>
@@ -81,6 +127,9 @@
              @ViewBag.center[i].Name
         </th>
     }
+        <th>
+    Total
+    </th>
     </tr>
 
         @for(int i =0; i < @ViewBag.distinctCountry.Length; i++)
@@ -89,13 +138,13 @@
             <th>
             @ViewBag.distinctCountry[i]
             </th>
-            @for (int j = 0; j < @ViewBag.center.Length; j++)
+            @for (int j = 1; j < @ViewBag.center.Length+2; j++)
             {
                 <th>
-                    @ViewBag.countryTable[i, j+1]
+                    @ViewBag.countryTable[i, j]
                 </th>
             }
         </tr>
-    }
+    }*@
 </table>
 </fieldset>

@@ -35,13 +35,20 @@
 
     <b class="display-label">PrimaryGuardianBorrows</b>
     <div class="display-field">@(Model.PrimaryGuardianBorrows == null ? "None" : Model.PrimaryGuardianBorrows.Count.ToString())</div>
-
+    
     <b class="display-label">Center</b>
     <div class="display-field">@(Model.Center == null ? "None" : Model.Center.Name)</div>
 
 <p>
+   
+    
     @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Index") 
+
+     @if (ViewBag.Borrow != null)
+    {
+        @Html.RouteLink("Borrow", new { id = (int)ViewBag.borrow, controller = "PrimaryGuardianBorrows", action = "Details" }) 
+    }
 </p>
 
 </fieldset>

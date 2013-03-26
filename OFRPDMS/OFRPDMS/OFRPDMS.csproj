@@ -44,6 +44,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Office.Interop.Excel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>C:\Program Files (x86)\Visual Studio 10.0\Visual Studio Tools for Office\PIA\Office14\Microsoft.Office.Interop.Excel.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -409,6 +410,7 @@
     <Content Include="Areas\Staff\Views\SpecialEvent\Create.cshtml" />
     <Content Include="Areas\Staff\Views\SpecialEvent\Edit.cshtml" />
     <Content Include="Areas\Staff\Views\SpecialEvent\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Report\TrackPG.cshtml" />
     <None Include="Content\themes\base\fonts\iconFont.eot" />
     <None Include="Content\themes\base\fonts\iconFont.ttf" />
     <None Include="Content\themes\base\fonts\iconFont.woff" />

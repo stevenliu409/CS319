@@ -123,8 +123,10 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
         [HttpPost]
         public ActionResult Search(string name, string type) {
-            if (type == "Primary") {         
-                var _primaryguardian = db.PrimaryGuardians.Where(p => p.FirstName.Contains(name) || p.LastName.Contains(name)).ToList();
+            if (type == "Primary")
+            {
+                var _primaryguardian = db.PrimaryGuardians.Where(p => p.FirstName.Contains(name) || p.LastName.Contains(name) || 
+                    p.Allergies.Contains(name) || p.Country.Contains(name) || p.Language.Contains(name) || p.Email.Contains(name)).ToList();
                 var collection = _primaryguardian.Select(pm => new
                 {
 
@@ -134,36 +136,45 @@ namespace OFRPDMS.Areas.Staff.Controllers
                     email = pm.Email,
                     phone = pm.Phone,
                     prefix = pm.PostalCodePrefix,
-                    datacreate = pm.DateCreated.ToString(),
+                    datacreate = pm.DateCreated.ToString("MM/dd/yyyy"),
                     lang = pm.Language,
                     country = pm.Country,
-
+                    allergy = pm.Allergies,
+                    type = 1
 
                 });
                 return Json(collection, JsonRequestBehavior.AllowGet);
             }
             else if (type == "Child")
             {
-                var _primaryguardian = db.Children.Where(c => c.FirstName.Contains(name)).ToList();
+                var _primaryguardian = db.Children.Where(c => c.FirstName.Contains(name) || c.LastName.Contains(name) || c.Allergies.Contains(name)).ToList();
                 var collection = _primaryguardian.Select(pm => new
                 {
 
                     id = pm.Id,
                     Fname = pm.FirstName,
                     Lname = pm.LastName,
+                    birthday = pm.Birthdate.Value.ToString("MM/dd/yyyy"),
+                    relationshiptoGuardian = pm.PrimaryGuardian.FirstName,
+                    allergy = pm.Allergies,
+                    type = 3
 
                 });
                 return Json(collection, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                var _primaryguardian = db.SecondaryGuardians.Where(s => s.FirstName.Contains(name)).ToList();
+                var _primaryguardian = db.SecondaryGuardians.Where(s => s.FirstName.Contains(name) || s.RelationshipToChild.Contains(name) || s.LastName.Contains(name)).ToList();
                 var collection = _primaryguardian.Select(pm => new
                 {
 
                     id = pm.Id,
                     Fname = pm.FirstName,
                     Lname = pm.LastName,
+                    relationship = pm.RelationshipToChild,
+                    phone = pm.Phone,
+                    relationshiptoGuardian = db.PrimaryGuardians.Find(pm.PrimaryGuardianId).FirstName,
+                    type = 2
 
                 });
                 return Json(collection, JsonRequestBehavior.AllowGet);
@@ -171,24 +182,24 @@ namespace OFRPDMS.Areas.Staff.Controllers
             }
         }
 
-        public void Add(int id, string type, int eventid)
+        public void Add(int id, int type, int eventid)
         {
-            if (type == "Primary")
+            if (type == 1)
             {
                 var _primaryguardian = db.PrimaryGuardians.Find(id);
                 EventParticipant ep = new EventParticipant();
                 ep.PrimaryGuardianId = _primaryguardian.Id;
-                ep.ParticipantType = type;
+                ep.ParticipantType = "Primary";
                 ep.EventId = eventid;
                 db.EventParticipants.Add(ep);
                 db.SaveChanges();
             }
-            else if (type == "Child")
+            else if (type == 3)
             {
                 var _child = db.Children.Find(id);
                 EventParticipant ep = new EventParticipant();
                 ep.ChildId = _child.Id;
-                ep.ParticipantType = type;
+                ep.ParticipantType = "Child";
                 ep.EventId = eventid;
                 db.EventParticipants.Add(ep);
                 db.SaveChanges();
@@ -197,7 +208,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
                 var _secondaryguardian = db.SecondaryGuardians.Find(id);
                 EventParticipant ep = new EventParticipant();
                 ep.SecondaryGuardianId = _secondaryguardian.Id;
-                ep.ParticipantType = type;
+                ep.ParticipantType = "Secondary";
                 ep.EventId = eventid;
                 db.EventParticipants.Add(ep);
                 db.SaveChanges();

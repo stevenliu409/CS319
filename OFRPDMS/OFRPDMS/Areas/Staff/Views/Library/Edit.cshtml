@@ -63,12 +63,11 @@
             @Html.EditorFor(model => model.Name)
             @Html.ValidationMessageFor(model => model.Name)
         </div>
-
         <div class="editor-label">
             @Html.LabelFor(model => model.ItemType)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.ItemType)
+            @Html.DropDownList("ItemType", ((IEnumerable<SelectListItem>)ViewBag.ItemTypes), String.Empty)
             @Html.ValidationMessageFor(model => model.ItemType)
         </div>
 
@@ -81,11 +80,7 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.CenterId, "Center")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("CenterId", String.Empty)
-            @Html.ValidationMessageFor(model => model.CenterId)
+        @Html.Hidden("CenterId", (int)ViewBag.CenterId2)
         </div>
 
         <p>

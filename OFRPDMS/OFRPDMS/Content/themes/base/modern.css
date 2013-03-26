@@ -986,7 +986,7 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
   letter-spacing: 0.01em;
   line-height: 22pt;
   font-smooth: always;
-  color: rgba(0, 0, 0, 0.6);
+  color: black;
   font-size: 16pt;
   line-height: 24px;
 }
@@ -1055,12 +1055,13 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
 .metrouicss body,
 .metrouicss p,
 .metrouicss div {
-  font-family: 'Segoe UI Semilight', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  --font-family: 'Segoe UI Semilight', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
   font-weight: 300;
   font-size: 11pt;
   letter-spacing: 0.02em;
   line-height: 14pt;
   font-smooth: always;
+  
 }
 .metrouicss p.long-text {
   font-family: 'PT Serif Caption', sans-serif, serif !important;
@@ -3275,6 +3276,7 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
   cursor: pointer;
   width: auto;
   *zoom: 1;
+  margin-left:8px
 }
 .metrouicss button:before,
 .metrouicss .button:before,
@@ -4117,8 +4119,8 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
   padding-bottom: 5px;
   padding-top: 10px;
   padding-left: 5px;
-  border-bottom: 1px #ddd solid;
-  border-right: 1px #ddd solid;
+  border-bottom: 1px #BDBDBD solid;
+  border-right: 1px #BDBDBD solid;
   border-left: 1px transparent solid;
   border-top: 1px transparent solid;
   font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
@@ -4127,7 +4129,7 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
   letter-spacing: 0.01em;
   line-height: 13pt;
   font-smooth: always;
-  color: rgba(0, 0, 0, 0.6);
+  color: black;
   text-align: left;
 }
 .metrouicss table thead tr th,
@@ -4137,8 +4139,8 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
   padding-bottom: 5px;
   padding-top: 10px;
   padding-left: 5px;
-  border-bottom: 1px #ddd solid;
-  border-right: 1px #ddd solid;
+  border-bottom: 1px #BDBDBD solid;
+  border-right: 1px #BDBDBD solid;
   border-left: 1px transparent solid;
   border-top: 1px transparent solid;
   font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
@@ -4147,7 +4149,7 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
   letter-spacing: 0.01em;
   line-height: 13pt;
   font-smooth: always;
-  color: rgba(0, 0, 0, 0.6);
+  color: black;
   text-align: left;
 }
 .metrouicss table thead tr th.right,
@@ -4175,8 +4177,8 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
   line-height: 14pt;
   font-smooth: always;
   padding: 3px 10px;
-  border-right: 1px #ddd solid;
-  border-bottom: 1px #ddd solid;
+  border-right: 1px #BDBDBD solid;
+  border-bottom: 1px #BDBDBD solid;
   border-left: 1px transparent solid;
   border-top: 1px transparent solid;
   box-sizing: border-box;
@@ -4840,7 +4842,7 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
 .metrouicss .page-sidebar a:active {
   color: rgba(0, 0, 0, 0.4);
 }
-.metrouicss .page-sidebar a:hover {
+.metrouicss .page-sidebar a:hover{
   background-color: #2d89ef !important;
   color: #ffffff !important;
 }
@@ -6104,6 +6106,8 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
   --margin-top: 30px;
   border: 0px #eaeaea solid;
   width: 90%;
+  bottom: 17px;
+  color: Black;
   --padding: 10px;
   --margin-left:30px
 }
@@ -6142,7 +6146,7 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
   border: 1px transparent solid;
   color: #353535;
   margin-right: 10px;
-  margin-bottom: 10px;
+  --margin-bottom: 10px;
   border-raduis: 0;
   cursor: pointer;
   width: auto;
@@ -7269,7 +7273,7 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
 .metrouicss #dialogOverlay {
   width: 100%;
   height: 100%;
-  position: fixed;
+  --position: fixed;
   top: 0;
   left: 0;
   background-color: rgba(235, 235, 235, 0.5);

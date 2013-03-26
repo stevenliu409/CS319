@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Index";
 }
-
+<fieldset>
 <h2>Checked-Out Library Items</h2>
 
 <p>
@@ -35,9 +35,8 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Return", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id })
         </td>
         <td>
 			@String.Format("{0:g}", item.BorrowDate)
@@ -52,7 +51,8 @@
 			@String.Format("{0:g}", item.ReturnDate)
         </td>
         <td>
-			@(item.PrimaryGuardian == null ? "None" : item.PrimaryGuardian.LastName)
+			@(item.PrimaryGuardian == null ? "None" : item.PrimaryGuardian.FirstName)
+            @(item.PrimaryGuardian == null ? "None" : item.PrimaryGuardian.LastName)
         </td>
         <td>
 			@(item.LibraryResource == null ? "None" : item.LibraryResource.Name)
@@ -63,3 +63,4 @@
 </table>
 
 
+</fieldset>

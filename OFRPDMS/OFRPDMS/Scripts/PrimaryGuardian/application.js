@@ -1,11 +1,11 @@
 ﻿
 $(document).ready(function () {
 
-    $('.pickDate').datepicker({
+   $('.pickDate').datepicker({
        dateFormat: 'yy-mm-dd',
         showOn: "both",
         buttonText: "Calendar",
-        buttonImage: "../../Content/themes/base/images/calendar.png",
+        buttonImage: "/Content/themes/base/images/calendar.png",
         buttonImageOnly: true,
         yearRange: "-20:+0",
         changeMonth: true,
@@ -41,7 +41,7 @@ function addNestedForm(container, counter, ticks, content) {
         dateFormat: 'yy-mm-dd',
         showOn: "both",
         buttonText: "Calendar",
-        buttonImage: "../../Content/themes/base/images/calendar.png",
+        buttonImage: "/Content/themes/base/images/calendar.png",
         buttonImageOnly: true,
         yearRange: "-20:+0",
         changeMonth: true,

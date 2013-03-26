@@ -1,0 +1,21 @@
+﻿@model OFRPDMS.Areas.Admin.Models.Report
+
+@{
+    ViewBag.Title = "TrackPG";
+}
+<fieldset>
+<h2>@ViewBag.type </h2>
+
+<h2> </h2>
+<h2>
+@{
+    string link_addr = "../../Staff/Center/1/PrimaryGuardians/Details/" + @ViewBag.pgid;
+}
+<a href =@link_addr>@ViewBag.First @ViewBag.Last</a> visited @ViewBag.visitHistory.Length Times:
+</h2>
+
+@for (int i = 0; i < @ViewBag.visitHistory.Length; i++)
+{
+    <h3> @ViewBag.visitHistory[i].ToShortDateString()</h3>
+}
+</fieldset>

@@ -72,12 +72,9 @@
         @Html.ValidationMessageFor(model => model.Allergies)
 </div>
 
-<div class="editor-label">
-    @Html.LabelFor(model => model.CenterId, "Center")
-</div>
 <div class="editor-field">
-    @Html.DropDownList("CenterId", String.Empty)
-    @Html.ValidationMessageFor(model => model.CenterId)
+    
+    @Html.Hidden("CenterId", (int) ViewBag.CenterId2)
 </div>
 
 

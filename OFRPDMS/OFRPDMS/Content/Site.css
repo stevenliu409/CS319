@@ -115,7 +115,7 @@ header h1, #header h1 {
 #admin_nav 
 { 
     float: right; 
-    margin-right : 40px;  
+    margin-right : 20px;  
 }
 #main 
 {
@@ -190,7 +190,7 @@ textarea {
 
 input[type="text"], 
 input[type="password"] {
-    border: 1px solid #ccc;
+    --border: 1px solid #ccc;
     padding: 2px;
     font-size: 1.2em;
     color: #444;
@@ -199,7 +199,7 @@ input[type="password"] {
 }
 
 select {
-    border: 1px solid #ccc;
+    ---border: 1px solid #ccc;
     padding: 2px;
     font-size: 1.2em;
     color: #444;
@@ -226,7 +226,7 @@ input[type="submit"] {
 
 nav, 
 #menucontainer {
-    --margin-top: 40px;
+    margin-top: 35px;
 }
 
 div#title {
@@ -242,6 +242,12 @@ div#title {
     position:absolute;
     Right:0px;
     top:0px;
+}
+
+#center
+{
+   bottom:42px
+       
 }
 
 #logindisplay a:link {
@@ -284,15 +290,6 @@ div#title {
 
 /* Styles for editor and display helpers
 ----------------------------------------------------------*/
-.display-label, 
-.editor-label {
-    margin: 1em 0 0 0;
-}
-
-.display-field, 
-.editor-field {
-    margin: 0.5em 0 0 0;
-}
 
 .text-box {
     width: 30em;

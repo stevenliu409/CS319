@@ -50,6 +50,7 @@
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
             @Html.ActionLink("Details", "Details", new { id=item.Id }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+
         </td>
         <td>
 			@item.Broken
@@ -76,7 +77,7 @@
 			@item.Sanitized
         </td>
         <td>
-			@(item.PrimaryGuardianBorrows == null ? "None" : item.PrimaryGuardianBorrows.Count.ToString())
+			@(item.CheckedOut == false ? "None" : item.PrimaryGuardianBorrows.Single(pgb=> pgb.Returned == false).PrimaryGuardian.FirstName)
         </td>
         <td>
 			@(item.Center == null ? "None" : item.Center.Name)
@@ -85,4 +86,4 @@
 }
 
 </table>
-<fieldset>
+</fieldset>
