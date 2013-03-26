@@ -16,6 +16,6 @@
 
 @for (int i = 0; i < @ViewBag.visitHistory.Length; i++)
 {
-    <h3> @ViewBag.visitHistory[i]</h3>
+    <h3> @ViewBag.visitHistory[i].ToShortDateString()</h3>
 }
 </fieldset>

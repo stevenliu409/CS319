@@ -34,17 +34,15 @@ namespace OFRPDMS.Areas.Admin.Controllers
             //ViewBag.myReport = db.Report.First();
             DateTime startday = report.startDay;
             DateTime endday = report.endDay.AddDays(1);
-            string[] disLanguage = getLanguages(report.startDay, endday);
-            string[] disCountry = getCountrys(report.startDay, endday);
+
             ViewBag.myReport = report;
-            ViewBag.numOfNewPG = getNumOfNewPGTable(report.startDay, endday);
-            ViewBag.numOfPG = getNumOfPGTable(endday);
-            ViewBag.numOfVisit = getNumOfVisitTable(report.startDay, endday);
-            ViewBag.distinctLanguage = disLanguage;
-            ViewBag.distinctCountry = disCountry;
             ViewBag.center = context.Centers.ToArray();
-            ViewBag.languageTable = getLanguageTable(disLanguage, report.startDay, endday);
-            ViewBag.countryTable = getCountryTable(disCountry, report.startDay, endday);
+            ViewBag.pgTable = getStringPGTable(report.startDay, endday);
+            ViewBag.languageTable = getStringLanguageTable(report.startDay, endday);
+            ViewBag.countryTable = getStringCountryTable(report.startDay, endday);
+
+            
+
             return View(context.Centers);
             
         }
@@ -266,24 +264,26 @@ namespace OFRPDMS.Areas.Admin.Controllers
         // get the number of new PG(created after start date) 
         private int[] getNumOfNewPGTable(DateTime sday, DateTime eday)
         {
-            int[] newPGTable = new int[context.Centers.Count()+10];
-            int test = newPGTable.Length;
+            int[] newPGTable = new int[context.Centers.Count()];
+            int counter = 0;
             foreach (var c in context.Centers)
             {
                 IEnumerable<PrimaryGuardian> pgs = context.PrimaryGuardians.Where(pg => DateTime.Compare(pg.DateCreated, sday) > 0 && DateTime.Compare(pg.DateCreated, eday) < 0 && pg.CenterId == c.Id);
-                newPGTable[c.Id] = pgs.Count();
+                newPGTable[counter] = pgs.Count();
+                counter++;
             }
 
             return newPGTable;
         }
         private int[] getNumOfVisitTable(DateTime sday, DateTime eday)
         {
-            int[] newVisitTable = new int[context.Centers.Count()+10];
-
+            int[] newVisitTable = new int[context.Centers.Count()];
+            int counter = 0;
             foreach (var c in context.Centers)
             {
                 IEnumerable<Event> evts = context.Events.Where(evt => DateTime.Compare(evt.Date, sday) > 0 && DateTime.Compare(evt.Date, eday) < 0 && evt.CenterId == c.Id);
-                newVisitTable[c.Id] = evts.Count();
+                newVisitTable[counter] = evts.Count();
+                counter++;
             }
 
             return newVisitTable;
@@ -353,38 +353,43 @@ namespace OFRPDMS.Areas.Admin.Controllers
             pgString[0, 3] = "# of visit";
 
             //start from second row
-            for (int i = 1; i < context.Centers.Count() + 1; i++)
+            int i = 0;
+            foreach (Center c in context.Centers)
             {
-                pgString[i, 0] = context.Centers.Find(i).Name;
-                pgString[i, 1] = numOfNewPG[i].ToString();
-                pgString[i, 2] = numOfPG[i].ToString();
-                pgString[i, 3] = numOfVisit[i].ToString();
+                pgString[i+1, 0] = c.Name;
+                pgString[i+1, 1] = numOfNewPG[i].ToString();
+                pgString[i+1, 2] = numOfPG[i].ToString();
+                pgString[i+1, 3] = numOfVisit[i].ToString();
+                i++;
             }
             return pgString;
         }
 
         private string[,] getStringLanguageTable(DateTime startDay,DateTime endDay)
         {
-            Center[] center = context.Centers.ToArray();
+            
 
             string[] disLanguage = getLanguages(startDay, endDay);
             int[,] languageTable = getLanguageTable(disLanguage, startDay, endDay);
-            string[,] languageString = new string[disLanguage.Length + 1, center.Length+2];
+            string[,] languageString = new string[disLanguage.Length + 1, context.Centers.Count() +2];
+            int cLength = context.Centers.Count();
 
             //first row
             languageString[0, 0] = "Language";
-            for (int i = 1; i < context.Centers.Count() + 1; i++)
+            int counter = 1;
+            foreach (Center c in context.Centers)
             {
-                languageString[0, i] = context.Centers.Find(i).Name;
+                languageString[0, counter] = c.Name;
+                counter++;
             }
-            languageString[0, context.Centers.Count() + 1] = "Total";
+            languageString[0, cLength + 1] = "Total";
 
             for (int i = 0; i < disLanguage.Length; i++)
             {
                 languageString[i+1, 0] = disLanguage[i];
-                for(int j = 1; j < center.Length+2; j++)
+                for (int j = 0; j < cLength + 1; j++)
                 {
-                     languageString[i+1, j] = languageTable[i,j].ToString();
+                     languageString[i+1, j+1] = languageTable[i,j].ToString();
                 }
             }
             return languageString;
@@ -392,26 +397,29 @@ namespace OFRPDMS.Areas.Admin.Controllers
 
         private string[,] getStringCountryTable(DateTime startDay,DateTime endDay)
         {
-            Center[] center = context.Centers.ToArray();
-
+            
+            int cLength = context.Centers.Count();
             string[] disCountry = getCountrys(startDay, endDay);
-            int[,] languageTable = getCountryTable(disCountry, startDay, endDay);
-            string[,] countryString = new string[disCountry.Length + 1, center.Length+2];
+            int[,] countryTable = getCountryTable(disCountry, startDay, endDay);
+            string[,] countryString = new string[disCountry.Length + 1, cLength+2];
 
             //first row
             countryString[0, 0] = "Country";
-            for (int i = 1; i < context.Centers.Count() + 1; i++)
+            int counter = 1;
+            foreach (Center c in context.Centers)
             {
-                countryString[0, i] = context.Centers.Find(i).Name;
+                countryString[0, counter] = c.Name;
+                counter++;
             }
             countryString[0, context.Centers.Count() + 1] = "Total";
 
+            //the rest
             for (int i = 0; i < disCountry.Length; i++)
             {
                 countryString[i+1, 0] = disCountry[i];
-                for(int j = 1; j < center.Length+2; j++)
+                for(int j = 0; j < cLength+1; j++)
                 {
-                     countryString[i+1, j] = languageTable[i,j].ToString();
+                     countryString[i+1, j+1] = countryTable[i,j].ToString();
                 }
             }
             return countryString;
@@ -420,12 +428,13 @@ namespace OFRPDMS.Areas.Admin.Controllers
         private int[] getNumOfPGTable(DateTime eday)
         {
             int[] pgTable = new int[context.Centers.Count() + 10];
-
+            int counter = 0;
             foreach (var c in context.Centers)
             {
                 IEnumerable<PrimaryGuardian> pgs = context.PrimaryGuardians.Where(pg => DateTime.Compare(pg.DateCreated, eday) < 0 && pg.CenterId == c.Id);
-                IEnumerable<PrimaryGuardian> distinctPG = context.PrimaryGuardians.Distinct();
-                pgTable[c.Id] = pgs.Count();
+                //IEnumerable<PrimaryGuardian> distinctPG = context.PrimaryGuardians.Distinct();
+                pgTable[counter] = pgs.Count();
+                counter++;
             }
 
             return pgTable;
@@ -478,29 +487,30 @@ namespace OFRPDMS.Areas.Admin.Controllers
         private int[,] getCountryTable(string[] disCountry, DateTime sday, DateTime eday)
         {
             //row means language, column means center
-            int[,] countryTable = new int[disCountry.Length+1, context.Centers.Count()+20];
+            int[,] countryTable = new int[disCountry.Length, context.Centers.Count()+1];
 
-            IEnumerable<PrimaryGuardian> aa = context.PrimaryGuardians.Where(pg => DateTime.Compare(pg.DateCreated, sday) > 0
-                        && DateTime.Compare(pg.DateCreated, eday) < 0);
-
-            foreach (PrimaryGuardian pg in aa)
+            int counter = 0;
+            foreach (Center c in context.Centers)
             {
-                int cId = pg.CenterId;
-                string country = pg.Country;
-                int countryIndex = disCountry.ToList<string>().IndexOf(country);
-
-                countryTable[countryIndex, cId] += 1;
+                IEnumerable<PrimaryGuardian> aa = context.PrimaryGuardians.Where(pg => DateTime.Compare(pg.DateCreated, sday) > 0
+                       && DateTime.Compare(pg.DateCreated, eday) < 0
+                       && pg.CenterId == c.Id);
+                for (int i = 0; i < disCountry.Length; i++)
+                {
+                    countryTable[i, counter] = aa.Where(pg => pg.Country == disCountry[i]).Count();
+                }
+                counter++;
             }
 
             //get row total
             for (int i = 0; i < disCountry.Length; i++)
             {
                 int rowTotal = 0;
-                for (int j = 1; j < context.Centers.Count() + 1; j++)
+                for (int j = 0; j < context.Centers.Count(); j++)
                 {
                     rowTotal += countryTable[i, j];
                 }
-                int length = context.Centers.Count() + 1;
+                int length = context.Centers.Count();
                 countryTable[i, length] = rowTotal;
             }
 
@@ -511,28 +521,31 @@ namespace OFRPDMS.Areas.Admin.Controllers
         private int[,] getLanguageTable(string[] disLanguage, DateTime sday, DateTime eday)
         {
             //row means language, column means center
-            int[,] languageTable = new int[disLanguage.Length+1, context.Centers.Count()+10];
+            int[,] languageTable = new int[disLanguage.Length, context.Centers.Count()+1];
 
-            IEnumerable<PrimaryGuardian> aa = context.PrimaryGuardians.Where(pg => DateTime.Compare(pg.DateCreated, sday) > 0
-                        && DateTime.Compare(pg.DateCreated, eday) < 0);
-            
-            foreach (PrimaryGuardian pg in aa)
+
+            int counter = 0;
+            foreach (Center c in context.Centers)
             {
-                int cId = pg.CenterId;
-                string language = pg.Language;
-                int languageIndex = disLanguage.ToList<string>().IndexOf(language);
-
-                languageTable[languageIndex, cId] += 1;
+                IEnumerable<PrimaryGuardian> aa = context.PrimaryGuardians.Where(pg => DateTime.Compare(pg.DateCreated, sday) > 0
+                       && DateTime.Compare(pg.DateCreated, eday) < 0
+                       && pg.CenterId == c.Id);
+                for(int i = 0 ; i < disLanguage.Length; i++)
+                {
+                    languageTable[i, counter] = aa.Where(pg => pg.Language == disLanguage[i]).Count();
+                }
+                counter++;
             }
+
 
             for (int i = 0; i < disLanguage.Length; i++)
             {
                 int rowTotal = 0;
-                for (int j = 1; j < context.Centers.Count()+1; j++)
+                for (int j = 0; j < context.Centers.Count(); j++)
                 {
                     rowTotal += languageTable[i, j];
                 }
-                int length = context.Centers.Count()+1;
+                int length = context.Centers.Count();
                 languageTable[i, length] = rowTotal;
             }
 

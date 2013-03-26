@@ -9,7 +9,19 @@
 <h2>End : @ViewBag.myReport.endDay.ToShortDateString()</h2>
 
 <table class="hovered">
-    <tr>
+
+    @for (int i = 0; i < @ViewBag.pgTable.GetLength(0); i++)
+    {
+        <tr>
+        @for (int j = 0; j < @ViewBag.pgTable.GetLength(1); j++)
+         {
+           <th>
+           @ViewBag.pgTable[i,j]
+           </th>  
+         }
+         </tr>
+    }
+@*    <tr>
         <th>
             Center
         </th>
@@ -41,16 +53,28 @@
                             @ViewBag.numOfVisit[(i+1)]
                     </td>
                 </tr>
-            }
+            }*@
 </table>
 
 <h2>Languages Spoken at Home </h2>
 <table class ="hovered">
-    <tr>
+
+    @for (int i = 0; i < @ViewBag.languageTable.GetLength(0); i++)
+    {
+        <tr>
+        @for (int j = 0; j < @ViewBag.languageTable.GetLength(1); j++)
+         {
+           <th>
+           @ViewBag.languageTable[i,j]
+           </th>  
+         }
+         </tr>
+    }
+@*    <tr>
         <th>
         Language
         </th>
-    @for(int i =0; i < @ViewBag.center.Length; i++)
+    @for (int i = 0; i < @ViewBag.center.Length; i++)
     {
         <th>
              @ViewBag.center[i].Name
@@ -76,12 +100,24 @@
                 
             }
         </tr>
-    }
+    }*@
 </table>
 
 <h2>Culture</h2>
 <table class="hovered">
-    <tr>
+
+    @for (int i = 0; i < @ViewBag.countryTable.GetLength(0); i++)
+    {
+        <tr>
+        @for (int j = 0; j < @ViewBag.countryTable.GetLength(1); j++)
+         {
+           <th>
+           @ViewBag.countryTable[i,j]
+           </th>  
+         }
+         </tr>
+    }
+@*    <tr>
         <th>
         Country
         </th>
@@ -109,6 +145,6 @@
                 </th>
             }
         </tr>
-    }
+    }*@
 </table>
 </fieldset>
