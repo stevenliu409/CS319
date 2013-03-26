@@ -1,0 +1,15 @@
+﻿@model OFRPDMS.Areas.Admin.Models.Report
+
+@{
+    ViewBag.Title = "TrackPG";
+}
+<fieldset>
+<h2>@ViewBag.type </h2>
+<h2>@ViewBag.first @ViewBag.last visited @ViewBag.visitHistory.Length Times:</h2>
+
+
+@for (int i = 0; i < @ViewBag.visitHistory.Length; i++)
+{
+    <h3> @ViewBag.visitHistory[i]</h3>
+}
+</fieldset>
