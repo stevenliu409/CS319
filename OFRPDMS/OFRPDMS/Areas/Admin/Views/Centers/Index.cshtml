@@ -33,7 +33,10 @@
 {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Name)
+            @*@Html.DisplayFor(modelItem => item.Name)*@
+            @*@Html.ActionLink("Staff/Center", "Index", new { id = item.Id })*@
+            @{string href_path = "/Staff/Center/"+@item.Id.ToString();}
+            <a href = @href_path>@item.Name</a>
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Email)

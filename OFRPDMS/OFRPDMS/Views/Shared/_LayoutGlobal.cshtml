@@ -13,6 +13,18 @@
 <body class = "metrouicss">
     <div class="page" id="@ViewBag.CurrentCenterId">
         <div id="header">
+                @if (Request.IsAuthenticated && HttpContext.Current.User.IsInRole("Administrators"))
+        {   
+            <div id ="center">          
+            <div  id="admin_nav">
+                <ul id="admin_menu">
+                    @*<li>@Html.ActionLink("Admin", "Index", "Admin", new { area = "Admin" }, new { id = currentArea == "Admin"? "currentCenter":"" })</li>
+                        @Html.Action("Nav", "Admin", new { area = "Admin" })*@
+                    <li><a href = "/Admin">Admin</a></li>
+                </ul>
+            </div>
+            </div>
+        }
             <div id="title">
             <h1>
                 <img src="/Content/themes/base/images/optionsmain.jpg" alt="Options Main"/>
@@ -22,17 +34,6 @@
                 @Html.Partial("_LogOnPartial", new { area = "" }, null)
             </div>
         </div>
-        @if (Request.IsAuthenticated && HttpContext.Current.User.IsInRole("Administrators"))
-        {   
-            <div id ="center">          
-            <div  id="admin_nav">
-                <ul id="admin_menu">
-                    <li>@Html.ActionLink("Admin", "Index", "Admin", new { area = "Admin" }, new { id = currentArea == "Admin"? "currentCenter":"" })</li>
-                        @Html.Action("Nav", "Admin", new { area = "Admin" })
-                </ul>
-            </div>
-            </div>
-        }
         <div id="admin_main">
             @RenderBody()
         </div>
