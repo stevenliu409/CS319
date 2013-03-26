@@ -32,17 +32,19 @@ namespace OFRPDMS.Areas.Admin.Controllers
         public ActionResult Generate(Report report)
         {
             //ViewBag.myReport = db.Report.First();
-            string[] disLanguage = getLanguages(report.startDay, report.endDay);
-            string[] disCountry = getCountrys(report.startDay, report.endDay);
+            DateTime startday = report.startDay;
+            DateTime endday = report.endDay.AddDays(1);
+            string[] disLanguage = getLanguages(report.startDay, endday);
+            string[] disCountry = getCountrys(report.startDay, endday);
             ViewBag.myReport = report;
-            ViewBag.numOfNewPG = getNumOfNewPGTable(report.startDay, report.endDay);
-            ViewBag.numOfPG = getNumOfPGTable(report.endDay);
-            ViewBag.numOfVisit = getNumOfVisitTable(report.startDay, report.endDay);
+            ViewBag.numOfNewPG = getNumOfNewPGTable(report.startDay, endday);
+            ViewBag.numOfPG = getNumOfPGTable(endday);
+            ViewBag.numOfVisit = getNumOfVisitTable(report.startDay, endday);
             ViewBag.distinctLanguage = disLanguage;
             ViewBag.distinctCountry = disCountry;
             ViewBag.center = context.Centers.ToArray();
-            ViewBag.languageTable = getLanguageTable(disLanguage, report.startDay, report.endDay);
-            ViewBag.countryTable = getCountryTable(disCountry,report.startDay, report.endDay);
+            ViewBag.languageTable = getLanguageTable(disLanguage, report.startDay, endday);
+            ViewBag.countryTable = getCountryTable(disCountry, report.startDay, endday);
             return View(context.Centers);
             
         }
@@ -67,7 +69,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
 
             ViewBag.type = report.type;
   
-            ViewBag.visitHistory = getVisitHistory(report.startDay, report.endDay, report.type, report.pgid).ToArray();
+            ViewBag.visitHistory = getVisitHistory(report.startDay2, report.endDay2, report.type, report.pgid).ToArray();
             
             return View();
         }
@@ -94,11 +96,12 @@ namespace OFRPDMS.Areas.Admin.Controllers
         public void GenerateExcel(Report report, int mode)
         {
             Response.Clear();
-
+            DateTime startDay = report.startDay3;
+            DateTime endDay = report.endDay3.AddDays(1);
             // fill in the 2-dimensional string array here with data
-            string[,] Content1 = getStringPGTable(report);
-            string[,] Content2 = getStringLanguageTable(report);
-            string[,] Content3 = getStringCountryTable(report);
+            string[,] Content1 = getStringPGTable(startDay,endDay);
+            string[,] Content2 = getStringLanguageTable(startDay, endDay);
+            string[,] Content3 = getStringCountryTable(startDay, endDay);
 
             // create a new excel workbook
             //Microsoft.Office.Interop.Excel.Application excel = new Microsoft.Office.Interop.Excel.Application();
@@ -181,9 +184,9 @@ namespace OFRPDMS.Areas.Admin.Controllers
                 Response.AddHeader("content-disposition", "attachment; filename=Report.csv");
                 Response.ContentType = "text/plain; charset=UTF-8";
 
-                parseStringTable(getStringPGTable(report));
-                parseStringTable(getStringLanguageTable(report));
-                parseStringTable(getStringCountryTable(report));
+                parseStringTable(getStringPGTable(startDay, endDay));
+                parseStringTable(getStringLanguageTable(startDay, endDay));
+                parseStringTable(getStringCountryTable(startDay, endDay));
                 
                 
                 
@@ -331,14 +334,15 @@ namespace OFRPDMS.Areas.Admin.Controllers
         //    return pgTable;
         //}
 
-        private string[,] getStringPGTable(Report report)
+        private string[,] getStringPGTable(DateTime startDay, DateTime endDay)
         {
+
             Center[] center = context.Centers.ToArray();
             string[,] pgString = new string[center.Length+1,4];
-            string[] disCountry = getCountrys(report.startDay, report.endDay);
-            int[] numOfNewPG = getNumOfNewPGTable(report.startDay, report.endDay);
-            int[] numOfPG = getNumOfPGTable(report.endDay);
-            int[] numOfVisit = getNumOfVisitTable(report.startDay, report.endDay);
+            string[] disCountry = getCountrys(startDay, endDay);
+            int[] numOfNewPG = getNumOfNewPGTable(startDay, endDay);
+            int[] numOfPG = getNumOfPGTable(endDay);
+            int[] numOfVisit = getNumOfVisitTable(startDay, endDay);
             
             //----------------------------------------------------
             //fill in # of parents table
@@ -359,12 +363,12 @@ namespace OFRPDMS.Areas.Admin.Controllers
             return pgString;
         }
 
-        private string[,] getStringLanguageTable(Report report)
+        private string[,] getStringLanguageTable(DateTime startDay,DateTime endDay)
         {
             Center[] center = context.Centers.ToArray();
-            
-            string[] disLanguage = getLanguages(report.startDay, report.endDay);
-            int[,] languageTable = getLanguageTable(disLanguage, report.startDay, report.endDay);
+
+            string[] disLanguage = getLanguages(startDay, endDay);
+            int[,] languageTable = getLanguageTable(disLanguage, startDay, endDay);
             string[,] languageString = new string[disLanguage.Length + 1, center.Length+2];
 
             //first row
@@ -386,12 +390,12 @@ namespace OFRPDMS.Areas.Admin.Controllers
             return languageString;
         }
 
-        private string[,] getStringCountryTable(Report report)
+        private string[,] getStringCountryTable(DateTime startDay,DateTime endDay)
         {
             Center[] center = context.Centers.ToArray();
-            
-            string[] disCountry = getCountrys(report.startDay, report.endDay);
-            int[,] languageTable = getCountryTable(disCountry, report.startDay, report.endDay);
+
+            string[] disCountry = getCountrys(startDay, endDay);
+            int[,] languageTable = getCountryTable(disCountry, startDay, endDay);
             string[,] countryString = new string[disCountry.Length + 1, center.Length+2];
 
             //first row

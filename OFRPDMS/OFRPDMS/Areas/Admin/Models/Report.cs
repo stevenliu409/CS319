@@ -14,10 +14,22 @@ namespace OFRPDMS.Areas.Admin.Models
 
         
         public int Id { get; set; }
+
         [DataType(DataType.Date)]
         public DateTime startDay { get; set; }
         [DataType(DataType.Date)]
         public DateTime endDay { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime startDay2 { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime endDay2 { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime startDay3 { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime endDay3 { get; set; }
+
         public int pgid { get; set; }
         public string type { get; set; } 
 

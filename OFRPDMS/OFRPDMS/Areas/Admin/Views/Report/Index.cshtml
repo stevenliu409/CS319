@@ -67,18 +67,18 @@
         <div>Visit History</div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.startDay)
+        @Html.LabelFor(model => model.startDay2)
         </div>
         <div class="editor-field">
-        @Html.EditorFor(model => model.startDay)
-		@Html.ValidationMessageFor(model => model.startDay)
+        @Html.EditorFor(model => model.startDay2)
+		@Html.ValidationMessageFor(model => model.startDay2)
         </div>
         <div class="editor-label">
-        @Html.LabelFor(model => model.endDay)
+        @Html.LabelFor(model => model.endDay2)
         </div>
         <div class="editor-field">
-        @Html.EditorFor(model => model.endDay)
-		@Html.ValidationMessageFor(model => model.endDay)
+        @Html.EditorFor(model => model.endDay2)
+		@Html.ValidationMessageFor(model => model.endDay2)
         </div>
 
         @Html.Hidden("pgid")
@@ -211,18 +211,18 @@
 
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.startDay, "Start Date")
+            @Html.LabelFor(model => model.startDay3, "Start Date")
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.startDay, "Start Date")
-            @Html.ValidationMessageFor(model => model.startDay)
+            @Html.EditorFor(model => model.startDay3, "Start Date")
+            @Html.ValidationMessageFor(model => model.startDay3)
         </div>
         <div class="editor-label">
-            @Html.LabelFor(model => model.endDay, "End Date")
+            @Html.LabelFor(model => model.endDay3, "End Date")
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.endDay, "End Date")
-            @Html.ValidationMessageFor(model => model.endDay)
+            @Html.EditorFor(model => model.endDay3, "End Date")
+            @Html.ValidationMessageFor(model => model.endDay3)
 
         </div>
         <br />
