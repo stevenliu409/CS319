@@ -190,7 +190,7 @@ textarea {
 
 input[type="text"], 
 input[type="password"] {
-    border: 1px solid #ccc;
+    --border: 1px solid #ccc;
     padding: 2px;
     font-size: 1.2em;
     color: #444;
@@ -199,7 +199,7 @@ input[type="password"] {
 }
 
 select {
-    border: 1px solid #ccc;
+    ---border: 1px solid #ccc;
     padding: 2px;
     font-size: 1.2em;
     color: #444;
