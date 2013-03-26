@@ -18,6 +18,9 @@
 </div>
 
 <script type = "text/javascript">
+    var parent = "<tr><th>FirstName</th><th>LastName</th><th>Email</th><th>Phone</th><th>PostalCodePrefix</th><th>DateCreated</th><th>Language</th><th>Country</th><th>Allergies</th></tr></thead>";
+    var secondary = "<tr><th>FirstName</th><th>LastName</th><th>Phone</th><th>Associated To</th></tr>";
+    var child = "<tr><th>FirstName</th><th>LastName</th><th>Birthday</th><th>Associated To</th><th>allergy</th></tr>";
     $.ajax({
         url: '/SignIn/findEvent',
         type: 'POST',
@@ -71,8 +74,24 @@
             datatype: "json",
             data: { name: text, type: _type },
             success: function (data) {
-                $('#datatable').empty();
-                $('#tabletemplate').tmpl(data).appendTo('#datatable');
+                if (_type == "Primary") {
+                    $('#head').empty();
+                    $('#datatable').empty();
+                    $("#head").append(parent);
+                    $('#tabletemplate').tmpl(data).appendTo('#datatable');
+                }
+                if (_type == "Secondary") {
+                    $('#head').empty();
+                    $('#datatable').empty();
+                    $("#head").append(secondary);
+                    $('#secondary_tabletemplate').tmpl(data).appendTo('#datatable');
+                }
+                if (_type == "Child") {
+                    $('#head').empty();
+                    $('#datatable').empty();
+                    $("#head").append(child);
+                    $('#child_tabletemplate').tmpl(data).appendTo('#datatable');
+                }
             }
         });
     });
@@ -89,48 +108,40 @@
     <td>${datacreate}</td>
     <td>${lang}</td>
     <td>${country}</td>
-    <td>${Allergies}</td>
+    <td>${allergy}</td>
     <td><input type = "button" value = "Add" onclick = "addparticipant(${id},${type})" /></td>
 </tr>
 </script>
 
-    <table class= "hovered" >
-    <thead>
-        <tr>
-            <th>
-              FirstName
-            </th>
-            <th>
-                LastName
-            </th>
-            <th>
-                Email
-            </th>
-            <th>
-			     Phone
-            </th>
-            <th>
-			    PostalCodePrefix
-            </th>
-            <th>
-			    DateCreated
-            </th>
-            <th>
-			    Language
-            </th>
-            <th>
-			    Country
-             </th>
-             <th>
-                Allergies
-             </th>
-          <th>
-          
-          </th>
-        </tr>
-        </thead>
+<script id = "secondary_tabletemplate" type = "text/x-jquery-tmpl">
+<tr>
+    <td>${Fname}</td>
+    <td>${Lname}</td>
+    <td>${phone}</td>
+    <td>${relationshiptoGuardian}</td>
+    <td><input type = "button" value = "Add" onclick = "addparticipant(${id},${type})" /></td>
+</tr>
+</script>
+
+<script id = "child_tabletemplate" type = "text/x-jquery-tmpl">
+<tr>
+    <td>${Fname}</td>
+    <td>${Lname}</td>
+    <td>${birthday}</td>
+    <td>${relationshiptoGuardian}</td>
+    <td>${allergy}</td>
+    <td><input type = "button" value = "Add" onclick = "addparticipant(${id},${type})" /></td>
+</tr>
+</script>
+
+ <div>
+    <table class="hovered" >
+    <thead id = "head">
+    </thead>
        <tbody id = "datatable" >
        
         </tbody>
         </table>
+
+        </div>
 
