@@ -4842,9 +4842,7 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
 .metrouicss .page-sidebar a:active {
   color: rgba(0, 0, 0, 0.4);
 }
-.metrouicss .page-sidebar a:hover,
-.metrouicss .page-sidebar a#current,
-.metrouicss div#admin_nav a#currentCenter {
+.metrouicss .page-sidebar a:hover{
   background-color: #2d89ef !important;
   color: #ffffff !important;
 }
