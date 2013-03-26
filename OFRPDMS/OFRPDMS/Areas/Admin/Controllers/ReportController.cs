@@ -95,32 +95,46 @@ namespace OFRPDMS.Areas.Admin.Controllers
             Response.Clear();
 
             // fill in the 2-dimensional string array here with data
-            var Content = new string[][]
-            {
-                new string[] {"First Name", "Last Name", "Postal Code", "City"},
-                new string[] {},
-                new string[] {"Peter", "Moon", "1234", "Canada"},
-                new string[] {"Rufus", "Zhu", "5678", "Canada"}
-            };
-
+            string[,] Content1 = getStringPGTable(report);
+            string[,] Content2 = getStringLanguageTable(report);
+            string[,] Content3 = getStringCountryTable(report);
 
             // create a new excel workbook
-            Microsoft.Office.Interop.Excel.Application excel = new Microsoft.Office.Interop.Excel.Application();
-            Microsoft.Office.Interop.Excel.Workbook workBook = excel.Workbooks.Add();
-            Microsoft.Office.Interop.Excel.Worksheet sheet = workBook.ActiveSheet;
+            //Microsoft.Office.Interop.Excel.Application excel = new Microsoft.Office.Interop.Excel.Application();
+            //Microsoft.Office.Interop.Excel.Workbook workBook = excel.Workbooks.Add();
+            //Microsoft.Office.Interop.Excel.Worksheet sheet = workBook.ActiveSheet;
 
-            // File in the excel cells with report data here if we are in an excel mode
-            if (mode == 1 || mode == 2)
-            {
-                for (int i = 0; i < Content.Length; i++)
-                {
-                    string[] CsvLine = Content[i];
-                    for (int j = 0; j < CsvLine.Length; j++)
-                    {
-                        sheet.Cells[i + 1, j + 1] = CsvLine[j];
-                    }
-                }
-            }
+            //File in the excel cells with report data here if we are in an excel mode
+            //if (mode == 1 || mode == 2)
+            //{
+            //    //adding table 1
+            //    for (int i = 0; i < Content1.GetLength(0); i++)
+            //    {
+
+            //        for (int j = 0; j < Content1.GetLength(1); j++)
+            //        {
+            //            sheet.Cells[i, j] = Content1[i,j];
+            //        }
+            //    }
+            //    //adding table 2
+            //    for (int i = Content1.GetLength(0); i < Content1.GetLength(0) + Content2.GetLength(0); i++)
+            //    {
+
+            //        for (int j = Content1.GetLength(1); j < Content1.GetLength(1) + Content2.GetLength(1); j++)
+            //        {
+            //            sheet.Cells[i, j] = Content2[i, j];
+            //        }
+            //    }
+            //    //adding table 3
+            //    for (int i = Content1.GetLength(0) + Content2.GetLength(0); i < Content1.GetLength(0) + Content2.GetLength(0) + Content3.GetLength(0); i++)
+            //    {
+
+            //        for (int j = Content1.GetLength(1) + Content2.GetLength(1); j < Content1.GetLength(1) + Content2.GetLength(1) + Content3.GetLength(1); j++)
+            //        {
+            //            sheet.Cells[i, j] = Content1[i, j];
+            //        }
+            //    }
+            //}
 
             // filename for temporary excel file
             string tempFileName = Path.GetTempFileName();
@@ -128,36 +142,36 @@ namespace OFRPDMS.Areas.Admin.Controllers
 
             if (mode == 1)
             {
-                // .xls file format, 2003 and older
-                workBook.SaveAs(tempFileName, Microsoft.Office.Interop.Excel.XlFileFormat.xlAddIn8);
-                workBook.Close();
+                //// .xls file format, 2003 and older
+                //workBook.SaveAs(tempFileName, Microsoft.Office.Interop.Excel.XlFileFormat.xlAddIn8);
+                //workBook.Close();
 
-                Response.ContentType = "application/vnd.ms-excel";
-                Response.AddHeader("content-disposition", "attachment; filename=Report.xls");
+                //Response.ContentType = "application/vnd.ms-excel";
+                //Response.AddHeader("content-disposition", "attachment; filename=Report.xls");
 
-                Response.WriteFile(tempFileName);
-                Response.Flush();
+                //Response.WriteFile(tempFileName);
+                //Response.Flush();
 
-                // clean temp file
-                System.IO.File.Delete(tempFileName);
-                Response.End();
+                //// clean temp file
+                //System.IO.File.Delete(tempFileName);
+                //Response.End();
             }
             else if (mode == 2)
             {
-                // .xlsx file format, 2007 and newer
-                // maybe try to find the corresponding XlFileFormat so we don't rely on the Interop version to choose
-                workBook.SaveAs(tempFileName);
-                workBook.Close();
+                //// .xlsx file format, 2007 and newer
+                //// maybe try to find the corresponding XlFileFormat so we don't rely on the Interop version to choose
+                //workBook.SaveAs(tempFileName);
+                //workBook.Close();
 
-                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                Response.AddHeader("content-disposition", "attachment; filename=Report.xlsx");
+                //Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                //Response.AddHeader("content-disposition", "attachment; filename=Report.xlsx");
 
-                Response.WriteFile(tempFileName);
-                Response.Flush();
+                //Response.WriteFile(tempFileName);
+                //Response.Flush();
 
-                // clean temp file
-                System.IO.File.Delete(tempFileName);
-                Response.End();
+                //// clean temp file
+                //System.IO.File.Delete(tempFileName);
+                //Response.End();
             }
             else if (mode == 3)
             {
@@ -166,32 +180,38 @@ namespace OFRPDMS.Areas.Admin.Controllers
                 Response.AddHeader("content-disposition", "attachment; filename=Report.csv");
                 Response.ContentType = "text/plain; charset=UTF-8";
 
-                for (int i = 0; i < Content.Length; i++)
-                {
-                    string[] CsvLine = Content[i];
-
-                    if (CsvLine.Length == 0)
-                    {
-                        continue;
-                    }
-
-                    // first one doesn't have comma
-                    byte[] val1 = new System.Text.UTF8Encoding(true).GetBytes(CsvLine[0]);
-                    Response.OutputStream.Write(val1, 0, val1.Length);
-
-                    // insert commas before the rest of the values
-                    for (int j = 1; j < CsvLine.Length; j++)
-                    {
-                        byte[] byteArray = new System.Text.UTF8Encoding(true).GetBytes("," + CsvLine[j]);
-                        Response.OutputStream.Write(byteArray, 0, byteArray.Length);
-                    }
-
-                    // newline
-                    byte[] newLine = new System.Text.UTF8Encoding(true).GetBytes("\r\n");
-                    Response.OutputStream.Write(newLine, 0, newLine.Length);
-                }
+                parseStringTable(getStringPGTable(report));
+                parseStringTable(getStringLanguageTable(report));
+                parseStringTable(getStringCountryTable(report));
+                
+                
+                
+             }
 
                 Response.End();
+            
+        }
+
+        private void parseStringTable(string[,] Content)
+        {
+            for (int i = 0; i < Content.GetLength(0); i++)
+            {
+
+                byte[] val1 = new System.Text.UTF8Encoding(true).GetBytes(Content[i, 0]);
+                Response.OutputStream.Write(val1, 0, val1.Length);
+
+                for (int j = 1; j < Content.GetLength(1); j++)
+                {
+                    // first one doesn't have comma
+
+                    // insert commas before the rest of the values
+
+                    byte[] byteArray = new System.Text.UTF8Encoding(true).GetBytes("," + Content[i, j]);
+                    Response.OutputStream.Write(byteArray, 0, byteArray.Length);
+                }
+                // newline
+                byte[] newLine = new System.Text.UTF8Encoding(true).GetBytes("\r\n");
+                Response.OutputStream.Write(newLine, 0, newLine.Length);
             }
         }
 
@@ -242,7 +262,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
         // get the number of new PG(created after start date) 
         private int[] getNumOfNewPGTable(DateTime sday, DateTime eday)
         {
-            int[] newPGTable = new int[10];
+            int[] newPGTable = new int[context.Centers.Count()+1];
 
             foreach (var c in context.Centers)
             {
@@ -254,7 +274,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
         }
         private int[] getNumOfVisitTable(DateTime sday, DateTime eday)
         {
-            int[] newVisitTable = new int[10];
+            int[] newVisitTable = new int[context.Centers.Count()+1];
 
             foreach (var c in context.Centers)
             {
@@ -293,10 +313,10 @@ namespace OFRPDMS.Areas.Admin.Controllers
             return dt;
         }
    
-
+        //not implemented because the Child doesn't have a DateCreated
         //private int[] getNumOfChild(DateTime eday)
         //{
-        //    int[] pgTable = new int[10];
+        //    int[] pgTable = new int[context.Centers.Count()];
             
         //    foreach (var c in context.Centers)
         //    {
@@ -308,9 +328,91 @@ namespace OFRPDMS.Areas.Admin.Controllers
         //    return pgTable;
         //}
 
+        private string[,] getStringPGTable(Report report)
+        {
+            Center[] center = context.Centers.ToArray();
+            string[,] pgString = new string[center.Length+1,4];
+            string[] disCountry = getCountrys(report.startDay, report.endDay);
+            int[] numOfNewPG = getNumOfNewPGTable(report.startDay, report.endDay);
+            int[] numOfPG = getNumOfPGTable(report.endDay);
+            int[] numOfVisit = getNumOfVisitTable(report.startDay, report.endDay);
+            
+            //----------------------------------------------------
+            //fill in # of parents table
+            //first row
+            pgString[0, 0] = "Center";
+            pgString[0, 1] = "# of new parents";
+            pgString[0, 2] = "# of parents";
+            pgString[0, 3] = "# of visit";
+
+            //start from second row
+            for (int i = 1; i < context.Centers.Count() + 1; i++)
+            {
+                pgString[i, 0] = context.Centers.Find(i).Name;
+                pgString[i, 1] = numOfNewPG[i].ToString();
+                pgString[i, 2] = numOfPG[i].ToString();
+                pgString[i, 3] = numOfVisit[i].ToString();
+            }
+            return pgString;
+        }
+
+        private string[,] getStringLanguageTable(Report report)
+        {
+            Center[] center = context.Centers.ToArray();
+            
+            string[] disLanguage = getLanguages(report.startDay, report.endDay);
+            int[,] languageTable = getLanguageTable(disLanguage, report.startDay, report.endDay);
+            string[,] languageString = new string[disLanguage.Length + 1, center.Length+2];
+
+            //first row
+            languageString[0, 0] = "Language";
+            for (int i = 1; i < context.Centers.Count() + 1; i++)
+            {
+                languageString[0, i] = context.Centers.Find(i).Name;
+            }
+            languageString[0, context.Centers.Count() + 1] = "Total";
+
+            for (int i = 0; i < disLanguage.Length; i++)
+            {
+                languageString[i+1, 0] = disLanguage[i];
+                for(int j = 1; j < center.Length+2; j++)
+                {
+                     languageString[i+1, j] = languageTable[i,j].ToString();
+                }
+            }
+            return languageString;
+        }
+
+        private string[,] getStringCountryTable(Report report)
+        {
+            Center[] center = context.Centers.ToArray();
+            
+            string[] disCountry = getCountrys(report.startDay, report.endDay);
+            int[,] languageTable = getCountryTable(disCountry, report.startDay, report.endDay);
+            string[,] countryString = new string[disCountry.Length + 1, center.Length+2];
+
+            //first row
+            countryString[0, 0] = "Country";
+            for (int i = 1; i < context.Centers.Count() + 1; i++)
+            {
+                countryString[0, i] = context.Centers.Find(i).Name;
+            }
+            countryString[0, context.Centers.Count() + 1] = "Total";
+
+            for (int i = 0; i < disCountry.Length; i++)
+            {
+                countryString[i+1, 0] = disCountry[i];
+                for(int j = 1; j < center.Length+2; j++)
+                {
+                     countryString[i+1, j] = languageTable[i,j].ToString();
+                }
+            }
+            return countryString;
+        }
+
         private int[] getNumOfPGTable(DateTime eday)
         {
-            int[] pgTable = new int[10];
+            int[] pgTable = new int[context.Centers.Count()+1];
 
             foreach (var c in context.Centers)
             {
@@ -369,7 +471,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
         private int[,] getCountryTable(string[] disCountry, DateTime sday, DateTime eday)
         {
             //row means language, column means center
-            int[,] countryTable = new int[100, 10];
+            int[,] countryTable = new int[disCountry.Length+1, context.Centers.Count()+2];
 
             IEnumerable<PrimaryGuardian> aa = context.PrimaryGuardians.Where(pg => DateTime.Compare(pg.DateCreated, sday) > 0
                         && DateTime.Compare(pg.DateCreated, eday) < 0);
@@ -402,7 +504,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
         private int[,] getLanguageTable(string[] disLanguage, DateTime sday, DateTime eday)
         {
             //row means language, column means center
-            int[,] languageTable = new int[100,10];
+            int[,] languageTable = new int[disLanguage.Length+1, context.Centers.Count()+2];
 
             IEnumerable<PrimaryGuardian> aa = context.PrimaryGuardians.Where(pg => DateTime.Compare(pg.DateCreated, sday) > 0
                         && DateTime.Compare(pg.DateCreated, eday) < 0);

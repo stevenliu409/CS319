@@ -3,36 +3,36 @@
 @{
     ViewBag.Title = "Delete";
 }
-
+<fieldset>
 <h2>Delete</h2>
 
 <h3>Are you sure you want to delete this?</h3>
-<fieldset>
-    <legend>PrimaryGuardianBorrow</legend>
 
-    <div class="display-label">BorrowDate</div>
+    <legend></legend>
+
+    <b class="display-label">BorrowDate</b>
     <div class="display-field">@String.Format("{0:g}", Model.BorrowDate)</div>
 
-    <div class="display-label">Returned</div>
+    <b class="display-label">Returned</b>
     <div class="display-field">@Model.Returned</div>
 
-    <div class="display-label">DueDate</div>
+    <b class="display-label">DueDate</b>
     <div class="display-field">@String.Format("{0:g}", Model.DueDate)</div>
 
-    <div class="display-label">ReturnDate</div>
+    <b class="display-label">ReturnDate</b>
     <div class="display-field">@String.Format("{0:g}", Model.ReturnDate)</div>
 
-    <div class="display-label">PrimaryGuardian</div>
+    <b class="display-label">PrimaryGuardian</b>
     <div class="display-field">@(Model.PrimaryGuardian == null ? "None" : Model.PrimaryGuardian.LastName)</div>
 
-    <div class="display-label">LibraryResource</div>
+    <b class="display-label">LibraryResource</b>
     <div class="display-field">@(Model.LibraryResource == null ? "None" : Model.LibraryResource.Name)</div>
-</fieldset>
+
 @using (Html.BeginForm()) {
     <p>
         <input type="submit" value="Delete" /> |
         @Html.ActionLink("Back to List", "Index")
     </p>
 }
-
+</fieldset>
 
