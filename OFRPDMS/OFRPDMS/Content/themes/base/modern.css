@@ -6146,7 +6146,7 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
   border: 1px transparent solid;
   color: #353535;
   margin-right: 10px;
-  margin-bottom: 10px;
+  --margin-bottom: 10px;
   border-raduis: 0;
   cursor: pointer;
   width: auto;
