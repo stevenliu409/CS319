@@ -57,6 +57,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
             {
                 ViewBag.first = context.PrimaryGuardians.Find(report.pgid).FirstName;
                 ViewBag.last = context.PrimaryGuardians.Find(report.pgid).LastName;
+                ViewBag.pgid = report.pgid;
             }
             else if (report.type == "Child")
             {
@@ -291,9 +292,10 @@ namespace OFRPDMS.Areas.Admin.Controllers
             if (type == "Primary")
             {
                 PrimaryGuardian pg = context.PrimaryGuardians.Find(id);
-                    IEnumerable<EventParticipant> evtps = context.EventParticipants.Where(evtp => evtp.PrimaryGuardianId == id 
-                        && DateTime.Compare(evtp.Event.Date, sday) > 0 
-                        && DateTime.Compare(evtp.Event.Date, eday) < 0);
+                IEnumerable<EventParticipant> evtps = context.EventParticipants.Where(evtp => evtp.PrimaryGuardianId == id
+                    && DateTime.Compare(evtp.Event.Date, sday) > 0
+                    && DateTime.Compare(evtp.Event.Date, eday) < 0);
+                evtps.OrderBy(evtp => evtp.Event.Date);
                 foreach(var evtp in evtps)
                 {
                     dt.Add(evtp.Event.Date);
@@ -302,9 +304,10 @@ namespace OFRPDMS.Areas.Admin.Controllers
             else if (type == "Child")
             {
                 Child pg = context.Children.Find(id);
-                IEnumerable<EventParticipant> evtps = context.EventParticipants.Where(evtp => evtp.PrimaryGuardianId == id
+                IEnumerable<EventParticipant> evtps = context.EventParticipants.Where(evtp => evtp.ChildId == id
                     && DateTime.Compare(evtp.Event.Date, sday) > 0
                     && DateTime.Compare(evtp.Event.Date, eday) < 0);
+                evtps.OrderBy(evtp => evtp.Event.Date);
                 foreach (var evtp in evtps)
                 {
                     dt.Add(evtp.Event.Date);

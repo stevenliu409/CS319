@@ -61,7 +61,6 @@
     
 }
 
-     </script>
 @using (Html.BeginForm("TrackPG", "Report")) {
     @Html.ValidationSummary(true)
     
@@ -215,10 +214,8 @@
             @Html.LabelFor(model => model.startDay, "Start Date")
         </div>
         <div class="editor-field">
-
             @Html.EditorFor(model => model.startDay, "Start Date")
             @Html.ValidationMessageFor(model => model.startDay)
-
         </div>
         <div class="editor-label">
             @Html.LabelFor(model => model.endDay, "End Date")
