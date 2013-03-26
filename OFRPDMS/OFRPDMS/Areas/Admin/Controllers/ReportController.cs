@@ -266,8 +266,8 @@ namespace OFRPDMS.Areas.Admin.Controllers
         // get the number of new PG(created after start date) 
         private int[] getNumOfNewPGTable(DateTime sday, DateTime eday)
         {
-            int[] newPGTable = new int[context.Centers.Count()+1];
-
+            int[] newPGTable = new int[context.Centers.Count()+10];
+            int test = newPGTable.Length;
             foreach (var c in context.Centers)
             {
                 IEnumerable<PrimaryGuardian> pgs = context.PrimaryGuardians.Where(pg => DateTime.Compare(pg.DateCreated, sday) > 0 && DateTime.Compare(pg.DateCreated, eday) < 0 && pg.CenterId == c.Id);
@@ -278,7 +278,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
         }
         private int[] getNumOfVisitTable(DateTime sday, DateTime eday)
         {
-            int[] newVisitTable = new int[context.Centers.Count()+1];
+            int[] newVisitTable = new int[context.Centers.Count()+10];
 
             foreach (var c in context.Centers)
             {
@@ -419,7 +419,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
 
         private int[] getNumOfPGTable(DateTime eday)
         {
-            int[] pgTable = new int[context.Centers.Count()+1];
+            int[] pgTable = new int[context.Centers.Count() + 10];
 
             foreach (var c in context.Centers)
             {
@@ -478,7 +478,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
         private int[,] getCountryTable(string[] disCountry, DateTime sday, DateTime eday)
         {
             //row means language, column means center
-            int[,] countryTable = new int[disCountry.Length+1, context.Centers.Count()+2];
+            int[,] countryTable = new int[disCountry.Length+1, context.Centers.Count()+20];
 
             IEnumerable<PrimaryGuardian> aa = context.PrimaryGuardians.Where(pg => DateTime.Compare(pg.DateCreated, sday) > 0
                         && DateTime.Compare(pg.DateCreated, eday) < 0);
@@ -511,7 +511,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
         private int[,] getLanguageTable(string[] disLanguage, DateTime sday, DateTime eday)
         {
             //row means language, column means center
-            int[,] languageTable = new int[disLanguage.Length+1, context.Centers.Count()+2];
+            int[,] languageTable = new int[disLanguage.Length+1, context.Centers.Count()+10];
 
             IEnumerable<PrimaryGuardian> aa = context.PrimaryGuardians.Where(pg => DateTime.Compare(pg.DateCreated, sday) > 0
                         && DateTime.Compare(pg.DateCreated, eday) < 0);
