@@ -123,8 +123,10 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
         [HttpPost]
         public ActionResult Search(string name, string type) {
-            if (type == "Primary") {         
-                var _primaryguardian = db.PrimaryGuardians.Where(p => p.FirstName.Contains(name) || p.LastName.Contains(name)).ToList();
+            if (type == "Primary")
+            {
+                var _primaryguardian = db.PrimaryGuardians.Where(p => p.FirstName.Contains(name) || p.LastName.Contains(name) || 
+                    p.Allergies.Contains(name) || p.Country.Contains(name) || p.Language.Contains(name) || p.Email.Contains(name)).ToList();
                 var collection = _primaryguardian.Select(pm => new
                 {
 
@@ -134,9 +136,10 @@ namespace OFRPDMS.Areas.Staff.Controllers
                     email = pm.Email,
                     phone = pm.Phone,
                     prefix = pm.PostalCodePrefix,
-                    datacreate = pm.DateCreated.ToString(),
+                    datacreate = pm.DateCreated.ToString("mm/dd/yyyy"),
                     lang = pm.Language,
                     country = pm.Country,
+                    allergy = pm.Allergies,
                     type = 1
 
                 });
@@ -144,13 +147,16 @@ namespace OFRPDMS.Areas.Staff.Controllers
             }
             else if (type == "Child")
             {
-                var _primaryguardian = db.Children.Where(c => c.FirstName.Contains(name)).ToList();
+                var _primaryguardian = db.Children.Where(c => c.FirstName.Contains(name) || c.LastName.Contains(name) || c.Allergies.Contains(name)).ToList();
                 var collection = _primaryguardian.Select(pm => new
                 {
 
                     id = pm.Id,
                     Fname = pm.FirstName,
                     Lname = pm.LastName,
+                    birthday = pm.Birthdate.ToString(),
+                    relationshiptoGuardian = pm.PrimaryGuardian.FirstName,
+                    allergy = pm.Allergies,
                     type = 3
 
                 });
@@ -158,14 +164,18 @@ namespace OFRPDMS.Areas.Staff.Controllers
             }
             else
             {
-                var _primaryguardian = db.SecondaryGuardians.Where(s => s.FirstName.Contains(name)).ToList();
+                var _primaryguardian = db.SecondaryGuardians.Where(s => s.FirstName.Contains(name) || s.RelationshipToChild.Contains(name) || s.LastName.Contains(name)).ToList();
                 var collection = _primaryguardian.Select(pm => new
                 {
 
                     id = pm.Id,
                     Fname = pm.FirstName,
                     Lname = pm.LastName,
+                    relationship = pm.RelationshipToChild,
+                    phone = pm.Phone,
+                    relationshiptoGuardian = db.PrimaryGuardians.Find(pm.PrimaryGuardianId).FirstName,
                     type = 2
+
                 });
                 return Json(collection, JsonRequestBehavior.AllowGet);
 

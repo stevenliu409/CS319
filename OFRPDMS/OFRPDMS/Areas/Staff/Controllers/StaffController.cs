@@ -48,7 +48,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
                     email = pm.Email,
                     phone = pm.Phone,
                     prefix = pm.PostalCodePrefix,
-                    datacreate = pm.DateCreated.ToString(),
+                    datacreate = pm.DateCreated.ToString("mm/dd/yyyy"),
                     lang = pm.Language,
                     country = pm.Country,
                     allergy = pm.Allergies,
@@ -65,6 +65,8 @@ namespace OFRPDMS.Areas.Staff.Controllers
                     id = pm.Id,
                     Fname = pm.FirstName,
                     Lname = pm.LastName,
+                    birthday = pm.Birthdate.ToString(),
+                    relationshiptoGuardian = pm.PrimaryGuardian.FirstName,
                     allergy = pm.Allergies,
 
                 });
@@ -72,13 +74,16 @@ namespace OFRPDMS.Areas.Staff.Controllers
             }
             else
             {
-                var _primaryguardian = db.SecondaryGuardians.Where(s => s.FirstName.Contains(name)).ToList();
+                var _primaryguardian = db.SecondaryGuardians.Where(s => s.FirstName.Contains(name) || s.RelationshipToChild.Contains(name) || s.LastName.Contains(name)).ToList();
                 var collection = _primaryguardian.Select(pm => new
                 {
 
                     id = pm.Id,
                     Fname = pm.FirstName,
                     Lname = pm.LastName,
+                    relationship = pm.RelationshipToChild,
+                    phone = pm.Phone,
+                    relationshiptoGuardian = db.PrimaryGuardians.Find(pm.PrimaryGuardianId).FirstName
 
                 });
                 return Json(collection, JsonRequestBehavior.AllowGet);
