@@ -16,6 +16,8 @@ namespace OFRPDMS.Areas.Admin.Models
         {
             dstart = null;
             dend = null;
+            cstart = null;
+            cend = null;
             
         }
         public int Id { get; set; }
@@ -29,6 +31,9 @@ namespace OFRPDMS.Areas.Admin.Models
         public Nullable<DateTime> dstart { get; set; }
         [DataType(DataType.Date)]
         public Nullable<DateTime> dend { get; set; }
+        public Nullable<DateTime> cstart { get; set; }
+        [DataType(DataType.Date)]
+        public Nullable<DateTime> cend { get; set; }
     }
 
     public class ReportContext : DbContext

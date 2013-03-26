@@ -292,10 +292,10 @@ GO
 -- Creating table 'Centers'
 CREATE TABLE [dbo].[Centers] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [Name] nvarchar(max)  NULL,
+    [Name] nvarchar(max)  NOT NULL,
     [Email] nvarchar(max)  NULL,
     [Address] nvarchar(max)  NULL,
-    [Phone] bigint  NULL,
+    [Phone] bigint NOT NULL,
 );
 GO
 
