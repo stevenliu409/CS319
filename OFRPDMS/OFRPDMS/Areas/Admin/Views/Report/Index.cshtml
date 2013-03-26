@@ -70,16 +70,16 @@
             @Html.LabelFor(model => model.startDay)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.startDay)
+            @Html.EditorFor(model => model.cstart)
 
-		@Html.ValidationMessageFor(model => model.startDay)
+		@Html.ValidationMessageFor(model => model.cstart)
         </div>
         <div class="editor-label">
             @Html.LabelFor(model => model.endDay)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.endDay)
-            @Html.ValidationMessageFor(model => model.endDay)
+            @Html.EditorFor(model => model.cend)
+            @Html.ValidationMessageFor(model => model.cend)
         </div>
 
         @Html.Hidden("pgid")
@@ -87,6 +87,7 @@
         <div class = "search">
         <script src="/Scripts/jquery.tmpl.js" type="text/javascript"></script>
 <script src="/Scripts/jquery.tmpl.min.js" type="text/javascript"></script>
+<script src="/Scripts/dialog.js" type="text/javascript"></script>
 <div id = "Search_box"> Search: 
 <input type = "text" id = "PrimaryFirstName" /> 
 <select id = "ptype"> 
@@ -104,7 +105,19 @@
 
         document.getElementById("pgid").value = id;
         document.getElementById("type").value = _type;
-        alert("Added");
+        $.ajax({
+            success: function () {
+                $.Dialog({
+                    'title': 'Options Alert',
+                    'content': '   Add Successful !',
+                    'buttons': {
+                        'Ok': {
+                            'action': function () { }
+                        }
+                    }
+                });
+            }
+        });
     }
 </script>
 
@@ -118,6 +131,7 @@
     <td>${datacreate}</td>
     <td>${lang}</td>
     <td>${country}</td>
+    <td>${Allergies}</td>
     <td><input type = "button" value = "Add" onclick = "myFunction(${id})" /></td>
 </tr>
 </script>
@@ -167,6 +181,11 @@
             <th>
 			    Country
             </th>
+            <th>
+                Allergies
+            </th>
+            <th>
+            </th>
         </tr>
         </thead>
        <tbody id = "datatable" >
@@ -197,14 +216,14 @@
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.dstart, "Start Date")
-            @Html.ValidationMessageFor(model => model.startDay)
+            @Html.ValidationMessageFor(model => model.dstart)
         </div>
         <div class="editor-label">
             @Html.LabelFor(model => model.dend, "End Date")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.dend, "End Date")
-            @Html.ValidationMessageFor(model => model.endDay)
+            @Html.ValidationMessageFor(model => model.dend)
         </div>
         <br />
 

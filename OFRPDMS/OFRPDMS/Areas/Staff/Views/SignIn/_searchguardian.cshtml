@@ -50,8 +50,15 @@
             });
         }
         else { 
-        
-        alert("no drop-in session available");
+        $.Dialog({
+                        'title': 'Options Alert',
+                        'content': '   Add Failed: No Drop-In Sessions Available',
+                        'buttons': {
+                            'Ok': {
+                                'action': function () { }
+                            }
+                        }
+                    });
         }
 
    }
