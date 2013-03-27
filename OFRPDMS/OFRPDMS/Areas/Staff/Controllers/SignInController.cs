@@ -17,8 +17,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
         // GET: /Staff/SignIn/
         public ViewResult Index(int id=0) {
             int centerid = AccountProfile.CurrentUser.CenterID;
-            // var eventparticipants = db.EventParticipants.Include(e => e.Event);
-            var _ep = db.EventParticipants.Where(ep => ep.EventId == id).ToList();
+            var _ep = db.EventParticipants.Where(ep => ep.EventId == id && centerid == ep.Event.CenterId).ToList();
              
              return View(_ep);
         }
@@ -27,7 +26,6 @@ namespace OFRPDMS.Areas.Staff.Controllers
         public ActionResult ReIndex(int id)
         {
             int centerid = AccountProfile.CurrentUser.CenterID;
-           // var eventparticipants = db.EventParticipants.Include(e => e.Event);
             var _ep = db.EventParticipants.Where(ep => ep.EventId == id).ToList();
             return RedirectToRoute("Staff_default", new { centerIdArg = centerid, controller = "SignIn", action = "Index" , id = id});
         }
@@ -154,7 +152,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
                     id = pm.Id,
                     Fname = pm.FirstName,
                     Lname = pm.LastName,
-                    birthday = pm.Birthdate.ToString(),
+                    //birthday = pm.Birthdate.Value.ToString("MM/dd/yyyy"),
                     relationshiptoGuardian = pm.PrimaryGuardian.FirstName,
                     allergy = pm.Allergies,
                     type = 3

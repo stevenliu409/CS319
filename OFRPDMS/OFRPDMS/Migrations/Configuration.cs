@@ -1,4 +1,4 @@
-namespace OFRPDMS.Migrations
+/*namespace OFRPDMS.Migrations
 {
     using System;
     using System.Data.Entity;
@@ -28,4 +28,4 @@ namespace OFRPDMS.Migrations
             //
         }
     }
-}
+}*/

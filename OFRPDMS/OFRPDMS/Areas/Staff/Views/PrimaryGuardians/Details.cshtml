@@ -121,7 +121,9 @@
    </div>
 
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+@if (ViewBag.IsAdmin){
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) <br />
+    } 
     @Html.ActionLink("Back to List", "Index")
 </p>
 

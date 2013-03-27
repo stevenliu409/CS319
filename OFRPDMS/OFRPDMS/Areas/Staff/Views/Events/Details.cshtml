@@ -11,7 +11,7 @@
 
     <b class="display-label">Date</b>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Date)
+        @Model.Date.ToShortDateString()
     </div>
 
     <b class="display-label">Center</b>
@@ -20,7 +20,12 @@
     </div>
 
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @if (ViewBag.isAdmin)
+    {
+      <body>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+      </body>
+    }       
     @Html.ActionLink("Back to List", "Index")
 </p>
 

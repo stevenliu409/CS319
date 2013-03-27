@@ -15,7 +15,7 @@
         }
 
         var initSelectors = function(selectors){
-            selectors.on('click', function(e){
+            selectors.bind('click', function(e){
                 e.stopPropagation();
                 //$("[data-role=dropdown]").removeClass("active");
 
@@ -30,10 +30,10 @@
                     $m.slideDown('fast');
                     $(this).addClass("active");
                 }
-            }).on("mouseleave", function(){
+            }).bind("mouseleave", function(){
                 //$(this).children(".dropdown-menu").hide();
             });
-            $('html').on("click", function(e){
+            $('html').bind("click", function(e){
                 clearDropdown();
             });
         }

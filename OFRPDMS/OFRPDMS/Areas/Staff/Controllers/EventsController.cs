@@ -34,7 +34,8 @@ namespace OFRPDMS.Areas.Staff.Controllers
         public ViewResult Index()
         {
             int centerID = account.GetCurrentUserCenterId();
-
+            string[] roles = Roles.GetRolesForUser();
+            ViewBag.IsAdmin = roles.Contains("Administrators");
             var Events = repoService.eventRepo.FindAllWithCenterId(centerID);
             ViewBag.CurrentPage = "Events";
             return View(Events.ToList());
@@ -46,7 +47,8 @@ namespace OFRPDMS.Areas.Staff.Controllers
         public ViewResult Details(int id)
         {         
             int centerID = account.GetCurrentUserCenterId();
-
+            string[] roles = Roles.GetRolesForUser();
+            ViewBag.IsAdmin = roles.Contains("Administrators");
             Event anEvent = repoService.eventRepo.FindByIdAndCenterId(id, centerID);
 
             return View(anEvent);

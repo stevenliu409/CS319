@@ -95,6 +95,11 @@ namespace OFRPDMS.Areas.Admin.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Center center = context.Centers.Find(id);
+            IEnumerable<Event> centerevents = context.Events.Where(cid => cid.CenterId == id);
+            foreach (var item in centerevents)
+            {
+                context.Events.Remove(item);
+            }
             context.Centers.Remove(center);
             context.SaveChanges();
             return RedirectToAction("Index");

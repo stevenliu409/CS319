@@ -18,7 +18,8 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
         public ViewResult Index()
         {
-            return View(context.PrimaryGuardianBorrows.Include(primaryguardianborrow => primaryguardianborrow.PrimaryGuardian).Include(primaryguardianborrow => primaryguardianborrow.LibraryResource).ToList());
+            int centerid = AccountProfile.CurrentUser.CenterID;
+            return View(context.PrimaryGuardianBorrows.Where(pgb => pgb.LibraryResource.CenterId == centerid).Include(primaryguardianborrow => primaryguardianborrow.PrimaryGuardian).Include(primaryguardianborrow => primaryguardianborrow.LibraryResource).ToList());
         }
 
         //
@@ -35,8 +36,10 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
         public ActionResult Create()
         {
+            int centerid = AccountProfile.CurrentUser.CenterID;
             ViewBag.PossiblePrimaryGuardians = context.PrimaryGuardians;
-            ViewBag.PossibleLibraryResources = context.LibraryResources;
+            ViewBag.PossibleLibraryResources = context.LibraryResources.Where(lr => lr.CheckedOut == false && lr.CenterId == centerid);
+
             return View();
         } 
 
@@ -48,35 +51,59 @@ namespace OFRPDMS.Areas.Staff.Controllers
         {
             if (ModelState.IsValid)
             {
+                
                 context.PrimaryGuardianBorrows.Add(primaryguardianborrow);
+                primaryguardianborrow.BorrowDate = System.DateTime.Now;
+                context.LibraryResources.Find(primaryguardianborrow.LibraryResourceId).CheckedOut = true;
+                primaryguardianborrow.DueDate = primaryguardianborrow.DueDate.AddHours(23);
+                primaryguardianborrow.DueDate = primaryguardianborrow.DueDate.AddMinutes(59);
+
                 context.SaveChanges();
                 return RedirectToAction("Index");  
             }
-
+            
             ViewBag.PossiblePrimaryGuardians = context.PrimaryGuardians;
-            ViewBag.PossibleLibraryResources = context.LibraryResources;
+            ViewBag.PossibleLibraryResources = context.LibraryResources.Where(lr=> lr.CheckedOut == false);
             return View(primaryguardianborrow);
         }
         
         //
-        // GET: /PrimaryGuardianBorrows/Edit/5
- 
+        // We took out the edit function and turned it into check in function. The edit view is no longer in use
         public ActionResult Edit(int id)
         {
             PrimaryGuardianBorrow primaryguardianborrow = context.PrimaryGuardianBorrows.Single(x => x.Id == id);
             ViewBag.PossiblePrimaryGuardians = context.PrimaryGuardians;
             ViewBag.PossibleLibraryResources = context.LibraryResources;
-            return View(primaryguardianborrow);
+            if (primaryguardianborrow.Returned != true)
+            {
+                primaryguardianborrow.Returned = true;
+                primaryguardianborrow.ReturnDate = System.DateTime.Now;
+                LibraryResource res = context.LibraryResources.Find(primaryguardianborrow.LibraryResourceId);
+                res.CheckedOut = false;
+                context.Entry(res).State = EntityState.Modified;
+                context.Entry(primaryguardianborrow).State = EntityState.Modified;
+                context.SaveChanges();
+            }
+            return RedirectToAction("Index");
         }
 
         //
-        // POST: /PrimaryGuardianBorrows/Edit/5
+        // POST: we took out the edit function and changed it into a checked in function. The edit view is no longer in use
 
         [HttpPost]
         public ActionResult Edit(PrimaryGuardianBorrow primaryguardianborrow)
         {
             if (ModelState.IsValid)
             {
+                if (primaryguardianborrow.Returned)
+                {
+                    context.LibraryResources.Find(primaryguardianborrow.LibraryResourceId).CheckedOut = false;
+                }
+                else
+                {
+                    return View(primaryguardianborrow);
+                }
+                primaryguardianborrow.ReturnDate = System.DateTime.Now;
                 context.Entry(primaryguardianborrow).State = EntityState.Modified;
                 context.SaveChanges();
                 return RedirectToAction("Index");

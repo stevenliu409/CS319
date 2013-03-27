@@ -9,14 +9,15 @@
 
     <legend></legend>
 
-    <b class="display-label">Event</b>
+   <b class="display-label">Event</b>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Event.Id)
+        @Model.Event.Date.ToString("MM/dd/yyyy")
     </div>
 
-    <b class="display-label">ParticipantId</b>
+    <b class="display-label">Participant's Name</b>
     <div class="display-field">
-        @Html.DisplayFor(model => model.ParticipantId)
+        @Html.DisplayFor(model => model.PrimaryGuardian.FirstName)
+        @Html.DisplayFor(model => model.PrimaryGuardian.LastName)
     </div>
 
     <b class="display-label">ParticipantType</b>
@@ -24,9 +25,6 @@
         @Html.DisplayFor(model => model.ParticipantType)
     </div>
 
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
-   
-</p>
+
  @Html.ActionLink("Back to List", "Index")
 </fieldset>

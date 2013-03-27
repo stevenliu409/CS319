@@ -16,11 +16,11 @@
 
         @Html.HiddenFor(model => model.Id)
 
-        <div class="editor-label">
+         <div class="editor-label">
             @Html.LabelFor(model => model.Broken)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Broken)
+             @Html.DropDownListFor(model => model.Broken, new List<SelectListItem>() { new SelectListItem() { Text = "No", Value = "False" }, new SelectListItem() { Text = "Yes", Value = "True" } })
             @Html.ValidationMessageFor(model => model.Broken)
         </div>
 
@@ -28,25 +28,26 @@
             @Html.LabelFor(model => model.CheckedOut)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.CheckedOut)
+    @Html.DropDownListFor(model => model.CheckedOut, new List<SelectListItem>() { new SelectListItem() { Text = "No", Value = "False" }, new SelectListItem() { Text = "Yes", Value = "True" } })
             @Html.ValidationMessageFor(model => model.CheckedOut)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Value)
+          <label>Value of Item (Cost)</label>
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Value)
             @Html.ValidationMessageFor(model => model.Value)
         </div>
 
-        <div class="editor-label">
+        @* this will be taken out *@
+       <!-- @*<div class="editor-label">
             @Html.LabelFor(model => model.Image)
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Image)
             @Html.ValidationMessageFor(model => model.Image)
-        </div>
+        </div>*@ -->
 
         <div class="editor-label">
             @Html.LabelFor(model => model.Note)
@@ -63,15 +64,15 @@
             @Html.EditorFor(model => model.Name)
             @Html.ValidationMessageFor(model => model.Name)
         </div>
-
+        
         <div class="editor-label">
             @Html.LabelFor(model => model.ItemType)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.ItemType)
+             @Html.DropDownListFor(model => model.ItemType, new List<SelectListItem>() { new SelectListItem() { Text = "Video", Value = "Video" }, new SelectListItem() { Text = "Toy", Value = "Toy" }, new SelectListItem() { Text = "Book", Value = "Book" } })
             @Html.ValidationMessageFor(model => model.ItemType)
         </div>
-
+        
         <div class="editor-label">
             @Html.LabelFor(model => model.Sanitized)
         </div>
@@ -80,12 +81,8 @@
             @Html.ValidationMessageFor(model => model.Sanitized)
         </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.CenterId, "Center")
-        </div>
         <div class="editor-field">
-            @Html.DropDownList("CenterId", String.Empty)
-            @Html.ValidationMessageFor(model => model.CenterId)
+            @Html.Hidden("CenterId", (int)ViewBag.CenterId2)
         </div>
 
         <p>
