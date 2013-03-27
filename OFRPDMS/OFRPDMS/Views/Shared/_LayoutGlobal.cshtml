@@ -13,20 +13,27 @@
 </head>
 <body class = "metrouicss">
     <div class="page" id="@ViewBag.CurrentCenterId">
-        <div id="header">
+           <div id="header">
+        <div id="title">
+                <h1>
+                <img src="/Content/themes/base/images/optionsmain.jpg" alt="Options Main"/>
+                </h1>
+        </div>
+           <div id="logindisplay">
+                @Html.Partial("_LogOnPartial", new { area = "" }, null)
+            </div>
+               </div>
+
                 @if (Request.IsAuthenticated && HttpContext.Current.User.IsInRole("Administrators"))
-        {   
-<<<<<<< HEAD
-           <div class="nav-bar">
+                        {      
+                           <div class="nav-bar">
                         <div class="nav-bar-inner">
-                           <a class="element" href="/Admin">Administrator</a>
- 
-                            <span class="divider"></span>
+                       
                             <ul class="menu">
                                 <li data-role="dropdown">
                                     <a>Admin Navigation</a>
                                     <ul class="dropdown-menu">
-                                         <li>@Html.ActionLink("Administrator Home", "Index", "Admin", new { id = currentArea == "Admin" ? "currentCenter" : "" })</li>
+                                         <li>@Html.ActionLink("Administrator Home", "Index", "Admin", new { area = "Admin" }, new { id = currentArea == "Admin"? "currentCenter":"" })</li>
                                              @Html.Action("Nav", "Admin", new { area = "Admin" })
                                     </ul>
                                 </li>
@@ -35,19 +42,13 @@
                         </div>
                     </div>
 
-        }
-            <div id="title">
-            <h1>
-                <img src="/Content/themes/base/images/optionsmain.jpg" alt="Options Main"/>
-                </h1>
-            </div>
-            <div id="logindisplay">
-                @Html.Partial("_LogOnPartial", new { area = "" }, null)
-            </div>
-        </div>
+
+                         }
+            
+         
         <div id="admin_main">
             @RenderBody()
         </div>
-    </div>
+
 </body>
 </html>
