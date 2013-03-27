@@ -9,7 +9,7 @@
 <h2>Details</h2>
 
     <legend></legend>
-    @Html.ActionLink("Return", "Edit", new { id=Model.Id })
+
 
     <b class="display-label">BorrowDate</b>
     <div class="display-field">@String.Format("{0:g}", Model.BorrowDate)</div>
@@ -30,8 +30,8 @@
     <div class="display-field">@(Model.LibraryResource == null ? "None" : Model.LibraryResource.Name)</div>
 
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) 
-   
+ 
+       @Html.ActionLink("Check in", "Edit", new { id=Model.Id })
 </p>
  @Html.ActionLink("Back to List", "Index")
 </fieldset>

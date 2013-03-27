@@ -36,7 +36,8 @@ namespace OFRPDMS.Areas.Staff.Controllers
         public ActionResult Index()
         {
             int centerID = account.GetCurrentUserCenterId();
-
+            string[] roles = Roles.GetRolesForUser();
+            ViewBag.IsAdmin = roles.Contains("Administrators");
             var libraryitems = repoService.libraryRepo.FindAllWithCenterId(centerID);
             ViewBag.CurrentPage = "Library";
 

@@ -21,6 +21,8 @@ namespace OFRPDMS.Areas.Staff.Controllers
         public ViewResult Index()
         {
             int centerId = AccountProfile.CurrentUser.CenterID;
+            string[] roles = Roles.GetRolesForUser();
+            ViewBag.IsAdmin = roles.Contains("Administrators");
             var primaryguardians = context.PrimaryGuardians.Where(p => p.CenterId == centerId).Include(p => p.Center);
             return View(primaryguardians.ToList());
         }
@@ -31,7 +33,9 @@ namespace OFRPDMS.Areas.Staff.Controllers
         public ViewResult Details(int id)
         {
             int centerId = AccountProfile.CurrentUser.CenterID;
-            PrimaryGuardian primaryguardian = context.PrimaryGuardians.Where(p => p.CenterId == centerId).Single(p => p.Id == id);
+            string[] roles = Roles.GetRolesForUser();
+            ViewBag.IsAdmin = roles.Contains("Administrators");
+            PrimaryGuardian primaryguardian = context.PrimaryGuardians.Where(p => p.CenterId == centerId && p.Id == id).SingleOrDefault();
             return View(primaryguardian);
         }
 
@@ -130,7 +134,8 @@ namespace OFRPDMS.Areas.Staff.Controllers
         public ActionResult Edit(int id)
         {
             int centerId = AccountProfile.CurrentUser.CenterID;
-
+            string[] roles = Roles.GetRolesForUser();
+            ViewBag.IsAdmin = roles.Contains("Administrators");
             ViewBag.CenterId2 = centerId;
             pr = context.PrimaryGuardians.Where(p => p.CenterId == centerId).Single(p => p.Id == id);
             

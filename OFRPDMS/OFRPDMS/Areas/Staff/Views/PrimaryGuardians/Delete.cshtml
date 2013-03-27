@@ -125,18 +125,10 @@
     </div>
 
 @using (Html.BeginForm()) {
-    <p>
-    @if (ViewBag.IsAdmin)
-    {
+         <p>
         <input type="submit" value="Delete" />
-    }
-    else
-    {
-        <p>Insufficient Privileges to delete</p>
-    }
-    <p>
         @Html.ActionLink("Back to List", "Index")
         </p>
-    </p>
+    
 }
 </fieldset>
