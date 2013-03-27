@@ -538,7 +538,7 @@ ADD CONSTRAINT [FK_CenterEvent]
     FOREIGN KEY ([CenterId])
     REFERENCES [dbo].[Centers]
         ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_CenterEvent'
 CREATE INDEX [IX_FK_CenterEvent]
@@ -720,7 +720,7 @@ ADD CONSTRAINT [FK_EventEventParticipant]
     FOREIGN KEY ([EventId])
     REFERENCES [dbo].[Events]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_EventEventParticipant'
 CREATE INDEX [IX_FK_EventEventParticipant]

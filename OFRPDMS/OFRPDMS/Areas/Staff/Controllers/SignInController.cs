@@ -152,7 +152,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
                     id = pm.Id,
                     Fname = pm.FirstName,
                     Lname = pm.LastName,
-                    birthday = pm.Birthdate.Value.ToString("MM/dd/yyyy"),
+                    //birthday = pm.Birthdate.Value.ToString("MM/dd/yyyy"),
                     relationshiptoGuardian = pm.PrimaryGuardian.FirstName,
                     allergy = pm.Allergies,
                     type = 3
