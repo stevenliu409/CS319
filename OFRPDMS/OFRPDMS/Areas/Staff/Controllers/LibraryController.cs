@@ -72,6 +72,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
             ViewBag.CenterId2 = AccountProfile.CurrentUser.CenterID;
             //ViewBag.CenterId = new SelectList(repoService.centerRepo.FindListById(centerID), "Id", "Name");
             ViewBag.ItemTypes = new SelectList(ValidTypes.AsEnumerable());
+
             return View();
         } 
 
@@ -85,6 +86,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
             if (ModelState.IsValid)
             {
+                libraryitem.CheckedOut = false;
                 repoService.libraryRepo.Add(libraryitem);
                 return RedirectToAction("Index");  
             }

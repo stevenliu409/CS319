@@ -22,13 +22,13 @@
             @Html.ValidationMessageFor(model => model.Broken)
         </div>
 
-        <div class="editor-label">
+        @*<div class="editor-label">
             @Html.LabelFor(model => model.CheckedOut)
         </div>
         <div class="editor-field">
     @Html.DropDownListFor(model => model.CheckedOut,new List<SelectListItem>(){new SelectListItem(){ Text = "No", Value="False"}, new SelectListItem(){ Text = "Yes", Value="True"}})
             @Html.ValidationMessageFor(model => model.CheckedOut)
-        </div>
+        </div>*@
 
         <div class="editor-label">
           <label>Value of Item (Cost)</label> 
