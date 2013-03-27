@@ -1194,7 +1194,7 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
 }
 .metrouicss ul li,
 .metrouicss ol li {
-  --display: list-item;
+  display: inline;
   font-size: 14px;
   line-height: 20px;
 }
@@ -4512,7 +4512,7 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
   display: block !important;
 }
 .metrouicss .nav-bar {
-  background-color: #2d89ef;
+  --background-color: #2d89ef;
   position: relative;
   top: 0;
   width: 100%;
@@ -4571,7 +4571,7 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
 }
 .metrouicss .nav-bar .nav-bar-inner > ul.menu > li {
   display: block;
-  float: left;
+  float: right;
   margin-right: 5px;
   position: relative;
   padding: 5px 15px 5px 5px;
@@ -4579,13 +4579,13 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
 .metrouicss .nav-bar .nav-bar-inner > ul.menu > li a {
   display: block;
   float: left;
-  color: #ffffff;
+  --color: #ffffff;
   font-size: 10pt;
 }
 .metrouicss .nav-bar .nav-bar-inner > ul.menu > li ul.dropdown-menu {
   z-index: 1001;
   border: 0;
-  left: 0px;
+  right: 0px;
 }
 .metrouicss .nav-bar .nav-bar-inner > ul.menu > li ul.dropdown-menu li a {
   display: block;
