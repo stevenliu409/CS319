@@ -293,6 +293,28 @@ namespace OFRPDMS.Areas.Admin.Controllers
 
             return newPGTable;
         }
+        private int[] getNumOfEventParticipantTable(DateTime sday, DateTime eday)
+        {
+            int[] newVisitTable = new int[context.Centers.Count()];
+            int counter = 0;
+            
+            foreach (var c in context.Centers)
+            {
+                int sumEventParticipants = 0;
+                List<Event> evts = context.Events.Where(evt => DateTime.Compare(evt.Date, sday) > 0 && DateTime.Compare(evt.Date, eday) <= 0 && evt.CenterId == c.Id).ToList();
+                for (int i = 0; i < evts.Count; i++ )
+                {
+                    int epcount = evts[i].EventParticipants.Count;
+                    sumEventParticipants += epcount;
+
+                }
+                
+                newVisitTable[counter] = sumEventParticipants;
+                counter++;
+            }
+
+            return newVisitTable;
+        }
         private int[] getNumOfVisitTable(DateTime sday, DateTime eday)
         {
             int[] newVisitTable = new int[context.Centers.Count()];
@@ -315,7 +337,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
                 PrimaryGuardian pg = context.PrimaryGuardians.Find(id);
                 IEnumerable<EventParticipant> evtps = context.EventParticipants.Where(evtp => evtp.PrimaryGuardianId == id
                     && DateTime.Compare(evtp.Event.Date, sday) > 0
-                    && DateTime.Compare(evtp.Event.Date, eday) < 0);
+                    && DateTime.Compare(evtp.Event.Date, eday) <= 0);
                 evtps.OrderBy(evtp => evtp.Event.Date);
                 foreach(var evtp in evtps)
                 {
@@ -327,7 +349,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
                 Child pg = context.Children.Find(id);
                 IEnumerable<EventParticipant> evtps = context.EventParticipants.Where(evtp => evtp.ChildId == id
                     && DateTime.Compare(evtp.Event.Date, sday) > 0
-                    && DateTime.Compare(evtp.Event.Date, eday) < 0);
+                    && DateTime.Compare(evtp.Event.Date, eday) <= 0);
                 evtps.OrderBy(evtp => evtp.Event.Date);
                 foreach (var evtp in evtps)
                 {
@@ -356,20 +378,20 @@ namespace OFRPDMS.Areas.Admin.Controllers
         {
 
             Center[] center = context.Centers.ToArray();
-            string[,] pgString = new string[center.Length+1,4];
+            string[,] pgString = new string[center.Length+1,5];
             string[] disCountry = getCountrys(startDay, endDay);
             int[] numOfNewPG = getNumOfNewPGTable(startDay, endDay);
             int[] numOfPG = getNumOfPGTable(endDay);
-            int[] numOfVisit = getNumOfVisitTable(startDay, endDay);
-            
+            int[] numOfVisit = getNumOfEventParticipantTable(startDay, endDay);
+            int[] numOfSession = getNumOfVisitTable(startDay, endDay);
             //----------------------------------------------------
             //fill in # of parents table
             //first row
             pgString[0, 0] = "Center";
             pgString[0, 1] = "# of new parents";
             pgString[0, 2] = "# of parents";
-            pgString[0, 3] = "# of visit";
-
+            pgString[0, 3] = "# of sessions";
+            pgString[0, 4] = "# of visits";
             //start from second row
             int i = 0;
             foreach (Center c in context.Centers)
@@ -377,7 +399,8 @@ namespace OFRPDMS.Areas.Admin.Controllers
                 pgString[i+1, 0] = c.Name;
                 pgString[i+1, 1] = numOfNewPG[i].ToString();
                 pgString[i+1, 2] = numOfPG[i].ToString();
-                pgString[i+1, 3] = numOfVisit[i].ToString();
+                pgString[i+1, 3] = numOfSession[i].ToString();
+                pgString[i+1, 4] = numOfVisit[i].ToString();
                 i++;
             }
             return pgString;
