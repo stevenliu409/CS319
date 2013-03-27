@@ -497,6 +497,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
             
             foreach (var pg in pgs)
             {
+                if(pg.Language != null)
                 language.Add(pg.Language);
             }
 
@@ -514,6 +515,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
 
             foreach (var pg in pgs)
             {
+                if(pg.Country !=null)
                 country.Add(pg.Country);
             }
 
