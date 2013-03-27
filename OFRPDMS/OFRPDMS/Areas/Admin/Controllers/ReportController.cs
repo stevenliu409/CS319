@@ -12,9 +12,6 @@ namespace OFRPDMS.Areas.Admin.Controllers
     public class ReportController : Controller
     {
         OFRPDMSContext context = new OFRPDMSContext();
-
-        DateTime startDay = new DateTime();
-        DateTime endDay = new DateTime();
       
 
         //
@@ -22,7 +19,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
 
         public ActionResult Index()
         {
-            return View(new Report());
+            return View();
         }
 
         //
@@ -31,7 +28,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Generate(Report report, int mode)
         {
-            //ViewBag.myReport = db.Report.First();
+            
             DateTime startday = report.startDay;
             DateTime endday = report.endDay.AddDays(1);
             string[,] pgTable = getStringPGTable(report.startDay, endday);
@@ -97,8 +94,8 @@ namespace OFRPDMS.Areas.Admin.Controllers
         public ActionResult Index(Report report)
         {
 
-            startDay = report.startDay;
-            endDay = report.endDay;
+            DateTime startDay = report.startDay;
+            DateTime endDay = report.endDay;
 
 
             ViewBag.myReport = report;
