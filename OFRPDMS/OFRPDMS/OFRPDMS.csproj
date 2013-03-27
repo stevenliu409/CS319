@@ -209,7 +209,6 @@
     <Content Include="bin\EntityFramework.xml" />
     <Content Include="bin\OFRPDMS.dll" />
     <Content Include="bin\OFRPDMS.pdb" />
-    <Content Include="Content\themes\base\bootstrap.css" />
     <Content Include="Content\themes\base\fonts\iconFont.svg" />
     <Content Include="Content\themes\base\fonts\license.txt" />
     <Content Include="Content\themes\base\images\calendar.png" />
@@ -248,7 +247,6 @@
     <Content Include="Global.asax" />
     <Content Include="Models\Model1.edmx.sql" />
     <Content Include="Scripts\accordion.js" />
-    <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\buttonset.js" />
     <Content Include="Scripts\calendar.js" />
     <Content Include="Scripts\carousel.js" />

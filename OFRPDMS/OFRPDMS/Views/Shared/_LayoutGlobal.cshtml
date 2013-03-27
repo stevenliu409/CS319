@@ -14,20 +14,14 @@
 <body class = "metrouicss">
     <div class="page" id="@ViewBag.CurrentCenterId">
         <div id="header">
-            <div id="title">
-            <h1>
-                <img src="/Content/themes/base/images/optionsmain.jpg" alt="Options Main"/>
-                </h1>
-            </div>
-            <div id="logindisplay">
-                @Html.Partial("_LogOnPartial", new { area = "" }, null)
-            </div>
-        </div>
-        @if (Request.IsAuthenticated && HttpContext.Current.User.IsInRole("Administrators"))
+                @if (Request.IsAuthenticated && HttpContext.Current.User.IsInRole("Administrators"))
         {   
+<<<<<<< HEAD
            <div class="nav-bar">
                         <div class="nav-bar-inner">
-                           
+                           <a class="element" href="/Admin">Administrator</a>
+ 
+                            <span class="divider"></span>
                             <ul class="menu">
                                 <li data-role="dropdown">
                                     <a>Admin Navigation</a>
@@ -40,7 +34,17 @@
                             </ul>
                         </div>
                     </div>
+
         }
+            <div id="title">
+            <h1>
+                <img src="/Content/themes/base/images/optionsmain.jpg" alt="Options Main"/>
+                </h1>
+            </div>
+            <div id="logindisplay">
+                @Html.Partial("_LogOnPartial", new { area = "" }, null)
+            </div>
+        </div>
         <div id="admin_main">
             @RenderBody()
         </div>
