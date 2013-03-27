@@ -29,20 +29,38 @@ namespace OFRPDMS.Areas.Admin.Controllers
         // GET: /Report/Generate
 
         [HttpPost]
-        public ActionResult Generate(Report report)
+        public ActionResult Generate(Report report, int mode)
         {
             //ViewBag.myReport = db.Report.First();
             DateTime startday = report.startDay;
             DateTime endday = report.endDay.AddDays(1);
-
+            string[,] pgTable = getStringPGTable(report.startDay, endday);
+            string[,] languageTable = getStringLanguageTable(report.startDay, endday);
+            string[,] countryTable = getStringCountryTable(report.startDay, endday);
             ViewBag.myReport = report;
             ViewBag.center = context.Centers.ToArray();
-            ViewBag.pgTable = getStringPGTable(report.startDay, endday);
-            ViewBag.languageTable = getStringLanguageTable(report.startDay, endday);
-            ViewBag.countryTable = getStringCountryTable(report.startDay, endday);
+            ViewBag.pgTable = pgTable;
+            ViewBag.languageTable = languageTable;
+            ViewBag.countryTable = countryTable;
 
-            
+            if (mode == 1)
+            {
 
+                return View();
+            }
+            else
+            {
+                
+                Response.AddHeader("content-disposition", "attachment; filename=Report.csv");
+                Response.ContentType = "text/plain; charset=UTF-8";
+                parseStringTable(pgTable);
+                parseStringTable(countryTable);
+                parseStringTable(languageTable);
+
+                Response.End();
+
+                
+            }
             return View(context.Centers);
             
         }
@@ -91,108 +109,108 @@ namespace OFRPDMS.Areas.Admin.Controllers
         }
 
 
-        public void GenerateExcel(Report report, int mode)
-        {
-            Response.Clear();
-            DateTime startDay = report.startDay3;
-            DateTime endDay = report.endDay3.AddDays(1);
-            // fill in the 2-dimensional string array here with data
-            string[,] Content1 = getStringPGTable(startDay,endDay);
-            string[,] Content2 = getStringLanguageTable(startDay, endDay);
-            string[,] Content3 = getStringCountryTable(startDay, endDay);
+        //public void GenerateExcel(Report report, int mode)
+        //{
+        //    Response.Clear();
+        //    DateTime startDay = report.startDay3;
+        //    DateTime endDay = report.endDay3.AddDays(1);
+        //    // fill in the 2-dimensional string array here with data
+        //    //string[,] Content1 = getStringPGTable(startDay,endDay);
+        //    //string[,] Content2 = getStringLanguageTable(startDay, endDay);
+        //    //string[,] Content3 = getStringCountryTable(startDay, endDay);
 
-            // create a new excel workbook
-            //Microsoft.Office.Interop.Excel.Application excel = new Microsoft.Office.Interop.Excel.Application();
-            //Microsoft.Office.Interop.Excel.Workbook workBook = excel.Workbooks.Add();
-            //Microsoft.Office.Interop.Excel.Worksheet sheet = workBook.ActiveSheet;
+        //    // create a new excel workbook
+        //    //Microsoft.Office.Interop.Excel.Application excel = new Microsoft.Office.Interop.Excel.Application();
+        //    //Microsoft.Office.Interop.Excel.Workbook workBook = excel.Workbooks.Add();
+        //    //Microsoft.Office.Interop.Excel.Worksheet sheet = workBook.ActiveSheet;
 
-            //File in the excel cells with report data here if we are in an excel mode
-            //if (mode == 1 || mode == 2)
-            //{
-            //    //adding table 1
-            //    for (int i = 0; i < Content1.GetLength(0); i++)
-            //    {
+        //    //File in the excel cells with report data here if we are in an excel mode
+        //    //if (mode == 1 || mode == 2)
+        //    //{
+        //    //    //adding table 1
+        //    //    for (int i = 0; i < Content1.GetLength(0); i++)
+        //    //    {
 
-            //        for (int j = 0; j < Content1.GetLength(1); j++)
-            //        {
-            //            sheet.Cells[i, j] = Content1[i,j];
-            //        }
-            //    }
-            //    //adding table 2
-            //    for (int i = Content1.GetLength(0); i < Content1.GetLength(0) + Content2.GetLength(0); i++)
-            //    {
+        //    //        for (int j = 0; j < Content1.GetLength(1); j++)
+        //    //        {
+        //    //            sheet.Cells[i, j] = Content1[i,j];
+        //    //        }
+        //    //    }
+        //    //    //adding table 2
+        //    //    for (int i = Content1.GetLength(0); i < Content1.GetLength(0) + Content2.GetLength(0); i++)
+        //    //    {
 
-            //        for (int j = Content1.GetLength(1); j < Content1.GetLength(1) + Content2.GetLength(1); j++)
-            //        {
-            //            sheet.Cells[i, j] = Content2[i, j];
-            //        }
-            //    }
-            //    //adding table 3
-            //    for (int i = Content1.GetLength(0) + Content2.GetLength(0); i < Content1.GetLength(0) + Content2.GetLength(0) + Content3.GetLength(0); i++)
-            //    {
+        //    //        for (int j = Content1.GetLength(1); j < Content1.GetLength(1) + Content2.GetLength(1); j++)
+        //    //        {
+        //    //            sheet.Cells[i, j] = Content2[i, j];
+        //    //        }
+        //    //    }
+        //    //    //adding table 3
+        //    //    for (int i = Content1.GetLength(0) + Content2.GetLength(0); i < Content1.GetLength(0) + Content2.GetLength(0) + Content3.GetLength(0); i++)
+        //    //    {
 
-            //        for (int j = Content1.GetLength(1) + Content2.GetLength(1); j < Content1.GetLength(1) + Content2.GetLength(1) + Content3.GetLength(1); j++)
-            //        {
-            //            sheet.Cells[i, j] = Content1[i, j];
-            //        }
-            //    }
-            //}
+        //    //        for (int j = Content1.GetLength(1) + Content2.GetLength(1); j < Content1.GetLength(1) + Content2.GetLength(1) + Content3.GetLength(1); j++)
+        //    //        {
+        //    //            sheet.Cells[i, j] = Content1[i, j];
+        //    //        }
+        //    //    }
+        //    //}
 
-            // filename for temporary excel file
-            string tempFileName = Path.GetTempFileName();
-            System.IO.File.Delete(tempFileName); // delete the file created so we can save as
+        //    // filename for temporary excel file
+        //    string tempFileName = Path.GetTempFileName();
+        //    System.IO.File.Delete(tempFileName); // delete the file created so we can save as
 
-            if (mode == 1)
-            {
-                //// .xls file format, 2003 and older
-                //workBook.SaveAs(tempFileName, Microsoft.Office.Interop.Excel.XlFileFormat.xlAddIn8);
-                //workBook.Close();
+        //    if (mode == 1)
+        //    {
+        //        //// .xls file format, 2003 and older
+        //        //workBook.SaveAs(tempFileName, Microsoft.Office.Interop.Excel.XlFileFormat.xlAddIn8);
+        //        //workBook.Close();
 
-                //Response.ContentType = "application/vnd.ms-excel";
-                //Response.AddHeader("content-disposition", "attachment; filename=Report.xls");
+        //        //Response.ContentType = "application/vnd.ms-excel";
+        //        //Response.AddHeader("content-disposition", "attachment; filename=Report.xls");
 
-                //Response.WriteFile(tempFileName);
-                //Response.Flush();
+        //        //Response.WriteFile(tempFileName);
+        //        //Response.Flush();
 
-                //// clean temp file
-                //System.IO.File.Delete(tempFileName);
-                //Response.End();
-            }
-            else if (mode == 2)
-            {
-                //// .xlsx file format, 2007 and newer
-                //// maybe try to find the corresponding XlFileFormat so we don't rely on the Interop version to choose
-                //workBook.SaveAs(tempFileName);
-                //workBook.Close();
+        //        //// clean temp file
+        //        //System.IO.File.Delete(tempFileName);
+        //        //Response.End();
+        //    }
+        //    else if (mode == 2)
+        //    {
+        //        //// .xlsx file format, 2007 and newer
+        //        //// maybe try to find the corresponding XlFileFormat so we don't rely on the Interop version to choose
+        //        //workBook.SaveAs(tempFileName);
+        //        //workBook.Close();
 
-                //Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                //Response.AddHeader("content-disposition", "attachment; filename=Report.xlsx");
+        //        //Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        //        //Response.AddHeader("content-disposition", "attachment; filename=Report.xlsx");
 
-                //Response.WriteFile(tempFileName);
-                //Response.Flush();
+        //        //Response.WriteFile(tempFileName);
+        //        //Response.Flush();
 
-                //// clean temp file
-                //System.IO.File.Delete(tempFileName);
-                //Response.End();
-            }
-            else if (mode == 3)
-            {
+        //        //// clean temp file
+        //        //System.IO.File.Delete(tempFileName);
+        //        //Response.End();
+        //    }
+        //    else if (mode == 3)
+        //    {
 
-                // csv version 2, uses the same 2-dimensional string array from the excel modes
-                Response.AddHeader("content-disposition", "attachment; filename=Report.csv");
-                Response.ContentType = "text/plain; charset=UTF-8";
+        //        // csv version 2, uses the same 2-dimensional string array from the excel modes
+        //        Response.AddHeader("content-disposition", "attachment; filename=Report.csv");
+        //        Response.ContentType = "text/plain; charset=UTF-8";
 
-                parseStringTable(getStringPGTable(startDay, endDay));
-                parseStringTable(getStringLanguageTable(startDay, endDay));
-                parseStringTable(getStringCountryTable(startDay, endDay));
+        //        parseStringTable(getStringPGTable(startDay, endDay));
+        //        parseStringTable(getStringLanguageTable(startDay, endDay));
+        //        parseStringTable(getStringCountryTable(startDay, endDay));
                 
                 
                 
-             }
+        //     }
 
-                Response.End();
+        //        Response.End();
             
-        }
+        //}
 
         private void parseStringTable(string[,] Content)
         {
