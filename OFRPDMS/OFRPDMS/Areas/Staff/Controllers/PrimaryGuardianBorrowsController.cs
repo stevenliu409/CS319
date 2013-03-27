@@ -36,7 +36,8 @@ namespace OFRPDMS.Areas.Staff.Controllers
         public ActionResult Create()
         {
             ViewBag.PossiblePrimaryGuardians = context.PrimaryGuardians;
-            ViewBag.PossibleLibraryResources = context.LibraryResources;
+            ViewBag.PossibleLibraryResources = context.LibraryResources.Where(lr => lr.CheckedOut == false);
+
             return View();
         } 
 
@@ -48,13 +49,19 @@ namespace OFRPDMS.Areas.Staff.Controllers
         {
             if (ModelState.IsValid)
             {
+                
                 context.PrimaryGuardianBorrows.Add(primaryguardianborrow);
+                primaryguardianborrow.BorrowDate = System.DateTime.Now;
+                context.LibraryResources.Find(primaryguardianborrow.LibraryResourceId).CheckedOut = true;
+                primaryguardianborrow.DueDate = primaryguardianborrow.DueDate.AddHours(23);
+                primaryguardianborrow.DueDate = primaryguardianborrow.DueDate.AddMinutes(59);
+
                 context.SaveChanges();
                 return RedirectToAction("Index");  
             }
-
+            
             ViewBag.PossiblePrimaryGuardians = context.PrimaryGuardians;
-            ViewBag.PossibleLibraryResources = context.LibraryResources;
+            ViewBag.PossibleLibraryResources = context.LibraryResources.Where(lr=> lr.CheckedOut == false);
             return View(primaryguardianborrow);
         }
         
@@ -66,7 +73,17 @@ namespace OFRPDMS.Areas.Staff.Controllers
             PrimaryGuardianBorrow primaryguardianborrow = context.PrimaryGuardianBorrows.Single(x => x.Id == id);
             ViewBag.PossiblePrimaryGuardians = context.PrimaryGuardians;
             ViewBag.PossibleLibraryResources = context.LibraryResources;
-            return View(primaryguardianborrow);
+            if (primaryguardianborrow.Returned != true)
+            {
+                primaryguardianborrow.Returned = true;
+                primaryguardianborrow.ReturnDate = System.DateTime.Now;
+                LibraryResource res = context.LibraryResources.Find(primaryguardianborrow.LibraryResourceId);
+                res.CheckedOut = false;
+                context.Entry(res).State = EntityState.Modified;
+                context.Entry(primaryguardianborrow).State = EntityState.Modified;
+                context.SaveChanges();
+            }
+            return RedirectToAction("Index");
         }
 
         //
@@ -77,6 +94,15 @@ namespace OFRPDMS.Areas.Staff.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (primaryguardianborrow.Returned)
+                {
+                    context.LibraryResources.Find(primaryguardianborrow.LibraryResourceId).CheckedOut = false;
+                }
+                else
+                {
+                    return View(primaryguardianborrow);
+                }
+                primaryguardianborrow.ReturnDate = System.DateTime.Now;
                 context.Entry(primaryguardianborrow).State = EntityState.Modified;
                 context.SaveChanges();
                 return RedirectToAction("Index");

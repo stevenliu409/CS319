@@ -39,6 +39,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
             var libraryitems = repoService.libraryRepo.FindAllWithCenterId(centerID);
             ViewBag.CurrentPage = "Library";
+
             return View(libraryitems.ToList());
         }
 
@@ -50,6 +51,14 @@ namespace OFRPDMS.Areas.Staff.Controllers
             int centerID = account.GetCurrentUserCenterId();
 
             LibraryResource libraryitem = repoService.libraryRepo.FindByIdAndCenterId(id, centerID);
+            OFRPDMSContext context = new OFRPDMSContext();
+            PrimaryGuardianBorrow pgb = context.PrimaryGuardianBorrows.Where(
+                p => p.LibraryResourceId == id &&
+                    p.Returned == false).FirstOrDefault();
+            if (pgb != null)
+            {
+                ViewBag.borrow = pgb.Id;
+            }
             return View(libraryitem);
         }
 
@@ -59,8 +68,8 @@ namespace OFRPDMS.Areas.Staff.Controllers
         public ActionResult Create()
         {
             int centerID = account.GetCurrentUserCenterId();
-
-            ViewBag.CenterId = new SelectList(repoService.centerRepo.FindListById(centerID), "Id", "Name");
+            ViewBag.CenterId2 = AccountProfile.CurrentUser.CenterID;
+            //ViewBag.CenterId = new SelectList(repoService.centerRepo.FindListById(centerID), "Id", "Name");
             ViewBag.ItemTypes = new SelectList(ValidTypes.AsEnumerable());
             return View();
         } 
@@ -92,7 +101,9 @@ namespace OFRPDMS.Areas.Staff.Controllers
             int centerID = account.GetCurrentUserCenterId();
 
             LibraryResource libraryitem = repoService.libraryRepo.FindByIdAndCenterId(id, centerID);
-            ViewBag.CenterId = new SelectList(repoService.centerRepo.FindListById(centerID), "Id", "Name", libraryitem.CenterId);
+            ViewBag.CenterId2 = AccountProfile.CurrentUser.CenterID;
+            ViewBag.ItemTypes = new SelectList(ValidTypes.AsEnumerable());
+            //ViewBag.CenterId = new SelectList(repoService.centerRepo.FindListById(centerID), "Id", "Name", libraryitem.CenterId);
             return View(libraryitem);
         }
 
