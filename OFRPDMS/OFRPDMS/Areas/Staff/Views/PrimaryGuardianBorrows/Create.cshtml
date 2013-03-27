@@ -47,7 +47,7 @@
     <div class="editor-field">
         @Html.DropDownListFor(model => model.PrimaryGuardianId, ((IEnumerable<OFRPDMS.Models.PrimaryGuardian>)ViewBag.PossiblePrimaryGuardians).Select(option => new SelectListItem
    {
-       Text = (option == null ? "None" : option.LastName),
+       Text = (option == null ? "None" : option.FirstName + " " + option.LastName),
        Value = option.Id.ToString(),
        Selected = (Model != null) && (option.Id == Model.PrimaryGuardianId)
    }), "Choose...")

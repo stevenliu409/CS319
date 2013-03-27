@@ -15,11 +15,8 @@
     <b class="display-label">CheckedOut</b>
     <div class="display-field">@Model.CheckedOut</div>
 
-    <b class="display-label">Value</b>
+    <b class="display-label"> Value of Item (Cost)</b>
     <div class="display-field">@String.Format("{0:F}", Model.Value)</div>
-
-    <b class="display-label">Image</b>
-    <div class="display-field">@Html.DisplayTextFor(_ => Model.Image).ToString()</div>
 
     <b class="display-label">Note</b>
     <div class="display-field">@Model.Note</div>
