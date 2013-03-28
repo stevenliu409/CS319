@@ -5868,7 +5868,7 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
 .metrouicss .input-control > select,
 .metrouicss .input-control > textarea {
   border: 1px #bababa solid;
-  width: 100%;
+  --width: 100%;
   padding: 4px 6px 6px 5px;
   background-color: #fff;
   outline: 0;

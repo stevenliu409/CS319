@@ -86,11 +86,11 @@
 
             if (plugin.settings.arrows === 'on') {
                 // prev next buttons handlers
-                $element.find('span.control.left').on('click', function(){
+                $element.find('span.control.left').bind('click', function(){
                     changeSlide('left');
                     startAutoSlide();
                 });
-                $element.find('span.control.right').on('click', function(){
+                $element.find('span.control.right').bind('click', function(){
                     changeSlide('right');
                     startAutoSlide();
                 });
@@ -109,10 +109,10 @@
 
                 // stop sliding when cursor over the carousel
                 if (plugin.settings.stop === 'on') {
-                    $element.on('mouseenter', function () {
+                    $element.bind('mouseenter', function () {
                         stopAutoSlide = true;
                     });
-                    $element.on('mouseleave', function () {
+                    $element.bind('mouseleave', function () {
                         stopAutoSlide = false;
                         startAutoSlide();
                     });
@@ -122,7 +122,7 @@
             // u can use same code:
             // $('#carusel').trigger('changeSlide', [{direction: 'left', effect: 'fade', index: 1}])
             // any option not required
-            $element.on('changeSlide', function(event, options){
+            $element.bind('changeSlide', function(event, options){
                 options = options || {};
                 changeSlide(options.direction, options.effect, options.index);
             });
@@ -195,7 +195,7 @@
 
             markers = ul.find('li');
 
-            ul.find('li a').on('click', function () {
+            ul.find('li a').bind('click', function () {
                 var $this = $(this),
                     index;
 

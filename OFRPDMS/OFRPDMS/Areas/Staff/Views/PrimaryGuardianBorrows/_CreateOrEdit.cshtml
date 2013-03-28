@@ -27,7 +27,7 @@
 <div class="editor-label">
     @Html.LabelFor(model => model.BorrowDate)
 </div>
-<div class="editor-field">
+<div class="input-control text">
     @Html.EditorFor(model => model.BorrowDate)
     @Html.ValidationMessageFor(model => model.BorrowDate)
 </div>
@@ -35,7 +35,7 @@
 <div class="editor-label">
     @Html.LabelFor(model => model.DueDate)
 </div>
-<div class="editor-field">
+<div class="input-control text">
     @Html.EditorFor(model => model.DueDate)
     @Html.ValidationMessageFor(model => model.DueDate)
 </div>
@@ -43,7 +43,7 @@
 <div class="editor-label">
     @Html.LabelFor(model => model.ReturnDate)
 </div>
-<div class="editor-field">
+<div class="input-control text">
     @Html.EditorFor(model => model.ReturnDate)
     @Html.ValidationMessageFor(model => model.ReturnDate)
 </div>
@@ -51,7 +51,7 @@
 <div class="editor-label">
     PrimaryGuardian
 </div>
-<div class="editor-field">
+<div class="input-control text">
     @Html.DropDownListFor(model => model.PrimaryGuardianId, ((IEnumerable<OFRPDMS.Models.PrimaryGuardian>)ViewBag.PossiblePrimaryGuardians).Select(option => new SelectListItem {
         Text = (option == null ? "None" : option.LastName), 
         Value = option.Id.ToString(),
@@ -62,7 +62,7 @@
 <div class="editor-label">
     LibraryResource
 </div>
-<div class="editor-field">
+<div class="input-control text">
     @Html.DropDownListFor(model => model.LibraryResourceId, ((IEnumerable<OFRPDMS.Models.LibraryResource>)ViewBag.PossibleLibraryResources).Select(option => new SelectListItem {
         Text = (option == null ? "None" : option.Name), 
         Value = option.Id.ToString(),

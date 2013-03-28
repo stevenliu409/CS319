@@ -19,7 +19,7 @@
         <div class="editor-label">
             @Html.LabelFor(model => model.EventId, "Event")
         </div>
-        <div class="editor-field">
+        <div class="input-control text">
             @Html.DropDownList("EventId", String.Empty)
             @Html.ValidationMessageFor(model => model.EventId)
         </div>
@@ -27,7 +27,7 @@
         <div class="editor-label">
             @Html.LabelFor(model => model.ParticipantId)
         </div>
-        <div class="editor-field">
+        <div class="input-control text">
             @Html.EditorFor(model => model.ParticipantId)
             @Html.ValidationMessageFor(model => model.ParticipantId)
         </div>
@@ -35,7 +35,7 @@
         <div class="editor-label">
             @Html.LabelFor(model => model.ParticipantType)
         </div>
-        <div class="editor-field">
+        <div class="input-control text">
             @Html.EditorFor(model => model.ParticipantType)
             @Html.ValidationMessageFor(model => model.ParticipantType)
         </div>

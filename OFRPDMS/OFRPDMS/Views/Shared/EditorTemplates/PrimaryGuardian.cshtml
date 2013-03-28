@@ -10,7 +10,7 @@
 <div class="editor-label">
     @Html.LabelFor(model => model.FirstName)
 </div>
-<div class="editor-field">
+<div class="input-control text">
 
     @Html.EditorFor(model => model.FirstName)
     @Html.ValidationMessageFor(model => model.FirstName)
@@ -19,7 +19,7 @@
 <div class="editor-label">
     @Html.LabelFor(model => model.LastName)
 </div>
-<div class="editor-field">
+<div class="input-control text">
     @Html.EditorFor(model => model.LastName)
    
     @Html.ValidationMessageFor(model => model.LastName)
@@ -28,7 +28,7 @@
 <div class="editor-label">
     @Html.LabelFor(model => model.Email)
 </div>
-<div class="editor-field">
+<div class="input-control text">
     @Html.EditorFor(model => model.Email)
     @Html.ValidationMessageFor(model => model.Email)
 </div>
@@ -36,7 +36,7 @@
 <div class="editor-label">
     @Html.LabelFor(model => model.Phone)
 </div>
-<div class="editor-field">
+<div class="input-control text">
     @Html.EditorFor(model => model.Phone)
      @Html.ValidationMessageFor(model => model.Phone)
 </div>
@@ -44,7 +44,7 @@
 <div class="editor-label">
     @Html.LabelFor(model => model.PostalCodePrefix)
 </div>
-<div class="editor-field">
+<div class="input-control text">
     @Html.EditorFor(model => model.PostalCodePrefix)
     @Html.ValidationMessageFor(model => model.PostalCodePrefix)
 </div>
@@ -52,7 +52,7 @@
 <div class="editor-label">
     @Html.LabelFor(model => model.Language)
 </div>
-<div class="editor-field">
+<div class="input-control text">
     @Html.EditorFor(model => model.Language)
     @Html.ValidationMessageFor(model => model.Language)
 </div>
@@ -60,19 +60,19 @@
 <div class="editor-label">
     @Html.LabelFor(model => model.Country)
 </div>
-<div class="editor-field">
+<div class="input-control text">
     @Html.EditorFor(model => model.Country)
     @Html.ValidationMessageFor(model => model.Country)
 </div>
 <div class="editor-label">
         @Html.LabelFor(model => model.Allergies)
 </div>
-<div class="editor-field">
+<div class="input-control text">
         @Html.TextAreaFor(model => model.Allergies)
         @Html.ValidationMessageFor(model => model.Allergies)
 </div>
 
-<div class="editor-field">
+<div class="input-control text">
     
     @Html.Hidden("CenterId", (int) ViewBag.CenterId2)
 </div>
