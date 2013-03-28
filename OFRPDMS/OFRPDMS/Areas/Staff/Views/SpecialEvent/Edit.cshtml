@@ -17,7 +17,7 @@
         <div class="editor-label">
             @Html.LabelFor(model => model.Name)
         </div>
-        <div class="editor-field">
+        <div class="input-control text">
             @Html.EditorFor(model => model.Name)
             @Html.ValidationMessageFor(model => model.Name)
         </div>
@@ -25,7 +25,7 @@
         <div class="editor-label">
             @Html.LabelFor(model => model.GuestSpeaker)
         </div>
-        <div class="editor-field">
+        <div class="input-control text">
             @Html.EditorFor(model => model.GuestSpeaker)
             @Html.ValidationMessageFor(model => model.GuestSpeaker)
         </div>
@@ -33,7 +33,7 @@
         <div class="editor-label">
             @Html.LabelFor(model => model.GuestSpeakerType)
         </div>
-        <div class="editor-field">
+        <div class="input-control text">
             @Html.EditorFor(model => model.GuestSpeakerType)
             @Html.ValidationMessageFor(model => model.GuestSpeakerType)
         </div>
@@ -41,7 +41,7 @@
         <div class="editor-label">
             @Html.LabelFor(model => model.CenterId, "Center")
         </div>
-        <div class="editor-field">
+        <div class="input-control text">
             @Html.DropDownList("CenterId", String.Empty)
             @Html.ValidationMessageFor(model => model.CenterId)
         </div>
@@ -51,7 +51,7 @@
         <div class="editor-label">
             @Html.LabelFor(model => model.Date)
         </div>
-        <div class="editor-field">
+        <div class="input-control text">
             @Html.EditorFor(model => model.Date)
             @Html.ValidationMessageFor(model => model.Date)
         </div>

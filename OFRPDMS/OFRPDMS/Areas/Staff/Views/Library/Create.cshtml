@@ -17,15 +17,16 @@
         <div class="editor-label">
             @Html.LabelFor(model => model.Broken)
         </div>
-        <div class="editor-field">
+        <div class="input-control text">
              @Html.DropDownListFor(model => model.Broken,new List<SelectListItem>(){new SelectListItem(){ Text = "No", Value="False"}, new SelectListItem(){ Text = "Yes", Value="True"}})
             @Html.ValidationMessageFor(model => model.Broken)
         </div>
 
+
         <div class="editor-label">
           <label>Value of Item (Cost)</label> 
         </div>
-        <div class="editor-field">
+        <div class="input-control text">
             @Html.EditorFor(model => model.Value)
             @Html.ValidationMessageFor(model => model.Value)
         </div>
@@ -33,7 +34,7 @@
         <div class="editor-label">
             @Html.LabelFor(model => model.Note)
         </div>
-        <div class="editor-field">
+        <div class="input-control text">
             @Html.EditorFor(model => model.Note)
             @Html.ValidationMessageFor(model => model.Note)
         </div>
@@ -41,7 +42,7 @@
         <div class="editor-label">
             @Html.LabelFor(model => model.Name)
         </div>
-        <div class="editor-field">
+        <div class="input-control text">
             @Html.EditorFor(model => model.Name)
             @Html.ValidationMessageFor(model => model.Name)
         </div>
@@ -49,7 +50,7 @@
         <div class="editor-label">
             @Html.LabelFor(model => model.ItemType)
         </div>
-        <div class="editor-field">
+        <div class="input-control text">
              @Html.DropDownListFor(model => model.ItemType, new List<SelectListItem>() { new SelectListItem() { Text = "Video", Value = "Video" }, new SelectListItem() { Text = "Toy", Value = "Toy" }, new SelectListItem() { Text = "Book", Value = "Book" } })
             @Html.ValidationMessageFor(model => model.ItemType)
         </div>
@@ -57,12 +58,13 @@
         <div class="editor-label">
             @Html.LabelFor(model => model.Sanitized)
         </div>
-        <div class="editor-field">
+
+            <div class="editor-field">
             @Html.DropDownListFor(model => model.Sanitized, new List<SelectListItem>() { new SelectListItem() { Text = "No", Value = "False" }, new SelectListItem() { Text = "Yes", Value = "True" } })
             @Html.ValidationMessageFor(model => model.Sanitized)
         </div>
 
-        <div class="editor-field">
+        <div class="input-control text">
             @Html.Hidden("CenterId", (int)ViewBag.CenterId2)
         </div>
 

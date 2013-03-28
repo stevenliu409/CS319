@@ -13,7 +13,7 @@
     <div class="editor-label">
         @Html.LabelFor(model => model.FirstName)
     </div>
-    <div class="editor-field">
+    <div class="input-control text">
         @Html.EditorFor(model => model.FirstName)
         @Html.ValidationMessageFor(model => model.FirstName)
     </div>
@@ -21,7 +21,7 @@
     <div class="editor-label">
         @Html.LabelFor(model => model.LastName)
     </div>
-    <div class="editor-field">
+    <div class="input-control text">
         @Html.EditorFor(model => model.LastName)
         @Html.ValidationMessageFor(model => model.LastName)
     </div>
@@ -29,7 +29,7 @@
     <div class="editor-label">
         @Html.LabelFor(model => model.Birthdate)
     </div>
-    <div class="editor-field">
+    <div class="input-control text">
         @Html.EditorFor(model => model.Birthdate)
         @Html.ValidationMessageFor(model => model.Birthdate)
     </div>
@@ -37,7 +37,7 @@
     <div class="editor-label">
     @Html.LabelFor(model => model.RelationshipToGuardian)
     </div>
-    <div class="editor-field">
+    <div class="input-control text">
     @Html.EditorFor(model => model.RelationshipToGuardian)
     @Html.ValidationMessageFor(model => model.RelationshipToGuardian)
     </div>
@@ -45,7 +45,7 @@
      <div class="editor-label">
         @Html.LabelFor(model => model.Allergies)
     </div>
-    <div class="editor-field">
+    <div class="input-control text">
         @Html.TextAreaFor(model => model.Allergies)
         @Html.ValidationMessageFor(model => model.Allergies)
     </div>

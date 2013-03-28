@@ -7,6 +7,10 @@ using System.Web.Mvc;
 using OFRPDMS.Models;
 using OFRPDMS.Areas.Admin.Models;
 
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml;
+
 namespace OFRPDMS.Areas.Admin.Controllers
 {
     public class ReportController : Controller
@@ -42,10 +46,9 @@ namespace OFRPDMS.Areas.Admin.Controllers
 
             if (mode == 1)
             {
-
                 return View();
             }
-            else
+            else if (mode == 2)
             {
                 
                 Response.AddHeader("content-disposition", "attachment; filename=Report.csv");
@@ -57,6 +60,102 @@ namespace OFRPDMS.Areas.Admin.Controllers
                 Response.End();
 
                 
+            }
+            else if (mode == 3)
+            {
+                // filename for temporary excel file
+                string tempFileName = Path.GetTempFileName();
+                System.IO.File.Delete(tempFileName); // delete the file created so we can save as
+                tempFileName += ".xlsx";
+
+                SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Create(tempFileName, SpreadsheetDocumentType.Workbook);
+
+                // Add a WorkbookPart to the document.
+                WorkbookPart workbookpart = spreadsheetDocument.AddWorkbookPart();
+                workbookpart.Workbook = new Workbook();
+
+                // Add a WorksheetPart to the WorkbookPart.
+                WorksheetPart worksheetPart = workbookpart.AddNewPart<WorksheetPart>();
+                worksheetPart.Worksheet = new Worksheet(new SheetData());
+
+                // Add Sheets to the Workbook.
+                Sheets sheets = spreadsheetDocument.WorkbookPart.Workbook.AppendChild<Sheets>(new Sheets());
+
+                // Append a new worksheet and associate it with the workbook.
+                Sheet sheet = new Sheet() { Id = spreadsheetDocument.WorkbookPart.GetIdOfPart(worksheetPart), SheetId = 1, Name = "Sheet1" };
+                sheets.Append(sheet);
+
+                // Get the sheetData cell table.
+                SheetData sheetData = worksheetPart.Worksheet.GetFirstChild<SheetData>();
+
+
+
+                uint rowIndex = 1;
+
+                for (uint i = 0; i < pgTable.GetLength(0); i++)
+                {
+                    // add a row to the cell table
+                    Row row;
+                    row = new Row() { RowIndex = rowIndex };
+                    sheetData.Append(row);
+
+                    // populate the row
+                    for (uint j = 0; j < pgTable.GetLength(1); j++)
+                    {
+                        CreateCell(row, pgTable[i, j], j);
+                    }
+                    rowIndex++;
+                }
+
+                // one blank row to separate data
+                rowIndex++;
+
+                for (uint i = 0; i < countryTable.GetLength(0); i++)
+                {
+                    // add a row to the cell table
+                    Row row;
+                    row = new Row() { RowIndex = rowIndex };
+                    sheetData.Append(row);
+
+                    // populate the row
+                    for (uint j = 0; j < countryTable.GetLength(1); j++)
+                    {
+                        CreateCell(row, countryTable[i, j], j);
+                    }
+                    rowIndex++;
+                }
+
+                // one blank row to separate data
+                rowIndex++;
+
+                for (uint i = 0; i < languageTable.GetLength(0); i++)
+                {
+                    // add a row to the cell table
+                    Row row;
+                    row = new Row() { RowIndex = rowIndex };
+                    sheetData.Append(row);
+
+                    // populate the row
+                    for (uint j = 0; j < languageTable.GetLength(1); j++)
+                    {
+                        CreateCell(row, languageTable[i, j], j);
+                    }
+                    rowIndex++;
+                }
+
+                workbookpart.Workbook.Save();
+                spreadsheetDocument.Close();
+
+                Response.Clear();
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.AddHeader("content-disposition", "attachment; filename=Report.xlsx");
+
+                Response.WriteFile(tempFileName);
+                Response.Flush();
+
+                // clean temp file
+                System.IO.File.Delete(tempFileName);
+                Response.End();
             }
             return View(context.Centers);
             
@@ -230,6 +329,10 @@ namespace OFRPDMS.Areas.Admin.Controllers
                 byte[] newLine = new System.Text.UTF8Encoding(true).GetBytes("\r\n");
                 Response.OutputStream.Write(newLine, 0, newLine.Length);
             }
+
+            // newline after this table
+            byte[] newLine2 = new System.Text.UTF8Encoding(true).GetBytes("\r\n");
+            Response.OutputStream.Write(newLine2, 0, newLine2.Length);
         }
 
 
@@ -593,9 +696,24 @@ namespace OFRPDMS.Areas.Admin.Controllers
         }
 
 
-        
+        public static void CreateCell(Row row, string text, uint columnIndex)
+        {
+            Cell newCell = new Cell();
 
+            newCell.CellValue = new CellValue(text);
 
+            try
+            {
+                int value = Convert.ToInt32(text);
+                newCell.DataType = new EnumValue<CellValues>(CellValues.Number);
+            }
+            catch (FormatException e)
+            {
+                newCell.DataType = new EnumValue<CellValues>(CellValues.String);
+            }
+
+            row.InsertAt(newCell, (int)columnIndex);
+        }
         
     }
 }

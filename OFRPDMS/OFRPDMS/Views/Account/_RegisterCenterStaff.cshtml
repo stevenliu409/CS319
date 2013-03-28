@@ -1,7 +1,7 @@
 ﻿@model OFRPDMS.Models.RegisterModel
 
 
-<div class="editor-field">
+<div class="input-control text">
     @Html.DropDownListFor(model => model.CenterId, ((IEnumerable<OFRPDMS.Models.Center>)ViewBag.PossibleCenters).Select(option => new SelectListItem {
         Text = (option == null ? "None" : option.Name), 
         Value = option.Id.ToString(),

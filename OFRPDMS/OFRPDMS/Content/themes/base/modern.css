@@ -949,7 +949,7 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
 .metrouicss h1 {
   font-family: 'Segoe UI Light', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
   font-weight: 200;
-  font-size: 42pt;
+  font-size: 32pt;
   letter-spacing: 0.00em;
   line-height: 44pt;
   font-smooth: always;
@@ -4492,12 +4492,13 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
   color: rgba(0, 0, 0, 0.8);
 }
 .metrouicss .dropdown-menu a:active {
-  color: rgba(0, 0, 0, 0.4);
+  color: black !important;
 }
 .metrouicss .dropdown-menu a:hover {
   background-color: #2d89ef !important;
   color: #ffffff !important;
 }
+    
 .metrouicss .dropdown-menu li {
   display: list-item;
   line-height: 20px;
@@ -5867,7 +5868,7 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
 .metrouicss .input-control > select,
 .metrouicss .input-control > textarea {
   border: 1px #bababa solid;
-  width: 100%;
+  --width: 100%;
   padding: 4px 6px 6px 5px;
   background-color: #fff;
   outline: 0;
