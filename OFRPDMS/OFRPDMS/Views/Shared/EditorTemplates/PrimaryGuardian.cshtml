@@ -71,27 +71,11 @@
         @Html.TextAreaFor(model => model.Allergies)
         @Html.ValidationMessageFor(model => model.Allergies)
 </div>
-
 <div class="editor-field">
     
     @Html.Hidden("CenterId", (int) ViewBag.CenterId2)
+    @Html.Hidden("DateCreated", Model.DateCreated)
 </div>
-
-
-
-@*
-<div class="editor-label">
-        @Html.LabelFor(model =>model.Allergies)
-</div>
-
-<div id="allergies">
-        @Html.EditorFor(model =>model.Allergies)
-</div>*@
-
-@*
-<p>
-        @Html.LinkToAddNestedForm(model=>model.Allergies,"Add More Allergy...", "#allergies", ".Allergy", "Allergies")
-</p>*@
 
 
 <div id="secondaryGuardians">
@@ -99,9 +83,7 @@
 </div>
 
 <p>
-
   @Html.LinkToAddNestedForm(model=>model.SecondaryGuardians,"Add More SecondaryGuardians...", "#secondaryGuardians", ".SecondaryGuardian", "SecondaryGuardians")
-
 </p>
 
 
