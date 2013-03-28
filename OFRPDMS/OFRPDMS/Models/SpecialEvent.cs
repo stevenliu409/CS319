@@ -11,6 +11,7 @@ namespace OFRPDMS.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     
     public partial class SpecialEvent
     {
@@ -18,7 +19,7 @@ namespace OFRPDMS.Models
         {
             this.EventParticipants = new HashSet<EventParticipant>();
         }
-    
+        [Required]
         public string Name { get; set; }
         public string GuestSpeaker { get; set; }
         public string GuestSpeakerType { get; set; }
