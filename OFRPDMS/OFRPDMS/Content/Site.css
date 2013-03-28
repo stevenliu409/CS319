@@ -19,7 +19,7 @@ a:link {
 }
 
 a:visited {
-    --color: #034af3;
+    
 }
 
 a:hover {
@@ -252,11 +252,11 @@ div#title {
 }
 
 #logindisplay a:link {
-    color:#008287;
+    --color:#008287;
 }
 
 #logindisplay a:visited{
-    color: #008287;
+    --color: #008287;
     
 }
 

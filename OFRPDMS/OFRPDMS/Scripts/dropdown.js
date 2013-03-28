@@ -65,7 +65,7 @@
 
         var initSelectors = function(selectors){
 
-            selectors.on('click', function(e){
+            selectors.bind('click', function(e){
                 e.preventDefault();
                 var $m = $this.parent().children("ul");
                 //console.log($m);
