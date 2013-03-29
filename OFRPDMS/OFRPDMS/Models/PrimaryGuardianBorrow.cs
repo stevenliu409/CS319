@@ -19,7 +19,7 @@ namespace OFRPDMS.Models
         public int PrimaryGuardianId { get; set; }
         public bool Returned { get; set; }
         public System.DateTime DueDate { get; set; }
-        public Nullable<System.DateTime> ReturnDate { get; set; }
+        public System.DateTime? ReturnDate { get; set; }
         public int LibraryResourceId { get; set; }
     
         public virtual PrimaryGuardian PrimaryGuardian { get; set; }
