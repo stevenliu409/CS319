@@ -12,7 +12,6 @@
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
     <fieldset>
-        <legend>SpecialEvent</legend>
 
         <div class="editor-label">
             @Html.LabelFor(model => model.Name)
@@ -36,14 +35,6 @@
         <div class="input-control text">
             @Html.EditorFor(model => model.GuestSpeakerType)
             @Html.ValidationMessageFor(model => model.GuestSpeakerType)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.CenterId, "Center")
-        </div>
-        <div class="input-control text">
-            @Html.DropDownList("CenterId", String.Empty)
-            @Html.ValidationMessageFor(model => model.CenterId)
         </div>
 
         @Html.HiddenFor(model => model.Id)
