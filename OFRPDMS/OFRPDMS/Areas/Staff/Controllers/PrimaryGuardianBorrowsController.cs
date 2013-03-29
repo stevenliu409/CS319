@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using OFRPDMS.Models;
+using PagedList;
 
 namespace OFRPDMS.Areas.Staff.Controllers
 {   
@@ -16,10 +17,86 @@ namespace OFRPDMS.Areas.Staff.Controllers
         //
         // GET: /PrimaryGuardianBorrows/
 
-        public ViewResult Index()
+        public ViewResult Index(string sortOrder, string currentFilter, string searchString, int? page )
         {
-            int centerid = AccountProfile.CurrentUser.CenterID;
-            return View(context.PrimaryGuardianBorrows.Where(pgb => pgb.LibraryResource.CenterId == centerid).Include(primaryguardianborrow => primaryguardianborrow.PrimaryGuardian).Include(primaryguardianborrow => primaryguardianborrow.LibraryResource).ToList());
+            int centerid = AccountProfile.CurrentUser.CenterID; 
+
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.PrimaryNameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name desc" : "";
+            ViewBag.ResourceNameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name desc1" : "";
+            ViewBag.ReturnNameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name desc2" : "";
+
+            ViewBag.BorrowDateSortParm = sortOrder == "Date" ? "Date desc" : "Date";
+            ViewBag.DueDateSortParm = sortOrder == "Date1" ? "Date desc1" : "Date";
+            ViewBag.ReturnDateSortParm = sortOrder == "Date2" ? "Date desc2" : "Date";
+
+            if (Request.HttpMethod == "GET")
+            {
+                searchString = currentFilter;
+            }
+            else
+            {
+                page = 1;
+            }
+            ViewBag.CurrentFilter = searchString;
+
+            var pgbs = from p in context.PrimaryGuardianBorrows.Where(pgb => pgb.LibraryResource.CenterId == centerid).Include(primaryguardianborrow => primaryguardianborrow.PrimaryGuardian).Include(primaryguardianborrow => primaryguardianborrow.LibraryResource)
+                               select p;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                pgbs = pgbs.Where(p => p.PrimaryGuardian.FirstName.ToUpper().Contains(searchString.ToUpper()) || p.LibraryResource.Name.ToUpper().Contains(searchString.ToUpper()));
+                           
+
+            }
+            switch (sortOrder)
+            {
+                case "Name desc":
+                    pgbs = pgbs.OrderByDescending(p => p.PrimaryGuardian.FirstName);
+
+                    break;
+                case "Name desc1":
+
+                    pgbs = pgbs.OrderByDescending(p => p.LibraryResource.Name);
+
+                    break;
+                case "Name desc2":
+
+                    pgbs = pgbs.OrderByDescending(p => p.Returned);
+
+                    break;
+
+                case "Date":
+                    pgbs = pgbs.OrderBy(s => s.BorrowDate);
+                    break;
+                case "Date desc":
+                    pgbs = pgbs.OrderByDescending(s => s.BorrowDate);
+                    break;
+                case "Date1":
+                    pgbs = pgbs.OrderBy(s => s.DueDate);
+                    break;
+                case "Date desc1":
+                    pgbs = pgbs.OrderByDescending(s => s.DueDate);
+                    break;
+                case "Date2":
+                    pgbs = pgbs.OrderBy(s => s.ReturnDate);
+                    break;
+                case "Date desc2":
+                    pgbs = pgbs.OrderByDescending(s => s.DueDate);
+                    break;
+
+                default:
+                    pgbs = pgbs.OrderBy(s => s.BorrowDate);
+                    break;
+            }
+
+
+
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+
+
+            return View(pgbs.ToPagedList(pageNumber, pageSize));
         }
 
         //

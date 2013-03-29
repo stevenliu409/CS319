@@ -41,7 +41,7 @@ namespace OFRPDMS.Tests.Controllers
             LibraryController controller = new LibraryController(accountService.Object, repoService.Object);
 
             // Act
-            ActionResult result = controller.Index() as ActionResult;
+            ActionResult result = controller.Index(null,null,null,null) as ActionResult;
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(ViewResult));
@@ -75,7 +75,7 @@ namespace OFRPDMS.Tests.Controllers
             LibraryController controller = new LibraryController(accountService.Object, repoService.Object);
 
             // Act
-            ActionResult result = controller.Index() as ActionResult;
+            ActionResult result = controller.Index(null,null,null,null) as ActionResult;
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(ViewResult));

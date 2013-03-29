@@ -41,7 +41,7 @@ namespace OFRPDMS.Tests.Controllers
             EventsController controller = new EventsController(accountService.Object, repoService.Object);
 
             // Act
-            ActionResult result = controller.Index() as ActionResult;
+            ActionResult result = controller.Index(null,null) as ActionResult;
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(ViewResult));
@@ -75,7 +75,7 @@ namespace OFRPDMS.Tests.Controllers
             EventsController controller = new EventsController(accountService.Object, repoService.Object);
 
             // Act
-            ActionResult result = controller.Index() as ActionResult;
+            ActionResult result = controller.Index(null,null) as ActionResult;
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(ViewResult));

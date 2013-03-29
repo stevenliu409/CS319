@@ -9,6 +9,7 @@ using System.Web.Security;
 using OFRPDMS.Account;
 using OFRPDMS.Models;
 using OFRPDMS.Repositories;
+using PagedList;
 
 using Ninject;
 
@@ -31,14 +32,42 @@ namespace OFRPDMS.Areas.Staff.Controllers
         //
         // GET: /Events/
 
-        public ViewResult Index()
+        public ViewResult Index(string sortOrder, int? page)
         {
             int centerID = account.GetCurrentUserCenterId();
             string[] roles = Roles.GetRolesForUser();
             ViewBag.IsAdmin = roles.Contains("Administrators");
-            var Events = repoService.eventRepo.FindAllWithCenterId(centerID);
             ViewBag.CurrentPage = "Events";
-            return View(Events.ToList());
+
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.DateSortParm = sortOrder == "Date" ? "Date desc" : "Date";
+            ViewBag.CenterNameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name desc" : "";
+            var events = from e in repoService.eventRepo.FindAllWithCenterId(centerID)
+                           select e;
+
+            switch (sortOrder)
+            {
+                case "Name desc":
+                    events = events.OrderByDescending(e => e.Center);
+
+                    break;
+               
+                case "Date":
+                    events = events.OrderBy(e => e.Date);
+                    break;
+                case "Date desc":
+                    events = events.OrderByDescending(e => e.Date);
+                    break;
+                default:
+                    events = events.OrderBy(e => e.Date);
+                    break;
+            }
+
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+
+
+            return View(events.ToPagedList(pageNumber, pageSize));
         }
 
         //
