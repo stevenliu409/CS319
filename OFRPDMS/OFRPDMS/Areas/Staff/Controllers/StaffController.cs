@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using System.Web.Security;
 using OFRPDMS.Models;
 
+using MvcPaging;
+
 namespace OFRPDMS.Areas.Staff.Controllers
 {
     public class StaffController : Controller
@@ -22,10 +24,12 @@ namespace OFRPDMS.Areas.Staff.Controllers
             {
                 if (centerIdArg != -1)
                     AccountProfile.CurrentUser.CenterID = centerIdArg;
+
             }
             ViewBag.CurrentCenterId = "c"+ centerIdArg.ToString();
             int centerid = AccountProfile.CurrentUser.CenterID;
             ViewBag.CurrentCenterName = db.Centers.Find(centerid).Name;
+
             return View();
         }
 
