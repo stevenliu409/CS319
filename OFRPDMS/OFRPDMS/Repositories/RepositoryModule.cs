@@ -18,5 +18,7 @@ public class RepositoryModule : NinjectModule
         this.Bind(typeof(ILibraryRepository)).To(typeof(LibraryRepository));
 
         this.Bind(typeof(IRepositoryService)).To(typeof(DbRepositoryService));
+
+        this.Bind(typeof(ISpecialEventRepository)).To(typeof(SpecialEventRepository));
     }
 }

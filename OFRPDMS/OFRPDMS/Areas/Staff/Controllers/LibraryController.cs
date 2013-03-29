@@ -16,7 +16,6 @@ namespace OFRPDMS.Areas.Staff.Controllers
 { 
     public class LibraryController : Controller
     {
-        private string[] ValidTypes = new string[3] { "video", "book", "toy" };
 
         private IRepositoryService repoService;
         private IAccountService account;
@@ -70,9 +69,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
         {
             int centerID = account.GetCurrentUserCenterId();
             ViewBag.CenterId2 = AccountProfile.CurrentUser.CenterID;
-            //ViewBag.CenterId = new SelectList(repoService.centerRepo.FindListById(centerID), "Id", "Name");
-            ViewBag.ItemTypes = new SelectList(ValidTypes.AsEnumerable());
-
+            ViewBag.CenterId = new SelectList(repoService.centerRepo.FindListById(centerID), "Id", "Name");
             return View();
         } 
 
@@ -91,7 +88,6 @@ namespace OFRPDMS.Areas.Staff.Controllers
                 return RedirectToAction("Index");  
             }
 
-            ViewBag.ItemType = new SelectList(ValidTypes.AsEnumerable());
             ViewBag.CenterId = new SelectList(repoService.centerRepo.FindListById(centerID), "Id", "Name", libraryitem.CenterId);
             return View(libraryitem);
         }
@@ -105,8 +101,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
             LibraryResource libraryitem = repoService.libraryRepo.FindByIdAndCenterId(id, centerID);
             ViewBag.CenterId2 = AccountProfile.CurrentUser.CenterID;
-            ViewBag.ItemTypes = new SelectList(ValidTypes.AsEnumerable());
-            //ViewBag.CenterId = new SelectList(repoService.centerRepo.FindListById(centerID), "Id", "Name", libraryitem.CenterId);
+            ViewBag.CenterId = new SelectList(repoService.centerRepo.FindListById(centerID), "Id", "Name", libraryitem.CenterId);
             return View(libraryitem);
         }
 
@@ -117,9 +112,10 @@ namespace OFRPDMS.Areas.Staff.Controllers
         public ActionResult Edit(LibraryResource libraryitem)
         {
             int centerID = account.GetCurrentUserCenterId();
-
+            OFRPDMSContext context = new OFRPDMSContext();
             if (ModelState.IsValid)
             {
+                libraryitem.CheckedOut = context.LibraryResources.Find(libraryitem.Id).CheckedOut;
                 repoService.libraryRepo.Update(libraryitem);
                 return RedirectToAction("Index");
             }
