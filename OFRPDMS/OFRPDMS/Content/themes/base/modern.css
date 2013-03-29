@@ -1055,7 +1055,7 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
 .metrouicss body,
 .metrouicss p,
 .metrouicss div {
-  --font-family: 'Segoe UI Semilight', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-family: 'Segoe UI Semilight', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
   font-weight: 300;
   font-size: 11pt;
   letter-spacing: 0.02em;
@@ -5872,7 +5872,7 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
   padding: 4px 6px 6px 5px;
   background-color: #fff;
   outline: 0;
-  margin-right: 32px;
+  --margin-right: 32px;
   min-height: 32px;
   position: relative;
 }
@@ -6267,7 +6267,7 @@ License:	CC BY-SA 3.0 -- http://creativecommons.org/licenses/by-sa/3.0/
 .metrouicss input[type=submit] {
   background-color: #008287;
   color: #fff;
-  margin-top: 23px;
+  --margin-top: 23px;
 }
 .metrouicss .image-collection {
   position: relative;

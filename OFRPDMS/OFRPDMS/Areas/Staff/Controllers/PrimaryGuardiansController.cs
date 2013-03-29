@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Security;
 using System.Web.Mvc;
 using OFRPDMS.Models;
+using System.Data.Objects;
+using PagedList;
 
 namespace OFRPDMS.Areas.Staff.Controllers
 {   
@@ -18,13 +20,112 @@ namespace OFRPDMS.Areas.Staff.Controllers
         //
         // GET: /PrimaryGuardians/
 
-        public ViewResult Index()
+        public ViewResult Index(string sortOrder,string currentFilter, string searchString, int? page)
         {
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.FirstNameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name desc" : "";
+            ViewBag.LastNameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name desc1" : "";
+            ViewBag.EmailNameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name desc2" : "";
+            ViewBag.CountryNameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name desc3" : "";
+            ViewBag.LanguageNameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name desc4" : "";
+            ViewBag.PostalcodeNameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name desc5" : "";
+            ViewBag.AllergiesNameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name desc6" : "";
+            ViewBag.PhoneNameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name desc7" : "";
+            ViewBag.ChildrenNameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name desc8" : "";
+            ViewBag.SecondaryNameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name desc9" : "";
+            ViewBag.DateSortParm = sortOrder == "Date" ? "Date desc" : "Date";
             int centerId = AccountProfile.CurrentUser.CenterID;
             string[] roles = Roles.GetRolesForUser();
             ViewBag.IsAdmin = roles.Contains("Administrators");
-            var primaryguardians = context.PrimaryGuardians.Where(p => p.CenterId == centerId).Include(p => p.Center);
-            return View(primaryguardians.ToList());
+
+
+            if (Request.HttpMethod == "GET")
+            {
+                searchString = currentFilter;
+            }
+            else
+            {
+                page = 1;
+            }
+            ViewBag.CurrentFilter = searchString;
+
+            var primaryguardian = from p in context.PrimaryGuardians.Where(p => p.CenterId == centerId).Include(p => p.Center)
+                                   select p;
+          
+            if (!String.IsNullOrEmpty(searchString))
+            {
+     
+
+                primaryguardian = primaryguardian.Where(p => p.LastName.ToUpper().Contains(searchString.ToUpper())
+                           || p.FirstName.ToUpper().Contains(searchString.ToUpper()) || p.Country.ToUpper().Contains(searchString.ToUpper())
+                            || p.Email.ToUpper().Contains(searchString.ToUpper()) 
+                           || p.Language.ToUpper().Contains(searchString.ToUpper()) || p.Phone.ToUpper().Contains(searchString.ToUpper()) || p.PostalCodePrefix.ToUpper().Contains(searchString.ToUpper())
+                           || p.Allergies.ToUpper().Contains(searchString.ToUpper()));
+            }
+            switch (sortOrder)
+            {
+                case "Name desc":
+                    primaryguardian = primaryguardian.OrderByDescending(p => p.FirstName);
+                    
+                    break;
+                case "Name desc1":
+                    
+                    primaryguardian = primaryguardian.OrderByDescending(p => p.LastName);
+                  
+                    break;
+                case "Name desc2":
+           
+                    primaryguardian = primaryguardian.OrderByDescending(p => p.Email);
+               
+                    break;
+                case "Name desc3":
+ 
+                    primaryguardian = primaryguardian.OrderByDescending(p => p.Country);
+                    break;
+                case "Name desc4":
+                   
+                    primaryguardian = primaryguardian.OrderByDescending(p => p.Language);
+                   
+                    break;
+                case "Name desc5":
+                    primaryguardian = primaryguardian.OrderByDescending(p => p.PostalCodePrefix);
+                 
+                    break;
+
+                case "Name desc6":
+                    primaryguardian = primaryguardian.OrderByDescending(p => p.Allergies);
+                 
+                    break;
+
+                case "Name desc7":
+                    primaryguardian = primaryguardian.OrderByDescending(p => p.Phone);
+
+                    break;
+                case "Name desc8":
+                    primaryguardian = primaryguardian.OrderByDescending(p => p.Children.Count);
+
+                    break;
+                case "Name desc9":
+                    primaryguardian = primaryguardian.OrderByDescending(p => p.SecondaryGuardians.Count);
+
+                    break;
+
+                case "Date":
+                    primaryguardian = primaryguardian.OrderBy(s => s.DateCreated);
+                    break;
+                case "Date desc":
+                     primaryguardian = primaryguardian.OrderByDescending(s => s.DateCreated);
+                    break;
+                default:
+                    primaryguardian = primaryguardian.OrderBy(s => s.LastName);
+                    break;
+            }
+
+
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+
+            return View(primaryguardian.ToPagedList(pageNumber, pageSize));
         }
 
         //

@@ -222,7 +222,7 @@ CREATE TABLE [dbo].[PrimaryGuardians] (
     [FirstName] nvarchar(max)  NULL,
     [LastName] nvarchar(max)  NULL,
     [Email] nvarchar(max)  NULL,
-    [Phone] bigint  NULL,
+    [Phone] nvarchar(max)  NULL,
     [PostalCodePrefix] nvarchar(max)  NULL,
     [DateCreated] datetime2  NOT NULL,
     [Language] nvarchar(max) NULL,
