@@ -34,7 +34,7 @@ namespace OFRPDMS.Models
         public string Email { get; set; }
 
         [RegularExpression(@"^[\d -]+$",ErrorMessage= "Not a valid Phonoe Number")]
-        public Nullable<long> Phone { get; set; }
+        public string Phone { get; set; }
 
         public string PostalCodePrefix { get; set; }
         public System.DateTime DateCreated { get; set; }

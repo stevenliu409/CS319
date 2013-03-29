@@ -25,29 +25,13 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.CheckedOut)
-        </div>
-        <div class="input-control text">
-    @Html.DropDownListFor(model => model.CheckedOut, new List<SelectListItem>() { new SelectListItem() { Text = "No", Value = "False" }, new SelectListItem() { Text = "Yes", Value = "True" } })
-            @Html.ValidationMessageFor(model => model.CheckedOut)
-        </div>
 
-        <div class="editor-label">
           <label>Value of Item (Cost)</label>
         </div>
         <div class="input-control text">
             @Html.EditorFor(model => model.Value)
             @Html.ValidationMessageFor(model => model.Value)
         </div>
-
-        @* this will be taken out *@
-       <!-- @*<div class="editor-label">
-            @Html.LabelFor(model => model.Image)
-        </div>
-        <div class="input-control text">
-            @Html.EditorFor(model => model.Image)
-            @Html.ValidationMessageFor(model => model.Image)
-        </div>*@ -->
 
         <div class="editor-label">
             @Html.LabelFor(model => model.Note)

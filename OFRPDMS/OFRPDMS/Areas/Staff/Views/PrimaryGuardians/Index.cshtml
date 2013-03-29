@@ -1,4 +1,6 @@
-@model IEnumerable<OFRPDMS.Models.PrimaryGuardian>
+
+@model PagedList.IPagedList<OFRPDMS.Models.PrimaryGuardian>
+           
 
 @{
     ViewBag.Title = "Index";
@@ -10,48 +12,55 @@
 <p>
     @Html.ActionLink("Add a New Family", "Create")
 </p>
+
+@using (Html.BeginForm())
+{
+    <p>
+        Quick Search: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)  
+        <input type="submit" value="Search" /></p>
+}
 <table class= "hovered">
     <tr>
         <th>
         
         </th>
         <th>
-            Name
+            @Html.ActionLink("First Name", "Index", new { sortOrder = ViewBag.FirstNameSortParm, currentFilter = ViewBag.CurrentFilter }) 
         </th>
         <th>
-            LastName
+             @Html.ActionLink("Last Name", "Index", new { sortOrder = ViewBag.LastNameSortParm, currentFilter = ViewBag.CurrentFilter }) 
         </th>
         <th>
-            Email
+            @Html.ActionLink("Email", "Index", new { sortOrder = ViewBag.EmailNameSortParm, currentFilter = ViewBag.CurrentFilter }) 
         </th>
         <th>
-            Phone
+             @Html.ActionLink("Phone", "Index", new { sortOrder = ViewBag.PhoneNameSortParm, currentFilter = ViewBag.CurrentFilter }) 
         </th>
         <th>
-            PostalCodePrefix
+             @Html.ActionLink("Postal Code", "Index", new { sortOrder = ViewBag.PostalcodeNameSortParm, currentFilter = ViewBag.CurrentFilter }) 
         </th>
         <th>
-            DateCreated
+            @Html.ActionLink("Date Created", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
         <th>
-            Language
+             @Html.ActionLink("Language", "Index", new { sortOrder = ViewBag.LanguageNameSortParm, currentFilter = ViewBag.CurrentFilter }) 
         </th>
         <th>
-            Country
+             @Html.ActionLink("Country", "Index", new { sortOrder = ViewBag.CountryNameSortParm, currentFilter = ViewBag.CurrentFilter }) 
         </th>
         <th>
-            Allergies
+            @Html.ActionLink("Allergies", "Index", new { sortOrder = ViewBag.AllergiesNameSortParm, currentFilter = ViewBag.CurrentFilter }) 
 
         </th>
 
         <th>
-            SecondaryGuardians
+            @Html.ActionLink("Secondary Guardian", "Index", new { sortOrder = ViewBag.SecondaryNameSortParm, currentFilter = ViewBag.CurrentFilter }) 
         </th>
         @*<th>
             PrimaryGuardianBorrows
         </th>*@
         <th>
-            Children
+             @Html.ActionLink("Children", "Index", new { sortOrder = ViewBag.ChildrenNameSortParm, currentFilter = ViewBag.CurrentFilter }) 
         </th>
     </tr>
 
@@ -64,6 +73,7 @@
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id })
                 <br />
                 @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                <br />
             } 
             @Html.ActionLink("Details", "Details", new { id = item.Id }) 
             
@@ -116,5 +126,36 @@
 }
 
 </table>
+
+<div>
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+    of @Model.PageCount
+     
+    @if (Model.HasPreviousPage)
+    {
+        @Html.ActionLink("<<", "Index", new { page = 1, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
+        @Html.Raw(" ");
+        @Html.ActionLink("< Prev", "Index", new { page = Model.PageNumber - 1, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
+    }
+    else
+    {
+        @:<<
+        @Html.Raw(" ");
+        @:< Prev
+    }
+     
+    @if (Model.HasNextPage)
+    {
+        @Html.ActionLink("Next >", "Index", new { page = Model.PageNumber + 1, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
+        @Html.Raw(" ");
+        @Html.ActionLink(">>", "Index", new { page = Model.PageCount, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
+    }
+    else
+    {
+        @:Next >
+        @Html.Raw(" ")
+        @:>>
+    }
+</div>
 </fieldset>
 
