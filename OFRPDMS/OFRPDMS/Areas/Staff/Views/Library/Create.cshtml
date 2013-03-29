@@ -59,7 +59,7 @@
             @Html.LabelFor(model => model.Sanitized)
         </div>
 
-            <div class="editor-field">
+            <div class="input-control text">
             @Html.DropDownListFor(model => model.Sanitized, new List<SelectListItem>() { new SelectListItem() { Text = "No", Value = "False" }, new SelectListItem() { Text = "Yes", Value = "True" } })
             @Html.ValidationMessageFor(model => model.Sanitized)
         </div>
