@@ -39,13 +39,13 @@
             @Html.ActionLink("Details", "Details", new { id=item.Id })
         </td>
         <td>
-			@String.Format("{0:g}", item.BorrowDate)
+			@String.Format("{0:g}", item.BorrowDate.ToShortDateString())
         </td>
         <td>
 			@item.Returned
         </td>
         <td>
-			@String.Format("{0:g}", item.DueDate)
+			@String.Format("{0:g}", item.DueDate.ToShortDateString())
         </td>
         <td>
 			@String.Format("{0:g}", item.ReturnDate)
