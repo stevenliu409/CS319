@@ -207,11 +207,11 @@ GO
 -- Creating table 'PrimaryGuardianBorrows'
 CREATE TABLE [dbo].[PrimaryGuardianBorrows] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [BorrowDate] datetime  NOT NULL,
+    [BorrowDate] datetime2  NOT NULL,
     [PrimaryGuardianId] int  NOT NULL,
     [Returned] bit  NOT NULL,
-    [DueDate] datetime  NOT NULL,
-    [ReturnDate] datetime  NULL,
+    [DueDate] datetime2  NOT NULL,
+    [ReturnDate] datetime2  NULL,
     [LibraryResourceId] int  NOT NULL
 );
 GO
