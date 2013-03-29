@@ -1,4 +1,4 @@
-﻿@model IEnumerable<OFRPDMS.Models.LibraryResource>
+﻿@model PagedList.IPagedList<OFRPDMS.Models.LibraryResource>
 
 @{
     ViewBag.Title = "Index";
@@ -9,35 +9,42 @@
 <p>
     @Html.ActionLink("Create a New Library Item", "Create")
 </p>
+
+@using (Html.BeginForm())
+{
+    <p>
+        Quick Search by Name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)  
+        <input type="submit" value="Search" /></p>
+}
 <table class = "hovered">
     <tr>
         <th></th>
         <th>
-            Broken
+            @Html.ActionLink("Broken", "Index", new { sortOrder = ViewBag.BrokenNameSortParm, currentFilter = ViewBag.CurrentFilter }) 
         </th>
         <th>
-            CheckedOut
+             @Html.ActionLink("Checked Out", "Index", new { sortOrder = ViewBag.CheckedOutNameSortParm, currentFilter = ViewBag.CurrentFilter }) 
         </th>
         <th>
-            Value of Item (Cost)
+             @Html.ActionLink(" Value of Item (Cost) ", "Index", new { sortOrder = ViewBag.ValueNameSortParm, currentFilter = ViewBag.CurrentFilter }) 
         </th>
         <th>
-            Note
+            @Html.ActionLink(" Note ", "Index", new { sortOrder = ViewBag.NoteNameSortParm, currentFilter = ViewBag.CurrentFilter }) 
         </th>
         <th>
-            Name
+           @Html.ActionLink(" Name ", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter }) 
         </th>
         <th>
-            ItemType
+             @Html.ActionLink(" Item Type ", "Index", new { sortOrder = ViewBag.ItemTypeNameSortParm, currentFilter = ViewBag.CurrentFilter }) 
         </th>
         <th>
-            Sanitized
+             @Html.ActionLink(" Sanitized ", "Index", new { sortOrder = ViewBag.SanitizedNameSortParm, currentFilter = ViewBag.CurrentFilter }) 
         </th>
         <th>
-            Checked out by
+             @Html.ActionLink(" Checked Out By ", "Index", new { sortOrder = ViewBag.CheckedByNameSortParm, currentFilter = ViewBag.CurrentFilter }) 
         </th>
         <th>
-            Center
+             @Html.ActionLink(" Center ", "Index", new { sortOrder = ViewBag.CenterNameSortParm, currentFilter = ViewBag.CurrentFilter }) 
         </th>
     </tr>
 
@@ -83,4 +90,35 @@
 }
 
 </table>
+
+<div>
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+    of @Model.PageCount
+     
+    @if (Model.HasPreviousPage)
+    {
+        @Html.ActionLink("<<", "Index", new { page = 1, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
+        @Html.Raw(" ");
+        @Html.ActionLink("< Prev", "Index", new { page = Model.PageNumber - 1, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
+    }
+    else
+    {
+        @:<<
+        @Html.Raw(" ");
+        @:< Prev
+    }
+     
+    @if (Model.HasNextPage)
+    {
+        @Html.ActionLink("Next >", "Index", new { page = Model.PageNumber + 1, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
+        @Html.Raw(" ");
+        @Html.ActionLink(">>", "Index", new { page = Model.PageCount, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
+    }
+    else
+    {
+        @:Next >
+        @Html.Raw(" ")
+        @:>>
+    }
+</div>
 </fieldset>

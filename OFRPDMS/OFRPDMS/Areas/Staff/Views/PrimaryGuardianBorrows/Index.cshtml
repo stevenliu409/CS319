@@ -1,4 +1,4 @@
-@model IEnumerable<OFRPDMS.Models.PrimaryGuardianBorrow>
+@model PagedList.IPagedList<OFRPDMS.Models.PrimaryGuardianBorrow>
 
 @{
     ViewBag.Title = "Index";
@@ -13,22 +13,22 @@
     <tr>
         <th></th>
         <th>
-            BorrowDate
+            @Html.ActionLink("Borrow Date", "Index", new { sortOrder = ViewBag.BorrowDateSortParm, currentFilter = ViewBag.CurrentFilter })  
         </th>
         <th>
-            Returned
+               @Html.ActionLink("Returned", "Index", new { sortOrder = ViewBag.ReturnNameSortParm, currentFilter = ViewBag.CurrentFilter }) 
         </th>
         <th>
-            DueDate
+             @Html.ActionLink("Due Date", "Index", new { sortOrder = ViewBag.DueDateSortParm, currentFilter = ViewBag.CurrentFilter }) 
         </th>
         <th>
-            ReturnDate
+             @Html.ActionLink("Return Date", "Index", new { sortOrder = ViewBag.ReturnDateSortParm, currentFilter = ViewBag.CurrentFilter }) 
         </th>
         <th>
-            PrimaryGuardian
+              @Html.ActionLink("Primary Guardian", "Index", new { sortOrder = ViewBag.PrimaryNameSortParm, currentFilter = ViewBag.CurrentFilter }) 
         </th>
         <th>
-            LibraryResource
+             @Html.ActionLink("Library Resource", "Index", new { sortOrder = ViewBag.ResourceNameSortParm, currentFilter = ViewBag.CurrentFilter }) 
         </th>
     </tr>
 
@@ -61,6 +61,37 @@
 }
 
 </table>
+
+<div>
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+    of @Model.PageCount
+     
+    @if (Model.HasPreviousPage)
+    {
+        @Html.ActionLink("<<", "Index", new { page = 1, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
+        @Html.Raw(" ");
+        @Html.ActionLink("< Prev", "Index", new { page = Model.PageNumber - 1, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
+    }
+    else
+    {
+        @:<<
+        @Html.Raw(" ");
+        @:< Prev
+    }
+     
+    @if (Model.HasNextPage)
+    {
+        @Html.ActionLink("Next >", "Index", new { page = Model.PageNumber + 1, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
+        @Html.Raw(" ");
+        @Html.ActionLink(">>", "Index", new { page = Model.PageCount, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
+    }
+    else
+    {
+        @:Next >
+        @Html.Raw(" ")
+        @:>>
+    }
+</div>
 
 
 </fieldset>
