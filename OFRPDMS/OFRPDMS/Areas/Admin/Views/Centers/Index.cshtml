@@ -15,16 +15,16 @@
 <table class="hovered">
     <tr>
         <th>
-            Name
+             @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })  
         </th>
         <th>
-            Email
+             @Html.ActionLink("Email", "Index", new { sortOrder = ViewBag.EmailNameSortParm, currentFilter = ViewBag.CurrentFilter })  
         </th>
         <th>
-            Address
+             @Html.ActionLink("Address", "Index", new { sortOrder = ViewBag.AddressNameSortParm, currentFilter = ViewBag.CurrentFilter })  
         </th>
         <th>
-            Phone
+            @Html.ActionLink("Phone", "Index", new { sortOrder = ViewBag.PhoneNameSortParm, currentFilter = ViewBag.CurrentFilter })  
         </th>
         <th></th>
     </tr>

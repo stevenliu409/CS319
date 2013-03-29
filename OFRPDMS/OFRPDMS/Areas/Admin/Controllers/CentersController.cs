@@ -17,9 +17,43 @@ namespace OFRPDMS.Areas.Admin.Controllers
         //
         // GET: /Centers/
 
-        public ViewResult Index()
+        public ViewResult Index(string sortOrder)
         {
-            return View(context.Centers);
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name desc" : "";
+            ViewBag.EmailNameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name desc1" : "";
+            ViewBag.AdressNameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name desc2" : "";
+            ViewBag.PhoneNameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name desc3" : "";
+
+            var center = from p in context.Centers
+                         select p;
+
+            switch (sortOrder)
+            {
+                case "Name desc":
+                    center = center.OrderByDescending(p => p.Name);
+                    
+                    break;
+                case "Name desc1":
+                    
+                    center = center.OrderByDescending(p => p.Address);
+                  
+                    break;
+                case "Name desc2":
+           
+                    center = center.OrderByDescending(p => p.Email);
+               
+                    break;
+                case "Name desc3":
+ 
+                    center = center.OrderByDescending(p => p.Phone);
+                    break;
+
+                default:
+                    center = center.OrderBy(s => s.Name);
+                    break;
+            }
+            return View(center.ToList());
         }
 
         //

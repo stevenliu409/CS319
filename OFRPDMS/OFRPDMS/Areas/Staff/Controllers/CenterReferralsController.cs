@@ -20,7 +20,8 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
         public ViewResult Index()
         {
-            return View(context.CenterReferrals.Include(centerreferral => centerreferral.Center).Include(centerreferral => centerreferral.Referrals).ToList());
+
+            return View();
         }
 
         //

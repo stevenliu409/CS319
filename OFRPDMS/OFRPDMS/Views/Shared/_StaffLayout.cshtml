@@ -32,7 +32,10 @@
         <ul>
              <li class="sticker sticker-color-blue">@Html.ActionLink("Library Check-Out", "Index", "PrimaryGuardianBorrows", null, new { id = currentController == "PrimaryGuardianBorrows" ? "current" : "" })</li>
         </ul>
-    
+        
+        <ul>
+            <li class="sticker sticker-color-orange">@Html.ActionLink("Special Events", "Index","SpecialEvent", null, new { id = currentController == "SpecialEvent" ? "current" : "" })</li>
+        </ul>
 </div>
 
 <div id="main">

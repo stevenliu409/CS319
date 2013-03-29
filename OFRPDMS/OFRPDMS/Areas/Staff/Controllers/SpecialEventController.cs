@@ -6,19 +6,38 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using OFRPDMS.Models;
+using System.Web.Security;
+using OFRPDMS.Repositories;
+using OFRPDMS.Account;
+using Ninject;
 
 namespace OFRPDMS.Areas.Staff.Controllers
 { 
     public class SpecialEventController : Controller
     {
-        private OFRPDMSContext db = new OFRPDMSContext();
 
+        private IRepositoryService repoService;
+        private IAccountService account;
+       
         //
         // GET: /Staff/SpecialEvent/
 
+        public SpecialEventController() {}
+
+        [Inject]
+        public SpecialEventController(IAccountService account, IRepositoryService repoService)
+        {
+            this.repoService = repoService;
+            this.account = account;
+        }
+
+
         public ViewResult Index()
         {
-            var specialevents = db.SpecialEvents.Include(s => s.Center);
+            int centerID = account.GetCurrentUserCenterId();
+            string[] roles = Roles.GetRolesForUser();
+            ViewBag.IsAdmin = roles.Contains("Administrators");
+            var specialevents = repoService.specialEventRepo.FindAllWithCenterId(centerID);
             return View(specialevents.ToList());
         }
 
@@ -27,7 +46,8 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
         public ViewResult Details(int id)
         {
-            SpecialEvent specialevent = db.SpecialEvents.Find(id);
+             int centerID = account.GetCurrentUserCenterId();
+            SpecialEvent specialevent = repoService.specialEventRepo.FindByIdAndCenterId(id,centerID);
             return View(specialevent);
         }
 
@@ -36,7 +56,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.CenterId = new SelectList(db.Centers, "Id", "Name");
+            ViewBag.CenterId = account.GetCurrentUserCenterId();
             return View();
         } 
 
@@ -48,12 +68,11 @@ namespace OFRPDMS.Areas.Staff.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.SpecialEvents.Add(specialevent);
-                db.SaveChanges();
+                specialevent.CenterId = account.GetCurrentUserCenterId();
+                repoService.specialEventRepo.Insert(specialevent);
                 return RedirectToAction("Index");  
             }
-
-            ViewBag.CenterId = new SelectList(db.Centers, "Id", "Name", specialevent.CenterId);
+            ViewBag.CenterId = account.GetCurrentUserCenterId();
             return View(specialevent);
         }
         
@@ -62,8 +81,8 @@ namespace OFRPDMS.Areas.Staff.Controllers
  
         public ActionResult Edit(int id)
         {
-            SpecialEvent specialevent = db.SpecialEvents.Find(id);
-            ViewBag.CenterId = new SelectList(db.Centers, "Id", "Name", specialevent.CenterId);
+            SpecialEvent specialevent = repoService.specialEventRepo.FindById(id);
+            ViewBag.CenterId = account.GetCurrentUserCenterId();
             return View(specialevent);
         }
 
@@ -75,11 +94,11 @@ namespace OFRPDMS.Areas.Staff.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(specialevent).State = EntityState.Modified;
-                db.SaveChanges();
+                specialevent.CenterId = account.GetCurrentUserCenterId();
+                repoService.specialEventRepo.Update(specialevent);
                 return RedirectToAction("Index");
             }
-            ViewBag.CenterId = new SelectList(db.Centers, "Id", "Name", specialevent.CenterId);
+            ViewBag.CenterId = account.GetCurrentUserCenterId();
             return View(specialevent);
         }
 
@@ -88,7 +107,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
  
         public ActionResult Delete(int id)
         {
-            SpecialEvent specialevent = db.SpecialEvents.Find(id);
+            SpecialEvent specialevent = repoService.specialEventRepo.FindById(id);
             return View(specialevent);
         }
 
@@ -97,16 +116,15 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
-        {            
-            SpecialEvent specialevent = db.SpecialEvents.Find(id);
-            db.SpecialEvents.Remove(specialevent);
-            db.SaveChanges();
+        {
+            SpecialEvent specialevent = repoService.specialEventRepo.FindById(id);
+            repoService.specialEventRepo.Delete(specialevent);
             return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
         {
-            db.Dispose();
+            repoService.specialEventRepo.Dispose();
             base.Dispose(disposing);
         }
     }

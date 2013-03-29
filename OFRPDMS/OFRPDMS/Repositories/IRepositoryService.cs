@@ -12,5 +12,7 @@ namespace OFRPDMS.Repositories
         ICenterRepository centerRepo { get; set; }
 
         ILibraryRepository libraryRepo { get; set; }
+
+        ISpecialEventRepository specialEventRepo { get; set; }
     }
 }
