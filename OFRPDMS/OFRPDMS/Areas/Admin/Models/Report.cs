@@ -5,7 +5,6 @@ using System.Web;
 using System.Data.Entity;
 using System.ComponentModel.DataAnnotations;
 
-
 namespace OFRPDMS.Areas.Admin.Models
 {
     
@@ -14,7 +13,6 @@ namespace OFRPDMS.Areas.Admin.Models
 
         
         public int Id { get; set; }
-
 
         public System.DateTime startDay { get; set; }
 

@@ -181,9 +181,8 @@ namespace OFRPDMS.Areas.Admin.Controllers
 
             ViewBag.type = report.type;
   
-            ViewBag.visitHistory = getVisitHistory(report.startDay2, report.endDay2, report.type, report.pgid).ToArray();
-            
-            return View();
+            var repo = getVisitHistory(report.startDay2, report.endDay2, report.type, report.pgid);
+            return View(repo);
         }
 
         //
@@ -431,9 +430,9 @@ namespace OFRPDMS.Areas.Admin.Controllers
         }
 
 
-        private List<DateTime> getVisitHistory(DateTime sday, DateTime eday, string type, int id)
+        private List<EventParticipant> getVisitHistory(DateTime sday, DateTime eday, string type, int id)
         {
-            List<DateTime> dt = new List<DateTime>();
+            List<EventParticipant> dt = new List<EventParticipant>();
             if (type == "Primary")
             {
                 PrimaryGuardian pg = context.PrimaryGuardians.Find(id);
@@ -443,7 +442,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
                 evtps.OrderBy(evtp => evtp.Event.Date);
                 foreach(var evtp in evtps)
                 {
-                    dt.Add(evtp.Event.Date);
+                    dt.Add(evtp);
                 }              
             }
             else if (type == "Child")
@@ -455,7 +454,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
                 evtps.OrderBy(evtp => evtp.Event.Date);
                 foreach (var evtp in evtps)
                 {
-                    dt.Add(evtp.Event.Date);
+                    dt.Add(evtp);
                 }
             }
             return dt;
