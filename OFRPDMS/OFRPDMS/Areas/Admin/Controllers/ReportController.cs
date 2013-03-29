@@ -406,7 +406,6 @@ namespace OFRPDMS.Areas.Admin.Controllers
                 {
                     int epcount = evts[i].EventParticipants.Count;
                     sumEventParticipants += epcount;
-
                 }
                 
                 newVisitTable[counter] = sumEventParticipants;
@@ -415,6 +414,8 @@ namespace OFRPDMS.Areas.Admin.Controllers
 
             return newVisitTable;
         }
+
+
         private int[] getNumOfVisitTable(DateTime sday, DateTime eday)
         {
             int[] newVisitTable = new int[context.Centers.Count()];
@@ -428,6 +429,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
 
             return newVisitTable;
         }
+
 
         private List<DateTime> getVisitHistory(DateTime sday, DateTime eday, string type, int id)
         {
@@ -459,31 +461,49 @@ namespace OFRPDMS.Areas.Admin.Controllers
             return dt;
         }
    
-        //not implemented because the Child doesn't have a DateCreated
-        //private int[] getNumOfChild(DateTime eday)
-        //{
-        //    int[] pgTable = new int[context.Centers.Count()];
-            
-        //    foreach (var c in context.Centers)
-        //    {
-        //        IEnumerable<PrimaryGuardian> chs = context.Children.Where(ch => DateTime.Compare(ch., eday) < 0 && pg.CenterId == c.Id);
-        //        IEnumerable<PrimaryGuardian> distinctPG = context.PrimaryGuardians.Distinct();
-        //        pgTable[c.Id] = pgs.Count();
-        //    }
+        
+        private int[] getNumOfChild(DateTime eday)
+        {
+            int[] chTable = new int[context.Centers.Count()];
 
-        //    return pgTable;
-        //}
+            int counter = 0;
+            foreach (var c in context.Centers)
+            {
+                IEnumerable<Child> chs = context.Children.Where(ch => DateTime.Compare(ch.DateCreated, eday) < 0 && ch.PrimaryGuardian.CenterId == c.Id);
+                chTable[counter] = chs.Count();
+                counter++;
+            }
+
+            return chTable;
+        }
+
+        private int[] getNumOfNewChild(DateTime sday, DateTime eday)
+        {
+            int[] chTable = new int[context.Centers.Count()];
+
+            int counter = 0;
+            foreach (var c in context.Centers)
+            {
+                IEnumerable<Child> chs = context.Children.Where(ch => DateTime.Compare(ch.DateCreated, sday) >= 0 && DateTime.Compare(ch.DateCreated, eday) <= 0 && ch.PrimaryGuardian.CenterId == c.Id);
+                chTable[counter] = chs.Count();
+                counter++;
+            }
+
+            return chTable;
+        }
 
         private string[,] getStringPGTable(DateTime startDay, DateTime endDay)
         {
 
             Center[] center = context.Centers.ToArray();
-            string[,] pgString = new string[center.Length+1,5];
+            string[,] pgString = new string[center.Length+1,7];
             string[] disCountry = getCountrys(startDay, endDay);
             int[] numOfNewPG = getNumOfNewPGTable(startDay, endDay);
             int[] numOfPG = getNumOfPGTable(endDay);
             int[] numOfVisit = getNumOfEventParticipantTable(startDay, endDay);
             int[] numOfSession = getNumOfVisitTable(startDay, endDay);
+            int[] numOfChild = getNumOfChild(endDay);
+            int[] numOfNewChild = getNumOfNewChild(startDay, endDay);
             //----------------------------------------------------
             //fill in # of parents table
             //first row
@@ -492,6 +512,9 @@ namespace OFRPDMS.Areas.Admin.Controllers
             pgString[0, 2] = "# of parents";
             pgString[0, 3] = "# of sessions";
             pgString[0, 4] = "# of visits";
+            pgString[0, 5] = "# of new child";
+            pgString[0, 6] = "# of child";
+
             //start from second row
             int i = 0;
             foreach (Center c in context.Centers)
@@ -501,6 +524,8 @@ namespace OFRPDMS.Areas.Admin.Controllers
                 pgString[i+1, 2] = numOfPG[i].ToString();
                 pgString[i+1, 3] = numOfSession[i].ToString();
                 pgString[i+1, 4] = numOfVisit[i].ToString();
+                pgString[i+1, 5] = numOfNewChild[i].ToString();
+                pgString[i+1, 6] = numOfChild[i].ToString();
                 i++;
             }
             return pgString;
@@ -581,15 +606,6 @@ namespace OFRPDMS.Areas.Admin.Controllers
             return pgTable;
         }
 
-        //private int getNumOfSignIn(DateTime sday, DateTime eday)
-        //{
-        //    IEnumerable<Event> events = context.Events.Where(evt => DateTime.Compare(evt.Date, sday) > 0 && DateTime.Compare(evt.Date, eday) < 0);
-        //    foreach(Event evt in events)
-        //    {
-                
-        //    }
-
-        //}
 
         private string[] getLanguages(DateTime sday, DateTime eday)
         {
