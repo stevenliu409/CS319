@@ -147,9 +147,6 @@ namespace OFRPDMS.Areas.Staff.Controllers
         {
             ViewBag.CenterId2 = AccountProfile.CurrentUser.CenterID;
             var model = new PrimaryGuardian();
-            //model.BuildEntity(1);
-            //model.Children.Add(new Child());
-            
             return View(model);
         } 
 
@@ -185,18 +182,6 @@ namespace OFRPDMS.Areas.Staff.Controllers
                    
                 }
 
-                //Check for null field in the Allergies , if all fields are null, then do not add to database
-                //delete the element in the list which contains delete marked to "true"
-
-              /* int z = primaryguardian.Allergies.Count();
-                for (var i = z - 1 ; i >= 0; i--)
-                {
-                    if (primaryguardian.Allergies[i].Delete == true || primaryguardian.Allergies[i].Note ==null)
-                    {
-                        primaryguardian.Allergies.RemoveAt(i);
-                    }
-
-                }*/
 
                 //Check for null field in the Children , if all fields are null, then do not add to database
                 //delete the element in the list which contains delete marked to "true"
@@ -209,36 +194,28 @@ namespace OFRPDMS.Areas.Staff.Controllers
                     {
                         primaryguardian.Children.RemoveAt(i);
                     }
-                  
-                    //int z =primaryguardian.Children[i].Allergies.Count();
-                    //for (int j = z - 1; j >= 0; j--)
-                   // {
-                        //if (primaryguardian.Children[i].Allergies[j].Delete == true)
-                        //{
-                      //      primaryguardian.Children[i].Allergies.RemoveAt(j);
-                      //  }
-                    //}
+
                 }
 
                 context.PrimaryGuardians.Add(primaryguardian);
                 context.SaveChanges();
                 return RedirectToAction("Index");
             }
-
+            ViewBag.CenterId2 = AccountProfile.CurrentUser.CenterID;
             ViewBag.CenterId = new SelectList(context.Centers, "Id", "Name", primaryguardian.CenterId);
             return View(primaryguardian);
         }
         
         //
         // GET: /PrimaryGuardians/Edit/5
-       public static PrimaryGuardian pr;
+       
         public ActionResult Edit(int id)
         {
             int centerId = AccountProfile.CurrentUser.CenterID;
             string[] roles = Roles.GetRolesForUser();
             ViewBag.IsAdmin = roles.Contains("Administrators");
             ViewBag.CenterId2 = centerId;
-            pr = context.PrimaryGuardians.Where(p => p.CenterId == centerId).Single(p => p.Id == id);
+            PrimaryGuardian pr = context.PrimaryGuardians.Where(p => p.CenterId == centerId).Single(p => p.Id == id);
             
            
             return View(pr);
@@ -250,12 +227,11 @@ namespace OFRPDMS.Areas.Staff.Controllers
         [HttpPost]
         public ActionResult Edit(PrimaryGuardian primaryguardian)
         {
-            
+            ViewBag.CenterId2 = AccountProfile.CurrentUser.CenterID;
               
             if (ModelState.IsValid)
             {
 
-                primaryguardian.DateCreated = pr.DateCreated;
                 foreach (Child a in primaryguardian.Children)
                 {
                     a.DateCreated = primaryguardian.DateCreated;
@@ -304,8 +280,6 @@ namespace OFRPDMS.Areas.Staff.Controllers
                         }
 
                     }
-
-
 
                     else
                     {
