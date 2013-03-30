@@ -22,16 +22,17 @@ namespace OFRPDMS.Areas.Staff.Controllers
             if (roles.Contains("Administrators"))
             {
                 if (centerIdArg != -1)
+                {
                     AccountProfile.CurrentUser.CenterID = centerIdArg;
+                    ViewBag.CurrentCenterName = db.Centers.Find(centerIdArg).Name;
+                }
 
             }
             ViewBag.CurrentCenterId = "c"+ centerIdArg.ToString();
             int centerid = AccountProfile.CurrentUser.CenterID;
-            ViewBag.CurrentCenterName = db.Centers.Find(centerid).Name;
 
             return View();
         }
-
 
 
 

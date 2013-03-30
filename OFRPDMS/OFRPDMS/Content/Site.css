@@ -101,11 +101,11 @@ header h1, #header h1 {
     color: #008287;
     border: none;
     line-height: 2em;
-    font-size: 30px !important;
+    font-size: 62pt !important;
     font-weight:lighter;
     padding-top: 14px;
-    padding-left: 27px
-   
+    padding-left: 27px;
+    display: inline-block;
 }
 #menucontainer 
 { 
