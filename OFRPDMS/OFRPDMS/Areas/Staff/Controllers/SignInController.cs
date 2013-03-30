@@ -6,27 +6,45 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using OFRPDMS.Models;
+using PagedList;
+using OFRPDMS.Repositories;
+using OFRPDMS.Account;
+using Ninject;
 
 namespace OFRPDMS.Areas.Staff.Controllers
 { 
     public class SignInController : Controller
     {
-        private OFRPDMSContext db = new OFRPDMSContext();
+        
+
+        private IRepositoryService repoService;
+        private IAccountService account;
+
+        public SignInController() { }
+      
+        [Inject]
+        public SignInController(IAccountService account, IRepositoryService repoService) {
+
+            this.account = account;
+            this.repoService = repoService;
+        }
 
         //
         // GET: /Staff/SignIn/
-        public ViewResult Index(int id=0) {
-            int centerid = AccountProfile.CurrentUser.CenterID;
-            var _ep = db.EventParticipants.Where(ep => ep.EventId == id && centerid == ep.Event.CenterId).ToList();
-             
-             return View(_ep);
+        public ViewResult Index(int? page,int id=0 ) {
+            int centerid = account.GetCurrentUserCenterId();
+            var _ep = repoService.signInRepo.FindByEventIdAndCenterId(id, centerid).ToList();
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+
+            return View(_ep.ToPagedList(pageNumber, pageSize));
         }
 
         [HttpPost,ActionName("Index")]
         public ActionResult ReIndex(int id)
         {
-            int centerid = AccountProfile.CurrentUser.CenterID;
-            var _ep = db.EventParticipants.Where(ep => ep.EventId == id).ToList();
+            int centerid = account.GetCurrentUserCenterId();
+            var _ep = repoService.signInRepo.FindAllWithEventId(id).ToList();
             return RedirectToRoute("Staff_default", new { centerIdArg = centerid, controller = "SignIn", action = "Index" , id = id});
         }
 
@@ -35,7 +53,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
         public ViewResult Details(int id)
         {
-            EventParticipant eventparticipant = db.EventParticipants.Find(id);
+            EventParticipant eventparticipant = repoService.signInRepo.FindById(id);
             return View(eventparticipant);
         }
 
@@ -44,60 +62,15 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.EventId = new SelectList(db.Events, "Id", "Id");
             return View();
         } 
-
-        //
-        // POST: /Staff/SignIn/Create
-
-        //[HttpPost]
-        //public ActionResult Create(EventParticipant eventparticipant)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.EventParticipants.Add(eventparticipant);
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-
-        //    ViewBag.EventId = new SelectList(db.Events, "Id", "Id", eventparticipant.EventId);
-        //    return View(eventparticipant);
-        //    //return Search(eventparticipant);
-        //}
-        
-        //
-        // GET: /Staff/SignIn/Edit/5
- 
-        public ActionResult Edit(int id)
-        {
-            EventParticipant eventparticipant = db.EventParticipants.Find(id);
-            ViewBag.EventId = new SelectList(db.Events, "Id", "Id", eventparticipant.EventId);
-            return View(eventparticipant);
-        }
-
-        //
-        // POST: /Staff/SignIn/Edit/5
-
-        [HttpPost]
-        public ActionResult Edit(EventParticipant eventparticipant)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(eventparticipant).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.EventId = new SelectList(db.Events, "Id", "Id", eventparticipant.EventId);
-            return View(eventparticipant);
-        }
 
         //
         // GET: /Staff/SignIn/Delete/5
  
         public ActionResult Delete(int id)
         {
-            EventParticipant eventparticipant = db.EventParticipants.Find(id);
+            EventParticipant eventparticipant = repoService.signInRepo.FindById(id);
             return View(eventparticipant);
         }
 
@@ -106,22 +79,21 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
-        {            
-            EventParticipant eventparticipant = db.EventParticipants.Find(id);
-            db.EventParticipants.Remove(eventparticipant);
-            db.SaveChanges();
+        {
+            EventParticipant eventparticipant = repoService.signInRepo.FindById(id);
+            repoService.signInRepo.Delete(eventparticipant);
             return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
         {
-            db.Dispose();
+            repoService.signInRepo.Dispose();
             base.Dispose(disposing);
         }
 
         [HttpPost]
         public ActionResult Search(string name, string type) {
-
+            OFRPDMSContext db = new OFRPDMSContext();
             if (type == "Primary")
             {
                 var _primaryguardian = db.PrimaryGuardians.Where(p => p.FirstName.Contains(name) || p.LastName.Contains(name) || 
@@ -182,6 +154,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
         public void Add(int id, int type, int eventid)
         {
+            OFRPDMSContext db = new OFRPDMSContext();
             if (type == 1)
             {
                 var _primaryguardian = db.PrimaryGuardians.Find(id);
@@ -215,8 +188,8 @@ namespace OFRPDMS.Areas.Staff.Controllers
         }
         [HttpPost]
         public ActionResult findEvent() {
-            int centerID = AccountProfile.CurrentUser.CenterID;
-            var _events = db.Events.Where(e => e.CenterId == centerID).OrderByDescending(e=>e.Date).ToList();
+            int centerID = account.GetCurrentUserCenterId();
+            var _events = repoService.eventRepo.FindAllWithCenterId(centerID).OrderByDescending(e=>e.Date).ToList();
             var collection = _events.Select(e => new
             {
 

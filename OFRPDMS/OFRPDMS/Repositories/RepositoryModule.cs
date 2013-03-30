@@ -22,5 +22,7 @@ public class RepositoryModule : NinjectModule
         this.Bind(typeof(ISpecialEventRepository)).To(typeof(SpecialEventRepository));
 
         this.Bind(typeof(IPrimaryGuardianBorrowsRepository)).To(typeof(PrimaryGuardianBorrowsRepository));
+
+        this.Bind(typeof(ISignInRepository)).To(typeof(SignInRepository));
     }
 }
