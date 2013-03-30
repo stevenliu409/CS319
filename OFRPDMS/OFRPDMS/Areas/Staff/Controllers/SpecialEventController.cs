@@ -35,7 +35,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
         public ViewResult Index()
         {
             int centerID = account.GetCurrentUserCenterId();
-            string[] roles = Roles.GetRolesForUser();
+            string[] roles = account.GetRolesForUser();
             ViewBag.IsAdmin = roles.Contains("Administrators");
             var specialevents = repoService.specialEventRepo.FindAllWithCenterId(centerID);
             return View(specialevents.ToList());

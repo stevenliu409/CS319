@@ -1,4 +1,4 @@
-﻿@model IEnumerable<OFRPDMS.Models.ChildAndGuardian>
+﻿@model PagedList.IPagedList<OFRPDMS.Models.ChildAndGuardian>
 
 @*This is a partial view is used to fetch primary guardians*@
 
@@ -27,9 +27,11 @@ Select the date you want to sign in: <select id="oSelect"></select>
     var parent = "<tr><th>FirstName</th><th>LastName</th><th>Email</th><th>Phone</th><th>PostalCodePrefix</th><th>DateCreated</th><th>Language</th><th>Country</th><th>Allergies</th></tr></thead>";
     var secondary = "<tr><th>FirstName</th><th>LastName</th><th>Phone</th><th>Associated To</th></tr>";
     var child = "<tr><th>FirstName</th><th>LastName</th><th>Associated To</th><th>allergy</th></tr>";
-    
+
     function myFunction() {
-        $("#search_btn").click();
+        if ((document.getElementById("PrimaryFirstName").value.length > 2) && document.getElementById("PrimaryFirstName").value != "") {
+            $("#search_btn").click();
+        }
     }
     
     $.ajax({
@@ -78,7 +80,9 @@ Select the date you want to sign in: <select id="oSelect"></select>
    }
 
    $('#mySubmit').click(function () {
-       $("#search_btn").click();
+       if (document.getElementById("PrimaryFirstName").value != "") {
+           $("#search_btn").click();
+       }
        return false;
    });
 
@@ -160,3 +164,4 @@ Select the date you want to sign in: <select id="oSelect"></select>
 
         </div>
 
+ 

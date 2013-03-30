@@ -7,19 +7,35 @@ using System.Web;
 using System.Web.Mvc;
 using OFRPDMS.Models;
 using PagedList;
+using OFRPDMS.Repositories;
+using OFRPDMS.Account;
+using Ninject;
 
 namespace OFRPDMS.Areas.Staff.Controllers
 {   
     public class PrimaryGuardianBorrowsController : Controller
     {
-        private OFRPDMSContext context = new OFRPDMSContext();
+        
+        private IRepositoryService repoService;
+        private IAccountService account;
+
+        public PrimaryGuardianBorrowsController() { }
+
+        [Inject]
+        public PrimaryGuardianBorrowsController(IAccountService account, IRepositoryService repoService)
+        {
+            this.account = account;
+            this.repoService = repoService;
+
+        }
 
         //
         // GET: /PrimaryGuardianBorrows/
 
         public ViewResult Index(string sortOrder, string currentFilter, string searchString, int? page )
         {
-            int centerid = AccountProfile.CurrentUser.CenterID; 
+
+            int centerid = account.GetCurrentUserCenterId();
 
             ViewBag.CurrentSort = sortOrder;
             ViewBag.PrimaryNameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name desc" : "";
@@ -39,7 +55,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
                 page = 1;
             }
             ViewBag.CurrentFilter = searchString;
-
+             OFRPDMSContext context = new OFRPDMSContext();
             var pgbs = from p in context.PrimaryGuardianBorrows.Where(pgb => pgb.LibraryResource.CenterId == centerid).Include(primaryguardianborrow => primaryguardianborrow.PrimaryGuardian).Include(primaryguardianborrow => primaryguardianborrow.LibraryResource)
                                select p;
 
@@ -104,7 +120,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
         public ViewResult Details(int id)
         {
-            PrimaryGuardianBorrow primaryguardianborrow = context.PrimaryGuardianBorrows.Single(x => x.Id == id);
+            PrimaryGuardianBorrow primaryguardianborrow = repoService.primaryGuardianBorrowsRepo.FindById(id);
             return View(primaryguardianborrow);
         }
 
@@ -113,7 +129,8 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
         public ActionResult Create()
         {
-            int centerid = AccountProfile.CurrentUser.CenterID;
+            OFRPDMSContext context = new OFRPDMSContext();
+            int centerid = account.GetCurrentUserCenterId();
             ViewBag.PossiblePrimaryGuardians = context.PrimaryGuardians;
             ViewBag.PossibleLibraryResources = context.LibraryResources.Where(lr => lr.CheckedOut == false && lr.CenterId == centerid);
 
@@ -123,24 +140,24 @@ namespace OFRPDMS.Areas.Staff.Controllers
         //
         // POST: /PrimaryGuardianBorrows/Create
 
+
         [HttpPost]
         public ActionResult Create(PrimaryGuardianBorrow primaryguardianborrow)
         {
+            OFRPDMSContext context = new OFRPDMSContext();
             if (ModelState.IsValid)
             {
-                
-                context.PrimaryGuardianBorrows.Add(primaryguardianborrow);
                 primaryguardianborrow.BorrowDate = System.DateTime.Now;
                 context.LibraryResources.Find(primaryguardianborrow.LibraryResourceId).CheckedOut = true;
                 primaryguardianborrow.DueDate = primaryguardianborrow.DueDate.AddHours(23);
                 primaryguardianborrow.DueDate = primaryguardianborrow.DueDate.AddMinutes(59);
-
+                repoService.primaryGuardianBorrowsRepo.Insert(primaryguardianborrow);
                 context.SaveChanges();
-                return RedirectToAction("Index");  
+                return RedirectToAction("Index");
             }
-            
+
             ViewBag.PossiblePrimaryGuardians = context.PrimaryGuardians;
-            ViewBag.PossibleLibraryResources = context.LibraryResources.Where(lr=> lr.CheckedOut == false);
+            ViewBag.PossibleLibraryResources = context.LibraryResources.Where(lr => lr.CheckedOut == false);
             return View(primaryguardianborrow);
         }
         
@@ -148,7 +165,8 @@ namespace OFRPDMS.Areas.Staff.Controllers
         // We took out the edit function and turned it into check in function. The edit view is no longer in use
         public ActionResult Edit(int id)
         {
-            PrimaryGuardianBorrow primaryguardianborrow = context.PrimaryGuardianBorrows.Single(x => x.Id == id);
+            OFRPDMSContext context = new OFRPDMSContext();
+            PrimaryGuardianBorrow primaryguardianborrow = repoService.primaryGuardianBorrowsRepo.FindById(id);
             ViewBag.PossiblePrimaryGuardians = context.PrimaryGuardians;
             ViewBag.PossibleLibraryResources = context.LibraryResources;
             if (primaryguardianborrow.Returned != true)
@@ -158,7 +176,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
                 LibraryResource res = context.LibraryResources.Find(primaryguardianborrow.LibraryResourceId);
                 res.CheckedOut = false;
                 context.Entry(res).State = EntityState.Modified;
-                context.Entry(primaryguardianborrow).State = EntityState.Modified;
+                repoService.primaryGuardianBorrowsRepo.Update(primaryguardianborrow);
                 context.SaveChanges();
             }
             return RedirectToAction("Index");
@@ -170,6 +188,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
         [HttpPost]
         public ActionResult Edit(PrimaryGuardianBorrow primaryguardianborrow)
         {
+            OFRPDMSContext context = new OFRPDMSContext();
             if (ModelState.IsValid)
             {
                 if (primaryguardianborrow.Returned)
@@ -181,7 +200,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
                     return View(primaryguardianborrow);
                 }
                 primaryguardianborrow.ReturnDate = System.DateTime.Now;
-                context.Entry(primaryguardianborrow).State = EntityState.Modified;
+                repoService.primaryGuardianBorrowsRepo.Update(primaryguardianborrow);
                 context.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -195,7 +214,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
  
         public ActionResult Delete(int id)
         {
-            PrimaryGuardianBorrow primaryguardianborrow = context.PrimaryGuardianBorrows.Single(x => x.Id == id);
+            PrimaryGuardianBorrow primaryguardianborrow = repoService.primaryGuardianBorrowsRepo.FindById(id);
             return View(primaryguardianborrow);
         }
 
@@ -205,16 +224,16 @@ namespace OFRPDMS.Areas.Staff.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            PrimaryGuardianBorrow primaryguardianborrow = context.PrimaryGuardianBorrows.Single(x => x.Id == id);
-            context.PrimaryGuardianBorrows.Remove(primaryguardianborrow);
-            context.SaveChanges();
+            PrimaryGuardianBorrow primaryguardianborrow = repoService.primaryGuardianBorrowsRepo.FindById(id);
+            repoService.primaryGuardianBorrowsRepo.Delete(primaryguardianborrow);
             return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing) {
-                context.Dispose();
+            if (disposing)
+            {
+                repoService.primaryGuardianBorrowsRepo.Dispose();
             }
             base.Dispose(disposing);
         }

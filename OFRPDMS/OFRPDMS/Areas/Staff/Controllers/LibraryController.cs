@@ -36,7 +36,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             int centerID = account.GetCurrentUserCenterId();
-            string[] roles = Roles.GetRolesForUser();
+            string[] roles = account.GetRolesForUser();
             ViewBag.IsAdmin = roles.Contains("Administrators");
             ViewBag.CurrentPage = "Library";
 
@@ -152,7 +152,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
         public ActionResult Create()
         {
             int centerID = account.GetCurrentUserCenterId();
-            ViewBag.CenterId2 = AccountProfile.CurrentUser.CenterID;
+            ViewBag.CenterId2 = centerID;
             ViewBag.CenterId = new SelectList(repoService.centerRepo.FindListById(centerID), "Id", "Name");
             return View();
         } 

@@ -35,7 +35,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
         public ViewResult Index(string sortOrder, int? page)
         {
             int centerID = account.GetCurrentUserCenterId();
-            string[] roles = Roles.GetRolesForUser();
+            string[] roles = account.GetRolesForUser();
             ViewBag.IsAdmin = roles.Contains("Administrators");
             ViewBag.CurrentPage = "Events";
 

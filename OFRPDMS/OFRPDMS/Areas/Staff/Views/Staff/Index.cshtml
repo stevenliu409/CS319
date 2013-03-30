@@ -28,7 +28,9 @@
     var child = "<tr><th>FirstName</th><th>LastName</th><th>Associated To</th><th>allergy</th></tr>";
 
     function myFunction() {
-        $("#search_btn").click();
+        if ((document.getElementById("PrimaryFirstName").value.length > 2) && document.getElementById("PrimaryFirstName").value != "") {
+            $("#search_btn").click();
+        }
     }
 
     $("#search_btn").click(function () {
@@ -40,26 +42,26 @@
             datatype: "json",
             data: { name: text, type: _type },
             success: function (data) {
-
-                if (_type == "Primary") {
-                    $('#head').empty();
-                    $('#datatable').empty();
-                    $("#head").append(parent);
-                    $('#tabletemplate').tmpl(data).appendTo('#datatable');
+                if (document.getElementById("PrimaryFirstName").value != "") {
+                    if (_type == "Primary") {
+                        $('#head').empty();
+                        $('#datatable').empty();
+                        $("#head").append(parent);
+                        $('#tabletemplate').tmpl(data).appendTo('#datatable');
+                    }
+                    if (_type == "Secondary") {
+                        $('#head').empty();
+                        $('#datatable').empty();
+                        $("#head").append(secondary);
+                        $('#secondary_tabletemplate').tmpl(data).appendTo('#datatable');
+                    }
+                    if (_type == "Child") {
+                        $('#head').empty();
+                        $('#datatable').empty();
+                        $("#head").append(child);
+                        $('#child_tabletemplate').tmpl(data).appendTo('#datatable');
+                    }
                 }
-                if (_type == "Secondary") {
-                    $('#head').empty();
-                    $('#datatable').empty();
-                    $("#head").append(secondary);
-                    $('#secondary_tabletemplate').tmpl(data).appendTo('#datatable');
-                }
-                if (_type == "Child") {
-                    $('#head').empty();
-                    $('#datatable').empty();
-                    $("#head").append(child);
-                    $('#child_tabletemplate').tmpl(data).appendTo('#datatable');
-                }
-
             }
         });
     });
