@@ -1,4 +1,4 @@
-﻿@model IEnumerable<OFRPDMS.Models.ChildAndGuardian>
+﻿@model PagedList.IPagedList<OFRPDMS.Models.ChildAndGuardian>
 
 @*This is a partial view is used to fetch primary guardians*@
 
@@ -6,6 +6,8 @@
 <script src="/Scripts/jquery.tmpl.js" type="text/javascript"></script>
 <script src="/Scripts/jquery.tmpl.min.js" type="text/javascript"></script>
 <script src="/Scripts/dialog.js" type="text/javascript"></script>
+<script type="text/javascript" src="/Scripts/easypaginate.js"></script>
+<script src="/Scripts/jquery-1.5.2.min.js" type="text/javascript"></script>
 
 <div class =" input-control text" id = "Search_box"> Search: 
 <input  type = "text" id = "PrimaryFirstName" onkeyup = "myFunction()" /> 
@@ -160,3 +162,4 @@ Select the date you want to sign in: <select id="oSelect"></select>
 
         </div>
 
+ 

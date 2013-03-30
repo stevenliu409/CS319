@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using OFRPDMS.Models;
+using PagedList;
 
 namespace OFRPDMS.Areas.Staff.Controllers
 { 
@@ -120,7 +121,10 @@ namespace OFRPDMS.Areas.Staff.Controllers
         }
 
         [HttpPost]
-        public ActionResult Search(string name, string type) {
+        public ActionResult Search(string name, string type, int? page) {
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+
             if (type == "Primary")
             {
                 var _primaryguardian = db.PrimaryGuardians.Where(p => p.FirstName.Contains(name) || p.LastName.Contains(name) || 
@@ -141,7 +145,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
                     type = 1
 
                 });
-                return Json(collection, JsonRequestBehavior.AllowGet);
+                return Json(collection.ToPagedList(pageNumber, pageSize), JsonRequestBehavior.AllowGet);
             }
             else if (type == "Child")
             {
@@ -152,7 +156,6 @@ namespace OFRPDMS.Areas.Staff.Controllers
                     id = pm.Id,
                     Fname = pm.FirstName,
                     Lname = pm.LastName,
-                    //birthday = pm.Birthdate.Value.ToString("MM/dd/yyyy"),
                     relationshiptoGuardian = pm.PrimaryGuardian.FirstName,
                     allergy = pm.Allergies,
                     type = 3
