@@ -201,6 +201,8 @@
     <Compile Include="Models\Video.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\CenterRepository.cs" />
+    <Compile Include="Repositories\IPrimaryGuardianBorrowsRepository.cs" />
+    <Compile Include="Repositories\PrimaryGuardianBorrowsRepository.cs" />
     <Compile Include="Repositories\DbRepositoryService.cs" />
     <Compile Include="Repositories\EventRepository.cs" />
     <Compile Include="Repositories\IEventRepository.cs" />

@@ -51,8 +51,7 @@
 			@String.Format("{0:g}", item.ReturnDate)
         </td>
         <td>
-			@(item.PrimaryGuardian == null ? "None" : item.PrimaryGuardian.FirstName)
-            @(item.PrimaryGuardian == null ? "None" : item.PrimaryGuardian.LastName)
+			@(item.PrimaryGuardian == null ? "None" : item.PrimaryGuardian.FirstName + " " + item.PrimaryGuardian.LastName)
         </td>
         <td>
 			@(item.LibraryResource == null ? "None" : item.LibraryResource.Name)

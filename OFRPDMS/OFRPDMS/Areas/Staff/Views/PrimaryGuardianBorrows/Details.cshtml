@@ -24,7 +24,7 @@
     <div class="display-field">@String.Format("{0:g}", Model.ReturnDate)</div>
 
     <b class="display-label">PrimaryGuardian</b>
-    <div class="display-field">@(Model.PrimaryGuardian == null ? "None" : Model.PrimaryGuardian.LastName)</div>
+    <div class="display-field">@(Model.PrimaryGuardian == null ? "None" : Model.PrimaryGuardian.FirstName + " " +Model.PrimaryGuardian.LastName)</div>
 
     <b class="display-label">LibraryResource</b>
     <div class="display-field">@(Model.LibraryResource == null ? "None" : Model.LibraryResource.Name)</div>

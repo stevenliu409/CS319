@@ -14,5 +14,7 @@ namespace OFRPDMS.Repositories
         ILibraryRepository libraryRepo { get; set; }
 
         ISpecialEventRepository specialEventRepo { get; set; }
+
+        IPrimaryGuardianBorrowsRepository primaryGuardianBorrowsRepo { get; set; }
     }
 }
