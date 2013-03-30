@@ -6,7 +6,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using OFRPDMS.Models;
-using PagedList;
 
 namespace OFRPDMS.Areas.Staff.Controllers
 { 
@@ -121,9 +120,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
         }
 
         [HttpPost]
-        public ActionResult Search(string name, string type, int? page) {
-            int pageSize = 10;
-            int pageNumber = (page ?? 1);
+        public ActionResult Search(string name, string type) {
 
             if (type == "Primary")
             {
@@ -145,7 +142,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
                     type = 1
 
                 });
-                return Json(collection.ToPagedList(pageNumber, pageSize), JsonRequestBehavior.AllowGet);
+                return Json(collection, JsonRequestBehavior.AllowGet);
             }
             else if (type == "Child")
             {
