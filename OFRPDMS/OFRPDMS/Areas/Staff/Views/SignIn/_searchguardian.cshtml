@@ -6,21 +6,32 @@
 <script src="/Scripts/jquery.tmpl.js" type="text/javascript"></script>
 <script src="/Scripts/jquery.tmpl.min.js" type="text/javascript"></script>
 <script src="/Scripts/dialog.js" type="text/javascript"></script>
+
 <div class =" input-control text" id = "Search_box"> Search: 
-<input  type = "text" id = "PrimaryFirstName" /> 
+<input  type = "text" id = "PrimaryFirstName" onkeyup = "myFunction()" /> 
 <select id = "ptype"> 
 <option>Primary</option>
 <option>Secondary</option>
 <option>Child</option>
 </select>
-<select id="oSelect"></select>
-<input type = "button" id = "search_btn" value = "Search" />
+
+<input type="submit" id="mySubmit" value = "Search" />
+<input type = "hidden" id = "search_btn" value = "Search" />
 </div>
+<div>
+Select the date you want to sign in: <select id="oSelect"></select>
+</div>
+
 
 <script type = "text/javascript">
     var parent = "<tr><th>FirstName</th><th>LastName</th><th>Email</th><th>Phone</th><th>PostalCodePrefix</th><th>DateCreated</th><th>Language</th><th>Country</th><th>Allergies</th></tr></thead>";
     var secondary = "<tr><th>FirstName</th><th>LastName</th><th>Phone</th><th>Associated To</th></tr>";
     var child = "<tr><th>FirstName</th><th>LastName</th><th>Associated To</th><th>allergy</th></tr>";
+    
+    function myFunction() {
+        $("#search_btn").click();
+    }
+    
     $.ajax({
         url: '/SignIn/findEvent',
         type: 'POST',
@@ -65,6 +76,12 @@
         }
 
    }
+
+   $('#mySubmit').click(function () {
+       $("#search_btn").click();
+       return false;
+   });
+
     $("#search_btn").click(function () {
         var text = document.getElementById("PrimaryFirstName").value;
         var _type = document.getElementById("ptype").value.toString();
@@ -95,7 +112,6 @@
             }
         });
     });
-
 </script>
 
 <script id = "tabletemplate" type = "text/x-jquery-tmpl">
