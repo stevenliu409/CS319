@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using OFRPDMS.Models;
 using OFRPDMS.Account;
 using OFRPDMS.Repositories;
@@ -73,7 +74,13 @@ namespace OFRPDMS.Controllers
 
         public ActionResult CurrentCenter()
         {
-            return PartialView("_CurrentCenterPartial", db.Centers.Find(AccountProfile.CurrentUser.CenterID));
+            Center c = db.Centers.Find(AccountProfile.CurrentUser.CenterID);
+            if (AccountProfile.CurrentUser.CenterID == -1)
+            {
+                c = new Center();
+                c.Name = "Admin";
+            }
+            return PartialView("_CurrentCenterPartial", c);
         }
     }
 }
