@@ -17,7 +17,7 @@ namespace OFRPDMS.Controllers
     {
         private IAccountService accountService;
         private IRepositoryService repoService;
-
+        private OFRPDMSContext db = new OFRPDMSContext();
         public HomeController() {}
 
         [Inject]
@@ -69,6 +69,11 @@ namespace OFRPDMS.Controllers
         public ActionResult Nav()
         {
             return PartialView("_AdminNavPartial", repoService.centerRepo.FindAll());
+        }
+
+        public ActionResult CurrentCenter()
+        {
+            return PartialView("_CurrentCenterPartial", db.Centers.Find(AccountProfile.CurrentUser.CenterID));
         }
     }
 }

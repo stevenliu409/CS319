@@ -18,6 +18,7 @@
                 <h1>
                 <img src="/Content/themes/base/images/optionsmain.jpg" alt="Options Main"/>
                 </h1>
+                @Html.Action("CurrentCenter","Home", new { area = "" })
         </div>
            <div id="logindisplay">
                 @Html.Partial("_LogOnPartial", new { area = "" }, null)
