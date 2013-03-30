@@ -373,7 +373,7 @@
     <Content Include="Areas\Staff\Views\Events\Details.cshtml" />
     <Content Include="Areas\Staff\Views\Events\Edit.cshtml" />
     <Content Include="Areas\Staff\Views\Events\_CreateOrEdit.cshtml" />
-    <Content Include="Views\Account\_RegisterCenterStaff.cshtml" />
+    <Content Include="Views\Shared\_RegisterCenterStaff.cshtml" />
     <Content Include="Views\Shared\_LayoutGlobal.cshtml" />
     <Content Include="Areas\Staff\Views\PrimaryGuardians\Create.cshtml" />
     <Content Include="Areas\Staff\Views\PrimaryGuardians\Delete.cshtml" />
@@ -419,6 +419,7 @@
     <Content Include="Areas\Staff\Views\SpecialEvent\Edit.cshtml" />
     <Content Include="Areas\Staff\Views\SpecialEvent\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Report\TrackPG.cshtml" />
+    <Content Include="Areas\Admin\Views\Admin\RegisterStaff.cshtml" />
     <None Include="Content\themes\base\fonts\iconFont.eot" />
     <None Include="Content\themes\base\fonts\iconFont.ttf" />
     <None Include="Content\themes\base\fonts\iconFont.woff" />
