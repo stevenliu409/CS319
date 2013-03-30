@@ -16,6 +16,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
 
         public ActionResult Index()
         {
+            AccountProfile.CurrentUser.CenterID = -1;
             return View();
         }
         public ActionResult Nav()

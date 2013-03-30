@@ -18,6 +18,9 @@ namespace OFRPDMS.Controllers
 
         public ActionResult LogOn()
         {
+            string[] usernames = Roles.GetUsersInRole("Administrators");
+            if (usernames.GetLength(0) == 0) //redirect to register page if admin does not exist yet
+                return RedirectToAction("Register", "Account");
             return View();
         }
 

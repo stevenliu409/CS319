@@ -24,12 +24,10 @@ namespace OFRPDMS.Areas.Staff.Controllers
                 if (centerIdArg != -1)
                 {
                     AccountProfile.CurrentUser.CenterID = centerIdArg;
-                    ViewBag.CurrentCenterName = db.Centers.Find(centerIdArg).Name;
                 }
 
             }
             ViewBag.CurrentCenterId = "c"+ centerIdArg.ToString();
-            int centerid = AccountProfile.CurrentUser.CenterID;
 
             return View();
         }
