@@ -152,37 +152,56 @@ namespace OFRPDMS.Areas.Staff.Controllers
             }
         }
 
-        public void Add(int id, int type, int eventid)
+        public void Add(int id, int type, DateTime eventid)
         {
+
             OFRPDMSContext db = new OFRPDMSContext();
+            int centerid = account.GetCurrentUserCenterId();
+            var eve = db.Events.Where(e => DateTime.Compare(e.Date, eventid) == 0 && e.CenterId == centerid).SingleOrDefault();
+            if (eve == null)
+            {
+                eve = new Event();
+                eve.CenterId = account.GetCurrentUserCenterId();
+                eve.Date = eventid;
+                db.Events.Add(eve);
+
+            }
+            EventParticipant ep = new EventParticipant();
             if (type == 1)
             {
-                var _primaryguardian = db.PrimaryGuardians.Find(id);
-                EventParticipant ep = new EventParticipant();
-                ep.PrimaryGuardianId = _primaryguardian.Id;
-                ep.ParticipantType = "Primary";
-                ep.EventId = eventid;
-                db.EventParticipants.Add(ep);
-                db.SaveChanges();
+                if(db.EventParticipants.Where(eps => eps.PrimaryGuardianId == id && eve.Id == eps.EventId).SingleOrDefault() == null){
+                    var _primaryguardian = db.PrimaryGuardians.Find(id);
+                    ep.EventId = eve.Id;
+                    ep.PrimaryGuardianId = _primaryguardian.Id;
+                    ep.ParticipantType = "Primary";
+                    db.EventParticipants.Add(ep);
+                    db.SaveChanges();
+                }
+                
             }
             else if (type == 3)
             {
-                var _child = db.Children.Find(id);
-                EventParticipant ep = new EventParticipant();
-                ep.ChildId = _child.Id;
-                ep.ParticipantType = "Child";
-                ep.EventId = eventid;
-                db.EventParticipants.Add(ep);
-                db.SaveChanges();
+                if (db.EventParticipants.Where(eps => eps.ChildId == id && eve.Id == eps.EventId).SingleOrDefault() == null)
+                {
+                    var _child = db.Children.Find(id);
+                    ep.ChildId = _child.Id;
+                    ep.ParticipantType = "Child";
+                    ep.EventId = eve.Id;
+                    db.EventParticipants.Add(ep);
+                    db.SaveChanges();
+                }
             }
-            else {
-                var _secondaryguardian = db.SecondaryGuardians.Find(id);
-                EventParticipant ep = new EventParticipant();
-                ep.SecondaryGuardianId = _secondaryguardian.Id;
-                ep.ParticipantType = "Secondary";
-                ep.EventId = eventid;
-                db.EventParticipants.Add(ep);
-                db.SaveChanges();
+            else
+            {
+                if (db.EventParticipants.Where(eps => eps.SecondaryGuardianId == id && eve.Id == eps.EventId).SingleOrDefault() == null)
+                {
+                    var _secondaryguardian = db.SecondaryGuardians.Find(id);
+                    ep.SecondaryGuardianId = _secondaryguardian.Id;
+                    ep.ParticipantType = "Secondary";
+                    ep.EventId = eve.Id;
+                    db.EventParticipants.Add(ep);
+                    db.SaveChanges();
+                }
             }
 
         }
