@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OFRPDMS;
 using OFRPDMS.Models;
@@ -38,7 +39,15 @@ namespace OFRPDMS.Tests.Controllers
             repoService.SetupGet(r => r.libraryRepo).Returns(() => libraryRepo.Object);
             repoService.SetupGet(r => r.centerRepo).Returns(() => centerRepo.Object);
 
+            var request = new Mock<HttpRequestBase>();
+            request.SetupGet(x => x.HttpMethod).Returns("GET");
+
+            var controllerContext = new Mock<HttpContextBase>();
+            controllerContext.SetupGet(x => x.Request).Returns(request.Object);
+
             LibraryController controller = new LibraryController(accountService.Object, repoService.Object);
+            controller.ControllerContext = new ControllerContext(controllerContext.Object, new RouteData(), controller);
+
 
             // Act
             ActionResult result = controller.Index(null,null,null,null) as ActionResult;
@@ -72,7 +81,15 @@ namespace OFRPDMS.Tests.Controllers
             repoService.SetupGet(r => r.libraryRepo).Returns(() => libraryRepo.Object);
             repoService.SetupGet(r => r.centerRepo).Returns(() => centerRepo.Object);
 
+            // setup http context
+            var request = new Mock<HttpRequestBase>();
+            request.SetupGet(x => x.HttpMethod).Returns("GET");
+
+            var controllerContext = new Mock<HttpContextBase>();
+            controllerContext.SetupGet(x => x.Request).Returns(request.Object);
+
             LibraryController controller = new LibraryController(accountService.Object, repoService.Object);
+            controller.ControllerContext = new ControllerContext(controllerContext.Object, new RouteData(), controller);
 
             // Act
             ActionResult result = controller.Index(null,null,null,null) as ActionResult;
