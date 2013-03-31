@@ -65,13 +65,12 @@ namespace OFRPDMS.Areas.Staff.Controllers
           
             if (!String.IsNullOrEmpty(searchString))
             {
-     
 
-                primaryguardian = primaryguardian.Where(p => p.LastName.ToUpper().Contains(searchString.ToUpper())
-                           || p.FirstName.ToUpper().Contains(searchString.ToUpper()) || p.Country.ToUpper().Contains(searchString.ToUpper())
-                            || p.Email.ToUpper().Contains(searchString.ToUpper()) 
-                           || p.Language.ToUpper().Contains(searchString.ToUpper()) || p.Phone.ToUpper().Contains(searchString.ToUpper()) || p.PostalCodePrefix.ToUpper().Contains(searchString.ToUpper())
-                           || p.Allergies.ToUpper().Contains(searchString.ToUpper()));
+                string[] searchFields = new string[] { "FirstName", "LastName", "Country", "Email", "Language", "Phone", "PostalCodePrefix", "Allergies", "DateCreated" };
+                IEnumerable<PropertyInfo> properties = typeof(PrimaryGuardian).GetProperties().Where(prop => searchFields.Contains(prop.Name));
+
+                primaryguardian = primaryguardian.Where(
+                    p => ( properties.Any(prop => prop.GetValue(p, null) != null && prop.GetValue(p, null).ToString().ToUpper().Contains(searchString.ToUpper()))));
             }
             switch (sortOrder)
             {
