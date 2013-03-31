@@ -10,7 +10,9 @@ namespace OFRPDMS.Repositories
         // ninject depedency injection
         public DbRepositoryService(IEventRepository eventRepo, ICenterRepository centerRepo,
             ILibraryRepository libraryRepo, ISpecialEventRepository specialEventRepo,
-            IPrimaryGuardianBorrowsRepository primaryGuardianBorrowsRepo, ISignInRepository signInRepo)
+            IPrimaryGuardianBorrowsRepository primaryGuardianBorrowsRepo, ISignInRepository signInRepo,
+            IPrimaryGuardianRepository primaryGuardianRepo, ISecondaryGuardianRepository secondaryGuardianRepo,
+            IChildRepository childRepo)
         {
             this.eventRepo = eventRepo;
             this.centerRepo = centerRepo;
@@ -18,6 +20,9 @@ namespace OFRPDMS.Repositories
             this.specialEventRepo = specialEventRepo;
             this.primaryGuardianBorrowsRepo = primaryGuardianBorrowsRepo;
             this.signInRepo = signInRepo;
+            this.primaryGuardianRepo = primaryGuardianRepo;
+            this.secondaryGuardianRepo = secondaryGuardianRepo;
+            this.childRepo = childRepo;
         }
 
         public IEventRepository eventRepo { get; set;  }
@@ -31,5 +36,11 @@ namespace OFRPDMS.Repositories
         public IPrimaryGuardianBorrowsRepository primaryGuardianBorrowsRepo { get; set; }
 
         public ISignInRepository signInRepo { get; set; }
+
+        public IPrimaryGuardianRepository primaryGuardianRepo { get; set; }
+
+        public ISecondaryGuardianRepository secondaryGuardianRepo { get; set; }
+
+        public IChildRepository childRepo { get; set; }
     }
 }

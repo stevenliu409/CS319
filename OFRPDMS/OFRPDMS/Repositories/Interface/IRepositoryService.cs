@@ -18,5 +18,11 @@ namespace OFRPDMS.Repositories
         IPrimaryGuardianBorrowsRepository primaryGuardianBorrowsRepo { get; set; }
 
         ISignInRepository signInRepo { get; set; }
+
+        IPrimaryGuardianRepository primaryGuardianRepo { get; set; }
+
+        ISecondaryGuardianRepository secondaryGuardianRepo { get; set; }
+
+        IChildRepository childRepo { get; set; }
     }
 }

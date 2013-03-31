@@ -7,7 +7,9 @@ using System.Reflection;
 using System.Web;
 using System.Web.Security;
 using System.Web.Mvc;
+using OFRPDMS.Account;
 using OFRPDMS.Models;
+using OFRPDMS.Repositories;
 using System.Data.Objects;
 using PagedList;
 
@@ -15,7 +17,16 @@ namespace OFRPDMS.Areas.Staff.Controllers
 {   
     public class PrimaryGuardiansController : Controller
     {
-        private OFRPDMSContext context = new OFRPDMSContext();
+        private IAccountService account;
+        private IRepositoryService repoService;
+
+        public PrimaryGuardiansController() {}
+
+        public PrimaryGuardiansController(IAccountService account, IRepositoryService repoService)
+        {
+            this.account = account;
+            this.repoService = repoService;
+        }
 
         //
         // GET: /PrimaryGuardians/
@@ -49,18 +60,17 @@ namespace OFRPDMS.Areas.Staff.Controllers
             }
             ViewBag.CurrentFilter = searchString;
 
-            var primaryguardian = from p in context.PrimaryGuardians.Where(p => p.CenterId == centerId).Include(p => p.Center)
+            var primaryguardian = from p in repoService.primaryGuardianRepo.FindAllWithCenterId(centerId)
                                    select p;
           
             if (!String.IsNullOrEmpty(searchString))
             {
-     
 
-                primaryguardian = primaryguardian.Where(p => p.LastName.ToUpper().Contains(searchString.ToUpper())
-                           || p.FirstName.ToUpper().Contains(searchString.ToUpper()) || p.Country.ToUpper().Contains(searchString.ToUpper())
-                            || p.Email.ToUpper().Contains(searchString.ToUpper()) 
-                           || p.Language.ToUpper().Contains(searchString.ToUpper()) || p.Phone.ToUpper().Contains(searchString.ToUpper()) || p.PostalCodePrefix.ToUpper().Contains(searchString.ToUpper())
-                           || p.Allergies.ToUpper().Contains(searchString.ToUpper()));
+                string[] searchFields = new string[] { "FirstName", "LastName", "Country", "Email", "Language", "Phone", "PostalCodePrefix", "Allergies", "DateCreated" };
+                IEnumerable<PropertyInfo> properties = typeof(PrimaryGuardian).GetProperties().Where(prop => searchFields.Contains(prop.Name));
+
+                primaryguardian = primaryguardian.Where(
+                    p => ( properties.Any(prop => prop.GetValue(p, null) != null && prop.GetValue(p, null).ToString().ToUpper().Contains(searchString.ToUpper()))));
             }
             switch (sortOrder)
             {
@@ -136,7 +146,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
             int centerId = AccountProfile.CurrentUser.CenterID;
             string[] roles = Roles.GetRolesForUser();
             ViewBag.IsAdmin = roles.Contains("Administrators");
-            PrimaryGuardian primaryguardian = context.PrimaryGuardians.Where(p => p.CenterId == centerId && p.Id == id).SingleOrDefault();
+            PrimaryGuardian primaryguardian = repoService.primaryGuardianRepo.FindByIdAndCenterId(id, centerId);
             return View(primaryguardian);
         }
 
@@ -145,7 +155,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.CenterId2 = AccountProfile.CurrentUser.CenterID;
+            ViewBag.CenterId2 = account.GetCurrentUserCenterId();
             var model = new PrimaryGuardian();
             return View(model);
         } 
@@ -196,13 +206,11 @@ namespace OFRPDMS.Areas.Staff.Controllers
                     }
 
                 }
-
-                context.PrimaryGuardians.Add(primaryguardian);
-                context.SaveChanges();
+                repoService.primaryGuardianRepo.Add(primaryguardian);
                 return RedirectToAction("Index");
             }
             ViewBag.CenterId2 = AccountProfile.CurrentUser.CenterID;
-            ViewBag.CenterId = new SelectList(context.Centers, "Id", "Name", primaryguardian.CenterId);
+            ViewBag.CenterId = new SelectList(repoService.centerRepo.FindAll(), "Id", "Name", primaryguardian.CenterId);
             return View(primaryguardian);
         }
         
@@ -215,8 +223,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
             string[] roles = Roles.GetRolesForUser();
             ViewBag.IsAdmin = roles.Contains("Administrators");
             ViewBag.CenterId2 = centerId;
-            PrimaryGuardian pr = context.PrimaryGuardians.Where(p => p.CenterId == centerId).Single(p => p.Id == id);
-            
+            PrimaryGuardian pr = repoService.primaryGuardianRepo.FindByIdAndCenterId(id, centerId);
            
             return View(pr);
         }
@@ -256,8 +263,8 @@ namespace OFRPDMS.Areas.Staff.Controllers
                     {
                         if (primaryguardian.SecondaryGuardians[i].Id != 0)
                         {
-                            SecondaryGuardian sg = context.SecondaryGuardians.Find(primaryguardian.SecondaryGuardians[i].Id);
-                            context.SecondaryGuardians.Remove(sg);
+                            SecondaryGuardian sg = repoService.secondaryGuardianRepo.FindById(primaryguardian.SecondaryGuardians[i].Id);
+                            repoService.secondaryGuardianRepo.Delete(sg);
                         }
 
                         primaryguardian.SecondaryGuardians.RemoveAt(i);
@@ -266,12 +273,11 @@ namespace OFRPDMS.Areas.Staff.Controllers
                     else if ((primaryguardian.SecondaryGuardians[i].Delete == true && (primaryguardian.SecondaryGuardians[i].Phone == null || primaryguardian.SecondaryGuardians[i].FirstName == null
                      || primaryguardian.SecondaryGuardians[i].LastName == null || primaryguardian.SecondaryGuardians[i].RelationshipToChild == null)) || (primaryguardian.SecondaryGuardians[i].Delete == true))
                     {
-                        SecondaryGuardian sec = context.SecondaryGuardians.Find(primaryguardian.SecondaryGuardians[i].Id);
+                        SecondaryGuardian sec = repoService.secondaryGuardianRepo.FindById(primaryguardian.SecondaryGuardians[i].Id);
 
                         if (sec != null)
                         {
-
-                            context.SecondaryGuardians.Remove(sec);
+                            repoService.secondaryGuardianRepo.Delete(sec);
                             primaryguardian.SecondaryGuardians.RemoveAt(i);
                         }
                         else
@@ -288,14 +294,14 @@ namespace OFRPDMS.Areas.Staff.Controllers
                         // this is a newly created secondary guardian
                         if (primaryguardian.SecondaryGuardians[i].Id == 0)
                         {
-                            context.SecondaryGuardians.Add(primaryguardian.SecondaryGuardians[i]);
+                            repoService.secondaryGuardianRepo.Add(primaryguardian.SecondaryGuardians[i]);
                             primaryguardian.SecondaryGuardians.RemoveAt(i);
                         }
                         // existing secondary guardian was modified
 
                         else
                         {
-                            context.Entry(primaryguardian.SecondaryGuardians[i]).State = EntityState.Modified;
+                            repoService.secondaryGuardianRepo.Update(primaryguardian.SecondaryGuardians[i]);
                         }
                     }
                 }
@@ -329,8 +335,8 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
                         if (primaryguardian.Children[i].Id != 0)
                         {
-                            Child child = context.Children.Find(primaryguardian.Children[i].Id);
-                            context.Children.Remove(child);
+                            Child child = repoService.childRepo.FindById(primaryguardian.Children[i].Id);
+                            repoService.childRepo.Delete(child);
                         }
 
                         primaryguardian.Children.RemoveAt(i);
@@ -339,12 +345,11 @@ namespace OFRPDMS.Areas.Staff.Controllers
                     else if ((primaryguardian.Children[i].Delete == true && (primaryguardian.Children[i].Birthdate == null || primaryguardian.Children[i].FirstName == null
                      || primaryguardian.Children[i].LastName == null || primaryguardian.Children[i].RelationshipToGuardian == null)) ||(primaryguardian.Children[i].Delete == true))
                     {
-                        Child child = context.Children.Find(primaryguardian.Children[i].Id);
+                        Child child = repoService.childRepo.FindById(primaryguardian.Children[i].Id);
 
                         if (child != null)
                         {
-
-                            context.Children.Remove(child);
+                            repoService.childRepo.Delete(child);
                             primaryguardian.Children.RemoveAt(i);
                         }
                         else
@@ -363,25 +368,24 @@ namespace OFRPDMS.Areas.Staff.Controllers
                         // this is a newly created child
                         if (primaryguardian.Children[i].Id == 0)
                         {
-                            context.Children.Add(primaryguardian.Children[i]);
+                            repoService.childRepo.Add(primaryguardian.Children[i]);
                             primaryguardian.Children.RemoveAt(i);
                         }
                         // existing child was modified
                         else
                         {
-                            context.Entry(primaryguardian.Children[i]).State = EntityState.Modified;
+                            repoService.childRepo.Update(primaryguardian.Children[i]);
                         }
                     }
                 }
 
-                context.Entry(primaryguardian).State = EntityState.Modified;
-                context.SaveChanges();
+            repoService.primaryGuardianRepo.Update(primaryguardian);
 
-                return RedirectToAction("Index");
-                }
+            return RedirectToAction("Index");
+            }
 
-             
-            ViewBag.CenterId = new SelectList(context.Centers, "Id", "Name", primaryguardian.CenterId);
+            
+            ViewBag.CenterId = new SelectList(repoService.centerRepo.FindAll(), "Id", "Name", primaryguardian.CenterId);
             return View(primaryguardian);
         }
 
@@ -392,7 +396,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
         {
             string[] roles = Roles.GetRolesForUser();
             ViewBag.IsAdmin = roles.Contains("Administrators");
-            PrimaryGuardian primaryguardian = context.PrimaryGuardians.Find(id);
+            PrimaryGuardian primaryguardian = repoService.primaryGuardianRepo.FindById(id);
             return View(primaryguardian);
         }
 
@@ -402,16 +406,15 @@ namespace OFRPDMS.Areas.Staff.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            PrimaryGuardian primaryguardian = context.PrimaryGuardians.Find(id);
-            context.PrimaryGuardians.Remove(primaryguardian);
-            context.SaveChanges();
+            PrimaryGuardian primaryguardian = repoService.primaryGuardianRepo.FindById(id);
+            repoService.primaryGuardianRepo.Delete(primaryguardian);
             return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing) {
-                context.Dispose();
+                repoService.primaryGuardianRepo.Dispose();
             }
             base.Dispose(disposing);
         }

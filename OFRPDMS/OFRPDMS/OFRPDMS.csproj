@@ -201,8 +201,13 @@
     <Compile Include="Models\Video.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\CenterRepository.cs" />
+    <Compile Include="Repositories\ChildrenRepository.cs" />
+    <Compile Include="Repositories\Interface\IChildrenRepository.cs" />
     <Compile Include="Repositories\Interface\IPrimaryGuardianBorrowsRepository.cs" />
+    <Compile Include="Repositories\Interface\IPrimaryGuardianRepository.cs" />
+    <Compile Include="Repositories\Interface\ISecondaryGuardianRepository.cs" />
     <Compile Include="Repositories\Interface\ISignInRepository.cs" />
+    <Compile Include="Repositories\PrimaryGuardianRepository.cs" />
     <Compile Include="Repositories\PrimaryGuardianBorrowsRepository.cs" />
     <Compile Include="Repositories\DbRepositoryService.cs" />
     <Compile Include="Repositories\EventRepository.cs" />
@@ -214,6 +219,7 @@
     <Compile Include="Repositories\Interface\ISpecialEventRepository.cs" />
     <Compile Include="Repositories\LibraryRepository.cs" />
     <Compile Include="Repositories\RepositoryModule.cs" />
+    <Compile Include="Repositories\SecondaryGuardianRepository.cs" />
     <Compile Include="Repositories\SignInRepository.cs" />
     <Compile Include="Repositories\SpecialEventRepository.cs" />
   </ItemGroup>

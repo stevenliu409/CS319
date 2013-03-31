@@ -24,5 +24,11 @@ public class RepositoryModule : NinjectModule
         this.Bind(typeof(IPrimaryGuardianBorrowsRepository)).To(typeof(PrimaryGuardianBorrowsRepository));
 
         this.Bind(typeof(ISignInRepository)).To(typeof(SignInRepository));
+
+        this.Bind(typeof(IPrimaryGuardianRepository)).To(typeof(PrimaryGuardianRepository));
+
+        this.Bind(typeof(ISecondaryGuardianRepository)).To(typeof(SecondaryGuardianRepository));
+
+        this.Bind(typeof(IChildRepository)).To(typeof(ChildRepository));
     }
 }
