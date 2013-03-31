@@ -66,7 +66,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
 
-                string[] searchFields = new string[] { "FirstName", "LastName", "Country", "Email", "Language", "Phone", "PostalCodePrefix", "Allergies" };
+                string[] searchFields = new string[] { "FirstName", "LastName", "Country", "Email", "Language", "Phone", "PostalCodePrefix", "Allergies", "DateCreated" };
                 IEnumerable<PropertyInfo> properties = typeof(PrimaryGuardian).GetProperties().Where(prop => searchFields.Contains(prop.Name));
 
                 primaryguardian = primaryguardian.Where(
