@@ -43,7 +43,7 @@ namespace OFRPDMS.Controllers
                     else
                     {
                         if (Roles.GetRolesForUser(model.UserName).Contains("Administrators"))
-                            return RedirectToAction("Index", "Admin", new { area = "Admin"});
+                            return RedirectToAction("Index", "Report", new { area = "Admin"});
                         else
                             return RedirectToRoute("Staff_default", new { centerIdArg = -1, controller = "Staff", action = "Index" });
                     }
@@ -123,7 +123,7 @@ namespace OFRPDMS.Controllers
                     AccountProfile.GetUser(model.UserName).CenterID = model.CenterId;
 
                     if (Roles.GetRolesForUser().Contains("Administrators"))
-                        return RedirectToAction("Index", "Admin", new { area = "Admin"});
+                        return RedirectToAction("Index", "Report", new { area = "Admin"});
                     else
                         return RedirectToRoute("Staff_default", new { centerIdArg = -1, controller = "Staff", action = "Index" });
                 }
