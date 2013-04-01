@@ -176,6 +176,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
                 repoService.eventRepo.Insert(eve);
             }
             EventParticipant ep = new EventParticipant();
+
             if (type == 1)
             {
                 if (repoService.signInRepo.FindPrimaryGuardianByIdAndEventId(id, eve.Id).
