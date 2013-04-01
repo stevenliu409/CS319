@@ -152,9 +152,28 @@ namespace OFRPDMS.Areas.Staff.Controllers
             }
         }
 
-        public void Add(int id, int type, int eventid)
+        public void Add(int id, int type, string date)
         {
             OFRPDMSContext db = new OFRPDMSContext();
+            //DateTime d = DateTime.ParseExact(date, "yy-MM-dd", null);
+            int centerID = account.GetCurrentUserCenterId();
+            var _events = repoService.eventRepo.FindAllWithCenterId(centerID).OrderByDescending(e => e.Date).ToList();
+            int eventid = 1;
+            if (_events.Exists(e => e.Date.ToString("yyyy-MM-dd", null).Equals(date)))
+            {
+                var eventOnDate = _events.First(e => e.Date.ToString("yyyy-MM-dd", null).Equals(date));
+                eventid = eventOnDate.Id;
+            }
+            else
+            {
+                Event anEvent = new Event();
+                anEvent.CenterId = account.GetCurrentUserCenterId();
+                anEvent.Date = DateTime.ParseExact(date, "yyyy-MM-dd",null);
+                repoService.eventRepo.Insert(anEvent);
+                _events = repoService.eventRepo.FindAllWithCenterId(centerID).OrderByDescending(e => e.Date).ToList();
+               eventid =  _events.First(e => e.Date.ToString("yyyy-MM-dd", null).Equals(date)).Id;
+            }
+            
             if (type == 1)
             {
                 var _primaryguardian = db.PrimaryGuardians.Find(id);
