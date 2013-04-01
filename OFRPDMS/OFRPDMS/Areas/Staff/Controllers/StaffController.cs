@@ -27,6 +27,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
                 }
 
             }
+            ViewBag.CurrentCenterName = db.Centers.Find(centerIdArg).Name;
             ViewBag.CurrentCenterId = "c"+ centerIdArg.ToString();
 
             return View();
