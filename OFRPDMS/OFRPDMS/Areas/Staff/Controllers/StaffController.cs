@@ -38,11 +38,11 @@ namespace OFRPDMS.Areas.Staff.Controllers
             {
                 if (centerIdArg != -1)
                 {
-                    AccountProfile.CurrentUser.CenterID = centerIdArg;
+                    account.SetCurrentUserCenterId(centerIdArg);
                 }
 
             }
-            ViewBag.CurrentCenterName = db.Centers.Find(centerIdArg).Name;
+            ViewBag.CurrentCenterName = repoService.centerRepo.FindById(centerIdArg).Name;
             ViewBag.CurrentCenterId = "c"+ centerIdArg.ToString();
 
             return View();

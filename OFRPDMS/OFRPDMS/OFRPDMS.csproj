@@ -387,7 +387,6 @@
     <Content Include="Areas\Staff\Views\Events\Details.cshtml" />
     <Content Include="Areas\Staff\Views\Events\Edit.cshtml" />
     <Content Include="Areas\Staff\Views\Events\_CreateOrEdit.cshtml" />
-    <Content Include="Views\Shared\_RegisterCenterStaff.cshtml" />
     <Content Include="Views\Shared\_LayoutGlobal.cshtml" />
     <Content Include="Areas\Staff\Views\PrimaryGuardians\Create.cshtml" />
     <Content Include="Areas\Staff\Views\PrimaryGuardians\Delete.cshtml" />
