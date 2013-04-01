@@ -54,11 +54,11 @@
             </div>
             @if (!ViewBag.adminAccountExists)
             {
-                @Html.Hidden("role", "Administrators");
+                @Html.Hidden("role", "Administrators")
             }
             else
             {
-                @Html.Hidden("role", "Staff");
+                @Html.Hidden("role", "Staff")
                
                 <div class="editor-label">
                      @Html.LabelFor(model => model.CenterId, "Center")
