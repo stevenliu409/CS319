@@ -10,6 +10,7 @@ using PagedList;
 using OFRPDMS.Repositories;
 using OFRPDMS.Account;
 using Ninject;
+using System.Reflection;
 
 namespace OFRPDMS.Areas.Staff.Controllers
 { 
@@ -93,11 +94,13 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
         [HttpPost]
         public ActionResult Search(string name, string type) {
-            OFRPDMSContext db = new OFRPDMSContext();
             if (type == "Primary")
             {
-                var _primaryguardian = db.PrimaryGuardians.Where(p => p.FirstName.Contains(name) || p.LastName.Contains(name) || 
-                    p.Allergies.Contains(name) || p.Country.Contains(name) || p.Language.Contains(name) || p.Email.Contains(name)).ToList();
+                var _primaryguardian = repoService.primaryGuardianRepo.FindAll();
+                string[] searchFields = new string[] { "FirstName", "LastName", "Country", "Email", "Language", "Phone", "PostalCodePrefix", "Allergies", "DateCreated" };
+                IEnumerable<PropertyInfo> properties = typeof(PrimaryGuardian).GetProperties().Where(prop => searchFields.Contains(prop.Name));
+                _primaryguardian = _primaryguardian.Where(
+                      p => (properties.Any(prop => prop.GetValue(p, null) != null && prop.GetValue(p, null).ToString().ToUpper().Contains(name.ToUpper()))));
                 var collection = _primaryguardian.Select(pm => new
                 {
 
@@ -118,7 +121,11 @@ namespace OFRPDMS.Areas.Staff.Controllers
             }
             else if (type == "Child")
             {
-                var _primaryguardian = db.Children.Where(c => c.FirstName.Contains(name) || c.LastName.Contains(name) || c.Allergies.Contains(name)).ToList();
+                var _primaryguardian = repoService.childRepo.FindAll();
+                string[] searchFields = new string[] { "FirstName", "LastName", "Allergies"};
+                IEnumerable<PropertyInfo> properties = typeof(Child).GetProperties().Where(prop => searchFields.Contains(prop.Name));
+                _primaryguardian = _primaryguardian.Where(
+                      p => (properties.Any(prop => prop.GetValue(p, null) != null && prop.GetValue(p, null).ToString().ToUpper().Contains(name.ToUpper()))));
                 var collection = _primaryguardian.Select(pm => new
                 {
 
@@ -134,7 +141,11 @@ namespace OFRPDMS.Areas.Staff.Controllers
             }
             else
             {
-                var _primaryguardian = db.SecondaryGuardians.Where(s => s.FirstName.Contains(name) || s.RelationshipToChild.Contains(name) || s.LastName.Contains(name)).ToList();
+                var _primaryguardian = repoService.secondaryGuardianRepo.FindAll();
+                string[] searchFields = new string[] { "FirstName", "LastName", "RelationshipToChild" };
+                IEnumerable<PropertyInfo> properties = typeof(SecondaryGuardian).GetProperties().Where(prop => searchFields.Contains(prop.Name));
+                _primaryguardian = _primaryguardian.Where(
+                      p => (properties.Any(prop => prop.GetValue(p, null) != null && prop.GetValue(p, null).ToString().ToUpper().Contains(name.ToUpper()))));
                 var collection = _primaryguardian.Select(pm => new
                 {
 
@@ -143,7 +154,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
                     Lname = pm.LastName,
                     relationship = pm.RelationshipToChild,
                     phone = pm.Phone,
-                    relationshiptoGuardian = db.PrimaryGuardians.Find(pm.PrimaryGuardianId).FirstName,
+                    relationshiptoGuardian = repoService.primaryGuardianRepo.FindById(pm.PrimaryGuardianId).FirstName,
                     type = 2
 
                 });
@@ -152,58 +163,57 @@ namespace OFRPDMS.Areas.Staff.Controllers
             }
         }
 
-        public void Add(int id, int type, DateTime eventid)
+        public void Add(int id, int type, DateTime eventdate)
         {
-
-            OFRPDMSContext db = new OFRPDMSContext();
             int centerid = account.GetCurrentUserCenterId();
-            var eve = db.Events.Where(e => DateTime.Compare(e.Date, eventid) == 0 && e.CenterId == centerid).SingleOrDefault();
+            var all_center_event = repoService.eventRepo.FindAllWithCenterId(centerid);
+            var eve = all_center_event.Where(e => DateTime.Compare(e.Date, eventdate) == 0).SingleOrDefault();
             if (eve == null)
             {
                 eve = new Event();
                 eve.CenterId = account.GetCurrentUserCenterId();
-                eve.Date = eventid;
-                db.Events.Add(eve);
-
+                eve.Date = eventdate;
+                repoService.eventRepo.Insert(eve);
             }
             EventParticipant ep = new EventParticipant();
             if (type == 1)
             {
-                if(db.EventParticipants.Where(eps => eps.PrimaryGuardianId == id && eve.Id == eps.EventId).SingleOrDefault() == null){
-                    var _primaryguardian = db.PrimaryGuardians.Find(id);
+                if (repoService.signInRepo.FindPrimaryGuardianByIdAndEventId(id, eve.Id).
+                    SingleOrDefault() == null)
+                {
+                    var _primaryguardian = repoService.primaryGuardianRepo.FindById(id);
                     ep.EventId = eve.Id;
                     ep.PrimaryGuardianId = _primaryguardian.Id;
                     ep.ParticipantType = "Primary";
-                    db.EventParticipants.Add(ep);
-                    db.SaveChanges();
+                    repoService.signInRepo.Insert(ep);
                 }
                 
             }
             else if (type == 3)
             {
-                if (db.EventParticipants.Where(eps => eps.ChildId == id && eve.Id == eps.EventId).SingleOrDefault() == null)
+                if (repoService.signInRepo.FindChildByIdAndEventId(id,eve.Id)
+                    .SingleOrDefault() == null)
                 {
-                    var _child = db.Children.Find(id);
+                    var _child = repoService.childRepo.FindById(id);
                     ep.ChildId = _child.Id;
                     ep.ParticipantType = "Child";
                     ep.EventId = eve.Id;
-                    db.EventParticipants.Add(ep);
-                    db.SaveChanges();
+                    repoService.signInRepo.Insert(ep);
                 }
             }
             else
             {
-                if (db.EventParticipants.Where(eps => eps.SecondaryGuardianId == id && eve.Id == eps.EventId).SingleOrDefault() == null)
+                if (repoService.signInRepo.FindSecondaryGuardianByIdAndEventId(id, eve.Id).
+                    SingleOrDefault() == null)
                 {
-                    var _secondaryguardian = db.SecondaryGuardians.Find(id);
+                    var _secondaryguardian = repoService.secondaryGuardianRepo.FindById(id);
                     ep.SecondaryGuardianId = _secondaryguardian.Id;
                     ep.ParticipantType = "Secondary";
                     ep.EventId = eve.Id;
-                    db.EventParticipants.Add(ep);
-                    db.SaveChanges();
+                    repoService.signInRepo.Insert(ep);
                 }
             }
-
+            
         }
         [HttpPost]
         public ActionResult findEvent() {

@@ -9,6 +9,8 @@ namespace OFRPDMS.Repositories
 {
     public interface ISecondaryGuardianRepository
     {
+        IEnumerable<SecondaryGuardian> FindAll();
+
         SecondaryGuardian FindById(int id);
 
         void Add(SecondaryGuardian s);

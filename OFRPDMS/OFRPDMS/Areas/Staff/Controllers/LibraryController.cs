@@ -12,6 +12,7 @@ using OFRPDMS.Account;
 using OFRPDMS.Models;
 using OFRPDMS.Repositories;
 using PagedList;
+using System.Reflection;
 
 namespace OFRPDMS.Areas.Staff.Controllers
 { 
@@ -66,8 +67,10 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                libraryitems = libraryitems.Where(l => l.ItemType.ToUpper().Contains(searchString.ToUpper()) || l.Name.ToUpper().Contains(searchString.ToUpper())
-                                || l.Note.ToUpper().Contains(searchString.ToUpper()));
+                string[] searchFields = new string[] { "ItemType","Note", "Name" };
+                IEnumerable<PropertyInfo> properties = typeof(LibraryResource).GetProperties().Where(prop => searchFields.Contains(prop.Name));
+                libraryitems = libraryitems.Where(
+                    p => (properties.Any(prop => prop.GetValue(p, null) != null && prop.GetValue(p, null).ToString().ToUpper().Contains(searchString.ToUpper()))));
 
             }
             switch (sortOrder)
@@ -135,10 +138,8 @@ namespace OFRPDMS.Areas.Staff.Controllers
             int centerID = account.GetCurrentUserCenterId();
 
             LibraryResource libraryitem = repoService.libraryRepo.FindByIdAndCenterId(id, centerID);
-            OFRPDMSContext context = new OFRPDMSContext();
-            PrimaryGuardianBorrow pgb = context.PrimaryGuardianBorrows.Where(
-                p => p.LibraryResourceId == id &&
-                    p.Returned == false).FirstOrDefault();
+            PrimaryGuardianBorrow pgb = repoService.primaryGuardianBorrowsRepo.FindAllWithLibraryResourceId(id)
+                .Where(p => p.Returned == false).FirstOrDefault();
             if (pgb != null)
             {
                 ViewBag.borrow = pgb.Id;
@@ -196,10 +197,10 @@ namespace OFRPDMS.Areas.Staff.Controllers
         public ActionResult Edit(LibraryResource libraryitem)
         {
             int centerID = account.GetCurrentUserCenterId();
-            OFRPDMSContext context = new OFRPDMSContext();
+           
             if (ModelState.IsValid)
             {
-                libraryitem.CheckedOut = context.LibraryResources.Find(libraryitem.Id).CheckedOut;
+                
                 repoService.libraryRepo.Update(libraryitem);
                 return RedirectToAction("Index");
             }

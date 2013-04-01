@@ -28,6 +28,11 @@ namespace OFRPDMS.Repositories
             return db.PrimaryGuardianBorrows.Single(c => c.Id == id && c.PrimaryGuardian.CenterId == centerId);
         }
 
+        public IEnumerable<PrimaryGuardianBorrow> FindAllWithLibraryResourceId(int id) 
+        {
+            return db.PrimaryGuardianBorrows.Where(pgb => pgb.LibraryResourceId == id);
+        }
+
 
         public void Insert(PrimaryGuardianBorrow e)
         {

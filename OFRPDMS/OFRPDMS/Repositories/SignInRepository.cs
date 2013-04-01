@@ -35,6 +35,20 @@ namespace OFRPDMS.Repositories
             return db.EventParticipants.Where(e => e.Event.CenterId == centerId && e.EventId == id);
         }
 
+        public IEnumerable<EventParticipant> FindPrimaryGuardianByIdAndEventId(int id, int eventId) 
+        {
+            return db.EventParticipants.Where(eps => eps.PrimaryGuardianId == id && eps.EventId == eventId);
+        }
+
+        public IEnumerable<EventParticipant> FindChildByIdAndEventId(int id, int eventId)
+        {
+            return db.EventParticipants.Where(eps => eps.ChildId == id && eps.EventId == eventId);
+        }
+
+        public IEnumerable<EventParticipant> FindSecondaryGuardianByIdAndEventId(int id, int eventId)
+        {
+            return db.EventParticipants.Where(eps => eps.SecondaryGuardianId == id && eps.EventId == eventId);
+        }
         public void Insert(EventParticipant e)
         {
             db.EventParticipants.Add(e);

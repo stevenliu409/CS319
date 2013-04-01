@@ -9,6 +9,8 @@ namespace OFRPDMS.Repositories
 {
     public interface IChildRepository
     {
+        IEnumerable<Child> FindAll();
+
         Child FindById(int id);
 
         void Add(Child c);

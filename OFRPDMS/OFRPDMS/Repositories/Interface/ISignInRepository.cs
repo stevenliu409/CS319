@@ -11,6 +11,12 @@ namespace OFRPDMS.Repositories
 
         IEnumerable<EventParticipant> FindByEventIdAndCenterId(int id, int centerID);
 
+        IEnumerable<EventParticipant> FindPrimaryGuardianByIdAndEventId(int id, int eventId);
+
+        IEnumerable<EventParticipant> FindSecondaryGuardianByIdAndEventId(int id, int eventId);
+
+        IEnumerable<EventParticipant> FindChildByIdAndEventId(int id, int eventId);
+
         IEnumerable<EventParticipant> FindAllWithEventId(int eventId);
 
         EventParticipant FindById(int id);

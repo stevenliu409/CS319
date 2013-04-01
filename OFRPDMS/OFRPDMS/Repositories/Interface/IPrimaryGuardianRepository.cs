@@ -11,6 +11,8 @@ namespace OFRPDMS.Repositories
     {
         PrimaryGuardian FindById(int id);
 
+        IEnumerable<PrimaryGuardian> FindAll();
+
         IEnumerable<PrimaryGuardian> FindAllWithCenterId(int centerId);
 
         PrimaryGuardian FindByIdAndCenterId(int id, int centerId);

@@ -13,6 +13,8 @@ namespace OFRPDMS.Repositories
 
         PrimaryGuardianBorrow FindByIdAndCenterId(int id, int centerId);
 
+        IEnumerable<PrimaryGuardianBorrow> FindAllWithLibraryResourceId(int id);
+
         void Insert(PrimaryGuardianBorrow e);
 
         void Update(PrimaryGuardianBorrow e);

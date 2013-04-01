@@ -70,7 +70,7 @@ Select the date you want to sign in: <input type ="text" id="oSelect" />
                 url: '/SignIn/Add',
                 type: "POST",
                 datatype: "json",
-                data: { id: id, type: type, eventid: _eventid },
+                data: { id: id, type: type, eventdate: _eventid },
                 success: function () {
                     $.Dialog({
                         'title': 'Options Alert',
