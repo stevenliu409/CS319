@@ -8,13 +8,27 @@ using System.Web.Mvc;
 using OFRPDMS.Models;
 using OFRPDMS.Areas.Staff.Models;
 using OFRPDMS.Areas.Staff.ViewModels;
+using OFRPDMS.Repositories;
+using OFRPDMS.Account;
+using Ninject;
+using System.Reflection;
 
 namespace OFRPDMS.Areas.Staff.Controllers
 {   
     public class CenterReferralsController : Controller
     {
-        private OFRPDMSContext context = new OFRPDMSContext();
 
+        private IRepositoryService repoService;
+        private IAccountService account;
+
+        public CenterReferralsController() { }
+
+        [Inject]
+        public CenterReferralsController(IAccountService account, IRepositoryService repoService) 
+        {
+            this.account = account;
+            this.repoService = repoService;
+        }
         //
         // GET: /CenterReferrals/
 
@@ -29,7 +43,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
         public ViewResult Details(int id)
         {
-            CenterReferral centerreferral = context.CenterReferrals.Single(x => x.Id == id);
+            CenterReferral centerreferral = repoService.centerReferralRepo.FindById(id);
             return View(centerreferral);
         }
 
@@ -38,7 +52,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.PossibleCenters = context.Centers;
+            ViewBag.PossibleCenters = repoService.centerRepo.FindAll();
             return View();
         } 
 
@@ -48,11 +62,11 @@ namespace OFRPDMS.Areas.Staff.Controllers
         [HttpPost]
         public ActionResult Create(CenterReferral centerreferral)
         {
+            int centerId = account.GetCurrentUserCenterId();
             if (ModelState.IsValid)
             {
-                centerreferral.CenterId = AccountProfile.CurrentUser.CenterID;
-                context.CenterReferrals.Add(centerreferral);
-                context.SaveChanges();
+                centerreferral.CenterId = centerId;
+                repoService.centerReferralRepo.Insert(centerreferral);
                 return RedirectToAction("Edit");  
             }
             return View(centerreferral);
@@ -63,10 +77,9 @@ namespace OFRPDMS.Areas.Staff.Controllers
  
         public ActionResult Edit()
         {
+            int centerId = account.GetCurrentUserCenterId();
             ReferralViewModelsEdit referralsEdit = new ReferralViewModelsEdit();
-            List<CenterReferral> referralsList =
-                context.CenterReferrals.Where(referral => referral.CenterId ==
-                    AccountProfile.CurrentUser.CenterID).ToList();
+            List<CenterReferral> referralsList = repoService.centerReferralRepo.FindAllWithCenterId(centerId).ToList();
             List<ReferralViewModel> referralViewModelList = new List<ReferralViewModel>();
 
             foreach (var referral in referralsList)
@@ -92,6 +105,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
         [HttpPost]
         public ActionResult Edit(ReferralViewModelsEdit referralsEdit)
         {
+            OFRPDMSContext context = new OFRPDMSContext();
             foreach (var item in referralsEdit.Referrals)
             {
                 if (ModelState.IsValid)
@@ -101,8 +115,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
                         Referral r = new Referral();
                         r.CountReferred = item.count;
                         r.CenterReferralId = item.referral.Id;
-                        context.Referrals.Add(r);
-                        context.SaveChanges();
+                        repoService.centerReferralRepo.Insert(r);
                     }
                 }
             }
@@ -114,7 +127,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
  
         public ActionResult Delete(int id)
         {
-            CenterReferral centerreferral = context.CenterReferrals.Single(x => x.Id == id);
+            CenterReferral centerreferral = repoService.centerReferralRepo.FindById(id);
             return View(centerreferral);
         }
 
@@ -124,16 +137,15 @@ namespace OFRPDMS.Areas.Staff.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            CenterReferral centerreferral = context.CenterReferrals.Single(x => x.Id == id);
-            context.CenterReferrals.Remove(centerreferral);
-            context.SaveChanges();
+            CenterReferral centerreferral = repoService.centerReferralRepo.FindById(id);
+            repoService.centerReferralRepo.Delete(centerreferral);
             return RedirectToAction("Edit");
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing) {
-                context.Dispose();
+                repoService.centerReferralRepo.Dispose();
             }
             base.Dispose(disposing);
         }

@@ -12,7 +12,7 @@ namespace OFRPDMS.Repositories
             ILibraryRepository libraryRepo, ISpecialEventRepository specialEventRepo,
             IPrimaryGuardianBorrowsRepository primaryGuardianBorrowsRepo, ISignInRepository signInRepo,
             IPrimaryGuardianRepository primaryGuardianRepo, ISecondaryGuardianRepository secondaryGuardianRepo,
-            IChildRepository childRepo)
+            IChildRepository childRepo, ICenterReferralRepo centerReferralRepo, ICenterResourcesRepository centerResourcesRepo)
         {
             this.eventRepo = eventRepo;
             this.centerRepo = centerRepo;
@@ -23,6 +23,8 @@ namespace OFRPDMS.Repositories
             this.primaryGuardianRepo = primaryGuardianRepo;
             this.secondaryGuardianRepo = secondaryGuardianRepo;
             this.childRepo = childRepo;
+            this.centerReferralRepo = centerReferralRepo;
+            this.centerResourcesRepo = centerResourcesRepo;
         }
 
         public IEventRepository eventRepo { get; set;  }
@@ -42,5 +44,9 @@ namespace OFRPDMS.Repositories
         public ISecondaryGuardianRepository secondaryGuardianRepo { get; set; }
 
         public IChildRepository childRepo { get; set; }
+
+        public ICenterReferralRepo centerReferralRepo { get; set; }
+
+        public ICenterResourcesRepository centerResourcesRepo { get; set; }
     }
 }

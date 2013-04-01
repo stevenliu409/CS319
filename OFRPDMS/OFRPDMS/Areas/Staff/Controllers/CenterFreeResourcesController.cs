@@ -8,12 +8,27 @@ using System.Web.Mvc;
 using OFRPDMS.Models;
 using OFRPDMS.Areas.Staff.Models;
 using OFRPDMS.Areas.Staff.ViewModels;
+using OFRPDMS.Repositories;
+using OFRPDMS.Account;
+using Ninject;
+using System.Reflection;
+
 
 namespace OFRPDMS.Areas.Staff.Controllers
 {   
     public class CenterFreeResourcesController : Controller
     {
-        private OFRPDMSContext context = new OFRPDMSContext();
+        private IRepositoryService repoService;
+        private IAccountService account;
+
+        public CenterFreeResourcesController() { }
+
+        [Inject]
+        public CenterFreeResourcesController(IAccountService account, IRepositoryService repoService) 
+        {
+            this.account = account;
+            this.repoService = repoService;
+        }
 
         //
         // GET: /CenterFreeResources/
@@ -28,7 +43,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
         public ViewResult Details(int id)
         {
-            CenterFreeResource centerfreeresource = context.CenterFreeResources.Single(x => x.Id == id);
+            CenterFreeResource centerfreeresource = repoService.centerResourcesRepo.FindById(id);
             return View(centerfreeresource);
         }
 
@@ -37,7 +52,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.PossibleCenters = context.Centers;
+            ViewBag.PossibleCenters = repoService.centerRepo.FindAll();
             return View();
         } 
 
@@ -47,15 +62,15 @@ namespace OFRPDMS.Areas.Staff.Controllers
         [HttpPost]
         public ActionResult Create(CenterFreeResource centerfreeresource)
         {
+            int centerid = account.GetCurrentUserCenterId();
             if (ModelState.IsValid)
             {
-                centerfreeresource.CenterId = AccountProfile.CurrentUser.CenterID;
-                context.CenterFreeResources.Add(centerfreeresource);
-                context.SaveChanges();
+                centerfreeresource.CenterId = centerid;
+                repoService.centerResourcesRepo.Insert(centerfreeresource);
                 return RedirectToAction("Edit");  
             }
 
-            ViewBag.PossibleCenters = context.Centers;
+            ViewBag.PossibleCenters = repoService.centerRepo.FindAll();
             return View(centerfreeresource);
         }
         
@@ -64,10 +79,9 @@ namespace OFRPDMS.Areas.Staff.Controllers
  
         public ActionResult Edit()
         {
+            int centerid = account.GetCurrentUserCenterId();
             ResourceViewModelsEdit resourcesEdit = new ResourceViewModelsEdit();
-            List<CenterFreeResource> resourceList = 
-                context.CenterFreeResources.Where(resource => resource.CenterId == 
-                    AccountProfile.CurrentUser.CenterID).ToList();
+            List<CenterFreeResource> resourceList = repoService.centerResourcesRepo.FindAllWithCenterId(centerid).ToList();
             List<ResourceViewModel> resouceViewModelList = new List<ResourceViewModel>();
             
             foreach (var resource in resourceList)
@@ -110,17 +124,15 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
                     }
 
-                    CenterFreeResource aResource =  context.CenterFreeResources.Find(item.resource.Id);
+                    CenterFreeResource aResource =  repoService.centerResourcesRepo.FindById(item.resource.Id);
                     aResource.NumberAvailable = newStock;
-                    context.Entry(aResource).State = EntityState.Modified;
-                    context.SaveChanges();
+                    repoService.centerResourcesRepo.Update(aResource);
                     if (handedOut > 0)
                     {
                         GivenResource gr = new GivenResource();
                         gr.Count = handedOut;
                         gr.CenterFreeResourceId = item.resource.Id;
-                        context.GivenResources.Add(gr);
-                        context.SaveChanges();
+                        repoService.centerResourcesRepo.Insert(gr);
                     }
                 }
             }
@@ -132,7 +144,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
  
         public ActionResult Delete(int id)
         {
-            CenterFreeResource centerfreeresource = context.CenterFreeResources.Single(x => x.Id == id);
+            CenterFreeResource centerfreeresource = repoService.centerResourcesRepo.FindById(id);
             return View(centerfreeresource);
         }
 
@@ -142,16 +154,15 @@ namespace OFRPDMS.Areas.Staff.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            CenterFreeResource centerfreeresource = context.CenterFreeResources.Single(x => x.Id == id);
-            context.CenterFreeResources.Remove(centerfreeresource);
-            context.SaveChanges();
+            CenterFreeResource centerfreeresource = repoService.centerResourcesRepo.FindById(id);
+            repoService.centerResourcesRepo.Delete(centerfreeresource);
             return RedirectToAction("Edit");
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing) {
-                context.Dispose();
+                repoService.centerResourcesRepo.Dispose();
             }
             base.Dispose(disposing);
         }

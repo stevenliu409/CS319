@@ -24,5 +24,9 @@ namespace OFRPDMS.Repositories
         ISecondaryGuardianRepository secondaryGuardianRepo { get; set; }
 
         IChildRepository childRepo { get; set; }
+
+        ICenterReferralRepo centerReferralRepo { get; set; }
+
+        ICenterResourcesRepository centerResourcesRepo { get; set; }
     }
 }

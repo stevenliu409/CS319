@@ -30,5 +30,9 @@ public class RepositoryModule : NinjectModule
         this.Bind(typeof(ISecondaryGuardianRepository)).To(typeof(SecondaryGuardianRepository));
 
         this.Bind(typeof(IChildRepository)).To(typeof(ChildRepository));
+
+        this.Bind(typeof(ICenterReferralRepo)).To(typeof(CenterReferralRepository));
+
+        this.Bind(typeof(ICenterResourcesRepository)).To(typeof(CenterResourcesRepository));
     }
 }

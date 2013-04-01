@@ -5,20 +5,35 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using OFRPDMS.Models;
+using System.Reflection;
+using OFRPDMS.Repositories;
+using OFRPDMS.Account;
+using Ninject;
 
 
 namespace OFRPDMS.Areas.Staff.Controllers
 {
     public class StaffController : Controller
     {
-        private OFRPDMSContext db = new OFRPDMSContext();
+
+        private IRepositoryService repoService;
+        private IAccountService account;
+
+        public StaffController() { }
+
+        [Inject]
+        public StaffController(IAccountService account, IRepositoryService repoService) 
+        {
+            this.account = account;
+            this.repoService = repoService;
+        }
 
         //
         // GET: /Staff/Staff/
 
         public ActionResult Index(int centerIdArg)
         {
-            string[] roles = Roles.GetRolesForUser();
+            string[] roles = account.GetRolesForUser();
             if (roles.Contains("Administrators"))
             {
                 if (centerIdArg != -1)
@@ -39,8 +54,11 @@ namespace OFRPDMS.Areas.Staff.Controllers
         {
             if (type == "Primary")
             {
-                var _primaryguardian = db.PrimaryGuardians.Where(p => p.FirstName.Contains(name) || p.LastName.Contains(name) || 
-                    p.Allergies.Contains(name) || p.Country.Contains(name) || p.Language.Contains(name) || p.Email.Contains(name)).ToList();
+                var _primaryguardian = repoService.primaryGuardianRepo.FindAll();
+                string[] searchFields = new string[] { "FirstName", "LastName", "Country", "Email", "Language", "Phone", "PostalCodePrefix", "Allergies", "DateCreated" };
+                IEnumerable<PropertyInfo> properties = typeof(PrimaryGuardian).GetProperties().Where(prop => searchFields.Contains(prop.Name));
+                _primaryguardian = _primaryguardian.Where(
+                      p => (properties.Any(prop => prop.GetValue(p, null) != null && prop.GetValue(p, null).ToString().ToUpper().Contains(name.ToUpper()))));
                 var collection = _primaryguardian.Select(pm => new
                 {
 
@@ -60,7 +78,11 @@ namespace OFRPDMS.Areas.Staff.Controllers
             }
             else if (type == "Child")
             {
-                var _primaryguardian = db.Children.Where(c => c.FirstName.Contains(name) || c.LastName.Contains(name) || c.Allergies.Contains(name)).ToList();
+                var _primaryguardian = repoService.childRepo.FindAll();
+                string[] searchFields = new string[] { "FirstName", "LastName", "Allergies" };
+                IEnumerable<PropertyInfo> properties = typeof(Child).GetProperties().Where(prop => searchFields.Contains(prop.Name));
+                _primaryguardian = _primaryguardian.Where(
+                      p => (properties.Any(prop => prop.GetValue(p, null) != null && prop.GetValue(p, null).ToString().ToUpper().Contains(name.ToUpper()))));
                 var collection = _primaryguardian.Select(pm => new
                 {
 
@@ -75,7 +97,11 @@ namespace OFRPDMS.Areas.Staff.Controllers
             }
             else
             {
-                var _primaryguardian = db.SecondaryGuardians.Where(s => s.FirstName.Contains(name) || s.RelationshipToChild.Contains(name) || s.LastName.Contains(name)).ToList();
+                 var _primaryguardian = repoService.secondaryGuardianRepo.FindAll();
+                string[] searchFields = new string[] { "FirstName", "LastName", "RelationshipToChild" };
+                IEnumerable<PropertyInfo> properties = typeof(SecondaryGuardian).GetProperties().Where(prop => searchFields.Contains(prop.Name));
+                _primaryguardian = _primaryguardian.Where(
+                      p => (properties.Any(prop => prop.GetValue(p, null) != null && prop.GetValue(p, null).ToString().ToUpper().Contains(name.ToUpper()))));
                 var collection = _primaryguardian.Select(pm => new
                 {
 
@@ -84,7 +110,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
                     Lname = pm.LastName,
                     relationship = pm.RelationshipToChild,
                     phone = pm.Phone,
-                    relationshiptoGuardian = db.PrimaryGuardians.Find(pm.PrimaryGuardianId).FirstName
+                    relationshiptoGuardian = repoService.primaryGuardianRepo.FindById(pm.PrimaryGuardianId).FirstName
 
                 });
                 return Json(collection, JsonRequestBehavior.AllowGet);
