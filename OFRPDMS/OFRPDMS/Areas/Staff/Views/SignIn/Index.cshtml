@@ -6,49 +6,6 @@
 }
 <fieldset>
 <h2>Sign Ins</h2>
-<div>
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-
-<p>
-<select id="oSelect">
-</select>
-</p>
-
-</div>
-
-
-<script type = "text/javascript">
-    $(document).ready(function () {
-        $.ajax({
-            url: '/SignIn/findEvent',
-            type: 'POST',
-            success: function (data) {
-                $('#oSelect').empty();
-                $('#oSelect').append(new Option("",0));
-                for (var i = 0; i < data.length; i++) {
-                    $('#oSelect').append(new Option(data[i].date, data[i].id));
-
-                }
-            }
-        });
-    });
-    $('#oSelect').change(function () {
-        var _eventid = document.getElementById("oSelect").value;
-        $.ajax({
-            url: '/SignIn/Index',
-            type: 'POST',
-            data: { id: _eventid },
-            success: function () {
-                window.location = "@Url.Action("/index/")" + _eventid;
-            }
-        });
-    });
-
-</script>
-
-
 
 <table class ="hovered">
 
@@ -145,4 +102,6 @@
         @:>>
     }
 </div>
+
+@Html.ActionLink("Back to List", "Index", "Events")
 </fieldset>

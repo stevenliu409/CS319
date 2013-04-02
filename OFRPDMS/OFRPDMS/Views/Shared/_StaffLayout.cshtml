@@ -10,7 +10,7 @@
              <li class="sticker sticker-color-blue">@Html.ActionLink("Families", "Index", "PrimaryGuardians", null, new { id = currentController == "PrimaryGuardians" ? "current" : "" })</li>  
         </ul>
         <ul>    
-            <li class="sticker sticker-color-orange">@Html.RouteLink("Sign In", "Staff_default",  new { controller = "SignIn", action = "Index"}, new { id = currentController == "SignIn" ? "current" : "" })</li>
+            <li class="sticker sticker-color-orange">@Html.RouteLink("Sign In", "Staff_default", new { controller = "SignIn", action = "Create" })</li>
         </ul>
 
         <ul>   
