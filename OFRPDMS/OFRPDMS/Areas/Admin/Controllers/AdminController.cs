@@ -58,11 +58,11 @@ namespace OFRPDMS.Areas.Admin.Controllers
 
                 if (createStatus == MembershipCreateStatus.Success)
                 {
-                    FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
+                    //FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
 
                     AccountProfile.GetUser(model.UserName).CenterID = model.CenterId;
                     int id = AccountProfile.CurrentUser.CenterID;
-                    return RedirectToAction("Index", "Home", new { area = "" });
+                    return RedirectToAction("Index", "Report", new { area = "Admin" });
                 }
                 else
                 {
