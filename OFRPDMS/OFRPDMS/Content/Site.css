@@ -256,6 +256,10 @@ div#title {
    bottom:42px
        
 }
+#loginmain
+{
+    top: 60px
+}
 
 #logindisplay a:link {
     --color:#008287;
