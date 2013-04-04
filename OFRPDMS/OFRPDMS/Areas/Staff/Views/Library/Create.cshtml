@@ -18,7 +18,15 @@
     @Html.ValidationSummary(true)
     
         <legend></legend>
-
+        
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Name)
+        </div>
+        <div class="input-control text">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+    
         <div class="editor-label">
           <label>Value of Item (Cost)</label> 
         </div>
@@ -35,13 +43,7 @@
             @Html.ValidationMessageFor(model => model.Note)
         </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Name)
-        </div>
-        <div class="input-control text">
-            @Html.EditorFor(model => model.Name)
-            @Html.ValidationMessageFor(model => model.Name)
-        </div>
+
         
         <div class="editor-label">
             @Html.LabelFor(model => model.Broken)
