@@ -238,7 +238,7 @@ CREATE TABLE [dbo].[SecondaryGuardians] (
     [FirstName] nvarchar(max)  NULL,
     [LastName] nvarchar(max)  NULL,
     [RelationshipToChild] nvarchar(max)  NULL,
-    [Phone] bigint  NULL,
+    [Phone] nvarchar(max)  NULL,
     [PrimaryGuardianId] int  NOT NULL,
     [Delete] bit  NULL
 );

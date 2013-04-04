@@ -76,48 +76,48 @@ namespace OFRPDMS.Areas.Staff.Controllers
             switch (sortOrder)
             {
                 case "Name desc":
-                    primaryguardian = primaryguardian.OrderByDescending(p => p.FirstName);
+                    primaryguardian = primaryguardian.OrderBy(p => p.FirstName);
                     
                     break;
                 case "Name desc1":
                     
-                    primaryguardian = primaryguardian.OrderByDescending(p => p.LastName);
+                    primaryguardian = primaryguardian.OrderBy(p => p.LastName);
                   
                     break;
                 case "Name desc2":
            
-                    primaryguardian = primaryguardian.OrderByDescending(p => p.Email);
+                    primaryguardian = primaryguardian.OrderBy(p => p.Email);
                
                     break;
                 case "Name desc3":
  
-                    primaryguardian = primaryguardian.OrderByDescending(p => p.Country);
+                    primaryguardian = primaryguardian.OrderBy(p => p.Country);
                     break;
                 case "Name desc4":
                    
-                    primaryguardian = primaryguardian.OrderByDescending(p => p.Language);
+                    primaryguardian = primaryguardian.OrderBy(p => p.Language);
                    
                     break;
                 case "Name desc5":
-                    primaryguardian = primaryguardian.OrderByDescending(p => p.PostalCodePrefix);
+                    primaryguardian = primaryguardian.OrderBy(p => p.PostalCodePrefix);
                  
                     break;
 
                 case "Name desc6":
-                    primaryguardian = primaryguardian.OrderByDescending(p => p.Allergies);
+                    primaryguardian = primaryguardian.OrderBy(p => p.Allergies);
                  
                     break;
 
                 case "Name desc7":
-                    primaryguardian = primaryguardian.OrderByDescending(p => p.Phone);
+                    primaryguardian = primaryguardian.OrderBy(p => p.Phone);
 
                     break;
                 case "Name desc8":
-                    primaryguardian = primaryguardian.OrderByDescending(p => p.Children.Count);
+                    primaryguardian = primaryguardian.OrderBy(p => p.Children.Count);
 
                     break;
                 case "Name desc9":
-                    primaryguardian = primaryguardian.OrderByDescending(p => p.SecondaryGuardians.Count);
+                    primaryguardian = primaryguardian.OrderBy(p => p.SecondaryGuardians.Count);
 
                     break;
 

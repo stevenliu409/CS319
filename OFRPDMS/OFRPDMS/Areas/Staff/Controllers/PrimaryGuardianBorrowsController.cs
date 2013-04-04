@@ -68,17 +68,17 @@ namespace OFRPDMS.Areas.Staff.Controllers
             switch (sortOrder)
             {
                 case "Name desc":
-                    pgbs = pgbs.OrderByDescending(p => p.PrimaryGuardian.FirstName);
+                    pgbs = pgbs.OrderBy(p => p.PrimaryGuardian.FirstName);
 
                     break;
                 case "Name desc1":
 
-                    pgbs = pgbs.OrderByDescending(p => p.LibraryResource.Name);
+                    pgbs = pgbs.OrderBy(p => p.LibraryResource.Name);
 
                     break;
                 case "Name desc2":
 
-                    pgbs = pgbs.OrderByDescending(p => p.Returned);
+                    pgbs = pgbs.OrderBy(p => p.Returned);
 
                     break;
 

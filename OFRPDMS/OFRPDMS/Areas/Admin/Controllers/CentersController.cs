@@ -44,22 +44,22 @@ namespace OFRPDMS.Areas.Admin.Controllers
             switch (sortOrder)
             {
                 case "Name desc":
-                    center = center.OrderByDescending(p => p.Name);
+                    center = center.OrderBy(p => p.Name);
                     
                     break;
                 case "Name desc1":
                     
-                    center = center.OrderByDescending(p => p.Address);
+                    center = center.OrderBy(p => p.Address);
                   
                     break;
                 case "Name desc2":
            
-                    center = center.OrderByDescending(p => p.Email);
+                    center = center.OrderBy(p => p.Email);
                
                     break;
                 case "Name desc3":
  
-                    center = center.OrderByDescending(p => p.Phone);
+                    center = center.OrderBy(p => p.Phone);
                     break;
 
                 default:

@@ -76,45 +76,45 @@ namespace OFRPDMS.Areas.Staff.Controllers
             switch (sortOrder)
             {
                 case "Name desc":
-                    libraryitems = libraryitems.OrderByDescending(p => p.Broken);
+                    libraryitems = libraryitems.OrderBy(p => p.Broken);
 
                     break;
                 case "Name desc1":
 
-                    libraryitems = libraryitems.OrderByDescending(p => p.CheckedOut);
+                    libraryitems = libraryitems.OrderBy(p => p.CheckedOut);
 
                     break;
                 case "Name desc2":
 
-                    libraryitems = libraryitems.OrderByDescending(p => p.Value);
+                    libraryitems = libraryitems.OrderBy(p => p.Value);
 
                     break;
                 case "Name desc3":
 
-                    libraryitems = libraryitems.OrderByDescending(p => p.Note);
+                    libraryitems = libraryitems.OrderBy(p => p.Note);
                     break;
                 case "Name desc4":
 
-                    libraryitems = libraryitems.OrderByDescending(p => p.Name);
+                    libraryitems = libraryitems.OrderBy(p => p.Name);
 
                     break;
                 case "Name desc5":
-                    libraryitems = libraryitems.OrderByDescending(p => p.ItemType);
+                    libraryitems = libraryitems.OrderBy(p => p.ItemType);
 
                     break;
 
                 case "Name desc6":
-                    libraryitems = libraryitems.OrderByDescending(p => p.Sanitized);
+                    libraryitems = libraryitems.OrderBy(p => p.Sanitized);
 
                     break;
 
                 case "Name desc7":
                     
-                    libraryitems = libraryitems.OrderByDescending(p => p.Center.Name);
+                    libraryitems = libraryitems.OrderBy(p => p.Center.Name);
 
                     break;
                 case "Name desc8":
-                    libraryitems = libraryitems.OrderByDescending(p => p.Center.Name);
+                    libraryitems = libraryitems.OrderBy(p => p.Center.Name);
 
                     break;
                 default:
