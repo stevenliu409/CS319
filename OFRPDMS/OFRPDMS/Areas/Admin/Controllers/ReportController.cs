@@ -10,19 +10,35 @@ using OFRPDMS.Areas.Admin.Models;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml;
+using OFRPDMS.Account;
+using OFRPDMS.Repositories;
+using Ninject;
+using System.Reflection;
 
 namespace OFRPDMS.Areas.Admin.Controllers
 {
     public class ReportController : Controller
     {
         OFRPDMSContext context = new OFRPDMSContext();
-      
+        private IRepositoryService repoService;
+        private IAccountService account;
 
+
+        public ReportController() { }
+
+        [Inject]
+        public ReportController(IAccountService account, IRepositoryService repoService)
+        {
+
+            this.account = account;
+            this.repoService = repoService;
+        }
         //
         // GET: /Report/
 
         public ActionResult Index()
         {
+            
             return View();
         }
 
@@ -39,7 +55,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
             string[,] languageTable = getStringLanguageTable(report.startDay, endday);
             string[,] countryTable = getStringCountryTable(report.startDay, endday);
             ViewBag.myReport = report;
-            ViewBag.center = context.Centers.ToArray();
+            ViewBag.center = repoService.centerRepo.FindAll().ToArray();
             ViewBag.pgTable = pgTable;
             ViewBag.languageTable = languageTable;
             ViewBag.countryTable = countryTable;
@@ -157,7 +173,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
                 System.IO.File.Delete(tempFileName);
                 Response.End();
             }
-            return View(context.Centers);
+            return View();
             
         }
 
@@ -169,14 +185,14 @@ namespace OFRPDMS.Areas.Admin.Controllers
         {
             if (report.type == "Primary")
             {
-                ViewBag.first = context.PrimaryGuardians.Find(report.pgid).FirstName;
-                ViewBag.last = context.PrimaryGuardians.Find(report.pgid).LastName;
+                ViewBag.first = repoService.primaryGuardianRepo.FindById(report.pgid).FirstName;
+                ViewBag.last = repoService.primaryGuardianRepo.FindById(report.pgid).LastName;
                 ViewBag.pgid = report.pgid;
             }
             else if (report.type == "Child")
             {
-                ViewBag.first = context.Children.Find(report.pgid).FirstName;
-                ViewBag.last = context.Children.Find(report.pgid).LastName;
+                ViewBag.first = repoService.childRepo.FindById(report.pgid).FirstName;
+                ViewBag.last = repoService.childRepo.FindById(report.pgid).LastName;
             }
 
             ViewBag.type = report.type;
@@ -204,108 +220,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
         }
 
 
-        //public void GenerateExcel(Report report, int mode)
-        //{
-        //    Response.Clear();
-        //    DateTime startDay = report.startDay3;
-        //    DateTime endDay = report.endDay3.AddDays(1);
-        //    // fill in the 2-dimensional string array here with data
-        //    //string[,] Content1 = getStringPGTable(startDay,endDay);
-        //    //string[,] Content2 = getStringLanguageTable(startDay, endDay);
-        //    //string[,] Content3 = getStringCountryTable(startDay, endDay);
-
-        //    // create a new excel workbook
-        //    //Microsoft.Office.Interop.Excel.Application excel = new Microsoft.Office.Interop.Excel.Application();
-        //    //Microsoft.Office.Interop.Excel.Workbook workBook = excel.Workbooks.Add();
-        //    //Microsoft.Office.Interop.Excel.Worksheet sheet = workBook.ActiveSheet;
-
-        //    //File in the excel cells with report data here if we are in an excel mode
-        //    //if (mode == 1 || mode == 2)
-        //    //{
-        //    //    //adding table 1
-        //    //    for (int i = 0; i < Content1.GetLength(0); i++)
-        //    //    {
-
-        //    //        for (int j = 0; j < Content1.GetLength(1); j++)
-        //    //        {
-        //    //            sheet.Cells[i, j] = Content1[i,j];
-        //    //        }
-        //    //    }
-        //    //    //adding table 2
-        //    //    for (int i = Content1.GetLength(0); i < Content1.GetLength(0) + Content2.GetLength(0); i++)
-        //    //    {
-
-        //    //        for (int j = Content1.GetLength(1); j < Content1.GetLength(1) + Content2.GetLength(1); j++)
-        //    //        {
-        //    //            sheet.Cells[i, j] = Content2[i, j];
-        //    //        }
-        //    //    }
-        //    //    //adding table 3
-        //    //    for (int i = Content1.GetLength(0) + Content2.GetLength(0); i < Content1.GetLength(0) + Content2.GetLength(0) + Content3.GetLength(0); i++)
-        //    //    {
-
-        //    //        for (int j = Content1.GetLength(1) + Content2.GetLength(1); j < Content1.GetLength(1) + Content2.GetLength(1) + Content3.GetLength(1); j++)
-        //    //        {
-        //    //            sheet.Cells[i, j] = Content1[i, j];
-        //    //        }
-        //    //    }
-        //    //}
-
-        //    // filename for temporary excel file
-        //    string tempFileName = Path.GetTempFileName();
-        //    System.IO.File.Delete(tempFileName); // delete the file created so we can save as
-
-        //    if (mode == 1)
-        //    {
-        //        //// .xls file format, 2003 and older
-        //        //workBook.SaveAs(tempFileName, Microsoft.Office.Interop.Excel.XlFileFormat.xlAddIn8);
-        //        //workBook.Close();
-
-        //        //Response.ContentType = "application/vnd.ms-excel";
-        //        //Response.AddHeader("content-disposition", "attachment; filename=Report.xls");
-
-        //        //Response.WriteFile(tempFileName);
-        //        //Response.Flush();
-
-        //        //// clean temp file
-        //        //System.IO.File.Delete(tempFileName);
-        //        //Response.End();
-        //    }
-        //    else if (mode == 2)
-        //    {
-        //        //// .xlsx file format, 2007 and newer
-        //        //// maybe try to find the corresponding XlFileFormat so we don't rely on the Interop version to choose
-        //        //workBook.SaveAs(tempFileName);
-        //        //workBook.Close();
-
-        //        //Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-        //        //Response.AddHeader("content-disposition", "attachment; filename=Report.xlsx");
-
-        //        //Response.WriteFile(tempFileName);
-        //        //Response.Flush();
-
-        //        //// clean temp file
-        //        //System.IO.File.Delete(tempFileName);
-        //        //Response.End();
-        //    }
-        //    else if (mode == 3)
-        //    {
-
-        //        // csv version 2, uses the same 2-dimensional string array from the excel modes
-        //        Response.AddHeader("content-disposition", "attachment; filename=Report.csv");
-        //        Response.ContentType = "text/plain; charset=UTF-8";
-
-        //        parseStringTable(getStringPGTable(startDay, endDay));
-        //        parseStringTable(getStringLanguageTable(startDay, endDay));
-        //        parseStringTable(getStringCountryTable(startDay, endDay));
-                
-                
-                
-        //     }
-
-        //        Response.End();
-            
-        //}
+       
 
         private void parseStringTable(string[,] Content)
         {
@@ -343,7 +258,11 @@ namespace OFRPDMS.Areas.Admin.Controllers
         {
             if (type == "Primary")
             {
-                var _primaryguardian = context.PrimaryGuardians.Where(p => p.FirstName.Contains(name) || p.LastName.Contains(name)).ToList();
+                var _primaryguardian = repoService.primaryGuardianRepo.FindAll();
+                string[] searchFields = new string[] { "FirstName", "LastName", "Country", "Email", "Language", "Phone", "PostalCodePrefix", "Allergies", "DateCreated" };
+                IEnumerable<PropertyInfo> properties = typeof(PrimaryGuardian).GetProperties().Where(prop => searchFields.Contains(prop.Name));
+                _primaryguardian = _primaryguardian.Where(
+                      p => (properties.Any(prop => prop.GetValue(p, null) != null && prop.GetValue(p, null).ToString().ToUpper().Contains(name.ToUpper()))));
                 var collection = _primaryguardian.Select(pm => new
                 {
 
@@ -363,7 +282,11 @@ namespace OFRPDMS.Areas.Admin.Controllers
             }
             else
             {
-                var _primaryguardian = context.Children.Where(c => c.FirstName.Contains(name)).ToList();
+                var _primaryguardian = repoService.childRepo.FindAll();
+                string[] searchFields = new string[] { "FirstName", "LastName", "Allergies" };
+                IEnumerable<PropertyInfo> properties = typeof(Child).GetProperties().Where(prop => searchFields.Contains(prop.Name));
+                _primaryguardian = _primaryguardian.Where(
+                      p => (properties.Any(prop => prop.GetValue(p, null) != null && prop.GetValue(p, null).ToString().ToUpper().Contains(name.ToUpper())))); 
                 var collection = _primaryguardian.Select(pm => new
                 {
 
@@ -381,11 +304,13 @@ namespace OFRPDMS.Areas.Admin.Controllers
         // get the number of new PG(created after start date) 
         private int[] getNumOfNewPGTable(DateTime sday, DateTime eday)
         {
-            int[] newPGTable = new int[context.Centers.Count()];
+            int[] newPGTable = new int[repoService.centerRepo.FindAll().Count()];
             int counter = 0;
-            foreach (var c in context.Centers)
+            foreach (var c in repoService.centerRepo.FindAll())
             {
-                IEnumerable<PrimaryGuardian> pgs = context.PrimaryGuardians.Where(pg => DateTime.Compare(pg.DateCreated, sday) > 0 && DateTime.Compare(pg.DateCreated, eday) < 0 && pg.CenterId == c.Id);
+                IEnumerable<PrimaryGuardian> pgs = repoService.primaryGuardianRepo.FindAllWithCenterId(c.Id).
+                    Where(pg => DateTime.Compare(pg.DateCreated, sday) 
+                        > 0 && DateTime.Compare(pg.DateCreated, eday) < 0);
                 newPGTable[counter] = pgs.Count();
                 counter++;
             }
@@ -394,13 +319,13 @@ namespace OFRPDMS.Areas.Admin.Controllers
         }
         private int[] getNumOfEventParticipantTable(DateTime sday, DateTime eday)
         {
-            int[] newVisitTable = new int[context.Centers.Count()];
+            int[] newVisitTable = new int[repoService.centerRepo.FindAll().Count()];
             int counter = 0;
-            
-            foreach (var c in context.Centers)
+
+            foreach (var c in repoService.centerRepo.FindAll())
             {
                 int sumEventParticipants = 0;
-                List<Event> evts = context.Events.Where(evt => DateTime.Compare(evt.Date, sday) > 0 && DateTime.Compare(evt.Date, eday) <= 0 && evt.CenterId == c.Id).ToList();
+                List<Event> evts = repoService.eventRepo.FindAllWithCenterId(c.Id).Where(evt => DateTime.Compare(evt.Date, sday) > 0 && DateTime.Compare(evt.Date, eday) <= 0).ToList();
                 for (int i = 0; i < evts.Count; i++ )
                 {
                     int epcount = evts[i].EventParticipants.Count;
@@ -417,11 +342,11 @@ namespace OFRPDMS.Areas.Admin.Controllers
 
         private int[] getNumOfVisitTable(DateTime sday, DateTime eday)
         {
-            int[] newVisitTable = new int[context.Centers.Count()];
+            int[] newVisitTable = new int[repoService.centerRepo.FindAll().Count()];
             int counter = 0;
-            foreach (var c in context.Centers)
+            foreach (var c in repoService.centerRepo.FindAll())
             {
-                IEnumerable<Event> evts = context.Events.Where(evt => DateTime.Compare(evt.Date, sday) > 0 && DateTime.Compare(evt.Date, eday) < 0 && evt.CenterId == c.Id);
+                IEnumerable<Event> evts = repoService.eventRepo.FindAllWithCenterId(c.Id).Where(evt => DateTime.Compare(evt.Date, sday) > 0 && DateTime.Compare(evt.Date, eday) <= 0);
                 newVisitTable[counter] = evts.Count();
                 counter++;
             }

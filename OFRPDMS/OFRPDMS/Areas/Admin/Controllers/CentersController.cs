@@ -6,26 +6,39 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using OFRPDMS.Models;
+using OFRPDMS.Repositories;
+using OFRPDMS.Account;
+using Ninject;
 
 // Master Branch
 namespace OFRPDMS.Areas.Admin.Controllers
 {   
     public class CentersController : Controller
     {
-        OFRPDMSContext context = new OFRPDMSContext();
+        private IRepositoryService repoService;
+        private IAccountService account;
 
+        public CentersController() { }
+
+        [Inject]
+        public CentersController(IAccountService account, IRepositoryService repoService)
+        {
+            this.account = account;
+            this.repoService = repoService;
+        }
         //
         // GET: /Centers/
 
         public ViewResult Index(string sortOrder)
         {
+           
             ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name desc" : "";
             ViewBag.EmailNameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name desc1" : "";
             ViewBag.AdressNameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name desc2" : "";
             ViewBag.PhoneNameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name desc3" : "";
 
-            var center = from p in context.Centers
+            var center = from p in repoService.centerRepo.FindAll()
                          select p;
 
             switch (sortOrder)
@@ -61,7 +74,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
 
         public ViewResult Details(int id)
         {
-            Center center = context.Centers.Find(id);
+            Center center = repoService.centerRepo.FindById(id);
             return View(center);
         }
 
@@ -81,8 +94,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                context.Centers.Add(center);
-                context.SaveChanges();
+                repoService.centerRepo.Insert(center);
                 return RedirectToAction("Index");  
             }
 
@@ -94,7 +106,8 @@ namespace OFRPDMS.Areas.Admin.Controllers
  
         public ActionResult Edit(int id)
         {
-            Center center = context.Centers.Find(id);
+
+            Center center = repoService.centerRepo.FindById(id);
             return View(center);
         }
 
@@ -106,8 +119,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                context.Entry(center).State = EntityState.Modified;
-                context.SaveChanges();
+                repoService.centerRepo.Update(center);
                 return RedirectToAction("Index");
             }
             return View(center);
@@ -118,7 +130,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
  
         public ActionResult Delete(int id)
         {
-            Center center = context.Centers.Find(id);
+            Center center = repoService.centerRepo.FindById(id);
             return View(center);
         }
 
@@ -128,22 +140,22 @@ namespace OFRPDMS.Areas.Admin.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            Center center = context.Centers.Find(id);
-            IEnumerable<Event> centerevents = context.Events.Where(cid => cid.CenterId == id);
+            int centerid = account.GetCurrentUserCenterId();
+            Center center = repoService.centerRepo.FindById(id);
+            IEnumerable<Event> centerevents = repoService.eventRepo.FindAllWithCenterId(centerid);
             foreach (var item in centerevents)
             {
-                context.Events.Remove(item);
+                repoService.eventRepo.Delete(item);
             }
-            context.Centers.Remove(center);
-            context.SaveChanges();
+            repoService.centerRepo.Delete(center);
             return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing) {
-                context.Dispose();
-            }
+            
+                repoService.centerRepo.Dispose();
+            
             base.Dispose(disposing);
         }
     }

@@ -21,6 +21,6 @@ namespace OFRPDMS.Account
 
         string[] GetRolesForUser();
 
-
+        void AddUserToRole(string username, string role);
     }
 }

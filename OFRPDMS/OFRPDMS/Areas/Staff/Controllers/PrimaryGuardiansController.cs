@@ -62,7 +62,8 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
             var primaryguardian = from p in repoService.primaryGuardianRepo.FindAllWithCenterId(centerId)
                                    select p;
-          
+
+            string[] searchStrings = searchString.Split(new char[] { ' ' });
             if (!String.IsNullOrEmpty(searchString))
             {
 
