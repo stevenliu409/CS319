@@ -36,6 +36,8 @@
      @if (Model.PrimaryGuardianBorrows.SingleOrDefault(pgb => pgb.Returned == false) != null)
        {
 	        @(Model.PrimaryGuardianBorrows.SingleOrDefault(pgb => pgb.Returned == false).PrimaryGuardian.FirstName)
+       <span> </span>
+                @Model.PrimaryGuardianBorrows.SingleOrDefault(pgb => pgb.Returned == false).PrimaryGuardian.LastName
        }
 
     </div>
@@ -43,7 +45,8 @@
     <b class="display-label">Center</b>
     <div class="display-field">@(Model.Center == null ? "None" : Model.Center.Name)</div>
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm())
+{
     <p>
         <input type="submit" value="Delete" /> |
         @Html.ActionLink("Back to List", "Index")
