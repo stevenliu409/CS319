@@ -48,7 +48,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
             switch (sortOrder)
             {
                 case "Name desc":
-                    events = events.OrderByDescending(e => e.Center);
+                    events = events.OrderBy(e => e.Center);
 
                     break;
                
