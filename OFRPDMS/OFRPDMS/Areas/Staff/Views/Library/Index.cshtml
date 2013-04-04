@@ -81,8 +81,15 @@
 			@item.Sanitized
         </td>
         <td>
-			@(item.CheckedOut == false ? "None" : item.PrimaryGuardianBorrows.Single(pgb=> pgb.Returned == false).PrimaryGuardian.FirstName)
-        </td>
+            @if (item.PrimaryGuardianBorrows.SingleOrDefault(pgb => pgb.Returned == false) != null)
+            {
+			    @item.PrimaryGuardianBorrows.SingleOrDefault(pgb => pgb.Returned == false).PrimaryGuardian.FirstName
+            }
+          
+            else { 
+                @Html.Display("None")
+             }
+         </td>
         <td>
 			@(item.Center == null ? "None" : item.Center.Name)
         </td>

@@ -31,10 +31,10 @@
     <div class="display-field">@Model.Sanitized</div>
 
     <b class="display-label">Checked Out By</b>
-    <div class="display-field">@(Model.CheckedOut == false ? "None" : Model.PrimaryGuardianBorrows.Single(pgb=> pgb.Returned == false).PrimaryGuardian.FirstName)  
+    <div class="display-field">
      @if (ViewBag.Borrow != null)
     {
-         @Html.RouteLink("Go to Borrower's details", new { id = (int)ViewBag.borrow, controller = "PrimaryGuardianBorrows", action = "Details" })
+         @Html.RouteLink(Model.PrimaryGuardianBorrows.Where(pgb => pgb.Id == ViewBag.Borrow).Single().PrimaryGuardian.FirstName, new { id = (int)ViewBag.borrow, controller = "PrimaryGuardianBorrows", action = "Details" })
     }
     </div>
     

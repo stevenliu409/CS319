@@ -32,7 +32,13 @@
     <div class="display-field">@Model.Sanitized</div>
 
     <b class="display-label">Checked Out By</b>
-    <div class="display-field">@(Model.CheckedOut == false ? "None" : Model.PrimaryGuardianBorrows.Single(pgb=> pgb.Returned == false).PrimaryGuardian.FirstName)</div>
+    <div class="display-field">
+     @if (Model.PrimaryGuardianBorrows.SingleOrDefault(pgb => pgb.Returned == false) != null)
+       {
+	        @(Model.PrimaryGuardianBorrows.SingleOrDefault(pgb => pgb.Returned == false).PrimaryGuardian.FirstName)
+       }
+
+    </div>
 
     <b class="display-label">Center</b>
     <div class="display-field">@(Model.Center == null ? "None" : Model.Center.Name)</div>
