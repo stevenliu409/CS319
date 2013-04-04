@@ -27,7 +27,8 @@ namespace OFRPDMS.Models
         public string LastName { get; set; }
         public string RelationshipToChild { get; set; }
 
-        public Nullable<long> Phone { get; set; }
+        [RegularExpression(@"^[\d -]+$", ErrorMessage = "Not a valid Phonoe Number")]
+        public string Phone { get; set; }
         public int PrimaryGuardianId { get; set; }
         public Nullable<bool> Delete { get; set; }
     
