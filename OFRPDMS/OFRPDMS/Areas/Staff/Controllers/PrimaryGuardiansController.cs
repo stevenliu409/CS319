@@ -63,10 +63,9 @@ namespace OFRPDMS.Areas.Staff.Controllers
             var primaryguardians = from p in repoService.primaryGuardianRepo.FindAllWithCenterId(centerId)
                                    select p;
 
-            string[] searchStrings = searchString.Split(new char[] { ' ' });
             if (!String.IsNullOrEmpty(searchString))
             {
-
+                string[] searchStrings = searchString.Split(new char[] { ' ' });
                 string[] searchFields = new string[] { "FirstName", "LastName", "Country", "Email", "Language", "Phone", "PostalCodePrefix", "Allergies", "DateCreated" };
                 IEnumerable<PropertyInfo> properties = typeof(PrimaryGuardian).GetProperties().Where(prop => searchFields.Contains(prop.Name));
 
@@ -145,7 +144,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
         public ViewResult Details(int id)
         {
             int centerId = AccountProfile.CurrentUser.CenterID;
-            string[] roles = Roles.GetRolesForUser();
+            string[] roles = account.GetRolesForUser();
             ViewBag.IsAdmin = roles.Contains("Administrators");
             PrimaryGuardian primaryguardian = repoService.primaryGuardianRepo.FindByIdAndCenterId(id, centerId);
             return View(primaryguardian);
@@ -221,7 +220,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
         public ActionResult Edit(int id)
         {
             int centerId = AccountProfile.CurrentUser.CenterID;
-            string[] roles = Roles.GetRolesForUser();
+            string[] roles = account.GetRolesForUser();
             ViewBag.IsAdmin = roles.Contains("Administrators");
             ViewBag.CenterId2 = centerId;
             PrimaryGuardian pr = repoService.primaryGuardianRepo.FindByIdAndCenterId(id, centerId);
@@ -395,7 +394,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
         public ActionResult Delete(int id)
         {
-            string[] roles = Roles.GetRolesForUser();
+            string[] roles = account.GetRolesForUser();
             ViewBag.IsAdmin = roles.Contains("Administrators");
             PrimaryGuardian primaryguardian = repoService.primaryGuardianRepo.FindById(id);
             return View(primaryguardian);
