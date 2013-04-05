@@ -935,14 +935,7 @@ namespace OFRPDMS.Tests.Controllers
             repoService.SetupGet(r => r.primaryGuardianRepo).Returns(() => primaryGuardianRepo.Object);
             repoService.SetupGet(r => r.centerRepo).Returns(() => centerRepo.Object);
 
-            var request = new Mock<HttpRequestBase>();
-            request.SetupGet(x => x.HttpMethod).Returns("POST");
-
-            var controllerContext = new Mock<HttpContextBase>();
-            controllerContext.SetupGet(x => x.Request).Returns(request.Object);
-
             PrimaryGuardiansController controller = new PrimaryGuardiansController(accountService.Object, repoService.Object);
-            controller.ControllerContext = new ControllerContext(controllerContext.Object, new RouteData(), controller);
 
 
             // Act
@@ -985,14 +978,7 @@ namespace OFRPDMS.Tests.Controllers
             repoService.SetupGet(r => r.primaryGuardianRepo).Returns(() => primaryGuardianRepo.Object);
             repoService.SetupGet(r => r.centerRepo).Returns(() => centerRepo.Object);
 
-            var request = new Mock<HttpRequestBase>();
-            request.SetupGet(x => x.HttpMethod).Returns("POST");
-
-            var controllerContext = new Mock<HttpContextBase>();
-            controllerContext.SetupGet(x => x.Request).Returns(request.Object);
-
             PrimaryGuardiansController controller = new PrimaryGuardiansController(accountService.Object, repoService.Object);
-            controller.ControllerContext = new ControllerContext(controllerContext.Object, new RouteData(), controller);
 
 
             // Act
@@ -1035,14 +1021,7 @@ namespace OFRPDMS.Tests.Controllers
             repoService.SetupGet(r => r.primaryGuardianRepo).Returns(() => primaryGuardianRepo.Object);
             repoService.SetupGet(r => r.centerRepo).Returns(() => centerRepo.Object);
 
-            var request = new Mock<HttpRequestBase>();
-            request.SetupGet(x => x.HttpMethod).Returns("POST");
-
-            var controllerContext = new Mock<HttpContextBase>();
-            controllerContext.SetupGet(x => x.Request).Returns(request.Object);
-
             PrimaryGuardiansController controller = new PrimaryGuardiansController(accountService.Object, repoService.Object);
-            controller.ControllerContext = new ControllerContext(controllerContext.Object, new RouteData(), controller);
 
 
             // Act
@@ -1083,14 +1062,7 @@ namespace OFRPDMS.Tests.Controllers
             repoService.SetupGet(r => r.primaryGuardianRepo).Returns(() => primaryGuardianRepo.Object);
             repoService.SetupGet(r => r.centerRepo).Returns(() => centerRepo.Object);
 
-            var request = new Mock<HttpRequestBase>();
-            request.SetupGet(x => x.HttpMethod).Returns("POST");
-
-            var controllerContext = new Mock<HttpContextBase>();
-            controllerContext.SetupGet(x => x.Request).Returns(request.Object);
-
             PrimaryGuardiansController controller = new PrimaryGuardiansController(accountService.Object, repoService.Object);
-            controller.ControllerContext = new ControllerContext(controllerContext.Object, new RouteData(), controller);
 
 
             // Act
@@ -1133,14 +1105,7 @@ namespace OFRPDMS.Tests.Controllers
             repoService.SetupGet(r => r.primaryGuardianRepo).Returns(() => primaryGuardianRepo.Object);
             repoService.SetupGet(r => r.centerRepo).Returns(() => centerRepo.Object);
 
-            var request = new Mock<HttpRequestBase>();
-            request.SetupGet(x => x.HttpMethod).Returns("POST");
-
-            var controllerContext = new Mock<HttpContextBase>();
-            controllerContext.SetupGet(x => x.Request).Returns(request.Object);
-
             PrimaryGuardiansController controller = new PrimaryGuardiansController(accountService.Object, repoService.Object);
-            controller.ControllerContext = new ControllerContext(controllerContext.Object, new RouteData(), controller);
 
 
             // Act
@@ -1158,7 +1123,6 @@ namespace OFRPDMS.Tests.Controllers
         }
 
 
-        /*
         [TestMethod]
         public void EditPost_WithLoggedInStaff_ShouldReturnAPrimaryGuardian()
         {
@@ -1166,6 +1130,8 @@ namespace OFRPDMS.Tests.Controllers
             Mock<IAccountService> accountService = new Mock<IAccountService>();
             Mock<IRepositoryService> repoService = new Mock<IRepositoryService>();
             Mock<IPrimaryGuardianRepository> primaryGuardianRepo = new Mock<IPrimaryGuardianRepository>();
+            Mock<IChildRepository> childRepo = new Mock<IChildRepository>();
+            Mock<ISecondaryGuardianRepository> secondaryGuardianRepo = new Mock<ISecondaryGuardianRepository>();
             Mock<ICenterRepository> centerRepo = new Mock<ICenterRepository>();
 
             // center id 1
@@ -1173,40 +1139,84 @@ namespace OFRPDMS.Tests.Controllers
             accountService.Setup(a => a.GetRolesForUser()).Returns(new string[] { "Staff" });
 
             var pgs1 = new List<PrimaryGuardian>();
+            var pgs1Children = new List<Child>();
+            var pgs1SecondaryGuardian = new List<SecondaryGuardian>();
             for (int i = 0; i < 15; i++)
             {
                 pgs1.Insert(i, (Util.RandomPrimaryGuardian(i + 1, 1)));
             }
-            var pgs1Children = new[] { Util.RandomChild(1, pgs1[0].Id), Util.RandomChild(2, pgs1[0].Id) };
-            var pgs1SecGuardian = new[] { Util.RandomSecondaryGuardian(1, pgs1[0].Id) };
+            for (int j = 0; j < 5; j++)
+            {
+                Child child;
+                SecondaryGuardian secGuardian;
+                if (j == 3)
+                {
+                    // null fields
+                    child = new Child();
+                    secGuardian = new SecondaryGuardian();
+                }
+                else
+                {
+                    child = Util.RandomChild(j + 1, pgs1[0].Id);
+                    secGuardian = Util.RandomSecondaryGuardian(j + 1, pgs1[0].Id);
 
-            primaryGuardianRepo.Setup(r => r.FindByIdAndCenterId(7, 1)).Returns(pgs1[6]);
+                    // simulate deleted
+                    if (j == 2)
+                    {
+                        child.Delete = true;
+                        secGuardian.Delete = true;
+                    }
+                    // simulate newly created
+                    else if (j == 4)
+                    {
+                        child.Id = 0;
+                        secGuardian.Id = 0;
+                    }
+                }
+                pgs1Children.Insert(j, child);
+                pgs1SecondaryGuardian.Insert(j, secGuardian);
+
+            }
+            pgs1[0].Children = pgs1Children;
+            pgs1[0].SecondaryGuardians = pgs1SecondaryGuardian;
+
+            // Deleted
+            secondaryGuardianRepo.Setup(s => s.FindById(3)).Returns(pgs1SecondaryGuardian[2]);
+            childRepo.Setup(s => s.FindById(3)).Returns(pgs1Children[2]);
+
             repoService.SetupGet(r => r.primaryGuardianRepo).Returns(() => primaryGuardianRepo.Object);
             repoService.SetupGet(r => r.centerRepo).Returns(() => centerRepo.Object);
-
-            var request = new Mock<HttpRequestBase>();
-            request.SetupGet(x => x.HttpMethod).Returns("POST");
-
-            var controllerContext = new Mock<HttpContextBase>();
-            controllerContext.SetupGet(x => x.Request).Returns(request.Object);
+            repoService.SetupGet(r => r.childRepo).Returns(() => childRepo.Object);
+            repoService.SetupGet(r => r.secondaryGuardianRepo).Returns(() => secondaryGuardianRepo.Object);
 
             PrimaryGuardiansController controller = new PrimaryGuardiansController(accountService.Object, repoService.Object);
-            controller.ControllerContext = new ControllerContext(controllerContext.Object, new RouteData(), controller);
 
+
+            // doplicate children and secondary guardians first so we can verify results later
+            var pgs1Children_2 = pgs1Children.ToList();
+            var pgs1SecondaryGuardian_2 = pgs1SecondaryGuardian.ToList();
 
             // Act
-            ActionResult result = controller.Edit(7) as ActionResult;
+            ActionResult result = controller.Edit(pgs1[0]) as ActionResult;
 
             // Assert
-            Assert.IsInstanceOfType(result, typeof(ViewResult));
-            ViewResult asViewResult = (ViewResult)result;
+            PrimaryGuardian pg = pgs1[0];
 
-            Assert.IsFalse(asViewResult.ViewBag.IsAdmin);
+            // Id 0 should be deleted after call to repo.Add
+            // Id 4 should be deleted for all null fields
+            // Id 3 should be deleted after call to repo.Delete
+            List<Child> expectedChildren = pgs1Children_2.Where(c => c.Id != 0 && c.Id != 3 && c.Id != 4).ToList();
+            List<SecondaryGuardian> expectedSecondaryGuardians = pgs1SecondaryGuardian_2.Where(s => s.Id != 0 && s.Id != 3 && s.Id != 4).ToList();
 
-            Assert.IsInstanceOfType(asViewResult.ViewData.Model, typeof(PrimaryGuardian));
+            CollectionAssert.AreEqual(expectedChildren, pgs1Children);
+            CollectionAssert.AreEqual(expectedSecondaryGuardians, pgs1SecondaryGuardian);
 
-            Assert.AreEqual(pgs1[6], (PrimaryGuardian)asViewResult.Model);
+            Assert.IsInstanceOfType(result, typeof(RedirectToRouteResult));
+            RedirectToRouteResult asRedirectResult = (RedirectToRouteResult)result;
+
+            StringAssert.Equals(asRedirectResult.RouteValues["action"], "Index");
+            StringAssert.Equals(asRedirectResult.RouteValues["controller"], "PrimaryGuardians");
         }
-         */
+
     }
 }
