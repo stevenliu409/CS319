@@ -45,8 +45,8 @@ namespace OFRPDMS.Areas.Staff.Controllers
             ViewBag.ChildrenNameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name desc8" : "";
             ViewBag.SecondaryNameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name desc9" : "";
             ViewBag.DateSortParm = sortOrder == "Date" ? "Date desc" : "Date";
-            int centerId = AccountProfile.CurrentUser.CenterID;
-            string[] roles = Roles.GetRolesForUser();
+            int centerId = account.GetCurrentUserCenterId();
+            string[] roles = account.GetRolesForUser();
             ViewBag.IsAdmin = roles.Contains("Administrators");
 
 
@@ -60,7 +60,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
             }
             ViewBag.CurrentFilter = searchString;
 
-            var primaryguardian = from p in repoService.primaryGuardianRepo.FindAllWithCenterId(centerId)
+            var primaryguardians = from p in repoService.primaryGuardianRepo.FindAllWithCenterId(centerId)
                                    select p;
           
             if (!String.IsNullOrEmpty(searchString))
@@ -69,65 +69,65 @@ namespace OFRPDMS.Areas.Staff.Controllers
                 string[] searchFields = new string[] { "FirstName", "LastName", "Country", "Email", "Language", "Phone", "PostalCodePrefix", "Allergies", "DateCreated" };
                 IEnumerable<PropertyInfo> properties = typeof(PrimaryGuardian).GetProperties().Where(prop => searchFields.Contains(prop.Name));
 
-                primaryguardian = primaryguardian.Where(
+                primaryguardians = primaryguardians.Where(
                     p => ( properties.Any(prop => prop.GetValue(p, null) != null && prop.GetValue(p, null).ToString().ToUpper().Contains(searchString.ToUpper()))));
             }
             switch (sortOrder)
             {
                 case "Name desc":
-                    primaryguardian = primaryguardian.OrderBy(p => p.FirstName);
+                    primaryguardians = primaryguardians.OrderBy(p => p.FirstName);
                     
                     break;
                 case "Name desc1":
                     
-                    primaryguardian = primaryguardian.OrderBy(p => p.LastName);
+                    primaryguardians = primaryguardians.OrderBy(p => p.LastName);
                   
                     break;
                 case "Name desc2":
            
-                    primaryguardian = primaryguardian.OrderBy(p => p.Email);
+                    primaryguardians = primaryguardians.OrderBy(p => p.Email);
                
                     break;
                 case "Name desc3":
  
-                    primaryguardian = primaryguardian.OrderBy(p => p.Country);
+                    primaryguardians = primaryguardians.OrderBy(p => p.Country);
                     break;
                 case "Name desc4":
                    
-                    primaryguardian = primaryguardian.OrderBy(p => p.Language);
+                    primaryguardians = primaryguardians.OrderBy(p => p.Language);
                    
                     break;
                 case "Name desc5":
-                    primaryguardian = primaryguardian.OrderBy(p => p.PostalCodePrefix);
+                    primaryguardians = primaryguardians.OrderBy(p => p.PostalCodePrefix);
                  
                     break;
 
                 case "Name desc6":
-                    primaryguardian = primaryguardian.OrderBy(p => p.Allergies);
+                    primaryguardians = primaryguardians.OrderBy(p => p.Allergies);
                  
                     break;
 
                 case "Name desc7":
-                    primaryguardian = primaryguardian.OrderBy(p => p.Phone);
+                    primaryguardians = primaryguardians.OrderBy(p => p.Phone);
 
                     break;
                 case "Name desc8":
-                    primaryguardian = primaryguardian.OrderBy(p => p.Children.Count);
+                    primaryguardians = primaryguardians.OrderBy(p => p.Children.Count);
 
                     break;
                 case "Name desc9":
-                    primaryguardian = primaryguardian.OrderBy(p => p.SecondaryGuardians.Count);
+                    primaryguardians = primaryguardians.OrderBy(p => p.SecondaryGuardians.Count);
 
                     break;
 
                 case "Date":
-                    primaryguardian = primaryguardian.OrderBy(s => s.DateCreated);
+                    primaryguardians = primaryguardians.OrderBy(s => s.DateCreated);
                     break;
                 case "Date desc":
-                     primaryguardian = primaryguardian.OrderByDescending(s => s.DateCreated);
+                     primaryguardians = primaryguardians.OrderByDescending(s => s.DateCreated);
                     break;
                 default:
-                    primaryguardian = primaryguardian.OrderBy(s => s.LastName);
+                    primaryguardians = primaryguardians.OrderBy(s => s.LastName);
                     break;
             }
 
@@ -135,7 +135,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
             int pageSize = 10;
             int pageNumber = (page ?? 1);
 
-            return View(primaryguardian.ToPagedList(pageNumber, pageSize));
+            return View(primaryguardians.ToPagedList(pageNumber, pageSize));
         }
 
         //
