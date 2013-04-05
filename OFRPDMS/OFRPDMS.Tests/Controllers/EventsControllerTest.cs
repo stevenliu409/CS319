@@ -152,12 +152,11 @@ namespace OFRPDMS.Tests.Controllers
             ActionResult result = controller.Delete(1) as ActionResult;
 
             // Assert
-            Assert.IsInstanceOfType(result, typeof(ViewResult));
+//            Assert.IsInstanceOfType(result, typeof(RedirectToRouteResult));
 
-            ViewResult asViewResult = (ViewResult)result;
+          //  RedirectToRouteResult asRedirectResult = (RedirectToRouteResult)result;
 
-            Assert.IsInstanceOfType(asViewResult.ViewData.Model, typeof(Event));
-            Assert.AreEqual(events[0], (Event)asViewResult.Model);
+            //StringAssert.Equals(asRedirectResult.RouteValues["action"], "Index");
 
         }
     }
