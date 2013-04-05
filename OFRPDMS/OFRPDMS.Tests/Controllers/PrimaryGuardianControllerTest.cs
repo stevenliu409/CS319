@@ -852,5 +852,361 @@ namespace OFRPDMS.Tests.Controllers
                 return have10;
             }).ToList(), ((IEnumerable<PrimaryGuardian>)asViewResult.Model).ToList());
         }
+
+
+        [TestMethod]
+        public void Index_SecondPageContainsNext10Items()
+        {
+            // Arrange
+            Mock<IAccountService> accountService = new Mock<IAccountService>();
+            Mock<IRepositoryService> repoService = new Mock<IRepositoryService>();
+            Mock<IPrimaryGuardianRepository> primaryGuardianRepo = new Mock<IPrimaryGuardianRepository>();
+            Mock<ICenterRepository> centerRepo = new Mock<ICenterRepository>();
+
+            // center id 1
+            accountService.Setup(a => a.GetCurrentUserCenterId()).Returns(() => 1);
+
+            var pgs1 = new List<PrimaryGuardian>();
+            for (int i = 0; i < 15; i++)
+            {
+                pgs1.Insert(i, (Util.RandomPrimaryGuardian(i + 1, 1)));
+            }
+            var pgs1Children = new[] { Util.RandomChild(1, pgs1[0].Id), Util.RandomChild(2, pgs1[0].Id) };
+            var pgs1SecGuardian = new[] { Util.RandomSecondaryGuardian(1, pgs1[0].Id) };
+
+            primaryGuardianRepo.Setup(r => r.FindAllWithCenterId(1)).Returns(pgs1);
+            repoService.SetupGet(r => r.primaryGuardianRepo).Returns(() => primaryGuardianRepo.Object);
+            repoService.SetupGet(r => r.centerRepo).Returns(() => centerRepo.Object);
+
+            var request = new Mock<HttpRequestBase>();
+            request.SetupGet(x => x.HttpMethod).Returns("POST");
+
+            var controllerContext = new Mock<HttpContextBase>();
+            controllerContext.SetupGet(x => x.Request).Returns(request.Object);
+
+            PrimaryGuardiansController controller = new PrimaryGuardiansController(accountService.Object, repoService.Object);
+            controller.ControllerContext = new ControllerContext(controllerContext.Object, new RouteData(), controller);
+
+
+            // Act
+            ActionResult result = controller.Index(null, null, null, 2) as ActionResult;
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+            ViewResult asViewResult = (ViewResult)result;
+
+            Assert.IsInstanceOfType(asViewResult.ViewData.Model, typeof(IEnumerable<PrimaryGuardian>));
+
+            int j = 0;
+            
+            var expected = pgs1.OrderBy(p => p.LastName).TakeWhile((p, i) =>
+                {
+                    bool take = j < 10 && i >= 0;
+                    if (take) j++;
+                    return take;
+                });
+
+            CollectionAssert.AreEqual(expected.ToList(), ((IEnumerable<PrimaryGuardian>)asViewResult.Model).ToList());
+        }
+
+
+        [TestMethod]
+        public void Details_LoggedInAdmin_ShouldReturnAPrimaryGuardian()
+        {
+            // Arrange
+            Mock<IAccountService> accountService = new Mock<IAccountService>();
+            Mock<IRepositoryService> repoService = new Mock<IRepositoryService>();
+            Mock<IPrimaryGuardianRepository> primaryGuardianRepo = new Mock<IPrimaryGuardianRepository>();
+            Mock<ICenterRepository> centerRepo = new Mock<ICenterRepository>();
+
+            // center id 1
+            accountService.Setup(a => a.GetCurrentUserCenterId()).Returns(() => 1);
+            accountService.Setup(a => a.GetRolesForUser()).Returns(new string[] { "Administrators" });
+
+            var pgs1 = new List<PrimaryGuardian>();
+            for (int i = 0; i < 15; i++)
+            {
+                pgs1.Insert(i, (Util.RandomPrimaryGuardian(i + 1, 1)));
+            }
+            var pgs1Children = new[] { Util.RandomChild(1, pgs1[0].Id), Util.RandomChild(2, pgs1[0].Id) };
+            var pgs1SecGuardian = new[] { Util.RandomSecondaryGuardian(1, pgs1[0].Id) };
+
+            primaryGuardianRepo.Setup(r => r.FindByIdAndCenterId(7, 1)).Returns(pgs1[6]);
+            repoService.SetupGet(r => r.primaryGuardianRepo).Returns(() => primaryGuardianRepo.Object);
+            repoService.SetupGet(r => r.centerRepo).Returns(() => centerRepo.Object);
+
+            var request = new Mock<HttpRequestBase>();
+            request.SetupGet(x => x.HttpMethod).Returns("POST");
+
+            var controllerContext = new Mock<HttpContextBase>();
+            controllerContext.SetupGet(x => x.Request).Returns(request.Object);
+
+            PrimaryGuardiansController controller = new PrimaryGuardiansController(accountService.Object, repoService.Object);
+            controller.ControllerContext = new ControllerContext(controllerContext.Object, new RouteData(), controller);
+
+
+            // Act
+            ActionResult result = controller.Details(7) as ActionResult;
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+            ViewResult asViewResult = (ViewResult)result;
+
+            Assert.IsTrue(asViewResult.ViewBag.IsAdmin);
+
+            Assert.IsInstanceOfType(asViewResult.ViewData.Model, typeof(PrimaryGuardian));
+
+            Assert.AreEqual(pgs1[6], (PrimaryGuardian)asViewResult.Model);
+        }
+
+
+        [TestMethod]
+        public void Details_LoggedInStaff_ShouldReturnAPrimaryGuardian()
+        {
+            // Arrange
+            Mock<IAccountService> accountService = new Mock<IAccountService>();
+            Mock<IRepositoryService> repoService = new Mock<IRepositoryService>();
+            Mock<IPrimaryGuardianRepository> primaryGuardianRepo = new Mock<IPrimaryGuardianRepository>();
+            Mock<ICenterRepository> centerRepo = new Mock<ICenterRepository>();
+
+            // center id 1
+            accountService.Setup(a => a.GetCurrentUserCenterId()).Returns(() => 1);
+            accountService.Setup(a => a.GetRolesForUser()).Returns(new string[] { "Staff" });
+
+            var pgs1 = new List<PrimaryGuardian>();
+            for (int i = 0; i < 15; i++)
+            {
+                pgs1.Insert(i, (Util.RandomPrimaryGuardian(i + 1, 1)));
+            }
+            var pgs1Children = new[] { Util.RandomChild(1, pgs1[0].Id), Util.RandomChild(2, pgs1[0].Id) };
+            var pgs1SecGuardian = new[] { Util.RandomSecondaryGuardian(1, pgs1[0].Id) };
+
+            primaryGuardianRepo.Setup(r => r.FindByIdAndCenterId(7, 1)).Returns(pgs1[6]);
+            repoService.SetupGet(r => r.primaryGuardianRepo).Returns(() => primaryGuardianRepo.Object);
+            repoService.SetupGet(r => r.centerRepo).Returns(() => centerRepo.Object);
+
+            var request = new Mock<HttpRequestBase>();
+            request.SetupGet(x => x.HttpMethod).Returns("POST");
+
+            var controllerContext = new Mock<HttpContextBase>();
+            controllerContext.SetupGet(x => x.Request).Returns(request.Object);
+
+            PrimaryGuardiansController controller = new PrimaryGuardiansController(accountService.Object, repoService.Object);
+            controller.ControllerContext = new ControllerContext(controllerContext.Object, new RouteData(), controller);
+
+
+            // Act
+            ActionResult result = controller.Details(7) as ActionResult;
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+            ViewResult asViewResult = (ViewResult)result;
+
+            Assert.IsFalse(asViewResult.ViewBag.IsAdmin);
+
+            Assert.IsInstanceOfType(asViewResult.ViewData.Model, typeof(PrimaryGuardian));
+
+            Assert.AreEqual(pgs1[6], (PrimaryGuardian)asViewResult.Model);
+        }
+
+
+        [TestMethod]
+        public void Details_WithInvalidCenterId_ShouldReturnNull()
+        {
+            // Arrange
+            Mock<IAccountService> accountService = new Mock<IAccountService>();
+            Mock<IRepositoryService> repoService = new Mock<IRepositoryService>();
+            Mock<IPrimaryGuardianRepository> primaryGuardianRepo = new Mock<IPrimaryGuardianRepository>();
+            Mock<ICenterRepository> centerRepo = new Mock<ICenterRepository>();
+
+            // center id 2
+            accountService.Setup(a => a.GetCurrentUserCenterId()).Returns(() => 2);
+            accountService.Setup(a => a.GetRolesForUser()).Returns(new string[] { "Staff" });
+
+            var pgs1 = new List<PrimaryGuardian>();
+            for (int i = 0; i < 15; i++)
+            {
+                pgs1.Insert(i, (Util.RandomPrimaryGuardian(i + 1, 1)));
+            }
+            var pgs1Children = new[] { Util.RandomChild(1, pgs1[0].Id), Util.RandomChild(2, pgs1[0].Id) };
+            var pgs1SecGuardian = new[] { Util.RandomSecondaryGuardian(1, pgs1[0].Id) };
+
+            primaryGuardianRepo.Setup(r => r.FindByIdAndCenterId(7, 1)).Returns(pgs1[6]);
+            repoService.SetupGet(r => r.primaryGuardianRepo).Returns(() => primaryGuardianRepo.Object);
+            repoService.SetupGet(r => r.centerRepo).Returns(() => centerRepo.Object);
+
+            var request = new Mock<HttpRequestBase>();
+            request.SetupGet(x => x.HttpMethod).Returns("POST");
+
+            var controllerContext = new Mock<HttpContextBase>();
+            controllerContext.SetupGet(x => x.Request).Returns(request.Object);
+
+            PrimaryGuardiansController controller = new PrimaryGuardiansController(accountService.Object, repoService.Object);
+            controller.ControllerContext = new ControllerContext(controllerContext.Object, new RouteData(), controller);
+
+
+            // Act
+            ActionResult result = controller.Details(7) as ActionResult;
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+            ViewResult asViewResult = (ViewResult)result;
+
+            Assert.IsFalse(asViewResult.ViewBag.IsAdmin);
+
+            Assert.IsNull((PrimaryGuardian)asViewResult.Model);
+        }
+
+
+        [TestMethod]
+        public void EditGet_WithLoggedInAdmin_ShouldReturnAPrimaryGuardian()
+        {
+            // Arrange
+            Mock<IAccountService> accountService = new Mock<IAccountService>();
+            Mock<IRepositoryService> repoService = new Mock<IRepositoryService>();
+            Mock<IPrimaryGuardianRepository> primaryGuardianRepo = new Mock<IPrimaryGuardianRepository>();
+            Mock<ICenterRepository> centerRepo = new Mock<ICenterRepository>();
+
+            // center id 1
+            accountService.Setup(a => a.GetCurrentUserCenterId()).Returns(() => 1);
+            accountService.Setup(a => a.GetRolesForUser()).Returns(new string[] { "Administrators" });
+
+            var pgs1 = new List<PrimaryGuardian>();
+            for (int i = 0; i < 15; i++)
+            {
+                pgs1.Insert(i, (Util.RandomPrimaryGuardian(i + 1, 1)));
+            }
+            var pgs1Children = new[] { Util.RandomChild(1, pgs1[0].Id), Util.RandomChild(2, pgs1[0].Id) };
+            var pgs1SecGuardian = new[] { Util.RandomSecondaryGuardian(1, pgs1[0].Id) };
+
+            primaryGuardianRepo.Setup(r => r.FindByIdAndCenterId(7, 1)).Returns(pgs1[6]);
+            repoService.SetupGet(r => r.primaryGuardianRepo).Returns(() => primaryGuardianRepo.Object);
+            repoService.SetupGet(r => r.centerRepo).Returns(() => centerRepo.Object);
+
+            var request = new Mock<HttpRequestBase>();
+            request.SetupGet(x => x.HttpMethod).Returns("POST");
+
+            var controllerContext = new Mock<HttpContextBase>();
+            controllerContext.SetupGet(x => x.Request).Returns(request.Object);
+
+            PrimaryGuardiansController controller = new PrimaryGuardiansController(accountService.Object, repoService.Object);
+            controller.ControllerContext = new ControllerContext(controllerContext.Object, new RouteData(), controller);
+
+
+            // Act
+            ActionResult result = controller.Edit(7) as ActionResult;
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+            ViewResult asViewResult = (ViewResult)result;
+
+            Assert.IsTrue(asViewResult.ViewBag.IsAdmin);
+
+            Assert.IsInstanceOfType(asViewResult.ViewData.Model, typeof(PrimaryGuardian));
+
+            Assert.AreEqual(pgs1[6], (PrimaryGuardian)asViewResult.Model);
+        }
+
+
+        [TestMethod]
+        public void EditGet_WithLoggedInStaff_ShouldReturnAPrimaryGuardian()
+        {
+            // Arrange
+            Mock<IAccountService> accountService = new Mock<IAccountService>();
+            Mock<IRepositoryService> repoService = new Mock<IRepositoryService>();
+            Mock<IPrimaryGuardianRepository> primaryGuardianRepo = new Mock<IPrimaryGuardianRepository>();
+            Mock<ICenterRepository> centerRepo = new Mock<ICenterRepository>();
+
+            // center id 1
+            accountService.Setup(a => a.GetCurrentUserCenterId()).Returns(() => 1);
+            accountService.Setup(a => a.GetRolesForUser()).Returns(new string[] { "Staff" });
+
+            var pgs1 = new List<PrimaryGuardian>();
+            for (int i = 0; i < 15; i++)
+            {
+                pgs1.Insert(i, (Util.RandomPrimaryGuardian(i + 1, 1)));
+            }
+            var pgs1Children = new[] { Util.RandomChild(1, pgs1[0].Id), Util.RandomChild(2, pgs1[0].Id) };
+            var pgs1SecGuardian = new[] { Util.RandomSecondaryGuardian(1, pgs1[0].Id) };
+
+            primaryGuardianRepo.Setup(r => r.FindByIdAndCenterId(7, 1)).Returns(pgs1[6]);
+            repoService.SetupGet(r => r.primaryGuardianRepo).Returns(() => primaryGuardianRepo.Object);
+            repoService.SetupGet(r => r.centerRepo).Returns(() => centerRepo.Object);
+
+            var request = new Mock<HttpRequestBase>();
+            request.SetupGet(x => x.HttpMethod).Returns("POST");
+
+            var controllerContext = new Mock<HttpContextBase>();
+            controllerContext.SetupGet(x => x.Request).Returns(request.Object);
+
+            PrimaryGuardiansController controller = new PrimaryGuardiansController(accountService.Object, repoService.Object);
+            controller.ControllerContext = new ControllerContext(controllerContext.Object, new RouteData(), controller);
+
+
+            // Act
+            ActionResult result = controller.Edit(7) as ActionResult;
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+            ViewResult asViewResult = (ViewResult)result;
+
+            Assert.IsFalse(asViewResult.ViewBag.IsAdmin);
+
+            Assert.IsInstanceOfType(asViewResult.ViewData.Model, typeof(PrimaryGuardian));
+
+            Assert.AreEqual(pgs1[6], (PrimaryGuardian)asViewResult.Model);
+        }
+
+
+        /*
+        [TestMethod]
+        public void EditPost_WithLoggedInStaff_ShouldReturnAPrimaryGuardian()
+        {
+            // Arrange
+            Mock<IAccountService> accountService = new Mock<IAccountService>();
+            Mock<IRepositoryService> repoService = new Mock<IRepositoryService>();
+            Mock<IPrimaryGuardianRepository> primaryGuardianRepo = new Mock<IPrimaryGuardianRepository>();
+            Mock<ICenterRepository> centerRepo = new Mock<ICenterRepository>();
+
+            // center id 1
+            accountService.Setup(a => a.GetCurrentUserCenterId()).Returns(() => 1);
+            accountService.Setup(a => a.GetRolesForUser()).Returns(new string[] { "Staff" });
+
+            var pgs1 = new List<PrimaryGuardian>();
+            for (int i = 0; i < 15; i++)
+            {
+                pgs1.Insert(i, (Util.RandomPrimaryGuardian(i + 1, 1)));
+            }
+            var pgs1Children = new[] { Util.RandomChild(1, pgs1[0].Id), Util.RandomChild(2, pgs1[0].Id) };
+            var pgs1SecGuardian = new[] { Util.RandomSecondaryGuardian(1, pgs1[0].Id) };
+
+            primaryGuardianRepo.Setup(r => r.FindByIdAndCenterId(7, 1)).Returns(pgs1[6]);
+            repoService.SetupGet(r => r.primaryGuardianRepo).Returns(() => primaryGuardianRepo.Object);
+            repoService.SetupGet(r => r.centerRepo).Returns(() => centerRepo.Object);
+
+            var request = new Mock<HttpRequestBase>();
+            request.SetupGet(x => x.HttpMethod).Returns("POST");
+
+            var controllerContext = new Mock<HttpContextBase>();
+            controllerContext.SetupGet(x => x.Request).Returns(request.Object);
+
+            PrimaryGuardiansController controller = new PrimaryGuardiansController(accountService.Object, repoService.Object);
+            controller.ControllerContext = new ControllerContext(controllerContext.Object, new RouteData(), controller);
+
+
+            // Act
+            ActionResult result = controller.Edit(7) as ActionResult;
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+            ViewResult asViewResult = (ViewResult)result;
+
+            Assert.IsFalse(asViewResult.ViewBag.IsAdmin);
+
+            Assert.IsInstanceOfType(asViewResult.ViewData.Model, typeof(PrimaryGuardian));
+
+            Assert.AreEqual(pgs1[6], (PrimaryGuardian)asViewResult.Model);
+        }
+         */
     }
 }

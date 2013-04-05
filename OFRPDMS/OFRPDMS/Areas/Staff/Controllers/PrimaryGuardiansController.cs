@@ -143,7 +143,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
         public ViewResult Details(int id)
         {
-            int centerId = AccountProfile.CurrentUser.CenterID;
+            int centerId = account.GetCurrentUserCenterId();
             string[] roles = account.GetRolesForUser();
             ViewBag.IsAdmin = roles.Contains("Administrators");
             PrimaryGuardian primaryguardian = repoService.primaryGuardianRepo.FindByIdAndCenterId(id, centerId);
@@ -209,7 +209,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
                 repoService.primaryGuardianRepo.Add(primaryguardian);
                 return RedirectToAction("Index");
             }
-            ViewBag.CenterId2 = AccountProfile.CurrentUser.CenterID;
+            ViewBag.CenterId2 = account.GetCurrentUserCenterId();
             ViewBag.CenterId = new SelectList(repoService.centerRepo.FindAll(), "Id", "Name", primaryguardian.CenterId);
             return View(primaryguardian);
         }
@@ -219,7 +219,7 @@ namespace OFRPDMS.Areas.Staff.Controllers
        
         public ActionResult Edit(int id)
         {
-            int centerId = AccountProfile.CurrentUser.CenterID;
+            int centerId = account.GetCurrentUserCenterId();
             string[] roles = account.GetRolesForUser();
             ViewBag.IsAdmin = roles.Contains("Administrators");
             ViewBag.CenterId2 = centerId;
@@ -234,14 +234,14 @@ namespace OFRPDMS.Areas.Staff.Controllers
         [HttpPost]
         public ActionResult Edit(PrimaryGuardian primaryguardian)
         {
-            ViewBag.CenterId2 = AccountProfile.CurrentUser.CenterID;
+            ViewBag.CenterId2 = account.GetCurrentUserCenterId();
               
             if (ModelState.IsValid)
             {
 
                 foreach (Child a in primaryguardian.Children)
                 {
-                    a.DateCreated = primaryguardian.DateCreated;
+                    a.DateCreated = (a.DateCreated == null) ? a.DateCreated : System.DateTime.Now;
                 }
 
 
