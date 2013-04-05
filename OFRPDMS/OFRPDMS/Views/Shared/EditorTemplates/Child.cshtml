@@ -50,8 +50,9 @@
         @Html.ValidationMessageFor(model => model.Allergies)
     </div>
 
-   @Html.Hidden("Id", Model.Id)
-   @Html.Hidden("PrimaryGuardianId", Model.PrimaryGuardianId)
+    @Html.HiddenFor(model => model.DateCreated, Model.DateCreated)
+    @Html.HiddenFor(model => model.Id, Model.Id)
+    @Html.HiddenFor(model => model.PrimaryGuardianId, Model.PrimaryGuardianId)
 
    
 
