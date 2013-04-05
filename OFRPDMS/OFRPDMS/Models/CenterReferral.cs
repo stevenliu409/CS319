@@ -11,6 +11,7 @@ namespace OFRPDMS.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     
     public partial class CenterReferral
     {
@@ -21,6 +22,7 @@ namespace OFRPDMS.Models
     
         public int Id { get; set; }
         public int CenterId { get; set; }
+        [Required]
         public string Name { get; set; }
     
         public virtual ICollection<Referral> Referrals { get; set; }

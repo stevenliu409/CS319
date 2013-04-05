@@ -13,9 +13,12 @@
     </td>
     <td>
         @Html.DisplayFor(model => model.referral.Name)
+        @Html.HiddenFor(model => model.referral.Name)
     </td>
     <td>
         @Html.ActionLink("Delete", "Delete", new { id = Model.referral.Id })
     </td>
+        
+        
 </tr>
 

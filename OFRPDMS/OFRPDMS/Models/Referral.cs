@@ -11,6 +11,7 @@ namespace OFRPDMS.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations.Schema;
     
     public partial class Referral
     {
@@ -18,7 +19,6 @@ namespace OFRPDMS.Models
         public int CenterReferralId { get; set; }
         public System.DateTime DateReferred { get; set; }
         public int CountReferred { get; set; }
-    
         public virtual CenterReferral CenterReferral { get; set; }
         public Referral()
         {

@@ -11,6 +11,7 @@ namespace OFRPDMS.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     
     public partial class CenterFreeResource
     {
@@ -20,8 +21,10 @@ namespace OFRPDMS.Models
         }
     
         public int Id { get; set; }
+        [Required]
         public Nullable<int> NumberAvailable { get; set; }
         public int CenterId { get; set; }
+        [Required]
         public string Name { get; set; }
     
         public virtual Center Center { get; set; }
