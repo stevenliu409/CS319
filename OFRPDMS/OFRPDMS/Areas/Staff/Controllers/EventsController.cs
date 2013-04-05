@@ -71,17 +71,6 @@ namespace OFRPDMS.Areas.Staff.Controllers
         }
 
         //
-        // GET: /Events/Details/5
-
-        public ViewResult Details(int id)
-        {         
-            int centerID = account.GetCurrentUserCenterId();
-            Event anEvent = repoService.eventRepo.FindByIdAndCenterId(id, centerID);
-
-            return View(anEvent);
-        }
-
-        //
         // GET: /Events/Create
 
         public ActionResult Create()
@@ -121,9 +110,6 @@ namespace OFRPDMS.Areas.Staff.Controllers
 
             anEvent = repoService.eventRepo.FindById(id);
 
-            IEnumerable<Center> centers = repoService.centerRepo.FindListById(centerID);
-
-            ViewBag.CenterId = new SelectList(centers, "Id", "Name");
            
             return View(anEvent);
         }
@@ -141,10 +127,6 @@ namespace OFRPDMS.Areas.Staff.Controllers
                 return RedirectToAction("Index");
             }
             int centerID = account.GetCurrentUserCenterId();
-
-            IEnumerable<Center> centers = repoService.centerRepo.FindListById(centerID);
-
-            ViewBag.CenterId = new SelectList(centers, "Id", "Name");
            
             return View(anEvent);
         }
