@@ -24,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DeployIisAppPath>Default Web Site/OFRPDMS</DeployIisAppPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,6 +33,27 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PublishDatabaseSettings>
+      <Objects>
+        <ObjectGroup Name="ApplicationServices-Deployment" Order="1" xmlns="">
+          <Destination Path="" />
+          <Object Type="dbFullSql" Enabled="False">
+            <PreSource Path="Data Source=.\sqlexpress%3bInitial Catalog=OFRPDMS.Models.OFRPDMSContext%3bIntegrated Security=True%3bMultipleActiveResultSets=True" ScriptSchema="True" ScriptData="False" CopyAllFullTextCatalogs="False" DriDefaults="True" />
+            <Source Path="obj\Release\AutoScripts\ApplicationServices-Deployment_SchemaOnly.sql" Transacted="True" />
+          </Object>
+        </ObjectGroup>
+        <ObjectGroup Name="Model1Container-Deployment" Order="2" xmlns="">
+          <Destination Path="" />
+          <Object Type="dbFullSql" Enabled="False">
+            <PreSource Path="Data Source=.\sqlexpress%3bInitial Catalog=OFRPDMS.Models.OFRPDMSContext%3bIntegrated Security=True%3bApplication Name=EntityFramework" ScriptSchema="True" ScriptData="False" CopyAllFullTextCatalogs="False" DriDefaults="True" />
+            <Source Path="obj\Release\AutoScripts\Model1Container-Deployment_SchemaOnly.sql" Transacted="True" />
+          </Object>
+        </ObjectGroup>
+      </Objects>
+    </PublishDatabaseSettings>
+    <DeployIisAppPath>Default Web Site/OFRPDMS</DeployIisAppPath>
+    <FilesToIncludeForPublish>OnlyFilesToRunTheApp</FilesToIncludeForPublish>
+    <DeployEncryptKey>Encryption password is used only if any deployment setting is marked as secure</DeployEncryptKey>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DocumentFormat.OpenXml">
@@ -68,9 +90,18 @@
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
-    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="System.Web.Helpers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -80,11 +111,21 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.WebPages.Deployment, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Abstractions" />
-    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.Abstractions">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Routing">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
@@ -226,10 +267,10 @@
     <Compile Include="Repositories\SecondaryGuardianRepository.cs" />
     <Compile Include="Repositories\SignInRepository.cs" />
     <Compile Include="Repositories\SpecialEventRepository.cs" />
+    <Compile Include="Utils\Util.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\EntityFramework.dll" />
-    <Content Include="bin\EntityFramework.xml" />
     <Content Include="bin\OFRPDMS.dll" />
     <Content Include="bin\OFRPDMS.pdb" />
     <Content Include="Content\themes\base\fonts\iconFont.svg" />
@@ -339,7 +380,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
-    <Folder Include="Utils\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
@@ -401,11 +441,6 @@
     <Content Include="Areas\Staff\Views\Library\Delete.cshtml" />
     <Content Include="Areas\Staff\Views\Library\Details.cshtml" />
     <Content Include="Areas\Staff\Views\Library\Edit.cshtml" />
-    <Content Include="Areas\Staff\Views\Borrow\Index.cshtml" />
-    <Content Include="Areas\Staff\Views\Borrow\Details.cshtml" />
-    <Content Include="Areas\Staff\Views\Borrow\Create.cshtml" />
-    <Content Include="Areas\Staff\Views\Borrow\Edit.cshtml" />
-    <Content Include="Areas\Staff\Views\Borrow\Delete.cshtml" />
     <Content Include="Areas\Staff\Views\SignIn\_searchguardian.cshtml" />
     <Content Include="Areas\Staff\Views\SignIn\Delete.cshtml" />
     <Content Include="Areas\Staff\Views\SignIn\Create.cshtml" />

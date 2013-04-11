@@ -45,5 +45,9 @@ namespace OFRPDMS.Repositories
             db.Centers.Remove(e);
             db.SaveChanges();
         }
+        public void Dispose()
+        {
+            db.Dispose();
+        }
     }
 }

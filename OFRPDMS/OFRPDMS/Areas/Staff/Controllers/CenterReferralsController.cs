@@ -105,7 +105,6 @@ namespace OFRPDMS.Areas.Staff.Controllers
         [HttpPost]
         public ActionResult Edit(ReferralViewModelsEdit referralsEdit)
         {
-            OFRPDMSContext context = new OFRPDMSContext();
             foreach (var item in referralsEdit.Referrals)
             {
                 if (ModelState.IsValid)

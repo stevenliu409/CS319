@@ -5,46 +5,59 @@ using System.Web;
 using System.Web.Mvc;
 using OFRPDMS.Models;
 using System.Web.Security;
+using OFRPDMS.Repositories;
+using OFRPDMS.Account;
+using Ninject;
 
 namespace OFRPDMS.Areas.Admin.Controllers
 {
     public class AdminController : Controller
     {
+        private IRepositoryService repoService;
+        private IAccountService account;
 
-        private OFRPDMSContext context = new OFRPDMSContext();
+        public AdminController() { }
+
+        [Inject]
+        public AdminController(IAccountService account, IRepositoryService repoService) 
+        {
+            this.account = account;
+            this.repoService = repoService;
+        }
+
         //
         // GET: /Admin/Admin/
 
         public ActionResult Index()
         {
-            AccountProfile.CurrentUser.CenterID = -1;
             return View();
         }
         public ActionResult Nav()
         {
-            return PartialView("_AdminNavPartial", context.Centers);
+            return PartialView("_AdminNavPartial", repoService.centerRepo.FindAll());
         }
 
         public ActionResult RegisterStaff()
         {
-            ViewBag.PossibleCenters = context.Centers;
+            ViewBag.PossibleCenters = repoService.centerRepo.FindAll();
             return View();
         }
 
         [HttpPost]
         public ActionResult RegisterStaff(RegisterModel model, string role)
         {
+            ViewBag.PossibleCenters = repoService.centerRepo.FindAll();
             if (ModelState.IsValid)
             {
                 try
                 {
                     if (role == "Administrators")
                     {
-                        Roles.AddUserToRole(model.UserName, role);
+                        account.AddUserToRole(model.UserName, role);
                     }
                     else
                     {
-                        Roles.AddUserToRole(model.UserName, "Staff");                        
+                        account.AddUserToRole(model.UserName, "Staff");                        
                     }
                 }
                 catch
@@ -60,8 +73,9 @@ namespace OFRPDMS.Areas.Admin.Controllers
                 {
                     //FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
 
-                    AccountProfile.GetUser(model.UserName).CenterID = model.CenterId;
-                    int id = AccountProfile.CurrentUser.CenterID;
+                    account.SetUserCenterId(model.UserName, model.CenterId);
+                  
+                    int id = account.GetCurrentUserCenterId();
                     return RedirectToAction("Index", "Report", new { area = "Admin" });
                 }
                 else
@@ -70,6 +84,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
                 }
             }
             // If we got this far, something failed, redisplay form
+
             return View(model);
         }
         #region Status Codes

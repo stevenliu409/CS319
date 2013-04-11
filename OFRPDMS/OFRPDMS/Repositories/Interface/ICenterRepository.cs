@@ -20,5 +20,7 @@ namespace OFRPDMS.Repositories
         void Update(Center c);
 
         void Delete(Center c);
+        
+        void Dispose();
     }
 }

@@ -9,6 +9,8 @@ using System.Web.Security;
 
 namespace OFRPDMS.Account
 {
+
+    
     public class AccountService : IAccountService
     {
         public int GetCurrentUserCenterId()
@@ -46,7 +48,10 @@ namespace OFRPDMS.Account
             return Roles.GetRolesForUser();
         }
 
-
+        public void AddUserToRole(string username, string role)
+        {
+             Roles.AddUserToRole(username, role);
+        }
 
     }
 }

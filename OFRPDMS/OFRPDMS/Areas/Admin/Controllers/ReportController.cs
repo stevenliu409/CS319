@@ -10,19 +10,35 @@ using OFRPDMS.Areas.Admin.Models;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml;
+using OFRPDMS.Account;
+using OFRPDMS.Repositories;
+using Ninject;
+using System.Reflection;
 
 namespace OFRPDMS.Areas.Admin.Controllers
 {
     public class ReportController : Controller
     {
-        OFRPDMSContext context = new OFRPDMSContext();
-      
+        //OFRPDMSContext context = new OFRPDMSContext();
+        private IRepositoryService repoService;
+        private IAccountService account;
 
+
+        public ReportController() { }
+
+        [Inject]
+        public ReportController(IAccountService account, IRepositoryService repoService)
+        {
+
+            this.account = account;
+            this.repoService = repoService;
+        }
         //
         // GET: /Report/
 
         public ActionResult Index()
         {
+            
             return View();
         }
 
@@ -39,7 +55,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
             string[,] languageTable = getStringLanguageTable(report.startDay, endday);
             string[,] countryTable = getStringCountryTable(report.startDay, endday);
             ViewBag.myReport = report;
-            ViewBag.center = context.Centers.ToArray();
+            ViewBag.center = repoService.centerRepo.FindAll().ToArray();
             ViewBag.pgTable = pgTable;
             ViewBag.languageTable = languageTable;
             ViewBag.countryTable = countryTable;
@@ -157,7 +173,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
                 System.IO.File.Delete(tempFileName);
                 Response.End();
             }
-            return View(context.Centers);
+            return View();
             
         }
 
@@ -169,14 +185,14 @@ namespace OFRPDMS.Areas.Admin.Controllers
         {
             if (report.type == "Primary")
             {
-                ViewBag.first = context.PrimaryGuardians.Find(report.pgid).FirstName;
-                ViewBag.last = context.PrimaryGuardians.Find(report.pgid).LastName;
+                ViewBag.first = repoService.primaryGuardianRepo.FindById(report.pgid).FirstName;
+                ViewBag.last = repoService.primaryGuardianRepo.FindById(report.pgid).LastName;
                 ViewBag.pgid = report.pgid;
             }
             else if (report.type == "Child")
             {
-                ViewBag.first = context.Children.Find(report.pgid).FirstName;
-                ViewBag.last = context.Children.Find(report.pgid).LastName;
+                ViewBag.first = repoService.childRepo.FindById(report.pgid).FirstName;
+                ViewBag.last = repoService.childRepo.FindById(report.pgid).LastName;
             }
 
             ViewBag.type = report.type;
@@ -204,108 +220,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
         }
 
 
-        //public void GenerateExcel(Report report, int mode)
-        //{
-        //    Response.Clear();
-        //    DateTime startDay = report.startDay3;
-        //    DateTime endDay = report.endDay3.AddDays(1);
-        //    // fill in the 2-dimensional string array here with data
-        //    //string[,] Content1 = getStringPGTable(startDay,endDay);
-        //    //string[,] Content2 = getStringLanguageTable(startDay, endDay);
-        //    //string[,] Content3 = getStringCountryTable(startDay, endDay);
-
-        //    // create a new excel workbook
-        //    //Microsoft.Office.Interop.Excel.Application excel = new Microsoft.Office.Interop.Excel.Application();
-        //    //Microsoft.Office.Interop.Excel.Workbook workBook = excel.Workbooks.Add();
-        //    //Microsoft.Office.Interop.Excel.Worksheet sheet = workBook.ActiveSheet;
-
-        //    //File in the excel cells with report data here if we are in an excel mode
-        //    //if (mode == 1 || mode == 2)
-        //    //{
-        //    //    //adding table 1
-        //    //    for (int i = 0; i < Content1.GetLength(0); i++)
-        //    //    {
-
-        //    //        for (int j = 0; j < Content1.GetLength(1); j++)
-        //    //        {
-        //    //            sheet.Cells[i, j] = Content1[i,j];
-        //    //        }
-        //    //    }
-        //    //    //adding table 2
-        //    //    for (int i = Content1.GetLength(0); i < Content1.GetLength(0) + Content2.GetLength(0); i++)
-        //    //    {
-
-        //    //        for (int j = Content1.GetLength(1); j < Content1.GetLength(1) + Content2.GetLength(1); j++)
-        //    //        {
-        //    //            sheet.Cells[i, j] = Content2[i, j];
-        //    //        }
-        //    //    }
-        //    //    //adding table 3
-        //    //    for (int i = Content1.GetLength(0) + Content2.GetLength(0); i < Content1.GetLength(0) + Content2.GetLength(0) + Content3.GetLength(0); i++)
-        //    //    {
-
-        //    //        for (int j = Content1.GetLength(1) + Content2.GetLength(1); j < Content1.GetLength(1) + Content2.GetLength(1) + Content3.GetLength(1); j++)
-        //    //        {
-        //    //            sheet.Cells[i, j] = Content1[i, j];
-        //    //        }
-        //    //    }
-        //    //}
-
-        //    // filename for temporary excel file
-        //    string tempFileName = Path.GetTempFileName();
-        //    System.IO.File.Delete(tempFileName); // delete the file created so we can save as
-
-        //    if (mode == 1)
-        //    {
-        //        //// .xls file format, 2003 and older
-        //        //workBook.SaveAs(tempFileName, Microsoft.Office.Interop.Excel.XlFileFormat.xlAddIn8);
-        //        //workBook.Close();
-
-        //        //Response.ContentType = "application/vnd.ms-excel";
-        //        //Response.AddHeader("content-disposition", "attachment; filename=Report.xls");
-
-        //        //Response.WriteFile(tempFileName);
-        //        //Response.Flush();
-
-        //        //// clean temp file
-        //        //System.IO.File.Delete(tempFileName);
-        //        //Response.End();
-        //    }
-        //    else if (mode == 2)
-        //    {
-        //        //// .xlsx file format, 2007 and newer
-        //        //// maybe try to find the corresponding XlFileFormat so we don't rely on the Interop version to choose
-        //        //workBook.SaveAs(tempFileName);
-        //        //workBook.Close();
-
-        //        //Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-        //        //Response.AddHeader("content-disposition", "attachment; filename=Report.xlsx");
-
-        //        //Response.WriteFile(tempFileName);
-        //        //Response.Flush();
-
-        //        //// clean temp file
-        //        //System.IO.File.Delete(tempFileName);
-        //        //Response.End();
-        //    }
-        //    else if (mode == 3)
-        //    {
-
-        //        // csv version 2, uses the same 2-dimensional string array from the excel modes
-        //        Response.AddHeader("content-disposition", "attachment; filename=Report.csv");
-        //        Response.ContentType = "text/plain; charset=UTF-8";
-
-        //        parseStringTable(getStringPGTable(startDay, endDay));
-        //        parseStringTable(getStringLanguageTable(startDay, endDay));
-        //        parseStringTable(getStringCountryTable(startDay, endDay));
-                
-                
-                
-        //     }
-
-        //        Response.End();
-            
-        //}
+       
 
         private void parseStringTable(string[,] Content)
         {
@@ -343,7 +258,11 @@ namespace OFRPDMS.Areas.Admin.Controllers
         {
             if (type == "Primary")
             {
-                var _primaryguardian = context.PrimaryGuardians.Where(p => p.FirstName.Contains(name) || p.LastName.Contains(name)).ToList();
+                var _primaryguardian = repoService.primaryGuardianRepo.FindAll();
+                string[] searchFields = new string[] { "FirstName", "LastName", "Country", "Email", "Language", "Phone", "PostalCodePrefix", "Allergies", "DateCreated" };
+                IEnumerable<PropertyInfo> properties = typeof(PrimaryGuardian).GetProperties().Where(prop => searchFields.Contains(prop.Name));
+                _primaryguardian = _primaryguardian.Where(
+                      p => (properties.Any(prop => prop.GetValue(p, null) != null && prop.GetValue(p, null).ToString().ToUpper().Contains(name.ToUpper()))));
                 var collection = _primaryguardian.Select(pm => new
                 {
 
@@ -363,7 +282,11 @@ namespace OFRPDMS.Areas.Admin.Controllers
             }
             else
             {
-                var _primaryguardian = context.Children.Where(c => c.FirstName.Contains(name)).ToList();
+                var _primaryguardian = repoService.childRepo.FindAll();
+                string[] searchFields = new string[] { "FirstName", "LastName", "Allergies" };
+                IEnumerable<PropertyInfo> properties = typeof(Child).GetProperties().Where(prop => searchFields.Contains(prop.Name));
+                _primaryguardian = _primaryguardian.Where(
+                      p => (properties.Any(prop => prop.GetValue(p, null) != null && prop.GetValue(p, null).ToString().ToUpper().Contains(name.ToUpper())))); 
                 var collection = _primaryguardian.Select(pm => new
                 {
 
@@ -381,11 +304,13 @@ namespace OFRPDMS.Areas.Admin.Controllers
         // get the number of new PG(created after start date) 
         private int[] getNumOfNewPGTable(DateTime sday, DateTime eday)
         {
-            int[] newPGTable = new int[context.Centers.Count()];
+            int[] newPGTable = new int[repoService.centerRepo.FindAll().Count()];
             int counter = 0;
-            foreach (var c in context.Centers)
+            foreach (var c in repoService.centerRepo.FindAll())
             {
-                IEnumerable<PrimaryGuardian> pgs = context.PrimaryGuardians.Where(pg => DateTime.Compare(pg.DateCreated, sday) > 0 && DateTime.Compare(pg.DateCreated, eday) < 0 && pg.CenterId == c.Id);
+                IEnumerable<PrimaryGuardian> pgs = repoService.primaryGuardianRepo.FindAllWithCenterId(c.Id).
+                    Where(pg => DateTime.Compare(pg.DateCreated, sday) 
+                        > 0 && DateTime.Compare(pg.DateCreated, eday) < 0);
                 newPGTable[counter] = pgs.Count();
                 counter++;
             }
@@ -394,13 +319,13 @@ namespace OFRPDMS.Areas.Admin.Controllers
         }
         private int[] getNumOfEventParticipantTable(DateTime sday, DateTime eday)
         {
-            int[] newVisitTable = new int[context.Centers.Count()];
+            int[] newVisitTable = new int[repoService.centerRepo.FindAll().Count()];
             int counter = 0;
-            
-            foreach (var c in context.Centers)
+
+            foreach (var c in repoService.centerRepo.FindAll())
             {
                 int sumEventParticipants = 0;
-                List<Event> evts = context.Events.Where(evt => DateTime.Compare(evt.Date, sday) > 0 && DateTime.Compare(evt.Date, eday) <= 0 && evt.CenterId == c.Id).ToList();
+                List<Event> evts = repoService.eventRepo.FindAllWithCenterId(c.Id).Where(evt => DateTime.Compare(evt.Date, sday) > 0 && DateTime.Compare(evt.Date, eday) <= 0).ToList();
                 for (int i = 0; i < evts.Count; i++ )
                 {
                     int epcount = evts[i].EventParticipants.Count;
@@ -417,11 +342,11 @@ namespace OFRPDMS.Areas.Admin.Controllers
 
         private int[] getNumOfVisitTable(DateTime sday, DateTime eday)
         {
-            int[] newVisitTable = new int[context.Centers.Count()];
+            int[] newVisitTable = new int[repoService.centerRepo.FindAll().Count()];
             int counter = 0;
-            foreach (var c in context.Centers)
+            foreach (var c in repoService.centerRepo.FindAll())
             {
-                IEnumerable<Event> evts = context.Events.Where(evt => DateTime.Compare(evt.Date, sday) > 0 && DateTime.Compare(evt.Date, eday) < 0 && evt.CenterId == c.Id);
+                IEnumerable<Event> evts = repoService.eventRepo.FindAllWithCenterId(c.Id).Where(evt => DateTime.Compare(evt.Date, sday) > 0 && DateTime.Compare(evt.Date, eday) <= 0);
                 newVisitTable[counter] = evts.Count();
                 counter++;
             }
@@ -435,8 +360,9 @@ namespace OFRPDMS.Areas.Admin.Controllers
             List<EventParticipant> dt = new List<EventParticipant>();
             if (type == "Primary")
             {
-                PrimaryGuardian pg = context.PrimaryGuardians.Find(id);
-                IEnumerable<EventParticipant> evtps = context.EventParticipants.Where(evtp => evtp.PrimaryGuardianId == id
+                PrimaryGuardian pg = repoService.primaryGuardianRepo.FindById(id);
+                IEnumerable<EventParticipant> evtps = repoService.signInRepo.FindAll()
+                    .Where(evtp => evtp.PrimaryGuardianId == id
                     && DateTime.Compare(evtp.Event.Date, sday) > 0
                     && DateTime.Compare(evtp.Event.Date, eday) <= 0);
                 evtps.OrderBy(evtp => evtp.Event.Date);
@@ -447,8 +373,9 @@ namespace OFRPDMS.Areas.Admin.Controllers
             }
             else if (type == "Child")
             {
-                Child pg = context.Children.Find(id);
-                IEnumerable<EventParticipant> evtps = context.EventParticipants.Where(evtp => evtp.ChildId == id
+                Child pg = repoService.childRepo.FindById(id);
+                IEnumerable<EventParticipant> evtps = 
+                    repoService.signInRepo.FindAll().Where(evtp => evtp.ChildId == id
                     && DateTime.Compare(evtp.Event.Date, sday) > 0
                     && DateTime.Compare(evtp.Event.Date, eday) <= 0);
                 evtps.OrderBy(evtp => evtp.Event.Date);
@@ -463,12 +390,14 @@ namespace OFRPDMS.Areas.Admin.Controllers
         
         private int[] getNumOfChild(DateTime eday)
         {
-            int[] chTable = new int[context.Centers.Count()];
+            int[] chTable = new int[repoService.centerRepo.FindAll().Count()];
 
             int counter = 0;
-            foreach (var c in context.Centers)
+            foreach (var c in repoService.centerRepo.FindAll())
             {
-                IEnumerable<Child> chs = context.Children.Where(ch => DateTime.Compare(ch.DateCreated, eday) < 0 && ch.PrimaryGuardian.CenterId == c.Id);
+                IEnumerable<Child> chs = repoService.childRepo.FindAll().Where
+                    (ch => DateTime.Compare(ch.DateCreated, eday) < 0 
+                        && ch.PrimaryGuardian.CenterId == c.Id);
                 chTable[counter] = chs.Count();
                 counter++;
             }
@@ -478,12 +407,14 @@ namespace OFRPDMS.Areas.Admin.Controllers
 
         private int[] getNumOfNewChild(DateTime sday, DateTime eday)
         {
-            int[] chTable = new int[context.Centers.Count()];
+            int[] chTable = new int[repoService.centerRepo.FindAll().Count()];
 
             int counter = 0;
-            foreach (var c in context.Centers)
+            foreach (var c in repoService.centerRepo.FindAll())
             {
-                IEnumerable<Child> chs = context.Children.Where(ch => DateTime.Compare(ch.DateCreated, sday) >= 0 && DateTime.Compare(ch.DateCreated, eday) <= 0 && ch.PrimaryGuardian.CenterId == c.Id);
+                IEnumerable<Child> chs = repoService.childRepo.FindAll().Where(ch => DateTime.Compare(ch.DateCreated, sday) >= 0 
+                    && DateTime.Compare(ch.DateCreated, eday) <= 0 
+                    && ch.PrimaryGuardian.CenterId == c.Id);
                 chTable[counter] = chs.Count();
                 counter++;
             }
@@ -494,7 +425,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
         private string[,] getStringPGTable(DateTime startDay, DateTime endDay)
         {
 
-            Center[] center = context.Centers.ToArray();
+            Center[] center = repoService.centerRepo.FindAll().ToArray();
             string[,] pgString = new string[center.Length+1,7];
             string[] disCountry = getCountrys(startDay, endDay);
             int[] numOfNewPG = getNumOfNewPGTable(startDay, endDay);
@@ -516,7 +447,7 @@ namespace OFRPDMS.Areas.Admin.Controllers
 
             //start from second row
             int i = 0;
-            foreach (Center c in context.Centers)
+            foreach (Center c in repoService.centerRepo.FindAll())
             {
                 pgString[i+1, 0] = c.Name;
                 pgString[i+1, 1] = numOfNewPG[i].ToString();
@@ -536,13 +467,13 @@ namespace OFRPDMS.Areas.Admin.Controllers
 
             string[] disLanguage = getLanguages(startDay, endDay);
             int[,] languageTable = getLanguageTable(disLanguage, startDay, endDay);
-            string[,] languageString = new string[disLanguage.Length + 1, context.Centers.Count() +2];
-            int cLength = context.Centers.Count();
+            string[,] languageString = new string[disLanguage.Length + 1, repoService.centerRepo.FindAll().Count() + 2];
+            int cLength = repoService.centerRepo.FindAll().Count();
 
             //first row
             languageString[0, 0] = "Language";
             int counter = 1;
-            foreach (Center c in context.Centers)
+            foreach (Center c in repoService.centerRepo.FindAll())
             {
                 languageString[0, counter] = c.Name;
                 counter++;
@@ -562,8 +493,8 @@ namespace OFRPDMS.Areas.Admin.Controllers
 
         private string[,] getStringCountryTable(DateTime startDay,DateTime endDay)
         {
-            
-            int cLength = context.Centers.Count();
+
+            int cLength = repoService.centerRepo.FindAll().Count();
             string[] disCountry = getCountrys(startDay, endDay);
             int[,] countryTable = getCountryTable(disCountry, startDay, endDay);
             string[,] countryString = new string[disCountry.Length + 1, cLength+2];
@@ -571,12 +502,12 @@ namespace OFRPDMS.Areas.Admin.Controllers
             //first row
             countryString[0, 0] = "Country";
             int counter = 1;
-            foreach (Center c in context.Centers)
+            foreach (Center c in repoService.centerRepo.FindAll())
             {
                 countryString[0, counter] = c.Name;
                 counter++;
             }
-            countryString[0, context.Centers.Count() + 1] = "Total";
+            countryString[0, repoService.centerRepo.FindAll().Count() + 1] = "Total";
 
             //the rest
             for (int i = 0; i < disCountry.Length; i++)
@@ -592,12 +523,12 @@ namespace OFRPDMS.Areas.Admin.Controllers
 
         private int[] getNumOfPGTable(DateTime eday)
         {
-            int[] pgTable = new int[context.Centers.Count() + 10];
+            int[] pgTable = new int[repoService.centerRepo.FindAll().Count() + 1];
             int counter = 0;
-            foreach (var c in context.Centers)
+            foreach (var c in repoService.centerRepo.FindAll())
             {
-                IEnumerable<PrimaryGuardian> pgs = context.PrimaryGuardians.Where(pg => DateTime.Compare(pg.DateCreated, eday) < 0 && pg.CenterId == c.Id);
-                //IEnumerable<PrimaryGuardian> distinctPG = context.PrimaryGuardians.Distinct();
+                IEnumerable<PrimaryGuardian> pgs = repoService.primaryGuardianRepo.FindAllWithCenterId(c.Id)
+                    .Where(pg => DateTime.Compare(pg.DateCreated, eday) < 0);
                 pgTable[counter] = pgs.Count();
                 counter++;
             }
@@ -608,7 +539,8 @@ namespace OFRPDMS.Areas.Admin.Controllers
 
         private string[] getLanguages(DateTime sday, DateTime eday)
         {
-            IEnumerable<PrimaryGuardian> pgs = context.PrimaryGuardians.Where(pg => DateTime.Compare(pg.DateCreated, sday) > 0
+            IEnumerable<PrimaryGuardian> pgs = repoService.primaryGuardianRepo.FindAll().Where
+                (pg => DateTime.Compare(pg.DateCreated, sday) > 0
                 && DateTime.Compare(pg.DateCreated, eday) < 0 );
             List<string> language = new List<string>();
             
@@ -626,7 +558,8 @@ namespace OFRPDMS.Areas.Admin.Controllers
 
         private string[] getCountrys(DateTime sday, DateTime eday)
         {
-            IEnumerable<PrimaryGuardian> pgs = context.PrimaryGuardians.Where(pg => DateTime.Compare(pg.DateCreated, sday) > 0
+            IEnumerable<PrimaryGuardian> pgs = repoService.primaryGuardianRepo.FindAll()
+                .Where(pg => DateTime.Compare(pg.DateCreated, sday) > 0
                 && DateTime.Compare(pg.DateCreated, eday) < 0);
             List<string> country = new List<string>();
 
@@ -645,12 +578,13 @@ namespace OFRPDMS.Areas.Admin.Controllers
         private int[,] getCountryTable(string[] disCountry, DateTime sday, DateTime eday)
         {
             //row means language, column means center
-            int[,] countryTable = new int[disCountry.Length, context.Centers.Count()+1];
+            int[,] countryTable = new int[disCountry.Length, repoService.centerRepo.FindAll().Count()+ 1];
 
             int counter = 0;
-            foreach (Center c in context.Centers)
+            foreach (Center c in repoService.centerRepo.FindAll())
             {
-                IEnumerable<PrimaryGuardian> aa = context.PrimaryGuardians.Where(pg => DateTime.Compare(pg.DateCreated, sday) > 0
+                IEnumerable<PrimaryGuardian> aa = repoService.primaryGuardianRepo.FindAllWithCenterId(c.Id).
+                       Where(pg => DateTime.Compare(pg.DateCreated, sday) > 0
                        && DateTime.Compare(pg.DateCreated, eday) < 0
                        && pg.CenterId == c.Id);
                 for (int i = 0; i < disCountry.Length; i++)
@@ -664,11 +598,11 @@ namespace OFRPDMS.Areas.Admin.Controllers
             for (int i = 0; i < disCountry.Length; i++)
             {
                 int rowTotal = 0;
-                for (int j = 0; j < context.Centers.Count(); j++)
+                for (int j = 0; j < repoService.centerRepo.FindAll().Count(); j++)
                 {
                     rowTotal += countryTable[i, j];
                 }
-                int length = context.Centers.Count();
+                int length = repoService.centerRepo.FindAll().Count();
                 countryTable[i, length] = rowTotal;
             }
 
@@ -679,15 +613,15 @@ namespace OFRPDMS.Areas.Admin.Controllers
         private int[,] getLanguageTable(string[] disLanguage, DateTime sday, DateTime eday)
         {
             //row means language, column means center
-            int[,] languageTable = new int[disLanguage.Length, context.Centers.Count()+1];
+            int[,] languageTable = new int[disLanguage.Length, repoService.centerRepo.FindAll().Count() + 1];
 
 
             int counter = 0;
-            foreach (Center c in context.Centers)
+            foreach (Center c in repoService.centerRepo.FindAll())
             {
-                IEnumerable<PrimaryGuardian> aa = context.PrimaryGuardians.Where(pg => DateTime.Compare(pg.DateCreated, sday) > 0
-                       && DateTime.Compare(pg.DateCreated, eday) < 0
-                       && pg.CenterId == c.Id);
+                IEnumerable<PrimaryGuardian> aa = repoService.primaryGuardianRepo.FindAllWithCenterId(c.Id)
+                    .Where(pg => DateTime.Compare(pg.DateCreated, sday) > 0
+                       && DateTime.Compare(pg.DateCreated, eday) < 0);
                 for(int i = 0 ; i < disLanguage.Length; i++)
                 {
                     languageTable[i, counter] = aa.Where(pg => pg.Language == disLanguage[i]).Count();
@@ -699,11 +633,11 @@ namespace OFRPDMS.Areas.Admin.Controllers
             for (int i = 0; i < disLanguage.Length; i++)
             {
                 int rowTotal = 0;
-                for (int j = 0; j < context.Centers.Count(); j++)
+                for (int j = 0; j < repoService.centerRepo.FindAll().Count(); j++)
                 {
                     rowTotal += languageTable[i, j];
                 }
-                int length = context.Centers.Count();
+                int length = repoService.centerRepo.FindAll().Count();
                 languageTable[i, length] = rowTotal;
             }
 
